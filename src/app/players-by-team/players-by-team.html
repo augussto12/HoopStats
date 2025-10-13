@@ -1,0 +1,32 @@
+<div class="team-detail-container" *ngIf="team">
+    <div class="team-header">
+        <img [src]="team.logo" [alt]="team.name" class="team-logo" />
+        <div class="team-header-info">
+            <h1>{{ team.name }}</h1>
+            <p class="team-subtitle">{{ team.nickname }}</p>
+        </div>
+    </div>
+
+    <div class="team-info">
+        <p><strong>Abreviación:</strong> {{ team.code }}</p>
+        <p><strong>Ciudad: </strong> {{ team.city }}</p>
+        <p><strong>Conferencia:</strong> {{ team.leagues.standard.conference }}</p>
+        <p><strong>División:</strong> {{ team.leagues.standard.division }}</p>
+    </div>
+    <h2>Plantilla actual</h2>
+    <div *ngIf="players.length" class="players-list">
+        <div *ngFor="let player of players" class="player-card">
+            <h3>{{ player.firstname }} {{ player.lastname }}</h3>
+            <p>
+                <strong>Posición:</strong> {{ player.leagues.standard.pos || '-' }}<br />
+                <strong>Número:</strong> {{ player.leagues.standard.jersey || '-' }}<br />
+                <strong>Altura:</strong> {{ player.height.feets }}'{{ player.height.inches }}" ({{ player.height.meters
+                }} m)<br />
+                <strong>Peso:</strong> {{ player.weight.pounds }} lb ({{ player.weight.kilograms }} kg)<br />
+                <strong>Nacimiento:</strong> {{ player.birth.date }} ({{ player.birth.country }})<br />
+                <strong>Universidad:</strong> {{ player.college || '-' }}<br />
+                <strong>Inicio NBA:</strong> {{ player.nba.start || '-' }}
+            </p>
+        </div>
+    </div>
+</div>

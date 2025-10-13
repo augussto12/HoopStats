@@ -1,0 +1,101 @@
+.teams-container {
+  text-align: center;
+  padding: 2rem;
+  color: #fff;
+  background: linear-gradient(135deg, #001f54, #0a1128);
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+.teams-container h1 {
+  font-size: 2rem;
+  color: #ffb347;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 1.5rem;
+}
+
+input.input {
+  width: 80%;
+  max-width: 400px;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+  text-align: center;
+  background-color: #12243f;
+  color: #fff;
+}
+
+.conference-grid {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.conference-column {
+  flex: 1 1 45%;
+  background-color: #12243f;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  min-width: 300px;
+}
+
+.conference-column h2 {
+  color: #ff4c29;
+  margin-bottom: 1rem;
+}
+
+.team-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.menu-card.small {
+  background-color: #183661;
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: left;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.menu-card.small:hover {
+  transform: translateY(-3px);
+  background-color: #1f4b85;
+}
+
+.menu-card.small h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #ffb347;
+}
+
+.menu-card.small a.team-link {
+  color: #ffb347;
+  text-decoration: none;
+}
+
+.menu-card.small a.team-link:hover {
+  text-decoration: underline;
+}
+
+.menu-card.small p {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: #b0c4de;
+}
+
+.loading {
+  font-size: 1.2rem;
+  color: #b0c4de;
+}
