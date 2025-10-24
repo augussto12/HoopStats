@@ -48,7 +48,7 @@
 }
 
 h2 {
-  color: #ff4c29;
+  color: #ffb347;
   margin-bottom: 1rem;
 }
 
@@ -59,11 +59,13 @@ h2 {
 }
 
 .player-card {
+  cursor: pointer;
   background-color: #183661;
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s, background-color 0.2s;
+  
 }
 
 .player-card:hover {

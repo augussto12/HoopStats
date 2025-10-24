@@ -1,0 +1,130 @@
+.player-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1rem;
+  color: #fff;
+}
+
+.player-card {
+  background: #1e2a3a;
+  border-radius: 16px;
+  padding: 2rem;
+  width: fit-content;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.player-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.player-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #333;
+}
+
+.player-info h2 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.player-meta {
+  margin-top: 0.3rem;
+  font-size: 0.95rem;
+  color: #ccc;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.player-data {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem 1.2rem;
+  font-size: 0.95rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.btn:hover {
+  background: #005fcc;
+}
+
+.loading,
+.error {
+  text-align: center;
+  margin-top: 2rem;
+  color: #aaa;
+}
+
+
+.player-stats {
+  margin-top: 2rem;
+  background: #273347;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.player-stats h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #ddd;
+  font-size: 0.9rem;
+}
+
+.stats-table th {
+  background-color: #1b2535;
+  color: #fff;
+  font-weight: 600;
+  padding: 0.6rem;
+  text-align: center;
+}
+
+.stats-table td {
+  text-align: center;
+  padding: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stats-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.stats-table th:first-child,
+.stats-table td:first-child {
+  border-radius: 8px 0 0 8px;
+}
+
+.stats-table th:last-child,
+.stats-table td:last-child {
+  border-radius: 0 8px 8px 0;
+}

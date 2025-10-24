@@ -15,18 +15,8 @@
     </div>
     <h2>Plantilla actual</h2>
     <div *ngIf="players.length" class="players-list">
-        <div *ngFor="let player of players" class="player-card">
+        <div *ngFor="let player of players" class="player-card" [routerLink]="['/player', player.id]">
             <h3>{{ player.firstname }} {{ player.lastname }}</h3>
-            <p>
-                <strong>Posición:</strong> {{ player.leagues.standard.pos || '-' }}<br />
-                <strong>Número:</strong> {{ player.leagues.standard.jersey || '-' }}<br />
-                <strong>Altura:</strong> {{ player.height.feets }}'{{ player.height.inches }}" ({{ player.height.meters
-                }} m)<br />
-                <strong>Peso:</strong> {{ player.weight.pounds }} lb ({{ player.weight.kilograms }} kg)<br />
-                <strong>Nacimiento:</strong> {{ player.birth.date }} ({{ player.birth.country }})<br />
-                <strong>Universidad:</strong> {{ player.college || '-' }}<br />
-                <strong>Inicio NBA:</strong> {{ player.nba.start || '-' }}
-            </p>
         </div>
     </div>
 </div>

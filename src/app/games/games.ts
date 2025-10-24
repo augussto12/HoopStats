@@ -1,4 +1,4 @@
-// src/app/home/home.ts
+// src/app/Games/Games.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -7,13 +7,13 @@ import { NbaApiService } from '../services/nba-api';
 type APIGame = any;
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-Games',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './home.html',
-  styleUrls: ['./home.css']
+  templateUrl: './Games.html',
+  styleUrls: ['./games.css']
 })
-export class Home implements OnInit {
+export class Games implements OnInit {
   loading = false;
   error: string | null = null;
 
@@ -37,11 +37,10 @@ export class Home implements OnInit {
   }
 
   private addDays(dateISO: string, delta: number) {
-    const d = new Date(dateISO + 'T00:00:00'); // forzamos local
+    const d = new Date(dateISO + 'T00:00:00'); // forzamos hora local
     d.setDate(d.getDate() + delta);
     return this.toLocalYYYYMMDD(d);
   }
-
 
    refresh(): void {
     this.loadGames();
@@ -68,7 +67,7 @@ export class Home implements OnInit {
       const all = [...gPrev, ...gDay, ...gNext];
       const unique = Array.from(new Map(all.map(g => [g.id, g])).values());
 
-      // Filtramos por DÍA LOCAL del usuario
+      // Filtramos por dia local del usuario
       this.games = unique.filter(g => {
         const local = new Date(g?.date?.start ?? '');
         if (isNaN(+local)) return false;

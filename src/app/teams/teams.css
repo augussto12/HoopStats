@@ -2,7 +2,6 @@
   text-align: center;
   padding: 2rem;
   color: #fff;
-  background: linear-gradient(135deg, #001f54, #0a1128);
   min-height: 100vh;
   font-family: 'Poppins', sans-serif;
 }
@@ -24,7 +23,7 @@ input.input {
   max-width: 400px;
   padding: 0.6rem;
   border-radius: 8px;
-  border: none;
+  border-color: #553911;
   outline: none;
   margin-bottom: 2rem;
   font-size: 1rem;
@@ -32,6 +31,22 @@ input.input {
   background-color: #12243f;
   color: #fff;
 }
+
+.inputSelect {
+  cursor: pointer;
+  width: 80%;
+  max-width: 400px;
+  padding: 0.6rem;
+  border-radius: 8px;
+  border-color: #553911;
+  outline: none;
+  margin: 2rem;
+  font-size: 1rem;
+  text-align: center;
+  background-color: #12243f;
+  color: #fff;
+}
+
 
 .conference-grid {
   display: flex;
@@ -51,7 +66,7 @@ input.input {
 }
 
 .conference-column h2 {
-  color: #ff4c29;
+  color: #ffb347;
   margin-bottom: 1rem;
 }
 

@@ -1,0 +1,61 @@
+<div class="layout">
+    <main class="content">
+        <header class="content-header">
+            <div>
+                <h1>Partidos</h1>
+                <p class="subtitle">Ingrese la fecha para mostrar los partidos</p>
+            </div>
+
+            <div class="toolbar">
+                <input type="date" [value]="selectedDate" (change)="onDateChange($event)"
+                    />
+                <button class="btn" (click)="goToday()">Hoy</button>
+                <button class="btn" (click)="loadGames()">Actualizar</button>
+            </div>
+        </header>
+
+        <section class="status" *ngIf="loading || error">
+            <div *ngIf="loading" class="loading">Cargando partidos…</div>
+            <div *ngIf="error" class="error">{{ error }}</div>
+        </section>
+
+        <section class="games-grid" *ngIf="!loading && !error">
+            <div *ngIf="!gamesShown?.length" class="empty">
+                No hay partidos para esta fecha.
+            </div>
+
+            <div class="game-card" *ngFor="let g of gamesShown">
+                <div class="game-time">
+                    <span class="pill" [class.live]="g.status==='LIVE'" [class.final]="g.status==='Final'">
+                        {{ g.status }}
+                    </span>
+                    <span class="time">{{ g.timeLocal }}</span>
+                </div>
+
+                <div class="teams">
+                    <div class="team">
+                        <img [src]="g.visitors.logo" [alt]="g.visitors.name" />
+                        <div class="team-name">{{ g.visitors.name }}</div>
+                    </div>
+
+                    <div class="score">
+                        <span *ngIf="g.visitors.pts !== null && g.home.pts !== null">
+                            {{ g.visitors.pts }} — {{ g.home.pts }}
+                        </span>
+                        <span *ngIf="g.status==='LIVE' && g.clock">
+                            {{g.period}}C-{{g.clock}}
+                        </span>
+                        <span *ngIf="g.visitors.pts === null || g.home.pts === null">vs</span>
+                    </div>
+
+                    <div class="team">
+                        <img [src]="g.home.logo" [alt]="g.home.name" />
+                        <div class="team-name">{{ g.home.name }}</div>
+                    </div>
+                </div>
+
+                <div class="arena" *ngIf="g.arena">{{ g.arena }}</div>
+            </div>
+        </section>
+    </main>
+</div>

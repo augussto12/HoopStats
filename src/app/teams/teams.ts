@@ -15,6 +15,8 @@ export class TeamsComponent implements OnInit {
   teamsWest: any[] = [];
   teamsEast: any[] = [];
   searchTerm = '';
+  selectedDivision = '';
+
 
   constructor(private nbaService: NbaApiService) { }
 
@@ -36,14 +38,21 @@ export class TeamsComponent implements OnInit {
     console.log('Equipos Oeste:', this.teamsWest);
   }
 
-  // 🔍 Filtro de búsqueda (usa nombre o apodo)
+  // Filtro de búsqueda y división
   filteredTeams(teams: any[]): any[] {
-    if (!this.searchTerm.trim()) return teams;
-    const term = this.searchTerm.toLowerCase();
-    return teams.filter(
-      (t) =>
+    const term = this.searchTerm.trim().toLowerCase();
+
+    return teams.filter((t) => {
+      const matchesName =
+        !term ||
         t.name.toLowerCase().includes(term) ||
-        t.nickname.toLowerCase().includes(term)
-    );
+        t.nickname.toLowerCase().includes(term);
+
+      const matchesDivision =
+        !this.selectedDivision ||
+        t.leagues?.standard?.division === this.selectedDivision;
+
+      return matchesName && matchesDivision;
+    });
   }
 }

@@ -18,7 +18,6 @@ export class NbaApiService {
     const response = await firstValueFrom(
       this.http.get<any>(`${this.apiUrl}/teams`, { headers: this.headers })
     );
-    console.log(response.response);
     return response.response;
   }
 
@@ -26,7 +25,7 @@ export class NbaApiService {
   async getPlayersByTeam(teamId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
-        `${this.apiUrl}/players?team=${teamId}&season=2024`,
+        `${this.apiUrl}/players?team=${teamId}&season=2025`,
         { headers: this.headers }
       )
     );
@@ -34,13 +33,35 @@ export class NbaApiService {
   }
 
   // Partidos por fecha
-  async getGamesByDate(date: string) {
+  async getGamesByDate(dateISO: string) {
     const response = await firstValueFrom(
       this.http.get<any>(
-        `${this.apiUrl}/games?date=${date}`,
+        `${this.apiUrl}/games?season=2025&date=${dateISO}`,
         { headers: this.headers }
       )
     );
+    return response.response; // array
+  }
+
+  async getPlayer(playerId: number) {
+    const response = await firstValueFrom(
+      this.http.get<any>(
+        `${this.apiUrl}/players?id=${playerId}`,
+        { headers: this.headers }
+      )
+    );
+    console.log("players",response.response);
+    return response.response
+  }
+
+  async getPlayerStats(playerId: number){
+    const response = await firstValueFrom(
+      this.http.get<any>(
+        `${this.apiUrl}/players/statistics?id=${playerId}&season=2025`,
+        {headers: this.headers}
+      )
+    );
+    console.log("player data: ",response.response);
     return response.response;
   }
 }

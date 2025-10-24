@@ -8,6 +8,16 @@
 
     <input type="text" placeholder="Buscar equipo..." [(ngModel)]="searchTerm" class="input" />
 
+    <select [(ngModel)]="selectedDivision" class="inputSelect">
+        <option value="">Todas las divisiones</option>
+        <option value="Atlantic">Atlantic</option>
+        <option value="Central">Central</option>
+        <option value="Southeast">Southeast</option>
+        <option value="Northwest">Northwest</option>
+        <option value="Pacific">Pacific</option>
+        <option value="Southwest">Southwest</option>
+    </select>
+
     <div class="conference-grid">
         <div class="conference-column">
             <h2>Conferencia Este</h2>
@@ -21,6 +31,9 @@
                     <p>{{ team.city }} - {{ team.leagues.standard.division }}</p>
                 </div>
             </div>
+            <div *ngIf="!filteredTeams(teamsEast).length">
+                <p class="no-results">No hay equipos que coincidan con los filtros.</p>
+            </div>
         </div>
         <div class="conference-column">
             <h2>Conferencia Oeste</h2>
@@ -33,6 +46,9 @@
                     </h3>
                     <p>{{ team.city }} - {{ team.leagues.standard.division }}</p>
                 </div>
+            </div>
+            <div *ngIf="!filteredTeams(teamsWest).length">
+                <p class="no-results">No hay equipos que coincidan con los filtros.</p>
             </div>
         </div>
     </div>

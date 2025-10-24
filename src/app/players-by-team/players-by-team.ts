@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NbaApiService } from '../services/nba-api';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-players-by-team',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './players-by-team.html',
   styleUrls: ['./players-by-team.css']
 })
