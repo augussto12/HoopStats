@@ -1,7 +1,7 @@
-// src/app/Games/Games.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { NbaApiService } from '../services/nba-api';
 
 type APIGame = any;
@@ -9,7 +9,7 @@ type APIGame = any;
 @Component({
   selector: 'app-Games',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './Games.html',
   styleUrls: ['./games.css']
 })
@@ -17,8 +17,8 @@ export class Games implements OnInit {
   loading = false;
   error: string | null = null;
 
-  // fecha seleccionada (YYYY-MM-DD)
-  selectedDate = this.toYYYYMMDD(new Date());
+  selectedStatus = ''; // 👈 filtro actual
+  selectedDate = this.toYYYYMMDD(new Date()); // fecha actual
 
   games: APIGame[] = [];
   gamesShown: any[] = [];
@@ -29,52 +29,52 @@ export class Games implements OnInit {
     this.loadGames();
   }
 
-  private pad(n: number) { return String(n).padStart(2, '0'); }
+  private pad(n: number) {
+    return String(n).padStart(2, '0');
+  }
 
-  // YYYY-MM-DD en HORA LOCAL
   private toLocalYYYYMMDD(d: Date) {
     return `${d.getFullYear()}-${this.pad(d.getMonth() + 1)}-${this.pad(d.getDate())}`;
   }
 
   private addDays(dateISO: string, delta: number) {
-    const d = new Date(dateISO + 'T00:00:00'); // forzamos hora local
+    const d = new Date(dateISO + 'T00:00:00');
     d.setDate(d.getDate() + delta);
     return this.toLocalYYYYMMDD(d);
   }
 
-   refresh(): void {
+  refresh(): void {
     this.loadGames();
   }
-
 
   async loadGames() {
     this.loading = true;
     this.error = null;
     try {
-      // día seleccionado en local
       const day = this.selectedDate;
       const prev = this.addDays(day, -1);
       const next = this.addDays(day, +1);
 
-      // Traemos tres días en paralelo
       const [gPrev, gDay, gNext] = await Promise.all([
         this.api.getGamesByDate(prev),
         this.api.getGamesByDate(day),
         this.api.getGamesByDate(next),
       ]);
 
-      // Unimos y de-duplicamos por id
       const all = [...gPrev, ...gDay, ...gNext];
       const unique = Array.from(new Map(all.map(g => [g.id, g])).values());
 
-      // Filtramos por dia local del usuario
+      // Filtramos por día local
       this.games = unique.filter(g => {
         const local = new Date(g?.date?.start ?? '');
         if (isNaN(+local)) return false;
         return this.toLocalYYYYMMDD(local) === day;
       });
 
-      this.gamesShown = this.games.map(g => this.mapGame(g));
+      // Mapeamos y aplicamos filtro
+      const mapped = this.games.map(g => this.mapGame(g));
+      this.gamesShown = this.filterByStatus(mapped);
+
     } catch (e: any) {
       this.error = 'No se pudieron cargar los partidos.';
       console.error(e);
@@ -82,8 +82,6 @@ export class Games implements OnInit {
       this.loading = false;
     }
   }
-
-
 
   goToday() {
     this.selectedDate = this.toYYYYMMDD(new Date());
@@ -96,6 +94,26 @@ export class Games implements OnInit {
     this.loadGames();
   }
 
+  // 👇 Nuevo método para aplicar el filtro sin recargar desde la API
+  applyFilter() {
+    this.gamesShown = this.filterByStatus(this.games.map(g => this.mapGame(g)));
+  }
+
+  // 👇 Lógica del filtro por estado
+  private filterByStatus(games: any[]) {
+    if (!this.selectedStatus) return games; // sin filtro
+
+    switch (this.selectedStatus) {
+      case 'Finished':
+        return games.filter(g => g.status === 'Final');
+      case 'Live':
+        return games.filter(g => g.status === 'LIVE');
+      case 'Scheduled':
+        return games.filter(g => g.status === 'Programado');
+      default:
+        return games;
+    }
+  }
 
   private toYYYYMMDD(d: Date) {
     const pad = (n: number) => String(n).padStart(2, '0');
@@ -103,9 +121,8 @@ export class Games implements OnInit {
   }
 
   private mapGame(g: any) {
-    // API-Sports estructura
     const startUtc = g?.date?.start ? new Date(g.date.start) : null;
-    const statusShort = g?.status?.short; // 1 Scheduled, 2 Not started, 3 Finished
+    const statusShort = g?.status?.short;
     const statusLong = g?.status?.long ?? '';
     const isFinished = statusShort === 3 || statusLong === 'Finished';
     const isLive = statusLong?.toLowerCase().includes('in play');

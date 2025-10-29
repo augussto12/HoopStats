@@ -4,11 +4,15 @@ import { TeamsComponent } from './teams/teams';
 import { PlayersByTeam } from './players-by-team/players-by-team';
 import { Games } from './games/games';
 import { PlayerData } from './player-data/player-data';
+import { GameDetails } from './game-details/game-details';
+import { HeadToHead } from './head-to-head/head-to-head';
 
 export const routes: Routes = [
     { path: '', component: Home },
     { path: 'teams', component: TeamsComponent },
     { path: 'teams/:id', component: PlayersByTeam },
     { path: 'games', component: Games },
-    { path: 'player/:id', component: PlayerData }
+    { path: 'game-details/:id', component: GameDetails},
+    { path: 'player/:id', component: PlayerData },
+    { path: 'headtohead', component: HeadToHead}
 ];

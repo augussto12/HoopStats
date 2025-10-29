@@ -1,53 +1,64 @@
 <div class="home-container">
-    <header class="content-header">
-        <div>
-            <h1>Partidos de hoy</h1>
-            <p class="subtitle">Incluye partidos LIVE que comenzaron anoche</p>
+    <h1>🏀 Bienvenido a <span>DataHoops</span></h1>
+    <p class="subtitle">Explorá estadísticas, equipos y jugadores de la NBA</p>
+
+    <div class="menu-grid">
+        <div class="menu-card" routerLink="/teams">
+            <h2>Equipos</h2>
+            <p>Descubrí todos los equipos de la NBA, sus plantillas actuales, divisiones y desempeño en la temporada.
+                Accedé a la información completa de cada franquicia y sus jugadores destacados.</p>
         </div>
-        <div class="toolbar">
-            <button class="btn" (click)="refresh()">Actualizar</button>
+
+        <div class="menu-card" routerLink="/players">
+            <h2>Jugadores</h2>
+            <p>Explorá los jugadores más importantes de la liga. Revisá estadísticas detalladas, promedios por partido y
+                evolución durante la temporada.</p>
         </div>
-    </header>
 
-    <section class="status" *ngIf="loading || error">
-        <div *ngIf="loading" class="loading">Cargando partidos…</div>
-        <div *ngIf="error" class="error">{{ error }}</div>
-    </section>
+        <div class="menu-card" routerLink="/games">
+            <h2>Partidos</h2>
+            <p>Seguí los encuentros más recientes, consultá los próximos juegos del calendario y analizá los resultados
+                con estadísticas en tiempo real.</p>
+        </div>
 
-    <section class="games-grid" *ngIf="!loading && !error">
-        <div *ngIf="!gamesShown?.length" class="empty">No hay partidos hoy.</div>
+        <div class="menu-card" routerLink="/headtohead">
+            <h2>Head To Head</h2>
+            <p>Vea el historial de partidos entre dos equipos.</p>
+        </div>
 
-        <div class="game-card" *ngFor="let g of gamesShown">
-            <div class="game-time">
-                <span class="pill" [class.live]="g.status==='LIVE'" [class.final]="g.status==='Final'">
-                    {{ g.status }}
-                </span>
-                <span class="time">{{ g.timeLocal }}</span>
-            </div>
+        <div class="menu-card" routerLink="/favorites">
+            <h2>Favoritos</h2>
+            <p>Guardá tus equipos o jugadores preferidos y accedé rápidamente a sus partidos, estadísticas y rendimiento
+                sin perderte nada.</p>
+        </div>
+    </div>
 
-            <div class="teams">
-                <div class="team">
-                    <img [src]="g.visitors.logo" [alt]="g.visitors.name" />
-                    <div class="team-name">{{ g.visitors.name }}</div>
-                </div>
-
-                <div class="score">
-                    <span *ngIf="g.visitors.pts !== null && g.home.pts !== null">
+    <section class="live-games" *ngIf="!loading && liveGames.length">
+        <h2>Partidos en vivo</h2>
+        <div class="games-grid">
+            <div class="game-card" *ngFor="let g of liveGames" [routerLink]="['/game-details', g.id]">
+                <div class="teams">
+                    <div class="team">
+                        <img [src]="g.visitors.logo" [alt]="g.visitors.name" />
+                        <div class="team-name">{{ g.visitors.name }}</div>
+                    </div>
+                    <div class="score">
                         {{ g.visitors.pts }} — {{ g.home.pts }}
-                    </span>
-                    <span *ngIf="g.status==='LIVE' && g.clock">
-                        {{g.period}}C-{{g.clock}}
-                    </span>
-                    <span *ngIf="g.visitors.pts === null || g.home.pts === null">vs</span>
+                        <div class="clock">{{ g.period }}C - {{ g.clock }}</div>
+                    </div>
+                    <div class="team">
+                        <img [src]="g.home.logo" [alt]="g.home.name" />
+                        <div class="team-name">{{ g.home.name }}</div>
+                    </div>
                 </div>
-
-                <div class="team">
-                    <img [src]="g.home.logo" [alt]="g.home.name" />
-                    <div class="team-name">{{ g.home.name }}</div>
-                </div>
+                <div class="arena">{{ g.arena }}</div>
             </div>
-
-            <div class="arena" *ngIf="g.arena">{{ g.arena }}</div>
         </div>
     </section>
+
+    <div *ngIf="loading" class="loading">Cargando partidos en vivo...</div>
+    <div *ngIf="!loading && !liveGames.length" class="empty">
+        No hay partidos en vivo.
+    </div>
+
 </div>

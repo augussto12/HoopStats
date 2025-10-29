@@ -4,7 +4,7 @@
   align-items: end;
   justify-content: space-between;
   gap: 1rem;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   padding-bottom: 1rem;
   margin-bottom: 1rem;
 }
@@ -34,13 +34,16 @@
   padding: .5rem .8rem;
   cursor: pointer;
 }
+
 .btn-refresh:hover {
   filter: brightness(1.05);
 }
 
-.loading, .error, .empty {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.08);
+.loading,
+.error,
+.empty {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 1rem;
   border-radius: .8rem;
   margin-top: 1rem;
@@ -54,8 +57,9 @@
 }
 
 .game-card {
+  cursor: pointer;
   background: #12243f;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: .9rem;
   padding: .85rem;
   display: grid;
@@ -66,11 +70,19 @@
   font-size: .8rem;
   padding: .2rem .5rem;
   border-radius: .5rem;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
 }
-.pill.live { border-color: #ff7a7a; background: rgba(255, 61, 61, .12); }
-.pill.final { border-color: #67e8f9; background: rgba(103,232,249,.12); }
+
+.pill.live {
+  border-color: #ff7a7a;
+  background: rgba(255, 61, 61, .12);
+}
+
+.pill.final {
+  border-color: #67e8f9;
+  background: rgba(103, 232, 249, .12);
+}
 
 .teams {
   display: grid;
@@ -84,6 +96,7 @@
   justify-items: center;
   gap: .35rem;
 }
+
 .team img {
   width: 42px;
   height: 42px;
@@ -92,7 +105,11 @@
   border-radius: 50%;
   padding: .25rem;
 }
-.team-name { font-size: .88rem; text-align: center; }
+
+.team-name {
+  font-size: .88rem;
+  text-align: center;
+}
 
 .score {
   font-weight: 700;
@@ -103,4 +120,96 @@
 .arena {
   font-size: .85rem;
   opacity: .8;
+}
+
+/* --- 🔹 ESTILOS EXTRAS PARA LA VISTA DEL EQUIPO --- */
+
+/* Header del equipo */
+.team-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.team-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 10px;
+  padding: 6px;
+}
+
+.team-header-info h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #ffb347;
+}
+
+.team-subtitle {
+  margin: .2rem 0 0;
+  color: #a9b6d3;
+  font-size: .95rem;
+}
+
+/* Información básica del equipo */
+.team-info {
+  margin-bottom: 1.5rem;
+  color: #d0daec;
+  font-size: .95rem;
+}
+
+.team-info p {
+  margin: .2rem 0;
+}
+
+/* Selector de vista (Plantilla / Partidos) */
+.view-selector {
+  margin-bottom: 1.5rem;
+}
+
+.view-selector select,
+.inputSelect {
+  background: #1e2a3a;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: .5rem .8rem;
+  font-size: .95rem;
+  cursor: pointer;
+}
+
+.view-selector select:focus {
+  outline: none;
+  border-color: #00bcd4;
+}
+
+/* Tarjetas de jugadores */
+.players-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.player-card {
+  background: #12243f;
+  padding: 1rem;
+  border-radius: .8rem;
+  text-align: center;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.player-card:hover {
+  transform: translateY(-3px);
+  background-color: #1f4b85;
+}
+
+.player-card h3 {
+  margin: 0;
+  color: #ffb347;
 }

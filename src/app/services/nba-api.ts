@@ -16,7 +16,8 @@ export class NbaApiService {
   // Equipos
   async getTeams() {
     const response = await firstValueFrom(
-      this.http.get<any>(`${this.apiUrl}/teams`, { headers: this.headers })
+      this.http.get<any>(`${this.apiUrl}/teams`,
+        { headers: this.headers })
     );
     return response.response;
   }
@@ -40,7 +41,29 @@ export class NbaApiService {
         { headers: this.headers }
       )
     );
+    console.log(response.response)
     return response.response; // array
+  }
+
+  async getGamesByTeam(teamId: number) {
+    const response = await firstValueFrom(
+      this.http.get<any>(
+        `${this.apiUrl}/games?season=2025&team=${teamId}`,
+        { headers: this.headers }
+      )
+    );
+    console.log(response.response)
+    return response.response; // array
+  }
+
+  async getLiveGames() {
+    const response = await firstValueFrom(
+      this.http.get<any>(`${this.apiUrl}/games?live=all`, {
+        headers: this.headers
+      })
+    );
+    console.log('Live games:', response.response);
+    return response.response;
   }
 
   async getPlayer(playerId: number) {
@@ -50,18 +73,51 @@ export class NbaApiService {
         { headers: this.headers }
       )
     );
-    console.log("players",response.response);
+    console.log("players", response.response);
     return response.response
   }
 
-  async getPlayerStats(playerId: number){
+  async getPlayerStats(playerId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
         `${this.apiUrl}/players/statistics?id=${playerId}&season=2025`,
+        { headers: this.headers }
+      )
+    );
+    console.log("player data: ", response.response);
+    return response.response;
+  }
+
+  async getGameData(gameId: number) {
+    const response = await firstValueFrom(
+      this.http.get<any>(
+        `${this.apiUrl}/games/statistics?id=${gameId}`,
+        { headers: this.headers }
+      )
+    );
+    console.log(response.response);
+    return response.response;
+  }
+
+  async getPlayerStatsByGame(gameId: number) {
+    const response = await firstValueFrom(
+      this.http.get<any>(
+        `${this.apiUrl}/players/statistics?game=${gameId}`,
+        { headers: this.headers }
+      )
+    );
+    console.log(response.response);
+    return response.response;
+  }
+
+  async getHeadToHead(firstTeam: number, secondTeam:number){
+    const response = await firstValueFrom(
+      this.http.get<any>(
+        `${this.apiUrl}/games?h2h=${firstTeam}-${secondTeam}`,
         {headers: this.headers}
       )
     );
-    console.log("player data: ",response.response);
+    console.log(response.response);
     return response.response;
   }
 }

@@ -2,39 +2,41 @@
     <main class="content">
         <header class="content-header">
             <div>
-                <h1>Partidos</h1>
-                <p class="subtitle">Ingrese la fecha para mostrar los partidos</p>
+                <h1>Enfrentamientos entre equipos</h1>
+                <p class="subtitle">Seleccioná dos equipos para ver sus últimos duelos</p>
             </div>
 
             <div class="toolbar">
-                <select [(ngModel)]="selectedStatus" (change)="applyFilter()" class="inputSelect">
-                    <option value="">Todas los partidos</option>
-                    <option value="Finished">Finalizados</option>
-                    <option value="Live">En vivo</option>
-                    <option value="Scheduled">Programado</option>
+                <select [(ngModel)]="selectedFirstTeam" class="inputSelect">
+                    <option [ngValue]="null">Equipo 1</option>
+                    <option *ngFor="let t of teams" [ngValue]="t.id">{{ t.name }}</option>
                 </select>
-                <input type="date" [value]="selectedDate" (change)="onDateChange($event)" />
-                <button class="btn" (click)="goToday()">Hoy</button>
-                <button class="btn" (click)="loadGames()">Actualizar</button>
+
+                <select [(ngModel)]="selectedSecondTeam" class="inputSelect">
+                    <option [ngValue]="null">Equipo 2</option>
+                    <option *ngFor="let t of teams" [ngValue]="t.id">{{ t.name }}</option>
+                </select>
+
+                <button class="btn" (click)="fetchHeadToHead()">Buscar</button>
             </div>
         </header>
 
         <section class="status" *ngIf="loading || error">
-            <div *ngIf="loading" class="loading">Cargando partidos…</div>
+            <div *ngIf="loading" class="loading">Cargando enfrentamientos...</div>
             <div *ngIf="error" class="error">{{ error }}</div>
         </section>
 
         <section class="games-grid" *ngIf="!loading && !error">
-            <div *ngIf="!gamesShown?.length" class="empty">
-                No hay partidos para el filtro seleccionado.
+            <div *ngIf="!games.length" class="empty">
+                No hay enfrentamientos entre estos equipos.
             </div>
 
-            <div class="game-card" *ngFor="let g of gamesShown" [routerLink]="['/game-details', g.id]">
+            <div class="game-card" *ngFor="let g of games" [routerLink]="['/game-details', g.id]">
                 <div class="game-time">
-                    <span class="pill" [class.live]="g.status==='LIVE'" [class.final]="g.status==='Final'">
+                    <span class="pill" [class.live]="g.status === 'LIVE'" [class.final]="g.status === 'Final'">
                         {{ g.status }}
                     </span>
-                    <span class="time">{{ g.timeLocal }}</span>
+                    <span class="time">{{g.date?.start}} - {{ g.timeLocal }}</span>
                 </div>
 
                 <div class="teams">
@@ -47,8 +49,8 @@
                         <span *ngIf="g.visitors.pts !== null && g.home.pts !== null">
                             {{ g.visitors.pts }} — {{ g.home.pts }}
                         </span>
-                        <span *ngIf="g.status==='LIVE' && g.clock">
-                            {{g.period}}C-{{g.clock}}
+                        <span *ngIf="g.status === 'LIVE' && g.clock">
+                            {{ g.period }}C - {{ g.clock }}
                         </span>
                         <span *ngIf="g.visitors.pts === null || g.home.pts === null">vs</span>
                     </div>

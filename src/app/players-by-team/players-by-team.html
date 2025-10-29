@@ -9,14 +9,80 @@
 
     <div class="team-info">
         <p><strong>Abreviación:</strong> {{ team.code }}</p>
-        <p><strong>Ciudad: </strong> {{ team.city }}</p>
+        <p><strong>Ciudad:</strong> {{ team.city }}</p>
         <p><strong>Conferencia:</strong> {{ team.leagues.standard.conference }}</p>
         <p><strong>División:</strong> {{ team.leagues.standard.division }}</p>
     </div>
-    <h2>Plantilla actual</h2>
-    <div *ngIf="players.length" class="players-list">
-        <div *ngFor="let player of players" class="player-card" [routerLink]="['/player', player.id]">
-            <h3>{{ player.firstname }} {{ player.lastname }}</h3>
+
+    <!-- Selector de vista -->
+    <div class="view-selector">
+        <select [(ngModel)]="selectedView" (change)="onViewChange()">
+            <option value="players">Plantilla actual</option>
+            <option value="games">Partidos</option>
+        </select>
+    </div>
+
+    <!-- Vista: jugadores -->
+    <div *ngIf="selectedView === 'players'">
+        <h2>Plantilla actual</h2>
+        <div *ngIf="players.length" class="players-list">
+            <div *ngFor="let player of players" class="player-card" [routerLink]="['/player', player.id]">
+                <h3>{{ player.firstname }} {{ player.lastname }}</h3>
+            </div>
+        </div>
+        <div *ngIf="!players.length && !loading">No hay jugadores disponibles.</div>
+    </div>
+
+    <!-- Vista: partidos -->
+    <div *ngIf="selectedView === 'games'">
+        <h2>Partidos del equipo</h2>
+
+        <div class="toolbar">
+            <select [(ngModel)]="selectedStatus" (change)="applyFilter()" class="inputSelect">
+                <option value="">Todos los partidos</option>
+                <option value="Finished">Finalizados</option>
+                <option value="Live">En vivo</option>
+                <option value="Scheduled">Programados</option>
+            </select>
+        </div>
+
+        <section class="status" *ngIf="loading || error">
+            <div *ngIf="loading" class="loading">Cargando partidos…</div>
+            <div *ngIf="error" class="error">{{ error }}</div>
+        </section>
+
+        <div *ngIf="!loading && !error">
+            <div *ngIf="!gamesShown.length" class="empty">No hay partidos disponibles.</div>
+
+            <div *ngFor="let g of gamesShown" class="game-card">
+                <div class="game-time">
+                    <span class="pill" [class.live]="g.status==='LIVE'" [class.final]="g.status==='Final'">
+                        {{ g.status }}
+                    </span>
+                    <span class="time">{{g.date}} - {{ g.timeLocal }}</span>
+                </div>
+
+                <div class="teams">
+                    <div class="team">
+                        <img [src]="g.visitors.logo" [alt]="g.visitors.name" />
+                        <div class="team-name">{{ g.visitors.name }}</div>
+                    </div>
+
+                    <div class="score">
+                        <span *ngIf="g.visitors.pts !== null && g.home.pts !== null">
+                            {{ g.visitors.pts }} — {{ g.home.pts }}
+                        </span>
+                        <span *ngIf="g.visitors.pts === null || g.home.pts === null">vs</span>
+                    </div>
+
+                    <div class="team">
+                        <img [src]="g.home.logo" [alt]="g.home.name" />
+                        <div class="team-name">{{ g.home.name }}</div>
+                    </div>
+                </div>
+
+                <div class="arena" *ngIf="g.arena">{{ g.arena }}</div>
+            </div>
         </div>
     </div>
 </div>
