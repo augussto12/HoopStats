@@ -22,17 +22,6 @@ export class NbaApiService {
     return response.response;
   }
 
-  // Jugadores por equipo
-  async getPlayersByTeam(teamId: number) {
-    const response = await firstValueFrom(
-      this.http.get<any>(
-        `${this.apiUrl}/players?team=${teamId}&season=2025`,
-        { headers: this.headers }
-      )
-    );
-    return response.response;
-  }
-
   // Partidos por fecha
   async getGamesByDate(dateISO: string) {
     const response = await firstValueFrom(
@@ -77,6 +66,76 @@ export class NbaApiService {
     return response.response
   }
 
+  // Jugadores por equipo
+  async getPlayersByTeam(teamId: number) {
+    const response = await firstValueFrom(
+      this.http.get<any>(
+        `${this.apiUrl}/players?team=${teamId}&season=2025`,
+        { headers: this.headers }
+      )
+    );
+    return response.response;
+  }
+
+  async getPlayersByLastName(playerName: String) {
+    const response = await firstValueFrom(
+      this.http.get<any>(
+        `${this.apiUrl}/players?name=${playerName}`,
+        { headers: this.headers }
+      )
+    );
+    console.log("players by name", response.response);
+    return response.response
+  }
+
+  async getPlayersByCountry(country: String) {
+    const response = await firstValueFrom(
+      this.http.get<any>(
+        `${this.apiUrl}/players?country=${country}`,
+        { headers: this.headers }
+      )
+    );
+    console.log("players by country", response.response);
+    return response.response
+  }
+
+  async getPlayersFiltered(filters: {
+  name?: string;
+  teamId?: number;
+  country?: string;
+  search?: string;
+}) {
+  let url = `${this.apiUrl}/players`;
+
+  const params: string[] = [];
+
+  // 🔹 Caso especial: si hay team → siempre agregamos la season
+  if (filters.teamId) {
+    params.push(`season=2025`);
+    params.push(`team=${filters.teamId}`);
+  }
+
+  // 🔹 Filtros específicos
+  if (filters.name) params.push(`name=${filters.name}`);
+  if (filters.country) params.push(`country=${filters.country}`);
+  if (filters.search) params.push(`search=${filters.search}`);
+
+  // 🔹 Armamos la URL final con los parámetros unidos por "&"
+  if (params.length > 0) {
+    url += `?${params.join('&')}`;
+  }
+
+  console.log("➡️ Llamando a:", url);
+
+  const response = await firstValueFrom(
+    this.http.get<any>(url, { headers: this.headers })
+  );
+
+  return response.response;
+}
+
+
+
   async getPlayerStats(playerId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
@@ -110,11 +169,11 @@ export class NbaApiService {
     return response.response;
   }
 
-  async getHeadToHead(firstTeam: number, secondTeam:number){
+  async getHeadToHead(firstTeam: number, secondTeam: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
         `${this.apiUrl}/games?h2h=${firstTeam}-${secondTeam}`,
-        {headers: this.headers}
+        { headers: this.headers }
       )
     );
     console.log(response.response);

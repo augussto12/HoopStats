@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { NbaApiService } from '../services/nba-api';
+import { useGoBack } from '../utils/navigation';
 
 @Component({
   selector: 'app-player-data',
@@ -47,4 +48,7 @@ export class PlayerData implements OnInit {
       this.loading = false;
     }
   }
+
+  goBack = useGoBack();
+
 }

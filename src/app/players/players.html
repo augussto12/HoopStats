@@ -1,0 +1,35 @@
+<div>
+  <h1>Listado de jugadores</h1>
+
+  <div class="filters">
+    <label>Nombre:</label>
+    <input type="text" [(ngModel)]="selectedLastName" placeholder="Nombre o apellido" />
+
+    <label>País:</label>
+    <select [(ngModel)]="selectedCountry">
+        
+    </select>
+
+    <label>Equipo:</label>
+    <select [(ngModel)]="selectedTeamId">
+      <option [ngValue]="null">Todos los equipos</option>
+      <option *ngFor="let t of nbaTeams" [ngValue]="t.id">{{ t.name }}</option>
+    </select>
+
+    <button (click)="getPlayersFiltered()">Buscar</button>
+  </div>
+
+  <div *ngIf="loading">Cargando jugadores...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div class="players-list">
+    <div
+      *ngFor="let player of players"
+      class="player-card"
+      [routerLink]="['/player', player.id]"
+    >
+      <h3>{{ player.firstname }} {{ player.lastname }}</h3>
+    </div>
+    <div *ngIf="!players.length && !loading">No hay jugadores disponibles.</div>
+  </div>
+</div>

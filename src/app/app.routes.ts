@@ -6,6 +6,7 @@ import { Games } from './games/games';
 import { PlayerData } from './player-data/player-data';
 import { GameDetails } from './game-details/game-details';
 import { HeadToHead } from './head-to-head/head-to-head';
+import { Players } from './players/players';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -14,5 +15,6 @@ export const routes: Routes = [
     { path: 'games', component: Games },
     { path: 'game-details/:id', component: GameDetails},
     { path: 'player/:id', component: PlayerData },
-    { path: 'headtohead', component: HeadToHead}
+    { path: 'headtohead', component: HeadToHead},
+    { path: 'players', component: Players }
 ];
