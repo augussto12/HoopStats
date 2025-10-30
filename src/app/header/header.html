@@ -1,10 +1,11 @@
 <div class="layout">
     <header class="navbar">
+        <div>
+            <button  class="btn" *ngIf="router.url !== '/'" (click)="goBack()">Volver</button>
+        </div>
         <div class="brand" routerLink="/">🏀 DataHoops</div>
-
         <nav class="menu">
             <a routerLink="/profile">Perfil</a>
         </nav>
-
     </header>
 </div>

@@ -36,11 +36,10 @@
                 <strong>Inicio NBA:</strong>
                 {{ player.nba?.start ? player.nba.start : 'Sin datos' }}
             </div>
-
         </div>
 
         <div class="player-stats" *ngIf="playerData && playerData.length">
-            <h3>📊 Estadísticas recientes (temporada 2025)</h3>
+            <h3> Estadísticas recientes (temporada 2025)</h3>
 
             <table class="stats-table">
                 <thead>
@@ -74,10 +73,6 @@
             </table>
         </div>
 
-
-        <div class="actions">
-            <button class="btn" (click)="goBack()"> Volver</button>
-        </div>
     </div>
 </div>
 

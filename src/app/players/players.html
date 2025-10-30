@@ -7,8 +7,10 @@
 
     <label>País:</label>
     <select [(ngModel)]="selectedCountry">
-        
+      <option [ngValue]="null">Todos los países</option>
+      <option *ngFor="let c of countries" [ngValue]="c.name">{{ c.name }}</option>
     </select>
+
 
     <label>Equipo:</label>
     <select [(ngModel)]="selectedTeamId">
@@ -23,11 +25,7 @@
   <div *ngIf="error" class="error">{{ error }}</div>
 
   <div class="players-list">
-    <div
-      *ngFor="let player of players"
-      class="player-card"
-      [routerLink]="['/player', player.id]"
-    >
+    <div *ngFor="let player of players" class="player-card" [routerLink]="['/player', player.id]">
       <h3>{{ player.firstname }} {{ player.lastname }}</h3>
     </div>
     <div *ngIf="!players.length && !loading">No hay jugadores disponibles.</div>

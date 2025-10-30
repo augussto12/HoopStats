@@ -1,41 +1,11 @@
 <div class="home-container">
-    <h1>🏀 Bienvenido a <span>DataHoops</span></h1>
-    <p class="subtitle">Explorá estadísticas, equipos y jugadores de la NBA</p>
+    <div class="live-column">
+        <h2>🏀 Partidos en vivo</h2>
 
-    <div class="menu-grid">
-        <div class="menu-card" routerLink="/teams">
-            <h2>Equipos</h2>
-            <p>Descubrí todos los equipos de la NBA, sus plantillas actuales, divisiones y desempeño en la temporada.
-                Accedé a la información completa de cada franquicia y sus jugadores destacados.</p>
-        </div>
+        <div *ngIf="loadingLive" class="empty">Cargando partidos...</div>
+        <div *ngIf="!loadingLive && errorLive" class="empty">{{ errorLive }}</div>
 
-        <div class="menu-card" routerLink="/players">
-            <h2>Jugadores</h2>
-            <p>Explorá los jugadores más importantes de la liga. Revisá estadísticas detalladas, promedios por partido y
-                evolución durante la temporada.</p>
-        </div>
-
-        <div class="menu-card" routerLink="/games">
-            <h2>Partidos</h2>
-            <p>Seguí los encuentros más recientes, consultá los próximos juegos del calendario y analizá los resultados
-                con estadísticas en tiempo real.</p>
-        </div>
-
-        <div class="menu-card" routerLink="/headtohead">
-            <h2>Head To Head</h2>
-            <p>Vea el historial de partidos entre dos equipos.</p>
-        </div>
-
-        <div class="menu-card" routerLink="/favorites">
-            <h2>Favoritos</h2>
-            <p>Guardá tus equipos o jugadores preferidos y accedé rápidamente a sus partidos, estadísticas y rendimiento
-                sin perderte nada.</p>
-        </div>
-    </div>
-
-    <section class="live-games" *ngIf="!loading && liveGames.length">
-        <h2>Partidos en vivo</h2>
-        <div class="games-grid">
+        <div *ngIf="!loadingLive && liveGames.length" class="games-grid">
             <div class="game-card" *ngFor="let g of liveGames" [routerLink]="['/game-details', g.id]">
                 <div class="teams">
                     <div class="team">
@@ -54,11 +24,52 @@
                 <div class="arena">{{ g.arena }}</div>
             </div>
         </div>
-    </section>
-
-    <div *ngIf="loading" class="loading">Cargando partidos en vivo...</div>
-    <div *ngIf="!loading && !liveGames.length" class="empty">
-        No hay partidos en vivo.
     </div>
 
+    <div class="menu-column">
+        <div class="menu-grid">
+            <div class="menu-card" routerLink="/teams">
+                <h2>Equipos</h2>
+                <p>Explorá las franquicias de la NBA y sus jugadores.</p>
+            </div>
+
+            <div class="menu-card" routerLink="/players">
+                <h2>Jugadores</h2>
+                <p>Consulta estadísticas y evolución de los jugadores.</p>
+            </div>
+
+            <div class="menu-card" routerLink="/games">
+                <h2>Partidos</h2>
+                <p>Revisá resultados, próximos juegos y estadísticas.</p>
+            </div>
+
+            <div class="menu-card" routerLink="/headtohead">
+                <h2>Head To Head</h2>
+                <p>Compará el historial entre dos equipos.</p>
+            </div>
+
+            <div class="menu-card" routerLink="/">
+                <h2>Predicciones</h2>
+            </div>
+
+            <div class="menu-card" routerLink="/favorites">
+                <h2>Favoritos</h2>
+                <p>Accedé rápido a tus equipos y jugadores preferidos.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-column">
+        <h2>🏆 Mejores jugadores del día anterior</h2>
+
+        <div *ngIf="loadingPlayers" class="empty">Cargando jugadores...</div>
+        <div *ngIf="!loadingPlayers && errorPlayers" class="empty">{{ errorPlayers }}</div>
+
+        <div *ngIf="!loadingPlayers && bestPlayers.length">
+            <div class="stat-card" *ngFor="let p of bestPlayers">
+                <h3>{{ p.category }}</h3>
+                <span>{{ p.player }}</span> — {{ p.value }}
+            </div>
+        </div>
+    </div>
 </div>

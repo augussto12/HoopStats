@@ -34,6 +34,7 @@ export class NbaApiService {
     return response.response; // array
   }
 
+  // Partidos por equipo
   async getGamesByTeam(teamId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
@@ -45,6 +46,7 @@ export class NbaApiService {
     return response.response; // array
   }
 
+  //Partidos en vivo
   async getLiveGames() {
     const response = await firstValueFrom(
       this.http.get<any>(`${this.apiUrl}/games?live=all`, {
@@ -55,6 +57,7 @@ export class NbaApiService {
     return response.response;
   }
 
+  //Traer jugador
   async getPlayer(playerId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
@@ -77,65 +80,41 @@ export class NbaApiService {
     return response.response;
   }
 
-  async getPlayersByLastName(playerName: String) {
-    const response = await firstValueFrom(
-      this.http.get<any>(
-        `${this.apiUrl}/players?name=${playerName}`,
-        { headers: this.headers }
-      )
-    );
-    console.log("players by name", response.response);
-    return response.response
-  }
-
-  async getPlayersByCountry(country: String) {
-    const response = await firstValueFrom(
-      this.http.get<any>(
-        `${this.apiUrl}/players?country=${country}`,
-        { headers: this.headers }
-      )
-    );
-    console.log("players by country", response.response);
-    return response.response
-  }
-
+  //Traer jugadores por filtros
   async getPlayersFiltered(filters: {
-  name?: string;
-  teamId?: number;
-  country?: string;
-  search?: string;
-}) {
-  let url = `${this.apiUrl}/players`;
+    name?: string;
+    teamId?: number;
+    country?: string;
+    search?: string;
+  }) {
+    let url = `${this.apiUrl}/players`;
 
-  const params: string[] = [];
+    const params: string[] = [];
 
-  // 🔹 Caso especial: si hay team → siempre agregamos la season
-  if (filters.teamId) {
-    params.push(`season=2025`);
-    params.push(`team=${filters.teamId}`);
+    // Si hay equipo hay que mandar la temporada actual
+    if (filters.teamId) {
+      params.push(`season=2025`);
+      params.push(`team=${filters.teamId}`);
+    }
+
+
+    if (filters.name) params.push(`name=${filters.name}`);
+    if (filters.country) params.push(`country=${filters.country}`);
+    if (filters.search) params.push(`search=${filters.search}`);
+
+    // Se arma la url
+    if (params.length > 0) {
+      url += `?${params.join('&')}`;
+    }
+
+    const response = await firstValueFrom(
+      this.http.get<any>(url, { headers: this.headers })
+    );
+
+    return response.response;
   }
 
-  // 🔹 Filtros específicos
-  if (filters.name) params.push(`name=${filters.name}`);
-  if (filters.country) params.push(`country=${filters.country}`);
-  if (filters.search) params.push(`search=${filters.search}`);
-
-  // 🔹 Armamos la URL final con los parámetros unidos por "&"
-  if (params.length > 0) {
-    url += `?${params.join('&')}`;
-  }
-
-  console.log("➡️ Llamando a:", url);
-
-  const response = await firstValueFrom(
-    this.http.get<any>(url, { headers: this.headers })
-  );
-
-  return response.response;
-}
-
-
-
+  // Traer las estadisticas de un jugador
   async getPlayerStats(playerId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
@@ -147,6 +126,7 @@ export class NbaApiService {
     return response.response;
   }
 
+  // Traer los datos de un partido por su id
   async getGameData(gameId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
@@ -158,6 +138,7 @@ export class NbaApiService {
     return response.response;
   }
 
+  // Obtener las estadisticas de un jugador por partido
   async getPlayerStatsByGame(gameId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
@@ -169,6 +150,7 @@ export class NbaApiService {
     return response.response;
   }
 
+  // Trae los partidos entre dos equipos
   async getHeadToHead(firstTeam: number, secondTeam: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
@@ -179,4 +161,6 @@ export class NbaApiService {
     console.log(response.response);
     return response.response;
   }
+
 }
+

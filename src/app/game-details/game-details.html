@@ -1,15 +1,13 @@
 <div>
     <h1 class="title-stats">Estadísticas</h1>
 
-    <!-- Botones para cambiar vista -->
     <div class="view-toggle">
         <button [class.active]="view === 'game'" (click)="view = 'game'">Partido</button>
         <button [class.active]="view === 'players'" (click)="view = 'players'">Jugadores</button>
     </div>
 </div>
 
-<!-- VISTA 1: Estadísticas del partido -->
-<!-- VISTA 1: Estadísticas del partido -->
+
 <div *ngIf="view === 'game' && gameDetails.length === 2" class="stats-card">
     <div class="teams-header">
         <div class="team">
@@ -33,7 +31,6 @@
 </div>
 
 
-<!-- VISTA 2: Estadísticas de jugadores -->
 <div *ngIf="view === 'players'" class="players-stats-layout">
     <div *ngFor="let team of groupedPlayers">
         <div>
@@ -51,6 +48,7 @@
                     <th>ROB</th>
                     <th>BLK</th>
                     <th>MIN</th>
+                    <th>3PM</th>
                     <th>FG%</th>
                 </tr>
             </thead>
@@ -63,6 +61,7 @@
                     <td>{{ p.steals }}</td>
                     <td>{{ p.blocks }}</td>
                     <td>{{p.min}}</td>
+                    <td>{{p.tpm}}</td>
                     <td>{{ p.fgp }}%</td>
                 </tr>
             </tbody>

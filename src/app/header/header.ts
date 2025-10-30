@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { useGoBack } from '../utils/navigation';
 
 @Component({
   selector: 'app-header',
@@ -9,4 +10,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './header.html',
   styleUrls: ['./header.css']
 })
-export class Header {}
+export class Header {
+
+  goBack = useGoBack();
+
+  constructor(public router: Router) { }
+}

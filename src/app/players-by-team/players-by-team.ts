@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NbaApiService } from '../services/nba-api';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { mapGame } from '../utils/mapGame';
 
 @Component({
   selector: 'app-players-by-team',
@@ -53,7 +54,7 @@ export class PlayersByTeam implements OnInit {
       const response = await this.nbaService.getGamesByTeam(teamId);
 
       const regularSeasonGames = response.filter((g: any) => g.stage === 2);
-      const mapped = regularSeasonGames.map((g: any) => this.mapGame(g));
+      const mapped = regularSeasonGames.map((g: any) => mapGame(g));
 
       this.games = mapped;
       this.applyFilter();
@@ -93,43 +94,5 @@ export class PlayersByTeam implements OnInit {
     }
   }
 
-  private mapGame(g: any) {
-    const startUtc = g?.date?.start ? new Date(g.date.start) : null;
-    const localDate = startUtc
-      ? startUtc.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' })
-      : '—';
-    const localTime = startUtc
-      ? startUtc.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      : '—';
-
-    const statusShort = g?.status?.short;
-    const statusLong = g?.status?.long ?? '';
-    const isFinished = statusShort === 3 || statusLong === 'Finished';
-    const isLive = statusLong?.toLowerCase().includes('in play');
-
-    return {
-      id: g.id,
-      date: localDate, 
-      timeLocal: localTime,
-      status: isLive ? 'LIVE' : isFinished ? 'Final' : 'Programado',
-      period: g?.periods?.current,
-      clock: g?.status?.clock,
-      arena: `${g?.arena?.name ?? ''}${g?.arena?.city ? ' — ' + g.arena.city : ''}`.trim(),
-      visitors: {
-        id: g?.teams?.visitors?.id,
-        name: g?.teams?.visitors?.name,
-        code: g?.teams?.visitors?.code,
-        logo: g?.teams?.visitors?.logo,
-        pts: g?.scores?.visitors?.points ?? null
-      },
-      home: {
-        id: g?.teams?.home?.id,
-        name: g?.teams?.home?.name,
-        code: g?.teams?.home?.code,
-        logo: g?.teams?.home?.logo,
-        pts: g?.scores?.home?.points ?? null
-      }
-    };
-  }
 
 }

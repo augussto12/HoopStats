@@ -14,7 +14,6 @@
         <p><strong>División:</strong> {{ team.leagues.standard.division }}</p>
     </div>
 
-    <!-- Selector de vista -->
     <div class="view-selector">
         <select [(ngModel)]="selectedView" (change)="onViewChange()">
             <option value="players">Plantilla actual</option>
@@ -22,7 +21,6 @@
         </select>
     </div>
 
-    <!-- Vista: jugadores -->
     <div *ngIf="selectedView === 'players'">
         <h2>Plantilla actual</h2>
         <div *ngIf="players.length" class="players-list">
@@ -33,7 +31,6 @@
         <div *ngIf="!players.length && !loading">No hay jugadores disponibles.</div>
     </div>
 
-    <!-- Vista: partidos -->
     <div *ngIf="selectedView === 'games'">
         <h2>Partidos del equipo</h2>
 

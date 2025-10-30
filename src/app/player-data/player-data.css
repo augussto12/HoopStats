@@ -118,13 +118,3 @@
 .stats-table tr:hover {
   background-color: rgba(255, 255, 255, 0.05);
 }
-
-.stats-table th:first-child,
-.stats-table td:first-child {
-  border-radius: 8px 0 0 8px;
-}
-
-.stats-table th:last-child,
-.stats-table td:last-child {
-  border-radius: 0 8px 8px 0;
-}
