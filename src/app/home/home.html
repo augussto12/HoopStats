@@ -1,6 +1,8 @@
 <div class="home-container">
     <div class="live-column">
-        <h2>🏀 Partidos en vivo</h2>
+        <h2> Partidos en vivo
+            <span class="live-dot"></span>
+        </h2>
 
         <div *ngIf="loadingLive" class="empty">Cargando partidos...</div>
         <div *ngIf="!loadingLive && errorLive" class="empty">{{ errorLive }}</div>
