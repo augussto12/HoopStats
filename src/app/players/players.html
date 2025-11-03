@@ -3,17 +3,17 @@
 
   <div class="filters">
     <label>Nombre:</label>
-    <input type="text" [(ngModel)]="selectedLastName" placeholder="Nombre o apellido" />
+    <input type="text" [(ngModel)]="selectedLastName" placeholder="Apellido" />
 
     <label>País:</label>
-    <select [(ngModel)]="selectedCountry">
-      <option [ngValue]="null">Todos los países</option>
+    <select [(ngModel)]="selectedCountry" class="inputSelect">
+      <option [ngValue]="''">Todos los países</option>
       <option *ngFor="let c of countries" [ngValue]="c.name">{{ c.name }}</option>
     </select>
 
 
     <label>Equipo:</label>
-    <select [(ngModel)]="selectedTeamId">
+    <select [(ngModel)]="selectedTeamId" class="inputSelect">
       <option [ngValue]="null">Todos los equipos</option>
       <option *ngFor="let t of nbaTeams" [ngValue]="t.id">{{ t.name }}</option>
     </select>

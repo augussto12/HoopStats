@@ -21,6 +21,10 @@
   color: #f8c471;
   font-weight: 600;
   margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap:8px;
 }
 
 .games-grid {
@@ -124,6 +128,13 @@
   text-align: center;
   color: #bbb;
   margin-top: 1rem;
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #e74c3c;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 @media (max-width: 1000px) {

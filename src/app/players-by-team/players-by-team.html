@@ -1,6 +1,13 @@
 <div class="team-detail-container" *ngIf="team">
     <div class="team-header">
         <img [src]="team.logo" [alt]="team.name" class="team-logo" />
+        <div *ngIf="streak.length" class="team-streak">
+            <div class="streak-bubbles">
+                <span *ngFor="let r of streak" [class.win]="r === 'W'" [class.loss]="r === 'L'">
+                    {{ r }}
+                </span>
+            </div>
+        </div>
         <div class="team-header-info">
             <h1>{{ team.name }}</h1>
             <p class="team-subtitle">{{ team.nickname }}</p>
@@ -14,10 +21,12 @@
         <p><strong>División:</strong> {{ team.leagues.standard.division }}</p>
     </div>
 
+
     <div class="view-selector">
         <select [(ngModel)]="selectedView" (change)="onViewChange()">
             <option value="players">Plantilla actual</option>
             <option value="games">Partidos</option>
+            <option value="stats">Estadísticas</option>
         </select>
     </div>
 
@@ -82,4 +91,25 @@
             </div>
         </div>
     </div>
+
+    <div *ngIf="selectedView === 'stats'">
+        <h2>Estadísticas del equipo</h2>
+
+        <div *ngIf="!stats">Cargando estadísticas...</div>
+
+        <div *ngIf="stats" class="team-stats">
+            <div class="stat-item"><strong>Puntos:</strong> {{ stats.points }}</div>
+            <div class="stat-item"><strong>FG:</strong> {{ stats.fgm }}/{{ stats.fga }} ({{ stats.fgp }}%)</div>
+            <div class="stat-item"><strong>3PT:</strong> {{ stats.tpm }}/{{ stats.tpa }} ({{ stats.tpp }}%)</div>
+            <div class="stat-item"><strong>FT:</strong> {{ stats.ftm }}/{{ stats.fta }} ({{ stats.ftp }}%)</div>
+            <div class="stat-item"><strong>Rebotes:</strong> {{ stats.rebounds }}</div>
+            <div class="stat-item"><strong>Asistencias:</strong> {{ stats.assists }}</div>
+            <div class="stat-item"><strong>Robos:</strong> {{ stats.steals }}</div>
+            <div class="stat-item"><strong>Bloqueos:</strong> {{ stats.blocks }}</div>
+            <div class="stat-item"><strong>Pérdidas:</strong> {{ stats.turnovers }}</div>
+            <div class="stat-item"><strong>Faltas:</strong> {{ stats.fouls }}</div>
+            <div class="stat-item"><strong>+/-:</strong> {{ stats.plusMinus }}</div>
+        </div>
+    </div>
+
 </div>

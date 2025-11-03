@@ -1,12 +1,11 @@
-<div class="layout">
+<div>
+    <div class="title">
+        <h1>Enfrentamientos entre equipos</h1>
+        <p>Seleccioná dos equipos para ver sus últimos partidos</p>
+    </div>
     <main class="content">
-        <header class="content-header">
-            <div>
-                <h1>Enfrentamientos entre equipos</h1>
-                <p class="subtitle">Seleccioná dos equipos para ver sus últimos duelos</p>
-            </div>
-
-            <div class="toolbar">
+        <header>
+            <div class="filters">
                 <select [(ngModel)]="selectedFirstTeam" class="inputSelect">
                     <option [ngValue]="null">Equipo 1</option>
                     <option *ngFor="let t of teams" [ngValue]="t.id">{{ t.name }}</option>
@@ -64,5 +63,5 @@
                 <div class="arena" *ngIf="g.arena">{{ g.arena }}</div>
             </div>
         </section>
-    </main>
+    </main>
 </div>

@@ -12,7 +12,7 @@ type APIGame = any;
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './head-to-head.html',
-  styleUrls: ['./head-to-head.css', '../Games/games.css']
+  styleUrls: ['./head-to-head.css', '../Games/games.css','../players/players.css']
 })
 export class HeadToHead implements OnInit {
   loading = false;

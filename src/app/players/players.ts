@@ -28,10 +28,13 @@ export class Players implements OnInit {
 
   async ngOnInit() {
     const allTeams = await this.api.getTeams();
+    
 
     this.nbaTeams = allTeams.filter(
       (team: any) => team.nbaFranchise === true && team.leagues?.standard && !team.allStar
     );
+    await this.getPlayersFiltered();
+    
   }
 
   async getPlayersFiltered() {

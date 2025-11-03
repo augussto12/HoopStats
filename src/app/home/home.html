@@ -4,9 +4,10 @@
 
         <div *ngIf="loadingLive" class="empty">Cargando partidos...</div>
         <div *ngIf="!loadingLive && errorLive" class="empty">{{ errorLive }}</div>
-
+        
         <div *ngIf="!loadingLive && liveGames.length" class="games-grid">
             <div class="game-card" *ngFor="let g of liveGames" [routerLink]="['/game-details', g.id]">
+                
                 <div class="teams">
                     <div class="team">
                         <img [src]="g.visitors.logo" [alt]="g.visitors.name" />
@@ -28,6 +29,10 @@
 
     <div class="menu-column">
         <div class="menu-grid">
+            <div class="menu-card" routerLink="/">
+                <h2>Clasificación</h2>
+                <p>Consulte las clasificaciones por conferencia</p>
+            </div>
             <div class="menu-card" routerLink="/teams">
                 <h2>Equipos</h2>
                 <p>Explorá las franquicias de la NBA y sus jugadores.</p>
@@ -50,6 +55,10 @@
 
             <div class="menu-card" routerLink="/">
                 <h2>Predicciones</h2>
+            </div>
+            <div class="menu-card" routerLink="">
+                <h2>Equipo Fantasy</h2>
+                <p>Seleccione sus 5 jugadores para establecer su fantasy team</p>
             </div>
 
             <div class="menu-card" routerLink="/favorites">
