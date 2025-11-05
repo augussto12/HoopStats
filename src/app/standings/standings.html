@@ -1,0 +1,49 @@
+<div class="tables-container">
+  <div>
+    <h2>Conferencia Este</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Equipo</th>
+          <th>W</th>
+          <th>L</th>
+          <th>%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let team of eastTeams">
+          <td>{{ team.conference.rank }}</td>
+          <td><img [src]="team.team.logo" /> {{ team.team.nickname }}</td>
+          <td>{{ team.conference.win }}</td>
+          <td>{{ team.conference.loss }}</td>
+          <td>{{ team.win.percentage }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div>
+    <h2>Conferencia Oeste</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Equipo</th>
+          <th>W</th>
+          <th>L</th>
+          <th>%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let team of westTeams">
+          <td>{{ team.conference.rank }}</td>
+          <td><img [src]="team.team.logo" /> {{ team.team.nickname }}</td>
+          <td>{{ team.conference.win }}</td>
+          <td>{{ team.conference.loss }}</td>
+          <td>{{ team.win.percentage }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

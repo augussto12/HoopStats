@@ -63,7 +63,6 @@ export class GameDetails implements OnInit {
 
       if (data && data.length > 0) {
         this.gameDetails = data;
-        console.log('Partido cargado:', this.gameDetails);
         await this.loadPlayerStats(id);
       } else {
         this.error = 'No se encontró información del partido.';

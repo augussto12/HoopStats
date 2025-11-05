@@ -132,3 +132,16 @@ body {
     color: #00bcd4;
     font-weight: 600;
 }
+
+
+@media (max-width: 1450px) {
+    .players-stats-layout{
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .player-table {
+        min-width: 100%;
+        max-width: 95%;
+    }
+}

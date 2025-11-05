@@ -7,14 +7,16 @@ import { PlayerData } from './player-data/player-data';
 import { GameDetails } from './game-details/game-details';
 import { HeadToHead } from './head-to-head/head-to-head';
 import { Players } from './players/players';
+import { Standings } from './standings/standings';
 
 export const routes: Routes = [
     { path: '', component: Home },
     { path: 'teams', component: TeamsComponent },
     { path: 'teams/:id', component: PlayersByTeam },
     { path: 'games', component: Games },
-    { path: 'game-details/:id', component: GameDetails},
+    { path: 'game-details/:id', component: GameDetails },
     { path: 'player/:id', component: PlayerData },
-    { path: 'headtohead', component: HeadToHead},
-    { path: 'players', component: Players }
+    { path: 'headtohead', component: HeadToHead },
+    { path: 'players', component: Players },
+    { path: 'standings', component: Standings }
 ];

@@ -112,10 +112,10 @@ export class PlayersByTeam implements OnInit {
     const finishedGames = this.games.filter((g: any) => g.status === 'Final');
     if (!finishedGames.length) return [];
 
-    // Tomar los últimos 5 (ya vienen ordenados)
+    // Tomar los últimos 5
     const lastFive = finishedGames.slice(-5).reverse();
 
-    // Determinar W o L
+    // Determinar victoria y derrota
     return lastFive.map((g: any) => {
       const esLocal = g.home.id === teamId;
       const puntosPropios = esLocal ? g.home.pts : g.visitors.pts;

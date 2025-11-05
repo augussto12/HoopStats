@@ -25,7 +25,7 @@ export class Home implements OnInit {
   constructor(private nbaService: NbaApiService) { }
 
   async ngOnInit() {
-    // Ejecutamos las dos cargas en paralelo
+    // Ejecutamos las dos cargas a la vez
     this.loadLiveGames();
     this.loadBestPlayersYesterday();
   }
@@ -88,7 +88,7 @@ export class Home implements OnInit {
 
       // Cargamos stats de todos los partidos en paralelo
       const statsPromises = finishedGames.map(async (g: any) => {
-        // Si está cacheado, devolvemos directamente la promesa resuelta
+        // Si está en cache, devolvemos directamente la promesa resuelta
         if (this.statsCache.has(g.id)) {
           return this.statsCache.get(g.id)!;
         }

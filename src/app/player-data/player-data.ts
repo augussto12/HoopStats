@@ -36,7 +36,6 @@ export class PlayerData implements OnInit {
       if (data && data.length > 0) {
         this.player = data[0];
         this.playerData = dataPlayer;
-        console.log('Jugador cargado:', this.player);
       } else {
         this.error = 'No se encontró información del jugador.';
       }

@@ -34,8 +34,6 @@ export class TeamsComponent implements OnInit {
       (team: any) => team.leagues.standard.conference === 'West'
     );
 
-    console.log('Equipos Este:', this.teamsEast);
-    console.log('Equipos Oeste:', this.teamsWest);
   }
 
   // Filtro de búsqueda y división

@@ -161,7 +161,7 @@ export class NbaApiService {
     console.log(response.response);
     return response.response;
   }
- async getTeamStats(teamId: number) {
+  async getTeamStats(teamId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
         `${this.apiUrl}/teams/statistics?id=${teamId}&season=2025&stage=2`,
@@ -170,6 +170,17 @@ export class NbaApiService {
     );
     console.log(response.response);
     return response;
+  }
+
+  async getStandings() {
+    const response = await firstValueFrom(
+      this.http.get<any>(
+        `${this.apiUrl}/standings?league=standard&season=2025`,
+        { headers: this.headers }
+      )
+    );
+    console.log(response.response);
+    return response.response;
   }
 }
 

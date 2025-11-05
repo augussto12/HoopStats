@@ -1,7 +1,7 @@
 import { NbaApiService } from '../services/nba-api';
 import { mapGame } from './mapGame';
 
-/* Utilidades de fecha */
+// Utilidades de fecha 
 function pad(n: number) {
     return String(n).padStart(2, '0');
 }
@@ -16,7 +16,7 @@ function addDays(dateISO: string, delta: number) {
     return toLocalYYYYMMDD(d);
 }
 
-/* Función genérica para obtener y mapear partidos por fecha */
+// Función genérica para obtener y mapear partidos por fecha 
 export async function getGamesByDateMapped(api: NbaApiService, dateISO: string) {
     const [gPrev, gDay, gNext] = await Promise.all([
         api.getGamesByDate(addDays(dateISO, -1)),
@@ -36,14 +36,14 @@ export async function getGamesByDateMapped(api: NbaApiService, dateISO: string) 
         .map(mapGame);
 }
 
-/* Obtener partidos por equipo */
+// Obtener partidos por equipo
 export async function getGamesByTeamMapped(api: NbaApiService, teamId: number) {
     const response = await api.getGamesByTeam(teamId);
     return response
         .filter((g: any) => g.stage === 2).map(mapGame);
 }
 
-/* Filtro por estado */
+// Filtro por estado 
 export function filterByStatus(games: any[], status: string) {
     if (!status) return games;
 
