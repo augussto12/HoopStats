@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NbaApiService {
-  private apiUrl = 'https://v2.nba.api-sports.io';
-  private headers = new HttpHeaders({
-    'x-apisports-key': '501808e70ab941cc1ee0b21cd8a951dc'
-  });
+  private apiUrl = environment.nbaApi.baseUrl;
+  private headers = new HttpHeaders(environment.nbaApi.headers);
 
   constructor(private http: HttpClient) { }
 
@@ -182,5 +181,6 @@ export class NbaApiService {
     console.log(response.response);
     return response.response;
   }
+
 }
 

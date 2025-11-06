@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { useGoBack } from '../utils/navigation';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +13,24 @@ import { useGoBack } from '../utils/navigation';
 })
 export class Header {
 
+
+  constructor(public router: Router, public auth: AuthService) { }
+
   goBack = useGoBack();
 
-  constructor(public router: Router) { }
+  logout() {
+    this.auth.logout();
+  }
+
+  menuOpen = false;
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
+  }
+
+
 }

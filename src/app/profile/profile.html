@@ -1,0 +1,50 @@
+<div class="profile-card">
+    <h1>Perfil de usuario</h1>
+
+    <table *ngIf="!editing">
+        <tr>
+            <th>Nombre y apellido</th>
+            <td>{{ user?.fullname }}</td>
+        </tr>
+        <tr>
+            <th>Usuario</th>
+            <td>{{ user?.username }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ user?.email }}</td>
+        </tr>
+    </table>
+
+    <form *ngIf="editing" (ngSubmit)="saveChanges()">
+        <label>Nombre y apellido:</label>
+        <input [(ngModel)]="user.fullname" name="fullname" required />
+
+        <label>Usuario:</label>
+        <input [(ngModel)]="user.username" name="username" required />
+
+        <label>Email:</label>
+        <input [(ngModel)]="user.email" name="email" type="email" required />
+
+        <button type="submit">Guardar</button>
+        <button type="button" class="cancel" (click)="cancelEdit()">Cancelar</button>
+    </form>
+
+    <p *ngIf="error" style="color: red; margin-top: 10px;">{{ error }}</p>
+
+    <button *ngIf="!editing" (click)="editProfile()">Editar datos de perfil</button>
+    <button *ngIf="!editing" (click)="deleteProfile()">Eliminar cuenta</button>
+
+    <div class="modal-backdrop" *ngIf="showConfirm">
+        <div class="modal">
+            <h3>¿Eliminar cuenta?</h3>
+            <p>Esta acción no se puede deshacer.</p>
+
+            <div class="modal-buttons">
+                <button class="btn-cancel" (click)="showConfirm = false">Cancelar</button>
+                <button class="btn-delete" (click)="confirmDelete()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+</div>

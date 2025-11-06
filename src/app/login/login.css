@@ -1,0 +1,86 @@
+body {
+    background-color: #0b1622;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.auth-container {
+    width: 360px;
+    margin: 80px auto;
+    background: #1e2a3a;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.auth-container h2 {
+    color: #00bcd4;
+    margin-bottom: 1rem;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #2a3a50;
+    color: #fff;
+    font-size: 1rem;
+}
+
+input:focus {
+    outline: none;
+    background: #334760;
+}
+
+button {
+    background: #00bcd4;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
+    background: #02acc3;
+}
+
+p {
+    font-size: 0.9rem;
+}
+
+a {
+    color: #00bcd4;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+p[style*="color: red"] {
+    margin-top: 0.5rem;
+    font-weight: 600;
+}
+
+p[style*="color: lightgreen"] {
+    margin-top: 0.5rem;
+    font-weight: 600;
+}

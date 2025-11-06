@@ -1,11 +1,23 @@
 <div class="layout">
     <header class="navbar">
-        <div>
-            <button  class="btn" *ngIf="router.url !== '/'" (click)="goBack()">Volver</button>
+        <div class="left">
+            <button class="btn" *ngIf="router.url !== '/'" (click)="goBack()">Volver</button>
         </div>
+
         <div class="brand" routerLink="/">🏀 DataHoops</div>
-        <nav class="menu">
-            <a routerLink="/profile">Perfil</a>
+
+        <button class="menu-toggle" (click)="toggleMenu()">☰</button>
+
+        <nav class="menu" [ngClass]="{ 'active': menuOpen }">
+            <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn">
+                <a routerLink="/login" (click)="closeMenu()">Iniciar sesión</a>
+                <a routerLink="/register" (click)="closeMenu()">Registrarse</a>
+            </ng-container>
+
+            <ng-template #loggedIn>
+                <a routerLink="/profile" (click)="closeMenu()">Perfil</a>
+                <a href="#" (click)="logout(); closeMenu()">Cerrar sesión</a>
+            </ng-template>
         </nav>
     </header>
 </div>

@@ -1,5 +1,5 @@
-<div class="tables-container">
-  <div>
+<div class="tables-wrapper">
+  <div class="table-box">
     <h2>Conferencia Este</h2>
     <table>
       <thead>
@@ -14,7 +14,12 @@
       <tbody>
         <tr *ngFor="let team of eastTeams">
           <td>{{ team.conference.rank }}</td>
-          <td><img [src]="team.team.logo" /> {{ team.team.nickname }}</td>
+          <td>
+            <div class="team-cell">
+              <img [src]="team.team.logo" alt="{{ team.team.nickname }}" />
+              <span>{{ team.team.nickname }}</span>
+            </div>
+          </td>
           <td>{{ team.conference.win }}</td>
           <td>{{ team.conference.loss }}</td>
           <td>{{ team.win.percentage }}</td>
@@ -23,7 +28,7 @@
     </table>
   </div>
 
-  <div>
+  <div class="table-box">
     <h2>Conferencia Oeste</h2>
     <table>
       <thead>
@@ -38,7 +43,12 @@
       <tbody>
         <tr *ngFor="let team of westTeams">
           <td>{{ team.conference.rank }}</td>
-          <td><img [src]="team.team.logo" /> {{ team.team.nickname }}</td>
+          <td>
+            <div class="team-cell">
+              <img [src]="team.team.logo" alt="{{ team.team.nickname }}" />
+              <span>{{ team.team.nickname }}</span>
+            </div>
+          </td>
           <td>{{ team.conference.win }}</td>
           <td>{{ team.conference.loss }}</td>
           <td>{{ team.win.percentage }}</td>

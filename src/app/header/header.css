@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: space-between;
   background: #0b1633;
-  padding: 1rem 3rem;
+  padding: 1rem 2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   position: sticky;
   top: 0;
@@ -34,7 +34,6 @@
   text-decoration: none;
   font-weight: 500;
   font-size: 1rem;
-  transition: color 0.2s, border-bottom 0.2s;
   padding-bottom: 3px;
 }
 
@@ -61,4 +60,45 @@
 
 .btn:hover {
   background: #0056b3;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .menu {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: #0b1633;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .menu.active {
+    display: flex;
+  }
+
+  .menu a {
+    padding: 0.8rem 0;
+    border-bottom: none;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .btn {
+    padding: 0.4rem 0.8rem;
+  }
 }

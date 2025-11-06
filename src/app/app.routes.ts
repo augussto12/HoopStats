@@ -8,6 +8,9 @@ import { GameDetails } from './game-details/game-details';
 import { HeadToHead } from './head-to-head/head-to-head';
 import { Players } from './players/players';
 import { Standings } from './standings/standings';
+import { Login } from './login/login';
+import { Register } from './register/register';
+import { Profile } from './profile/profile';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -18,5 +21,8 @@ export const routes: Routes = [
     { path: 'player/:id', component: PlayerData },
     { path: 'headtohead', component: HeadToHead },
     { path: 'players', component: Players },
-    { path: 'standings', component: Standings }
+    { path: 'standings', component: Standings },
+    { path: 'login', component: Login },
+    { path: 'register', component: Register },
+    { path: 'profile', component: Profile},
 ];
