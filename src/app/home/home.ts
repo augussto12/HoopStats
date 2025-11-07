@@ -19,7 +19,6 @@ export class Home implements OnInit {
   errorLive: string | null = null;
   errorPlayers: string | null = null;
 
-  // Cache local para no repetir requests
   private statsCache = new Map<number, any[]>();
 
   constructor(private nbaService: NbaApiService) { }
@@ -48,7 +47,6 @@ export class Home implements OnInit {
     }
   }
 
-  //  Helpers para pasarlo a fecha local 
   private pad(n: number) {
     return String(n).padStart(2, '0');
   }
@@ -63,15 +61,12 @@ export class Home implements OnInit {
     return this.toLocalYYYYMMDD(d);
   }
 
-  // Mejores jugadores del día anterior
   async loadBestPlayersYesterday() {
     this.loadingPlayers = true;
     try {
-      // Fecha local de hoy y de ayer
       const todayLocal = this.toLocalYYYYMMDD(new Date());
       const yesterdayLocal = this.addDays(todayLocal, -1);
 
-      // Traemos partidos del día anterior
       const gamesYesterday = await this.nbaService.getGamesByDate(yesterdayLocal);
       const finishedGames = gamesYesterday.filter(
         (g: any) =>
@@ -86,9 +81,7 @@ export class Home implements OnInit {
         return;
       }
 
-      // Cargamos stats de todos los partidos en paralelo
       const statsPromises = finishedGames.map(async (g: any) => {
-        // Si está en cache, devolvemos directamente la promesa resuelta
         if (this.statsCache.has(g.id)) {
           return this.statsCache.get(g.id)!;
         }
@@ -113,7 +106,6 @@ export class Home implements OnInit {
         return;
       }
 
-      // Calculamos los mejores jugadores
       const topStats = {
         pts: { player: '', value: 0 },
         reb: { player: '', value: 0 },

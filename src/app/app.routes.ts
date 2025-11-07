@@ -24,5 +24,12 @@ export const routes: Routes = [
     { path: 'standings', component: Standings },
     { path: 'login', component: Login },
     { path: 'register', component: Register },
-    { path: 'profile', component: Profile},
+    { path: 'profile', component: Profile },
+    {
+        path: 'favorites',
+        loadComponent: () =>
+            import('./favorites/favorites').then(m => m.Favorites) // ← coincide con export class Favorites
+    },
+    { path: '', pathMatch: 'full', redirectTo: 'home' },
+    { path: '**', redirectTo: 'home' }
 ];

@@ -1,55 +1,60 @@
-<div class="teams-container">
-    <h1>Equipos de la NBA</h1>
-    <p class="subtitle">Seleccione un equipo para ver más detalles</p>
+<div class="page">
+    <h1 class="title">Equipos de la NBA</h1>
+    <p class="subtitle">Seleccione un equipo para más detalles o agréguelo a favoritos.</p>
 
-    <div *ngIf="!teamsEast.length && !teamsWest.length" class="loading">
-        Cargando equipos...
+    <div class="filters">
+        <input type="text" placeholder="Buscar equipo..." [(ngModel)]="searchTerm" class="search-input" />
+
+        <select [(ngModel)]="selectedDivision" class="select">
+            <option value="">Todas las divisiones</option>
+            <option *ngFor="let d of divisions" [value]="d">{{ d }}</option>
+        </select>
     </div>
 
-    <input type="text" placeholder="Buscar equipo..." [(ngModel)]="searchTerm" class="input" />
+    <!-- Conferencias lado a lado -->
+    <div class="columns">
+        <!-- Este -->
+        <section class="panel">
+            <h2 class="panel-title">Conferencia Este</h2>
+            <div class="list">
+                <div class="card" *ngFor="let team of filteredTeams(teamsEast)">
+                    <div class="left">
+                        <img [src]="team.logo" [alt]="team.fullName || team.name" />
+                        <div>
+                            <div class="name">{{ team.fullName || team.name }}</div>
+                            <div class="meta">{{ team.city }} - {{ team.leagues?.standard?.division }}</div>
+                        </div>
+                    </div>
 
-    <select [(ngModel)]="selectedDivision" class="inputSelect">
-        <option value="">Todas las divisiones</option>
-        <option value="Atlantic">Atlantic</option>
-        <option value="Central">Central</option>
-        <option value="Southeast">Southeast</option>
-        <option value="Northwest">Northwest</option>
-        <option value="Pacific">Pacific</option>
-        <option value="Southwest">Southwest</option>
-    </select>
-
-    <div class="conference-grid">
-        <div class="conference-column">
-            <h2>Conferencia Este</h2>
-            <div class="team-list">
-                <div class="menu-card small" *ngFor="let team of filteredTeams(teamsEast)">
-                    <h3>
-                        <a [routerLink]="['/teams', team.id]" class="team-link">
-                            {{ team.name }}
-                        </a>
-                    </h3>
-                    <p>{{ team.city }} - {{ team.leagues.standard.division }}</p>
+                    <button class="btn" [disabled]="isFavorite(team)" (click)="addToFavorites(team)"
+                        [class.btn-disabled]="isFavorite(team)">
+                        <span *ngIf="!isFavorite(team)">⭐ Agregar</span>
+                        <span *ngIf="isFavorite(team)">✔ Agregado</span>
+                    </button>
                 </div>
             </div>
-            <div *ngIf="!filteredTeams(teamsEast).length">
-                <p class="no-results">No hay equipos que coincidan con los filtros.</p>
-            </div>
-        </div>
-        <div class="conference-column">
-            <h2>Conferencia Oeste</h2>
-            <div class="team-list">
-                <div class="menu-card small" *ngFor="let team of filteredTeams(teamsWest)">
-                    <h3>
-                        <a [routerLink]="['/teams', team.id]" class="team-link">
-                            {{ team.name }}
-                        </a>
-                    </h3>
-                    <p>{{ team.city }} - {{ team.leagues.standard.division }}</p>
+        </section>
+
+        <!-- Oeste -->
+        <section class="panel">
+            <h2 class="panel-title">Conferencia Oeste</h2>
+            <div class="list">
+                <div class="card" *ngFor="let team of filteredTeams(teamsWest)">
+                    <div class="left">
+                        <img [src]="team.logo" [alt]="team.fullName || team.name" />
+                        <div>
+                            <div class="name">{{ team.fullName || team.name }}</div>
+                            <div class="meta">{{ team.city }} - {{ team.leagues?.standard?.division }}</div>
+                        </div>
+                    </div>
+
+                    <button class="btn" [disabled]="isFavorite(team)" (click)="addToFavorites(team)"
+                        [class.btn-disabled]="isFavorite(team)">
+                        <span *ngIf="!isFavorite(team)">⭐ Agregar</span>
+                        <span *ngIf="isFavorite(team)">✔ Agregado</span>
+                    </button>
                 </div>
             </div>
-            <div *ngIf="!filteredTeams(teamsWest).length">
-                <p class="no-results">No hay equipos que coincidan con los filtros.</p>
-            </div>
-        </div>
+        </section>
     </div>
 </div>

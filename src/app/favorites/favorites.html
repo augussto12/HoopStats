@@ -1,0 +1,27 @@
+<div class="page">
+    <h1 class="title">Mis Favoritos</h1>
+
+    <h3 class="section"><span class="ball">🏀</span> Equipos Favoritos</h3>
+
+    <div *ngIf="!favoriteTeams.length" class="empty">
+        No tienes equipos favoritos aún
+    </div>
+
+    <div *ngIf="favoriteTeams.length" class="table">
+        <div class="thead">
+            <div class="cell logo">Logo</div>
+            <div class="cell name">Equipo</div>
+            <div class="cell action"></div>
+        </div>
+
+        <div class="row" *ngFor="let t of favoriteTeams">
+            <div class="cell logo">
+                <img [src]="t.logo" [alt]="t.fullName || t.name" />
+            </div>
+            <div class="cell name">{{ t.fullName || t.name }}</div>
+            <div class="cell action">
+                <button class="btn-danger" (click)="remove(t)">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>

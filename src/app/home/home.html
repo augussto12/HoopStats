@@ -6,10 +6,9 @@
 
         <div *ngIf="loadingLive" class="empty">Cargando partidos...</div>
         <div *ngIf="!loadingLive && errorLive" class="empty">{{ errorLive }}</div>
-        
+
         <div *ngIf="!loadingLive && liveGames.length" class="games-grid">
             <div class="game-card" *ngFor="let g of liveGames" [routerLink]="['/game-details', g.id]">
-                
                 <div class="teams">
                     <div class="team">
                         <img [src]="g.visitors.logo" [alt]="g.visitors.name" />
@@ -63,10 +62,10 @@
                 <p>Seleccione sus 5 jugadores para establecer su fantasy team</p>
             </div>
 
-            <div class="menu-card" routerLink="/favorites">
+            <a class="menu-card" routerLink="/favorites" style="text-decoration:none;color:inherit">
                 <h2>Favoritos</h2>
                 <p>Accedé rápido a tus equipos y jugadores preferidos.</p>
-            </div>
+            </a>
         </div>
     </div>
 
