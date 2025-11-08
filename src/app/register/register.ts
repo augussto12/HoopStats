@@ -34,7 +34,8 @@ export class Register {
       fullname: this.fullname,
       username: this.username,
       email: this.email,
-      password: this.password
+      password: this.password,
+      favorites: { teams: [], players: [] }
     };
 
     try {

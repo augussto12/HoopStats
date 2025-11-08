@@ -25,9 +25,23 @@
   <div *ngIf="error" class="error">{{ error }}</div>
 
   <div class="players-list">
-    <div *ngFor="let player of players" class="player-card" [routerLink]="['/player', player.id]">
-      <h3>{{ player.firstname }} {{ player.lastname }}</h3>
+    <div *ngFor="let player of players" class="player-card">
+      <div class="player-info">
+        <h3 class="player-name" [routerLink]="['/player', player.id]">
+          {{ player.firstname }} {{ player.lastname }}
+        </h3>
+
+        <button class="btnfav" [disabled]="isFavorite(player)" (click)="addToFavorites(player)"
+          [class.btn-disabled]="isFavorite(player)">
+          <span *ngIf="!isFavorite(player)">⭐</span>
+          <span *ngIf="isFavorite(player)">✔</span>
+        </button>
+      </div>
     </div>
-    <div *ngIf="!players.length && !loading">No hay jugadores disponibles.</div>
   </div>
+
+  <div *ngIf="!players.length && !loading" class="no-players">
+    No hay jugadores disponibles.
+  </div>
+
 </div>

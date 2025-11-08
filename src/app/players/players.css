@@ -12,7 +12,6 @@ h1 {
     color: #ffb347;
     margin-bottom: 2rem;
     font-size: 2rem;
-    letter-spacing: 0.5px;
 }
 
 .filters {
@@ -36,21 +35,19 @@ h1 {
     margin-bottom: 0.3rem;
 }
 
-.filters input[type='text'] {
+.filters input[type='text'],
+.filters select {
     background-color: #0e1e33;
     color: #fff;
-    border: 1px solid #2c4a7c;
+    border: #2c4a7c;
     border-radius: 8px;
     padding: 0.5rem 0.8rem;
     font-size: 0.95rem;
     width: 220px;
-    transition: border-color 0.2s, background-color 0.2s;
 }
 
-.filters input[type='text']:focus {
-    outline: none;
-    border-color: #ffb347;
-    background-color: #13294a;
+.filters select {
+    cursor: pointer;
 }
 
 .filters button {
@@ -63,12 +60,10 @@ h1 {
     cursor: pointer;
     transition: background-color 0.2s, transform 0.2s;
     height: 2.4rem;
-    align-self: flex-end;
 }
 
 .filters button:hover {
-    background-color: #ffc76a;
-    transform: translateY(-2px);
+    background-color: #fccb7d;
 }
 
 @media (max-width: 768px) {

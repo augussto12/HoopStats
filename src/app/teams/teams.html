@@ -11,17 +11,15 @@
         </select>
     </div>
 
-    <!-- Conferencias lado a lado -->
     <div class="columns">
-        <!-- Este -->
         <section class="panel">
             <h2 class="panel-title">Conferencia Este</h2>
             <div class="list">
                 <div class="card" *ngFor="let team of filteredTeams(teamsEast)">
                     <div class="left">
-                        <img [src]="team.logo" [alt]="team.fullName || team.name" />
+                        <img [src]="team.logo"/>
                         <div>
-                            <div class="name">{{ team.fullName || team.name }}</div>
+                            <div class="name" [routerLink]="['/teams', team.id]">{{ team.fullName || team.name }}</div>
                             <div class="meta">{{ team.city }} - {{ team.leagues?.standard?.division }}</div>
                         </div>
                     </div>
@@ -43,7 +41,7 @@
                     <div class="left">
                         <img [src]="team.logo" [alt]="team.fullName || team.name" />
                         <div>
-                            <div class="name">{{ team.fullName || team.name }}</div>
+                            <div class="name" [routerLink]="['/teams', team.id]">{{ team.fullName || team.name }}</div>
                             <div class="meta">{{ team.city }} - {{ team.leagues?.standard?.division }}</div>
                         </div>
                     </div>

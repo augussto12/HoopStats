@@ -91,18 +91,28 @@
 h2 {
   color: #ffb347;
   margin-bottom: 1rem;
+  text-align: center;
+}
+
+.selectedView {
+  background: #0a0f1a;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 0.45rem 0.8rem;
+  font-size: 0.95rem;
+  cursor: pointer;
 }
 
 .players-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1rem;
 }
 
 .player-card {
-  cursor: pointer;
   background-color: #183661;
-  padding: 1rem;
+  padding: 0.9rem 1rem;
   border-radius: 10px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s, background-color 0.2s;
@@ -113,31 +123,66 @@ h2 {
   background-color: #1f4b85;
 }
 
-.player-card h3 {
-  margin: 0;
-  color: #ffb347;
+.player-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
 }
 
-.player-card p {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: #b0c4de;
+.player-name {
+  display: inline-block;
+  margin: 0;
+  font-size: 1rem;
+  color: #ffb347;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.player-name:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.btnfav {
+  background: #03173a;
+  color: #ffd37a;
+  border: #ffd37a;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btnfav:hover {
+  background: #022d75;
+}
+
+.btn:disabled,
+.btn.btn-disabled {
+  opacity: 0.7;
+  cursor: default;
+  background: #2a324f;
+  color: #ddd;
+  border-color: #aaa;
 }
 
 .no-players {
   text-align: center;
   color: #b0c4de;
   font-style: italic;
+  margin-top: 1rem;
 }
 
 .team-stats {
+  max-width: 600px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 0.8rem;
   background-color: #183661;
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  margin: 0 auto;
 }
 
 .stat-item {

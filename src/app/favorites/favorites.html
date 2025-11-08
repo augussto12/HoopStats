@@ -1,27 +1,61 @@
 <div class="page">
     <h1 class="title">Mis Favoritos</h1>
+    <section class="favorites-section">
+        <h3 class="section">Equipos Favoritos</h3>
 
-    <h3 class="section"><span class="ball">🏀</span> Equipos Favoritos</h3>
-
-    <div *ngIf="!favoriteTeams.length" class="empty">
-        No tienes equipos favoritos aún
-    </div>
-
-    <div *ngIf="favoriteTeams.length" class="table">
-        <div class="thead">
-            <div class="cell logo">Logo</div>
-            <div class="cell name">Equipo</div>
-            <div class="cell action"></div>
+        <div *ngIf="!favoriteTeams.length" class="empty">
+            No tienes equipos favoritos aún
         </div>
 
-        <div class="row" *ngFor="let t of favoriteTeams">
-            <div class="cell logo">
-                <img [src]="t.logo" [alt]="t.fullName || t.name" />
-            </div>
-            <div class="cell name">{{ t.fullName || t.name }}</div>
-            <div class="cell action">
-                <button class="btn-danger" (click)="remove(t)">Eliminar</button>
-            </div>
+        <table *ngIf="favoriteTeams.length" class="table">
+            <thead>
+                <tr>
+                    <th>Equipo</th>
+                    <th class="actions">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let t of favoriteTeams">
+                    <td class="team">
+                        <img [src]="t.logo" [alt]="t.fullName || t.name" />
+                        <span>{{ t.nombre || t.name }}</span>
+                    </td>
+                    <td class="actions">
+                        <button class="btn-secondary" [routerLink]="['/teams', t.id]">Ver detalles</button>
+                        <button class="btn-danger" (click)="remove('team', t.id)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="favorites-section">
+        <h3 class="section">Jugadores Favoritos</h3>
+
+        <div *ngIf="!favoritePlayers.length" class="empty">
+            No tienes jugadores favoritos aún
         </div>
-    </div>
+
+        <table *ngIf="favoritePlayers.length" class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th class="actions">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let t of favoritePlayers">
+                    <td class="team">
+                        <span>{{ t.nombre || t.fullname }}</span>
+                    </td>
+                    <td class="actions">
+                        <button class="btn-secondary" [routerLink]="['/player', t.id]">Ver detalles</button>
+                        <button class="btn-danger" (click)="remove('player', t.id)">Eliminar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 </div>

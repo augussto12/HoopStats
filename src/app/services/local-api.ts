@@ -9,8 +9,12 @@ export class LocalApiService {
 
     constructor(private http: HttpClient) { }
 
-    async getAll(users: string): Promise<any[]> {
-        return await firstValueFrom(this.http.get<any[]>(`${this.baseUrl}/${users}`));
+    async getAll(entity: string): Promise<any[]> {
+        return await firstValueFrom(this.http.get<any[]>(`${this.baseUrl}/${entity}`));
+    }
+
+    async getById(entity: string, id: string | number): Promise<any> {
+        return await firstValueFrom(this.http.get<any>(`${this.baseUrl}/${entity}/${id}`));
     }
 
     async create(entity: string, data: any): Promise<any> {

@@ -84,7 +84,14 @@
 
 .name {
   font-weight: 600;
+  cursor: pointer;
+  transition: text-decoration 0.2s ease;
 }
+
+.name:hover {
+  text-decoration: underline;
+}
+
 
 .meta {
   color: #f8c471;

@@ -4,6 +4,8 @@ import { NbaApiService } from '../services/nba-api';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { mapGame } from '../utils/mapGame';
+import { FavoritesService } from '../services/favorites-service';
+
 
 @Component({
   selector: 'app-players-by-team',
@@ -20,6 +22,7 @@ export class PlayersByTeam implements OnInit {
   gamesShown: any[] = [];
   streak: string[] = [];
   stats: any = null;
+  favoritesPlayersIds: number[] = [];
 
 
   selectedView: 'players' | 'games' | 'stats' = 'players';
@@ -30,7 +33,8 @@ export class PlayersByTeam implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private nbaService: NbaApiService
+    private nbaService: NbaApiService,
+    private favService: FavoritesService
   ) { }
 
   async ngOnInit() {
@@ -40,6 +44,9 @@ export class PlayersByTeam implements OnInit {
     await this.loadTeam(this.teamId);
     await this.loadPlayers(this.teamId);
     await this.loadGames(this.teamId);
+
+    const favorites = await this.favService.getFavorites();
+    this.favoritesPlayersIds = favorites.teams.map((t: any) => t.id);
   }
 
   async loadTeam(teamId: number) {
@@ -161,5 +168,21 @@ export class PlayersByTeam implements OnInit {
   }
 
 
+  isFavorite(player: any): boolean {
+    return this.favoritesPlayersIds.includes(player.id);
+  }
 
+  async addToFavorites(player: any) {
+    if (this.isFavorite(player)) return;
+
+    const fullName = `${player.firstname} ${player.lastname}`;
+
+    const playerData = {
+      id: player.id,
+      nombre: fullName,
+    };
+
+    await this.favService.addFavorite('player', playerData);
+    this.favoritesPlayersIds.push(player.id);
+  }
 }

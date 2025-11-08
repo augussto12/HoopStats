@@ -1,28 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FavoritesService } from '../services/favorites-service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './favorites.html',
-  styleUrls: ['./favorites.css'],
+  styleUrls: ['./favorites.css']
 })
 export class Favorites implements OnInit {
   favoriteTeams: any[] = [];
+  favoritePlayers: any[] = [];
 
-  ngOnInit(): void {
-    const raw = localStorage.getItem('favoriteTeams');
-    this.favoriteTeams = raw ? JSON.parse(raw) : [];
+  constructor(private favoritesService: FavoritesService) { }
+
+  async ngOnInit() {
+    const favorites = await this.favoritesService.getFavorites();
+    this.favoriteTeams = favorites.teams;
+    this.favoritePlayers = favorites.players;
   }
 
-  private getTeamId(team: any): string {
-    return String(team?.id ?? team?.teamId ?? team?.code ?? team?.name ?? team?.fullName);
-  }
-
-  remove(team: any): void {
-    const id = this.getTeamId(team);
-    this.favoriteTeams = this.favoriteTeams.filter(t => this.getTeamId(t) !== id);
-    localStorage.setItem('favoriteTeams', JSON.stringify(this.favoriteTeams));
+  async remove(type: 'team' | 'player', id: number) {
+    await this.favoritesService.removeFavorite(type, id);
+    if (type === 'team') {
+      this.favoriteTeams = this.favoriteTeams.filter(t => t.id !== id);
+    } else {
+      this.favoritePlayers = this.favoritePlayers.filter(p => p.id !== id);
+    }
   }
 }

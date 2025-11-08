@@ -39,11 +39,7 @@ input[type='date'],
   cursor: pointer;
 }
 
-.inputSelect:focus,
-input[type='date']:focus {
-  outline: none;
-  border-color: #007acc;
-}
+
 
 .btn {
   background: #244b82;
@@ -81,7 +77,6 @@ input[type='date']:focus {
   gap: 0.6rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
 }
 
 .game-card:hover {

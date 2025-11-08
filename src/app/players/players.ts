@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NBA_COUNTRIES } from '../utils/countries';
+import { FavoritesService } from '../services/favorites-service';
 
 @Component({
   imports: [CommonModule, FormsModule, RouterModule],
@@ -20,21 +21,23 @@ export class Players implements OnInit {
   selectedCountry: string = '';
   selectedLastName: string = '';
   selectedTeamId: number | null = null;
+  favoritesPlayersIds: number[] = [];
 
   nbaTeams: any[] = [];
   countries = NBA_COUNTRIES;
 
-  constructor(private api: NbaApiService) { }
+  constructor(private api: NbaApiService, private favService: FavoritesService) { }
 
   async ngOnInit() {
     const allTeams = await this.api.getTeams();
-    
 
     this.nbaTeams = allTeams.filter(
       (team: any) => team.nbaFranchise === true && team.leagues?.standard && !team.allStar
     );
     await this.getPlayersFiltered();
-    
+
+    const favorites = await this.favService.getFavorites();
+    this.favoritesPlayersIds = favorites.teams.map((t: any) => t.id);
   }
 
   async getPlayersFiltered() {
@@ -48,7 +51,7 @@ export class Players implements OnInit {
         country: this.selectedCountry || undefined,
       });
 
-      // Filtramos para traer solo jugadores de la nba
+      // Filtramos para traer solo jugadores de la nba activos
       this.players = response.filter(
         (p: any) => p?.leagues?.standard?.active === true || p?.leagues?.standard
       );
@@ -60,4 +63,21 @@ export class Players implements OnInit {
     }
   }
 
+  isFavorite(player: any): boolean {
+    return this.favoritesPlayersIds.includes(player.id);
+  }
+
+  async addToFavorites(player: any) {
+    if (this.isFavorite(player)) return;
+
+    const fullName = `${player.firstname} ${player.lastname}`;
+    
+    const playerData = {
+      id: player.id,
+      nombre: fullName,
+    };
+
+    await this.favService.addFavorite('player', playerData);
+    this.favoritesPlayersIds.push(player.id);
+  }
 }

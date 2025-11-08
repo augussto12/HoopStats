@@ -1,81 +1,100 @@
 .page {
     min-height: 100vh;
-    padding: 24px;
+    padding: 20px;
     background: #0e1a32;
     color: #f5f5f5;
     font-family: 'Poppins', sans-serif;
+    text-align: center;
 }
 
 .title {
-    text-align: center;
-    margin: 0 0 14px;
+    color: #ffb347;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.favorites-section {
+    margin-bottom: 3rem;
 }
 
 .section {
-    text-align: center;
-    color: #f8c471;
-    margin: 6px 0 16px;
-}
-
-.ball {
-    margin-right: 6px;
+    color: #ffb347;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #1f2f57;
+    display: inline-block;
+    padding-bottom: 4px;
 }
 
 .empty {
-    text-align: center;
-    color: #cbd3e1;
-    margin-top: 12px;
+    font-style: italic;
+    color: #bbb;
+    margin-bottom: 1.5rem;
 }
 
 .table {
-    max-width: 900px;
+    width: 80%;
     margin: 0 auto;
+    border-collapse: collapse;
     background: #15264b;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
 }
 
-.thead,
-.row {
-    display: grid;
-    grid-template-columns: 100px 1fr 120px;
-    gap: 8px;
-    align-items: center;
+th,
+td {
+    padding: 10px 14px;
+    text-align: center;
 }
 
-.thead {
+thead {
     background: #1f2f57;
-    padding: 10px 12px;
     font-weight: 600;
 }
 
-.row {
-    background: #1c3766;
-    padding: 10px 12px;
+tbody tr {
     border-top: 1px solid #223b71;
 }
 
-.cell.logo img {
-    width: 42px;
-    height: 42px;
-    object-fit: contain;
-    background: #0e1a32;
-    border-radius: 6px;
+tbody tr:hover {
+    background: #1b2f55;
 }
 
-.name {
-    font-weight: 600;
+td.team {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+td.team img {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background: #0e1a32;
+    object-fit: contain;
+}
+
+.actions button {
+    margin: 0 4px;
+}
+
+button {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background: #2980b9;
 }
 
 .btn-danger {
     background: #e74c3c;
-    border: none;
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 8px;
-    cursor: pointer;
 }
 
-.btn-danger:hover {
-    opacity: .9;
+button:hover {
+    opacity: 0.85;
 }
