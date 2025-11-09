@@ -9,12 +9,12 @@
         <button class="menu-toggle" (click)="toggleMenu()">☰</button>
 
         <nav class="menu" [ngClass]="{ 'active': menuOpen }">
-            <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn">
+            <ng-container *ngIf="!auth.isLoggedIn()">
                 <a routerLink="/login" (click)="closeMenu()">Iniciar sesión</a>
                 <a routerLink="/register" (click)="closeMenu()">Registrarse</a>
             </ng-container>
 
-            <ng-template #loggedIn>
+            <ng-template *ngIf="auth.isLoggedIn()">
                 <a routerLink="/profile" (click)="closeMenu()">Perfil</a>
                 <a href="#" (click)="logout(); closeMenu()">Cerrar sesión</a>
             </ng-template>

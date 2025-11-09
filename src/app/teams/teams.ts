@@ -4,6 +4,7 @@ import { FavoritesService } from '../services/favorites-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-teams',
@@ -26,7 +27,8 @@ export class TeamsComponent implements OnInit {
 
   constructor(
     private nbaService: NbaApiService,
-    private favoritesService: FavoritesService
+    private favoritesService: FavoritesService,
+    public auth: AuthService
   ) { }
 
   async ngOnInit() {

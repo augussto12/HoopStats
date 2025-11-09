@@ -31,11 +31,13 @@
           {{ player.firstname }} {{ player.lastname }}
         </h3>
 
-        <button class="btnfav" [disabled]="isFavorite(player)" (click)="addToFavorites(player)"
-          [class.btn-disabled]="isFavorite(player)">
-          <span *ngIf="!isFavorite(player)">⭐</span>
-          <span *ngIf="isFavorite(player)">✔</span>
-        </button>
+        <ng-container *ngIf="auth.isLoggedIn()">
+          <button class="btnfav" [disabled]="isFavorite(player)" (click)="addToFavorites(player)"
+            [class.btn-disabled]="isFavorite(player)">
+            <span *ngIf="!isFavorite(player)">⭐</span>
+            <span *ngIf="isFavorite(player)">✔</span>
+          </button>
+        </ng-container>
       </div>
     </div>
   </div>

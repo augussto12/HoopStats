@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NBA_COUNTRIES } from '../utils/countries';
 import { FavoritesService } from '../services/favorites-service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   imports: [CommonModule, FormsModule, RouterModule],
@@ -26,7 +27,7 @@ export class Players implements OnInit {
   nbaTeams: any[] = [];
   countries = NBA_COUNTRIES;
 
-  constructor(private api: NbaApiService, private favService: FavoritesService) { }
+  constructor(private api: NbaApiService, private favService: FavoritesService, public auth: AuthService) { }
 
   async ngOnInit() {
     const allTeams = await this.api.getTeams();
@@ -53,8 +54,7 @@ export class Players implements OnInit {
 
       // Filtramos para traer solo jugadores de la nba activos
       this.players = response.filter(
-        (p: any) => p?.leagues?.standard?.active === true || p?.leagues?.standard
-      );
+        (p: any) => p?.leagues?.standard?.active === true);
     } catch (e) {
       console.error(e);
       this.error = 'Error al cargar los jugadores.';
@@ -71,7 +71,7 @@ export class Players implements OnInit {
     if (this.isFavorite(player)) return;
 
     const fullName = `${player.firstname} ${player.lastname}`;
-    
+
     const playerData = {
       id: player.id,
       nombre: fullName,

@@ -36,18 +36,21 @@
             "nombre": "Doncic"
           },
           {
-            "id": 4285,
-            "nombre": "M. Shulga"
-          },
-          {
             "id": 279,
             "nombre": "Nikola Jokic"
-          },
-          {
-            "id": 337,
-            "nombre": "Boban Marjanovic"
           }
         ]
+      }
+    },
+    {
+      "id": "9aca",
+      "fullname": "prueba",
+      "username": "prueba",
+      "email": "prueba",
+      "password": "$2b$10$.LE/iZnT0XqDyCq/HV/xpeCVlnmAdWGmfm6.nR/Mqox4b3G2prZvi",
+      "favorites": {
+        "teams": [],
+        "players": []
       }
     }
   ]

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../api.config';
+import { Team } from '../utils/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,14 @@ export class NbaApiService {
         { headers: this.headers })
     );
     return response.response;
+  }
+
+  async getTeamById(teamId: number) {
+    const response = await firstValueFrom(
+      this.http.get<any>(`${this.apiUrl}/teams?id=${teamId}`,
+        { headers: this.headers })
+    );
+    return response.response[0] as Team;
   }
 
   // Partidos por fecha

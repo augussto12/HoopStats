@@ -1,3 +1,9 @@
 .title {
     text-align: center;
 }
+
+.time{
+    font-size: 14px;
+    color: #a5abe2;
+    margin-left: 10px;
+}

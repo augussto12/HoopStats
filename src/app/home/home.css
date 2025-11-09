@@ -24,7 +24,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap:8px;
+  gap: 8px;
 }
 
 .games-grid {
@@ -124,17 +124,30 @@
   font-weight: 600;
 }
 
+.stat-card strong {
+  color: #0013bb;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  background-color: #959bd3;
+  padding: 4px 10px;
+  border-radius: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  display: inline-block;
+}
+
+
 .empty {
   text-align: center;
   color: #bbb;
   margin-top: 1rem;
 }
+
 .live-dot {
   width: 8px;
   height: 8px;
   background-color: #e74c3c;
   border-radius: 50%;
-  display: inline-block;
+  display: inline-block;
 }
 
 @media (max-width: 1000px) {

@@ -54,23 +54,26 @@
                 <p>Compará el historial entre dos equipos.</p>
             </div>
 
-            <div class="menu-card" routerLink="/">
-                <h2>Predicciones</h2>
-            </div>
             <div class="menu-card" routerLink="">
                 <h2>Equipo Fantasy</h2>
                 <p>Seleccione sus 5 jugadores para establecer su fantasy team</p>
             </div>
 
-            <a class="menu-card" routerLink="/favorites" style="text-decoration:none;color:inherit">
-                <h2>Favoritos</h2>
-                <p>Accedé rápido a tus equipos y jugadores preferidos.</p>
-            </a>
+            <ng-container *ngIf="auth.isLoggedIn()">
+                <div class="menu-card" routerLink="/">
+                    <h2>Predicciones</h2>
+                </div>
+
+                <div class="menu-card" routerLink="/favorites" style="text-decoration:none;color:inherit">
+                    <h2>Favoritos</h2>
+                    <p>Accedé rápido a tus equipos y jugadores preferidos.</p>
+                </div>
+            </ng-container>
         </div>
     </div>
 
     <div class="stats-column">
-        <h2>🏆 Mejores jugadores del día anterior</h2>
+        <h2>🏆 Mejores jugadores del día de ayer</h2>
 
         <div *ngIf="loadingPlayers" class="empty">Cargando jugadores...</div>
         <div *ngIf="!loadingPlayers && errorPlayers" class="empty">{{ errorPlayers }}</div>
@@ -78,7 +81,7 @@
         <div *ngIf="!loadingPlayers && bestPlayers.length">
             <div class="stat-card" *ngFor="let p of bestPlayers">
                 <h3>{{ p.category }}</h3>
-                <span>{{ p.player }}</span> — {{ p.value }}
+                <span>{{ p.player }}</span> <strong>{{ p.value }}</strong>
             </div>
         </div>
     </div>

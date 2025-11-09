@@ -5,7 +5,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { mapGame } from '../utils/mapGame';
 import { FavoritesService } from '../services/favorites-service';
-
+import { Team } from '../utils/interfaces';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-players-by-team',
@@ -16,7 +17,7 @@ import { FavoritesService } from '../services/favorites-service';
 })
 export class PlayersByTeam implements OnInit {
   teamId!: number;
-  team: any;
+  team: Team | null = null;
   players: any[] = [];
   games: any[] = [];
   gamesShown: any[] = [];
@@ -34,7 +35,8 @@ export class PlayersByTeam implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private nbaService: NbaApiService,
-    private favService: FavoritesService
+    private favService: FavoritesService,
+    public auth: AuthService
   ) { }
 
   async ngOnInit() {
@@ -50,8 +52,8 @@ export class PlayersByTeam implements OnInit {
   }
 
   async loadTeam(teamId: number) {
-    const allTeams = await this.nbaService.getTeams();
-    this.team = allTeams.find((t: any) => t.id === teamId);
+    this.team = await this.nbaService.getTeamById(teamId);
+    console.log(this.team);
   }
 
   async loadPlayers(teamId: number) {

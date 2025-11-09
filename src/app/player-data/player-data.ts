@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { NbaApiService } from '../services/nba-api';
+import { Player, PlayerStats } from '../utils/interfaces';
 
 @Component({
   selector: 'app-player-data',
@@ -11,8 +12,8 @@ import { NbaApiService } from '../services/nba-api';
   styleUrls: ['./player-data.css']
 })
 export class PlayerData implements OnInit {
-  player: any = null;
-  playerData: any = null;
+  player: Player | null = null;
+  playerData: PlayerStats[] = [];
   loading = false;
   error: string | null = null;
 
@@ -35,7 +36,7 @@ export class PlayerData implements OnInit {
 
       if (data && data.length > 0) {
         this.player = data[0];
-        this.playerData = dataPlayer;
+        this.playerData = dataPlayer || [];
       } else {
         this.error = 'No se encontró información del jugador.';
       }
@@ -46,6 +47,4 @@ export class PlayerData implements OnInit {
       this.loading = false;
     }
   }
-
-
 }

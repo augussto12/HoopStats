@@ -2,11 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NbaApiService } from '../services/nba-api';
-
-interface PlayerGroup {
-  team: any;
-  players: any[];
-}
+import { PlayerGroup } from '../utils/interfaces';
 
 @Component({
   selector: 'app-game-details',

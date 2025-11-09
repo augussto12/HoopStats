@@ -1,24 +1,27 @@
 <div class="team-detail-container" *ngIf="team">
     <div class="team-header">
-        <img [src]="team.logo" [alt]="team.name" class="team-logo" />
-        <div *ngIf="streak.length" class="team-streak">
-            <div class="streak-bubbles">
-                <span *ngFor="let r of streak" [class.win]="r === 'W'" [class.loss]="r === 'L'">
-                    {{ r }}
-                </span>
+        <div class="team-logo-container">
+            <img [src]="team.logo" class="team-logo" />
+            <div *ngIf="streak.length" class="team-streak">
+                <div class="streak-bubbles">
+                    <span *ngFor="let r of streak" [class.win]="r === 'W'" [class.loss]="r === 'L'">
+                        {{ r }}
+                    </span>
+                </div>
             </div>
         </div>
+
         <div class="team-header-info">
             <h1>{{ team.name }}</h1>
             <p class="team-subtitle">{{ team.nickname }}</p>
         </div>
-    </div>
 
-    <div class="team-info">
-        <p><strong>Abreviación:</strong> {{ team.code }}</p>
-        <p><strong>Ciudad:</strong> {{ team.city }}</p>
-        <p><strong>Conferencia:</strong> {{ team.leagues.standard.conference }}</p>
-        <p><strong>División:</strong> {{ team.leagues.standard.division }}</p>
+        <div class="team-info">
+            <p><strong>Abreviación:</strong> {{ team.code }}</p>
+            <p><strong>Ciudad:</strong> {{ team.city }}</p>
+            <p><strong>Conferencia:</strong> {{ team.leagues?.standard?.conference }}</p>
+            <p><strong>División:</strong> {{ team.leagues?.standard?.division }}</p>
+        </div>
     </div>
 
 
@@ -39,11 +42,13 @@
                         {{ player.firstname }} {{ player.lastname }}
                     </h3>
 
-                    <button class="btnfav" [disabled]="isFavorite(player)" (click)="addToFavorites(player)"
-                        [class.btn-disabled]="isFavorite(player)">
-                        <span *ngIf="!isFavorite(player)">⭐</span>
-                        <span *ngIf="isFavorite(player)">✔</span>
-                    </button>
+                    <ng-container *ngIf="auth.isLoggedIn()">
+                        <button class="btnfav" [disabled]="isFavorite(player)" (click)="addToFavorites(player)"
+                            [class.btn-disabled]="isFavorite(player)">
+                            <span *ngIf="!isFavorite(player)">⭐</span>
+                            <span *ngIf="isFavorite(player)">✔</span>
+                        </button>
+                    </ng-container>
                 </div>
             </div>
         </div>

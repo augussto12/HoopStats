@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NbaApiService } from '../services/nba-api';
 import { mapGame } from '../utils/mapGame';
+import { Game, TopStat, PlayerStats } from '../utils/interfaces';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -12,30 +14,28 @@ import { mapGame } from '../utils/mapGame';
   styleUrls: ['./home.css', '../Games/games.css']
 })
 export class Home implements OnInit {
-  liveGames: any[] = [];
-  bestPlayers: any[] = [];
+  liveGames: Game[] = [];
+  bestPlayers: TopStat[] = [];
   loadingLive = false;
   loadingPlayers = false;
   errorLive: string | null = null;
   errorPlayers: string | null = null;
 
-  private statsCache = new Map<number, any[]>();
+  private statsCache = new Map<number, PlayerStats[]>();
 
-  constructor(private nbaService: NbaApiService) { }
+  constructor(private nbaService: NbaApiService, public auth: AuthService) { }
 
   async ngOnInit() {
-    // Ejecutamos las dos cargas a la vez
     this.loadLiveGames();
     this.loadBestPlayersYesterday();
   }
 
-  // Partidos en vivo
   async loadLiveGames() {
     this.loadingLive = true;
     try {
       const live = await this.nbaService.getLiveGames();
       if (live && live.length > 0) {
-        this.liveGames = live.map(mapGame);
+        this.liveGames = live.map(mapGame) as Game[];
       } else {
         this.errorLive = 'No hay partidos en vivo actualmente.';
       }
@@ -64,12 +64,16 @@ export class Home implements OnInit {
   async loadBestPlayersYesterday() {
     this.loadingPlayers = true;
     try {
-      const todayLocal = this.toLocalYYYYMMDD(new Date());
-      const yesterdayLocal = this.addDays(todayLocal, -1);
+      const todayUTC = new Date();
+      const yesterdayUTC = new Date(todayUTC);
+      yesterdayUTC.setUTCDate(todayUTC.getUTCDate() - 1);
 
-      const gamesYesterday = await this.nbaService.getGamesByDate(yesterdayLocal);
+      const yesterdayStr = yesterdayUTC.toISOString().split('T')[0];
+
+
+      const gamesYesterday = await this.nbaService.getGamesByDate(yesterdayStr);
       const finishedGames = gamesYesterday.filter(
-        (g: any) =>
+        (g: Game) =>
           g.status?.short === 'FT' ||
           g.status?.long === 'Finished' ||
           g.status?.long === 'Final'
@@ -81,7 +85,7 @@ export class Home implements OnInit {
         return;
       }
 
-      const statsPromises = finishedGames.map(async (g: any) => {
+      const statsPromises = finishedGames.map(async (g: Game) => {
         if (this.statsCache.has(g.id)) {
           return this.statsCache.get(g.id)!;
         }
@@ -96,9 +100,8 @@ export class Home implements OnInit {
         }
       });
 
-
       const allResults = await Promise.all(statsPromises);
-      const allStats = allResults.flat();
+      const allStats: PlayerStats[] = allResults.flat();
 
       if (allStats.length === 0) {
         this.errorPlayers = 'No se encontraron estadísticas para los partidos de ayer.';

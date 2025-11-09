@@ -1,11 +1,11 @@
-<div class="player-container" *ngIf="!loading && player">
+<div class="player-container" *ngIf="!loading && player as p">
     <div class="player-card">
         <div class="player-header">
             <div class="player-info">
-                <h2>{{ player.firstname }} {{ player.lastname }}</h2>
+                <h2>{{ p.firstname }} {{ p.lastname }}</h2>
                 <div class="player-meta">
-                    <span><strong>Posición:</strong> {{ player.leagues?.standard?.pos || '-' }}</span>
-                    <span><strong>Número:</strong> {{ player.leagues?.standard?.jersey || '-' }}</span>
+                    <span><strong>Posición:</strong> {{ p.leagues?.standard?.pos ?? '-' }}</span>
+                    <span><strong>Número:</strong> {{ p.leagues?.standard?.jersey ?? '-' }}</span>
                 </div>
             </div>
         </div>
@@ -13,33 +13,33 @@
         <div class="player-data">
             <div>
                 <strong>Altura:</strong>
-                {{ player.height?.meters ? player.height.meters + ' m' : 'Sin datos' }}
+                {{ p.height?.meters ? p.height?.meters + ' m' : 'Sin datos' }}
             </div>
 
             <div>
                 <strong>Peso:</strong>
-                {{ player.weight?.kilograms ? player.weight.kilograms + ' kg' : 'Sin datos' }}
+                {{ p.weight?.kilograms ? p.weight?.kilograms + ' kg' : 'Sin datos' }}
             </div>
 
             <div>
                 <strong>Nacimiento:</strong>
-                {{ player.birth?.date ? player.birth.date : 'Sin datos' }}
-                ({{ player.birth?.country ? player.birth.country : '' }})
+                {{ p.birth?.date ?? 'Sin datos' }}
+                <span *ngIf="p.birth?.country">({{ p.birth?.country }})</span>
             </div>
 
             <div>
                 <strong>Universidad:</strong>
-                {{ player.college ? player.college : 'Sin datos' }}
+                {{ p.college ?? 'Sin datos' }}
             </div>
 
             <div>
                 <strong>Inicio NBA:</strong>
-                {{ player.nba?.start ? player.nba.start : 'Sin datos' }}
+                {{ p.nba?.start ?? 'Sin datos' }}
             </div>
         </div>
 
-        <div class="player-stats" *ngIf="playerData && playerData.length">
-            <h3> Estadísticas recientes (temporada 2025)</h3>
+        <div class="player-stats" *ngIf="(playerData?.length ?? 0) > 0">
+            <h3>Estadísticas recientes (temporada 2025)</h3>
 
             <table class="stats-table">
                 <thead>
@@ -48,7 +48,7 @@
                         <th>Puntos</th>
                         <th>Min</th>
                         <th>FG%</th>
-                        <th>3P%</th>
+                        <th>3P</th>
                         <th>FT%</th>
                         <th>Rebotes</th>
                         <th>Asist.</th>
@@ -60,9 +60,9 @@
                     <tr *ngFor="let stat of playerData">
                         <td>#{{ stat.game.id }}</td>
                         <td>{{ stat.points }}</td>
-                        <td>{{ stat.min }}</td>
+                        <td>{{ stat.min ?? '-' }}</td>
                         <td>{{ stat.fgp }}%</td>
-                        <td>{{ stat.tpp }}%</td>
+                        <td>{{ stat.tpm }}</td>
                         <td>{{ stat.ftp }}%</td>
                         <td>{{ stat.totReb }}</td>
                         <td>{{ stat.assists }}</td>
@@ -72,7 +72,6 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 </div>
 

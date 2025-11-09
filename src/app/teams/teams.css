@@ -111,8 +111,7 @@
   background: #2a4f8e;
 }
 
-.btn:disabled,
-.btn.btn-disabled {
+.btn:disabled {
   opacity: .7;
   cursor: default;
   background: #2a324f;

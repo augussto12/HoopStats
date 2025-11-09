@@ -17,23 +17,23 @@
             <div class="list">
                 <div class="card" *ngFor="let team of filteredTeams(teamsEast)">
                     <div class="left">
-                        <img [src]="team.logo"/>
+                        <img [src]="team.logo" />
                         <div>
                             <div class="name" [routerLink]="['/teams', team.id]">{{ team.fullName || team.name }}</div>
                             <div class="meta">{{ team.city }} - {{ team.leagues?.standard?.division }}</div>
                         </div>
                     </div>
-
-                    <button class="btn" [disabled]="isFavorite(team)" (click)="addToFavorites(team)"
-                        [class.btn-disabled]="isFavorite(team)">
-                        <span *ngIf="!isFavorite(team)">⭐ Agregar</span>
-                        <span *ngIf="isFavorite(team)">✔ Agregado</span>
-                    </button>
+                    <ng-container *ngIf="auth.isLoggedIn()">
+                        <button class="btn" [disabled]="isFavorite(team)" (click)="addToFavorites(team)"
+                            [class.btn-disabled]="isFavorite(team)">
+                            <span *ngIf="!isFavorite(team)">⭐ Agregar</span>
+                            <span *ngIf="isFavorite(team)">✔ Agregado</span>
+                        </button>
+                    </ng-container>
                 </div>
             </div>
         </section>
 
-        <!-- Oeste -->
         <section class="panel">
             <h2 class="panel-title">Conferencia Oeste</h2>
             <div class="list">
@@ -46,11 +46,13 @@
                         </div>
                     </div>
 
-                    <button class="btn" [disabled]="isFavorite(team)" (click)="addToFavorites(team)"
-                        [class.btn-disabled]="isFavorite(team)">
-                        <span *ngIf="!isFavorite(team)">⭐ Agregar</span>
-                        <span *ngIf="isFavorite(team)">✔ Agregado</span>
-                    </button>
+                    <ng-container *ngIf="auth.isLoggedIn()">
+                        <button class="btn" [disabled]="isFavorite(team)" (click)="addToFavorites(team)"
+                            [class.btn-disabled]="isFavorite(team)">
+                            <span *ngIf="!isFavorite(team)">⭐ Agregar</span>
+                            <span *ngIf="isFavorite(team)">✔ Agregado</span>
+                        </button>
+                    </ng-container>
                 </div>
             </div>
         </section>

@@ -12,7 +12,7 @@ type APIGame = any;
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './head-to-head.html',
-  styleUrls: ['./head-to-head.css', '../Games/games.css','../players/players.css']
+  styleUrls: ['./head-to-head.css', '../games/games.css','../players/players.css']
 })
 export class HeadToHead implements OnInit {
   loading = false;
@@ -57,6 +57,7 @@ export class HeadToHead implements OnInit {
       const mapped = response.map((g: any) => mapGame(g));
 
       this.games = mapped;
+      console.log("games",this.games);
     } catch (e) {
       console.error(e);
       this.error = 'Error al obtener los enfrentamientos.';
