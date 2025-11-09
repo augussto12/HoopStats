@@ -35,16 +35,18 @@
     <button *ngIf="!editing" (click)="editProfile()">Editar datos de perfil</button>
     <button *ngIf="!editing" (click)="deleteProfile()">Eliminar cuenta</button>
 
-    <div class="modal-backdrop" *ngIf="showConfirm">
-        <div class="modal">
-            <h3>¿Eliminar cuenta?</h3>
-            <p>Esta acción no se puede deshacer.</p>
 
-            <div class="modal-buttons">
-                <button class="btn-cancel" (click)="showConfirm = false">Cancelar</button>
-                <button class="btn-delete" (click)="confirmDelete()">Eliminar</button>
-            </div>
+
+</div>
+
+<div class="modal-backdrop" *ngIf="showConfirm">
+    <div class="modal">
+        <h3>¿Eliminar cuenta?</h3>
+        <p>Esta acción no se puede deshacer.</p>
+
+        <div class="modal-buttons">
+            <button class="btn-cancel" (click)="showConfirm = false">Cancelar</button>
+            <button class="btn-delete" (click)="confirmDelete()">Eliminar</button>
         </div>
     </div>
-
 </div>

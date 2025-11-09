@@ -6,7 +6,7 @@ body {
     padding: 0;
 }
 
-div {
+.profile-card {
     max-width: 600px;
     margin: 3rem auto;
     background: #1e2a3a;
@@ -139,7 +139,7 @@ input {
 }
 
 .btn-cancel:hover {
-    background: #3b4b63;
+    background: #232e3b;
 }
 
 .btn-delete {
@@ -148,5 +148,5 @@ input {
 }
 
 .btn-delete:hover {
-    background: #d93636;
+    background: #581717;
 }
