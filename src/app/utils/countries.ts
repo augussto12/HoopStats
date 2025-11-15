@@ -1,6 +1,4 @@
-export interface CountryOption {
-  name: string;
-}
+import { CountryOption } from "../models/interfaces";
 
 export const NBA_COUNTRIES: CountryOption[] = [
   { name: 'USA' },

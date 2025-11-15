@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LocalApiService } from './local-api';
-import { Prediction } from '../utils/interfaces';
+import { Prediction } from '../models/interfaces';
 
 
 @Injectable({ providedIn: 'root' })

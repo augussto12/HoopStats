@@ -6,6 +6,8 @@ import { NbaApiService } from './nba-api';
 @Injectable({ providedIn: 'root' })
 export class PredictionCalulator {
 
+    private readonly COOLDOWN_MINUTES = 30;
+
     constructor(
         private predService: PrediccionService,
         private localApi: LocalApiService,
@@ -13,6 +15,23 @@ export class PredictionCalulator {
     ) { }
 
     async evaluatePendingPredictions() {
+
+        const lastRunStr = localStorage.getItem('predictionsLastRun');
+        const now = Date.now();
+
+        if (lastRunStr) {
+            const lastRun = parseInt(lastRunStr, 10);
+            const diffMinutes = (now - lastRun) / (1000 * 60);
+
+            // Si no pasaron los minutos no se ejecuta
+            if (diffMinutes < this.COOLDOWN_MINUTES) {
+                return;
+            }
+        }
+
+        // Guardar timestamp de ejecucion
+        localStorage.setItem('predictionsLastRun', now.toString());
+        
         const pendientes = await this.localApi.getByData('predicciones', 'procesada=false');
 
         for (const pred of pendientes) {

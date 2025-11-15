@@ -1,0 +1,68 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { NbaApiService } from '../../../services/nba-api';
+import { mapGame } from '../../../utils/mapGame';
+
+
+@Component({
+  selector: 'app-head-to-head',
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule],
+  templateUrl: './head-to-head.html',
+  styleUrls: ['./head-to-head.css', '../games/games.css', '../../player/players/players.css']
+})
+export class HeadToHead implements OnInit {
+  public loading = false;
+  public error: string | null = null;
+
+  public selectedFirstTeam: number | null = null;
+  public selectedSecondTeam: number | null = null;
+
+  public teams: any[] = [];
+  public games: any[] = [];
+
+  constructor(private api: NbaApiService) { }
+
+  async ngOnInit() {
+    await this.loadTeams();
+  }
+
+  public async loadTeams() {
+    try {
+      this.teams = await this.api.getTeams();
+    } catch (e) {
+      console.error(e);
+      this.error = 'Error al cargar los equipos.';
+    }
+  }
+
+  public async fetchHeadToHead() {
+    if (!this.selectedFirstTeam || !this.selectedSecondTeam) {
+      this.error = 'Seleccioná ambos equipos.';
+      return;
+    }
+
+    this.loading = true;
+    this.error = null;
+
+    try {
+      const response = await this.api.getHeadToHead(
+        this.selectedFirstTeam,
+        this.selectedSecondTeam
+      );
+
+      const mapped = response.map((g: any) => mapGame(g));
+
+      this.games = mapped;
+      console.log("games", this.games);
+    } catch (e) {
+      console.error(e);
+      this.error = 'Error al obtener los enfrentamientos.';
+    } finally {
+      this.loading = false;
+    }
+  }
+
+}

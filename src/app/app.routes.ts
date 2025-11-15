@@ -1,20 +1,20 @@
 import { Routes } from '@angular/router';
-import { Home } from './home/home';
-import { TeamsComponent } from './teams/teams';
-import { PlayersByTeam } from './players-by-team/players-by-team';
-import { Games } from './games/games';
-import { PlayerData } from './player-data/player-data';
-import { GameDetails } from './game-details/game-details';
-import { HeadToHead } from './head-to-head/head-to-head';
-import { Players } from './players/players';
-import { Standings } from './standings/standings';
-import { Login } from './login/login';
-import { Register } from './register/register';
-import { Profile } from './profile/profile';
-import { Favorites } from './favorites/favorites';
-import { Predictions } from './predictions/predictions';
-import { MyPredictions } from './my-predictions/my-predictions';
-import { StandingsPredictions } from './standings-predictions/standings-predictions';
+import { Home } from './components/home/home';
+import { TeamsComponent } from './features/teams/teams/teams';
+import { PlayersByTeam } from './features/teams/players-by-team/players-by-team';
+import { Games } from './features/game/games/games';
+import { PlayerData } from './features/player/player-data/player-data';
+import { GameDetails } from './features/game/game-details/game-details';
+import { HeadToHead } from './features/game/head-to-head/head-to-head';
+import { Players } from './features/player/players/players';
+import { Standings } from './features/standings/standings';
+import { Login } from './components/login/login';
+import { Register } from './components/register/register';
+import { Profile } from './components/profile/profile';
+import { Favorites } from './features/favorites/favorites';
+import { Prediction } from './features/predictions/prediction/prediction';
+import { MyPredictions } from './features/predictions/my-predictions/my-predictions';
+import { StandingsPredictions } from './features/predictions/standings-predictions/standings-predictions';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -30,7 +30,7 @@ export const routes: Routes = [
     { path: 'register', component: Register },
     { path: 'profile', component: Profile },
     { path: 'favorites', component: Favorites },
-    { path: 'predictions', component: Predictions },
+    { path: 'predictions', component: Prediction },
     { path: 'my-predictions', component: MyPredictions },
     { path: 'standings-predictions', component: StandingsPredictions },
     { path: '**', redirectTo: 'home' }

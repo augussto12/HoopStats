@@ -6,7 +6,7 @@
       "username": "giungi",
       "email": "giungivalen@gmail.com",
       "password": "$2b$10$TUsVQ8q/gNNWxRO7K0BnWuR1WLeBBDhKbPy5IZxV6GWv1RFCbVbR6",
-      "gender":"male",
+      "gender": "male",
       "totalPredictionPoints": 6,
       "favorites": {
         "teams": [],
@@ -19,7 +19,7 @@
       "username": "AugustoAlva",
       "email": "augusto@gmail.com",
       "password": "$2b$10$R2tdRelp67ojC.6X7dPCj..taB7aDB82B/QTPQZv/xYsqk66wCr/C",
-      "gender":"male",
+      "gender": "male",
       "totalPredictionPoints": 12,
       "favorites": {
         "teams": [
@@ -32,6 +32,16 @@
             "id": 1,
             "nombre": "Atlanta Hawks",
             "logo": "https://upload.wikimedia.org/wikipedia/fr/e/ee/Hawks_2016.png"
+          },
+          {
+            "id": 11,
+            "nombre": "Golden State Warriors",
+            "logo": "https://upload.wikimedia.org/wikipedia/fr/thumb/d/de/Warriors_de_Golden_State_logo.svg/1200px-Warriors_de_Golden_State_logo.svg.png"
+          },
+          {
+            "id": 26,
+            "nombre": "Orlando Magic",
+            "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/1/10/Orlando_Magic_logo.svg/1024px-Orlando_Magic_logo.svg.png"
           }
         ],
         "players": [
@@ -42,6 +52,14 @@
           {
             "id": 279,
             "nombre": "Nikola Jokic"
+          },
+          {
+            "id": 124,
+            "nombre": "Stephen Curry"
+          },
+          {
+            "id": 4026,
+            "nombre": "Victor Wembanyama"
           }
         ]
       }
@@ -80,6 +98,50 @@
       "visitorTeam": "Memphis Grizzlies",
       "puntosLocalPrediccion": 99,
       "puntosVisitantePrediccion": 100,
+      "puntosObtenidos": 0,
+      "procesada": false
+    },
+    {
+      "id": "5d65",
+      "idUser": "6871",
+      "idGame": 15716,
+      "homeTeam": "Charlotte Hornets",
+      "visitorTeam": "Oklahoma City Thunder",
+      "puntosLocalPrediccion": 110,
+      "puntosVisitantePrediccion": 123,
+      "puntosObtenidos": 0,
+      "procesada": false
+    },
+    {
+      "id": "dd8f",
+      "idUser": "6871",
+      "idGame": 15717,
+      "homeTeam": "Indiana Pacers",
+      "visitorTeam": "Toronto Raptors",
+      "puntosLocalPrediccion": 112,
+      "puntosVisitantePrediccion": 115,
+      "puntosObtenidos": 0,
+      "procesada": false
+    },
+    {
+      "id": "dfd8",
+      "idUser": "6871",
+      "idGame": 15718,
+      "homeTeam": "Milwaukee Bucks",
+      "visitorTeam": "Los Angeles Lakers",
+      "puntosLocalPrediccion": 114,
+      "puntosVisitantePrediccion": 119,
+      "puntosObtenidos": 0,
+      "procesada": false
+    },
+    {
+      "id": "813a",
+      "idUser": "6871",
+      "idGame": 15719,
+      "homeTeam": "Minnesota Timberwolves",
+      "visitorTeam": "Denver Nuggets",
+      "puntosLocalPrediccion": 113,
+      "puntosVisitantePrediccion": 115,
       "puntosObtenidos": 0,
       "procesada": false
     }
