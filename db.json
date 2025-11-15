@@ -52,6 +52,54 @@
         "teams": [],
         "players": []
       }
+    },
+    {
+      "id": "17a6",
+      "fullname": "augusto",
+      "username": "augusto",
+      "email": "augustoalva@gmail.com",
+      "password": "$2b$10$QBEhCZuEIRgYI5SgvJeMB.0Elkl/MFfbqm9gx9fwlOVkkAka5aD3i",
+      "gender": "male",
+      "favorites": {
+        "teams": [],
+        "players": []
+      }
+    },
+    {
+      "id": "7851",
+      "fullname": "pedrito",
+      "username": "pedroa1",
+      "email": "aguerop47@gmail.com",
+      "password": "$2b$10$LeZ8DKYrhZrqZisNoUcNJ./tjt6Nm8WxD3eOXF0oeRoR6vqCO0B6a",
+      "gender": "male",
+      "favorites": {
+        "teams": [],
+        "players": []
+      }
+    }
+  ],
+  "predicciones": [
+    {
+      "id": "2dd6",
+      "idUser": "17a6",
+      "idGame": 15714,
+      "homeTeam": "San Antonio Spurs",
+      "visitorTeam": "Golden State Warriors",
+      "puntosLocalPrediccion": 110,
+      "puntosVisitantePrediccion": 129,
+      "puntosObtenidos": 0,
+      "procesada": false
+    },
+    {
+      "id": "b51f",
+      "idUser": "7851",
+      "idGame": 15715,
+      "homeTeam": "Cleveland Cavaliers",
+      "visitorTeam": "Memphis Grizzlies",
+      "puntosLocalPrediccion": 99,
+      "puntosVisitantePrediccion": 100,
+      "puntosObtenidos": 0,
+      "procesada": false
     }
   ]
 }

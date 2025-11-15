@@ -1,0 +1,30 @@
+<div class="predictions-container">
+    <h1 class="title">Mis Predicciones</h1>
+
+    <div *ngIf="loading" class="loading">Cargando...</div>
+
+    <div *ngIf="!loading && predictions.length === 0" class="no-predictions">
+        Todavía no realizaste predicciones.
+    </div>
+
+    <div class="predictions-grid" *ngIf="predictions.length > 0">
+        <div class="prediction-card" *ngFor="let p of predictions">
+            <h2>{{ p.homeTeam }} vs {{ p.visitorTeam }}</h2>
+
+            <div class="prediction-row">
+                <span class="label">Tu predicción:</span>
+                <span>{{ p.puntosLocalPrediccion }} - {{ p.puntosVisitantePrediccion }}</span>
+            </div>
+
+            <div class="prediction-row">
+                <span class="label">Puntos obtenidos:</span>
+                <span class="points">{{ p.puntosObtenidos }}</span>
+            </div>
+
+            <div class="prediction-row">
+                <span class="label">Procesada:</span>
+                <span>{{ p.procesada ? 'Sí' : 'No' }}</span>
+            </div>
+        </div>
+    </div>
+</div>

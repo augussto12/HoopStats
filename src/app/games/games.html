@@ -29,7 +29,7 @@
                 No hay partidos para el filtro seleccionado.
             </div>
 
-            <div class="game-card" *ngFor="let g of gamesShown" [routerLink]="['/game-details', g.id]">
+            <div class="game-card" *ngFor="let g of gamesShown" (click)="getLink(g)">
                 <div class="game-time">
                     <span class="pill" [class.live]="g.status==='LIVE'" [class.final]="g.status==='Final'">
                         {{ g.status }}
@@ -60,6 +60,35 @@
                 </div>
 
                 <div class="arena" *ngIf="g.arena">{{ g.arena }}</div>
+
+                <ng-container *ngIf="auth.isLoggedIn()">
+                    <div class="prediction-box" (click)="$event.stopPropagation()" *ngIf="g.status === 'Programado'">
+
+                        <h4>Tu predicción</h4>
+
+                        <div class="prediction-inputs">
+                            <div class="team-pred">
+                                <label>{{ g.visitors.name }}</label>
+                                <input type="number" min="0" [(ngModel)]="g.predVisitors" placeholder="Pts"
+                                    (click)="$event.stopPropagation()" />
+                            </div>
+
+                            <div class="vs">-</div>
+
+                            <div class="team-pred">
+                                <label>{{ g.home.name }}</label>
+                                <input type="number" min="0" [(ngModel)]="g.predHome" placeholder="Pts"
+                                    (click)="$event.stopPropagation()" />
+                            </div>
+                        </div>
+
+                        <button class="btn-predict" (click)="savePrediction(g); $event.stopPropagation()">
+                            Guardar predicción
+                        </button>
+
+                        <p class="saved" *ngIf="g.savedPrediction">✔ Predicción guardada</p>
+                    </div>
+                </ng-container>
             </div>
         </section>
     </main>

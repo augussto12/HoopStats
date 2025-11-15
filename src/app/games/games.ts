@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NbaApiService } from '../services/nba-api';
 import { mapGame } from '../utils/mapGame';
+import { AuthService } from '../services/auth.service';
+import { PrediccionService } from '../services/predictions-service';
+
 
 type APIGame = any;
 
@@ -18,13 +21,15 @@ export class Games implements OnInit {
   loading = false;
   error: string | null = null;
 
+  private router = inject(Router);
+
   selectedStatus = '';
   selectedDate = this.toYYYYMMDD(new Date()); // fecha actual
 
   games: APIGame[] = [];
   gamesShown: any[] = [];
 
-  constructor(private api: NbaApiService) { }
+  constructor(private api: NbaApiService, private predictionService: PrediccionService, public auth: AuthService) { }
 
   ngOnInit(): void {
     this.loadGames();
@@ -120,4 +125,40 @@ export class Games implements OnInit {
     const pad = (n: number) => String(n).padStart(2, '0');
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   }
+
+
+  async savePrediction(g: any) {
+    const user = JSON.parse(localStorage.getItem('user')!);
+
+    const payload = {
+      idUser: user.id,
+      idGame: g.id,
+      homeTeam: g.home.name,
+      visitorTeam: g.visitors.name,
+      puntosLocalPrediccion: g.predHome,
+      puntosVisitantePrediccion: g.predVisitors,
+      puntosObtenidos: 0,
+      procesada: false
+    };
+
+
+    const existing = await this.predictionService.getForGame(user.id, g.id);
+
+    if (existing.length > 0) {
+      const id = existing[0].id;
+      await this.predictionService.update(id, payload);
+    } else {
+      await this.predictionService.create(payload);
+    }
+    g.savedPrediction = true;
+  }
+
+  getLink(g: any) {
+    if (g.status === 'Programado') {
+      return;
+    } else {
+      this.router.navigate(['/game-details', g.id]);
+    }
+  }
+
 }

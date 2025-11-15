@@ -1,0 +1,57 @@
+.auth-container label {
+    color: #b9c4d8;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: -0.3rem; 
+    display: block;
+}
+
+.auth-container select.form-input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #2a3a50; 
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.auth-container select.form-input:focus {
+    outline: none;
+    background: #334760; 
+}
+
+.form-input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #2a3a50;
+    color: #fff;
+    font-size: 1rem;
+}
+
+.form-input:focus {
+    outline: none;
+    background: #334760;
+}
+
+.err {
+    color: #ff5f5f !important;
+    font-size: 0.85rem;
+    margin-top: -0.4rem;
+    margin-bottom: 0.2rem;
+    font-weight: 500;
+}
+
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+form {
+    gap: 0.6rem !important;
+}

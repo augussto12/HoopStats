@@ -11,6 +11,9 @@ import { Standings } from './standings/standings';
 import { Login } from './login/login';
 import { Register } from './register/register';
 import { Profile } from './profile/profile';
+import { Favorites } from './favorites/favorites';
+import { Predictions } from './predictions/predictions';
+import { MyPredictions } from './my-predictions/my-predictions';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -25,11 +28,8 @@ export const routes: Routes = [
     { path: 'login', component: Login },
     { path: 'register', component: Register },
     { path: 'profile', component: Profile },
-    {
-        path: 'favorites',
-        loadComponent: () =>
-            import('./favorites/favorites').then(m => m.Favorites) // ← coincide con export class Favorites
-    },
-    { path: '', pathMatch: 'full', redirectTo: 'home' },
+    { path: 'favorites', component: Favorites },
+    { path: 'predictions', component: Predictions },
+    { path: 'my-predictions', component: MyPredictions },
     { path: '**', redirectTo: 'home' }
 ];

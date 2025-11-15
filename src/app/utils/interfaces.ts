@@ -1,3 +1,16 @@
+export interface User {
+    fullname: string;
+    username: string;
+    email: string;
+    password: string;
+    gender: 'male' | 'female' | 'other' | 'prefer_not';
+    favorites: {
+        teams: any[];
+        players: any[];
+    };
+}
+
+
 export interface Player {
     id: number;
     firstname: string;
@@ -91,24 +104,36 @@ export interface TopStat {
 }
 
 export interface Team {
-  id: number;
-  name: string;
-  logo: string;
-  code?: string;
-  nickname?: string;
-  city?: string;
-  allStar?: boolean;
-  nbaFranchise?: boolean;
-  leagues: {
-    standard: {
-      conference: string | null;
-      division: string | null;
+    id: number;
+    name: string;
+    logo: string;
+    code?: string;
+    nickname?: string;
+    city?: string;
+    allStar?: boolean;
+    nbaFranchise?: boolean;
+    leagues: {
+        standard: {
+            conference: string | null;
+            division: string | null;
+        };
     };
-  };
 }
 
 
 export interface PlayerGroup {
     team: Team;
     players: PlayerStats[];
+}
+
+export interface Prediction {
+    id?: string;
+    idUser: string | number;
+    idGame: number;
+    homeTeam: string;
+    visitorTeam: string;
+    puntosLocalPrediccion: number;
+    puntosVisitantePrediccion: number;
+    puntosObtenidos: number;
+    procesada: boolean;
 }
