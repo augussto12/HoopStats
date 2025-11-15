@@ -14,6 +14,7 @@ import { Profile } from './profile/profile';
 import { Favorites } from './favorites/favorites';
 import { Predictions } from './predictions/predictions';
 import { MyPredictions } from './my-predictions/my-predictions';
+import { StandingsPredictions } from './standings-predictions/standings-predictions';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -31,5 +32,6 @@ export const routes: Routes = [
     { path: 'favorites', component: Favorites },
     { path: 'predictions', component: Predictions },
     { path: 'my-predictions', component: MyPredictions },
+    { path: 'standings-predictions', component: StandingsPredictions },
     { path: '**', redirectTo: 'home' }
 ];

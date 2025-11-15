@@ -57,6 +57,7 @@ export class Register {
         email: email!,
         password: password!,
         gender: gender! as User['gender'],
+        totalPredictionPoints: 0,
         favorites: { teams: [], players: [] }
       };
 

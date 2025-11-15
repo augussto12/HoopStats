@@ -4,6 +4,7 @@ export interface User {
     email: string;
     password: string;
     gender: 'male' | 'female' | 'other' | 'prefer_not';
+    totalPredictionPoints: number;
     favorites: {
         teams: any[];
         players: any[];

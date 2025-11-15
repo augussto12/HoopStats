@@ -6,6 +6,8 @@
       "username": "giungi",
       "email": "giungivalen@gmail.com",
       "password": "$2b$10$TUsVQ8q/gNNWxRO7K0BnWuR1WLeBBDhKbPy5IZxV6GWv1RFCbVbR6",
+      "gender":"male",
+      "totalPredictionPoints": 6,
       "favorites": {
         "teams": [],
         "players": []
@@ -17,6 +19,8 @@
       "username": "AugustoAlva",
       "email": "augusto@gmail.com",
       "password": "$2b$10$R2tdRelp67ojC.6X7dPCj..taB7aDB82B/QTPQZv/xYsqk66wCr/C",
+      "gender":"male",
+      "totalPredictionPoints": 12,
       "favorites": {
         "teams": [
           {
@@ -43,35 +47,13 @@
       }
     },
     {
-      "id": "9aca",
-      "fullname": "prueba",
-      "username": "prueba",
-      "email": "prueba",
-      "password": "$2b$10$.LE/iZnT0XqDyCq/HV/xpeCVlnmAdWGmfm6.nR/Mqox4b3G2prZvi",
-      "favorites": {
-        "teams": [],
-        "players": []
-      }
-    },
-    {
-      "id": "17a6",
-      "fullname": "augusto",
-      "username": "augusto",
-      "email": "augustoalva@gmail.com",
-      "password": "$2b$10$QBEhCZuEIRgYI5SgvJeMB.0Elkl/MFfbqm9gx9fwlOVkkAka5aD3i",
-      "gender": "male",
-      "favorites": {
-        "teams": [],
-        "players": []
-      }
-    },
-    {
       "id": "7851",
       "fullname": "pedrito",
       "username": "pedroa1",
       "email": "aguerop47@gmail.com",
       "password": "$2b$10$LeZ8DKYrhZrqZisNoUcNJ./tjt6Nm8WxD3eOXF0oeRoR6vqCO0B6a",
       "gender": "male",
+      "totalPredictionPoints": 10,
       "favorites": {
         "teams": [],
         "players": []
