@@ -54,7 +54,7 @@ export class GameDetails implements OnInit {
 
     this.loading = true;
     try {
-      const data = await this.api.getGameData(id);
+      const data = await this.api.getGameStats(id);
 
       if (data && data.length > 0) {
         this.gameDetails = data;

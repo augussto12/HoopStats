@@ -20,8 +20,12 @@ export class PrediccionService {
         return this.api.getByData('predicciones', `idUser=${idUser}&idGame=${idGame}`);
     }
 
-    update(id: number, pred: Partial<Prediction>) {
+    update(id: number, pred: Prediction) {
         return this.api.update('predicciones', id, pred);
+    }
+
+    patch(id: number, partial: Partial<Prediction>) {
+        return this.api.patch('predicciones', id, partial);
     }
 
     delete(id: number) {

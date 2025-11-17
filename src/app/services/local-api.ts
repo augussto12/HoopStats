@@ -29,6 +29,12 @@ export class LocalApiService {
         return await firstValueFrom(this.http.put(`${this.baseUrl}/${entity}/${id}`, data));
     }
 
+    async patch(entity: string, id: string | number, data: any): Promise<any> {
+        return await firstValueFrom(
+            this.http.patch(`${this.baseUrl}/${entity}/${id}`, data)
+        );
+    }
+
     async delete(entity: string, id: string | number): Promise<any> {
         return await firstValueFrom(this.http.delete(`${this.baseUrl}/${entity}/${id}`));
     }

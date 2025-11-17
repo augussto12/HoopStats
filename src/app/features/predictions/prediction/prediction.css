@@ -19,12 +19,6 @@
     font-weight: 600;
 }
 
-.predictions-container .subtitle {
-    color: #cbd3e1;
-    font-size: 1rem;
-    margin-bottom: 1rem;
-}
-
 .menu-grid {
     display: flex;
     justify-content: center;

@@ -38,7 +38,6 @@ export class NbaApiService {
         { headers: this.headers }
       )
     );
-    console.log(response.response)
     return response.response; // array
   }
 
@@ -50,7 +49,6 @@ export class NbaApiService {
         { headers: this.headers }
       )
     );
-    console.log(response.response)
     return response.response; // array
   }
 
@@ -61,7 +59,6 @@ export class NbaApiService {
         headers: this.headers
       })
     );
-    console.log('Live games:', response.response);
     return response.response;
   }
 
@@ -73,7 +70,6 @@ export class NbaApiService {
         { headers: this.headers }
       )
     );
-    console.log("players", response.response);
     return response.response
   }
 
@@ -130,19 +126,27 @@ export class NbaApiService {
         { headers: this.headers }
       )
     );
-    console.log("player data: ", response.response);
     return response.response;
   }
 
   // Traer los datos de un partido por su id
-  async getGameData(gameId: number) {
+  async getGameStats(gameId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
         `${this.apiUrl}/games/statistics?id=${gameId}`,
         { headers: this.headers }
       )
     );
-    console.log(response.response);
+    return response.response;
+  }
+
+  async getGameData(gameId: number) {
+    const response = await firstValueFrom(
+      this.http.get<any>(
+        `${this.apiUrl}/games?id=${gameId}`,
+        { headers: this.headers }
+      )
+    );
     return response.response;
   }
 
@@ -154,7 +158,6 @@ export class NbaApiService {
         { headers: this.headers }
       )
     );
-    console.log(response.response);
     return response.response;
   }
 
@@ -166,7 +169,6 @@ export class NbaApiService {
         { headers: this.headers }
       )
     );
-    console.log(response.response);
     return response.response;
   }
   async getTeamStats(teamId: number) {
@@ -176,7 +178,6 @@ export class NbaApiService {
         { headers: this.headers }
       )
     );
-    console.log(response.response);
     return response;
   }
 
@@ -187,7 +188,6 @@ export class NbaApiService {
         { headers: this.headers }
       )
     );
-    console.log(response.response);
     return response.response;
   }
 

@@ -19,20 +19,11 @@ export class PredictionCalulator {
         const lastRunStr = localStorage.getItem('predictionsLastRun');
         const now = Date.now();
 
-        if (lastRunStr) {
-            const lastRun = parseInt(lastRunStr, 10);
-            const diffMinutes = (now - lastRun) / (1000 * 60);
-
-            // Si no pasaron los minutos no se ejecuta
-            if (diffMinutes < this.COOLDOWN_MINUTES) {
-                return;
-            }
-        }
-
         // Guardar timestamp de ejecucion
         localStorage.setItem('predictionsLastRun', now.toString());
-        
+
         const pendientes = await this.localApi.getByData('predicciones', 'procesada=false');
+        console.log("pendientes: ", pendientes);
 
         for (const pred of pendientes) {
             try {
@@ -42,7 +33,7 @@ export class PredictionCalulator {
                 if (!game) continue;
 
                 // Solo procesamos si termino
-                if (game.status !== "Finished") continue;
+                if (game.status.long !== "Finished") continue;
 
                 const realHome = game.scores.home.points;
                 const realAway = game.scores.visitors.points;
@@ -56,7 +47,7 @@ export class PredictionCalulator {
                 );
 
                 // Actualizar prediccion
-                await this.predService.update(pred.id, {
+                await this.predService.patch(pred.id, {
                     puntosObtenidos: puntos,
                     procesada: true
                 });
@@ -109,7 +100,7 @@ export class PredictionCalulator {
 
         const total = (user.totalPredictionPoints || 0) + pts;
 
-        await this.localApi.update('users', idUser, {
+        await this.localApi.patch('users', idUser, {
             totalPredictionPoints: total
         });
     }

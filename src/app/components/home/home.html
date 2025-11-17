@@ -32,7 +32,7 @@
         <div class="menu-grid">
             <div class="menu-card" routerLink="/standings">
                 <h2>Clasificación</h2>
-                <p>Consulte las clasificaciones por conferencia</p>
+                <p>Consulte las clasificaciones por conferencia.</p>
             </div>
             <div class="menu-card" routerLink="/teams">
                 <h2>Equipos</h2>
@@ -56,15 +56,16 @@
 
             <div class="menu-card" routerLink="">
                 <h2>Equipo Fantasy</h2>
-                <p>Seleccione sus 5 jugadores para establecer su fantasy team</p>
+                <p>Seleccione sus 5 jugadores para establecer su fantasy team.</p>
             </div>
 
             <ng-container *ngIf="auth.isLoggedIn()">
                 <div class="menu-card" routerLink="/predictions">
                     <h2>Predicciones</h2>
+                    <p>Haga prdicciones sobre partidos futuros para sumar puntos en la tabla general.</p>
                 </div>
 
-                <div class="menu-card" routerLink="/favorites" style="text-decoration:none;color:inherit">
+                <div class="menu-card" routerLink="/favorites">
                     <h2>Favoritos</h2>
                     <p>Accedé rápido a tus equipos y jugadores preferidos.</p>
                 </div>

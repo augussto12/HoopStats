@@ -20,7 +20,7 @@
       "email": "augusto@gmail.com",
       "password": "$2b$10$R2tdRelp67ojC.6X7dPCj..taB7aDB82B/QTPQZv/xYsqk66wCr/C",
       "gender": "male",
-      "totalPredictionPoints": 12,
+      "totalPredictionPoints": 20,
       "favorites": {
         "teams": [
           {
@@ -87,8 +87,8 @@
       "visitorTeam": "Golden State Warriors",
       "puntosLocalPrediccion": 110,
       "puntosVisitantePrediccion": 129,
-      "puntosObtenidos": 0,
-      "procesada": false
+      "puntosObtenidos": 2,
+      "procesada": true
     },
     {
       "id": "b51f",
@@ -99,7 +99,7 @@
       "puntosLocalPrediccion": 99,
       "puntosVisitantePrediccion": 100,
       "puntosObtenidos": 0,
-      "procesada": false
+      "procesada": true
     },
     {
       "id": "5d65",
@@ -109,8 +109,8 @@
       "visitorTeam": "Oklahoma City Thunder",
       "puntosLocalPrediccion": 110,
       "puntosVisitantePrediccion": 123,
-      "puntosObtenidos": 0,
-      "procesada": false
+      "puntosObtenidos": 2,
+      "procesada": true
     },
     {
       "id": "dd8f",
@@ -120,8 +120,8 @@
       "visitorTeam": "Toronto Raptors",
       "puntosLocalPrediccion": 112,
       "puntosVisitantePrediccion": 115,
-      "puntosObtenidos": 0,
-      "procesada": false
+      "puntosObtenidos": 2,
+      "procesada": true
     },
     {
       "id": "dfd8",
@@ -131,8 +131,8 @@
       "visitorTeam": "Los Angeles Lakers",
       "puntosLocalPrediccion": 114,
       "puntosVisitantePrediccion": 119,
-      "puntosObtenidos": 0,
-      "procesada": false
+      "puntosObtenidos": 2,
+      "procesada": true
     },
     {
       "id": "813a",
@@ -142,8 +142,8 @@
       "visitorTeam": "Denver Nuggets",
       "puntosLocalPrediccion": 113,
       "puntosVisitantePrediccion": 115,
-      "puntosObtenidos": 0,
-      "procesada": false
+      "puntosObtenidos": 2,
+      "procesada": true
     }
   ]
 }
