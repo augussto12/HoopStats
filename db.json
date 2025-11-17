@@ -62,6 +62,18 @@
             "nombre": "Victor Wembanyama"
           }
         ]
+      },
+      "fantasy": {
+        "name": "rebeldes de boston",
+        "totalPoints": 0,
+        "budget": 680,
+        "players": [
+          {
+            "id": 38017682,
+            "name": "Luka Doncic",
+            "price": 320
+          }
+        ]
       }
     },
     {
@@ -144,6 +156,944 @@
       "puntosVisitantePrediccion": 115,
       "puntosObtenidos": 2,
       "procesada": true
+    }
+  ],
+  "lastUpdated": [
+    {
+      "id": 1,
+      "lastUpdatedFantasy": "2025-11-15T00:00:00Z"
+    }
+  ],
+  "pricePlayers": [
+    {
+      "idTeam": 1,
+      "team": "Atlanta Hawks",
+      "players": [
+        {
+          "idJugador": 443,
+          "nombre": "Trae Young",
+          "precio": 260
+        },
+        {
+          "idJugador": 38017789,
+          "nombre": "Dejounte Murray",
+          "precio": 220
+        },
+        {
+          "idJugador": 38017693,
+          "nombre": "Jalen Johnson",
+          "precio": 180
+        },
+        {
+          "idJugador": 38017770,
+          "nombre": "Clint Capela",
+          "precio": 150
+        },
+        {
+          "idJugador": 38018681,
+          "nombre": "De'Andre Hunter",
+          "precio": 140
+        }
+      ]
+    },
+    {
+      "idTeam": 2,
+      "team": "Boston Celtics",
+      "players": [
+        {
+          "idJugador": 666786,
+          "nombre": "Jayson Tatum",
+          "precio": 300
+        },
+        {
+          "idJugador": 17896038,
+          "nombre": "Jaylen Brown",
+          "precio": 240
+        },
+        {
+          "idJugador": 38017796,
+          "nombre": "Kristaps Porzingis",
+          "precio": 210
+        },
+        {
+          "idJugador": 38017757,
+          "nombre": "Jrue Holiday",
+          "precio": 200
+        },
+        {
+          "idJugador": 4430036,
+          "nombre": "Derrick White",
+          "precio": 170
+        }
+      ]
+    },
+    {
+      "idTeam": 4,
+      "team": "Brooklyn Nets",
+      "players": [
+        {
+          "idJugador": 38017674,
+          "nombre": "Mikal Bridges",
+          "precio": 220
+        },
+        {
+          "idJugador": 17896041,
+          "nombre": "Cam Thomas",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017773,
+          "nombre": "Nic Claxton",
+          "precio": 160
+        },
+        {
+          "idJugador": 38017670,
+          "nombre": "Cameron Johnson",
+          "precio": 150
+        },
+        {
+          "idJugador": 66678666,
+          "nombre": "Ben Simmons",
+          "precio": 120
+        }
+      ]
+    },
+    {
+      "idTeam": 5,
+      "team": "Charlotte Hornets",
+      "players": [
+        {
+          "idJugador": 38017702,
+          "nombre": "LaMelo Ball",
+          "precio": 240
+        },
+        {
+          "idJugador": 38017832,
+          "nombre": "Brandon Miller",
+          "precio": 200
+        },
+        {
+          "idJugador": 17896063,
+          "nombre": "Miles Bridges",
+          "precio": 160
+        },
+        {
+          "idJugador": 38017613,
+          "nombre": "Mark Williams",
+          "precio": 150
+        },
+        {
+          "idJugador": 38017772,
+          "nombre": "Terry Rozier",
+          "precio": 140
+        }
+      ]
+    },
+    {
+      "idTeam": 6,
+      "team": "Chicago Bulls",
+      "players": [
+        {
+          "idJugador": 7841100,
+          "nombre": "Zach LaVine",
+          "precio": 230
+        },
+        {
+          "idJugador": 666987,
+          "nombre": "DeMar DeRozan",
+          "precio": 210
+        },
+        {
+          "idJugador": 38017623,
+          "nombre": "Nikola Vucevic",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017646,
+          "nombre": "Coby White",
+          "precio": 160
+        },
+        {
+          "idJugador": 38017628,
+          "nombre": "Patrick Williams",
+          "precio": 130
+        }
+      ]
+    },
+    {
+      "idTeam": 7,
+      "team": "Cleveland Cavaliers",
+      "players": [
+        {
+          "idJugador": 38017790,
+          "nombre": "Donovan Mitchell",
+          "precio": 260
+        },
+        {
+          "idJugador": 38017800,
+          "nombre": "Darius Garland",
+          "precio": 210
+        },
+        {
+          "idJugador": 38017792,
+          "nombre": "Evan Mobley",
+          "precio": 200
+        },
+        {
+          "idJugador": 38017714,
+          "nombre": "Jarrett Allen",
+          "precio": 170
+        },
+        {
+          "idJugador": 17896040,
+          "nombre": "Max Strus",
+          "precio": 140
+        }
+      ]
+    },
+    {
+      "idTeam": 8,
+      "team": "Dallas Mavericks",
+      "players": [
+        {
+          "idJugador": 38017682,
+          "nombre": "Luka Doncic",
+          "precio": 320
+        },
+        {
+          "idJugador": 38017676,
+          "nombre": "Kyrie Irving",
+          "precio": 240
+        },
+        {
+          "idJugador": 38017788,
+          "nombre": "Dereck Lively II",
+          "precio": 150
+        },
+        {
+          "idJugador": 38017905,
+          "nombre": "P.J. Washington",
+          "precio": 150
+        },
+        {
+          "idJugador": 38017815,
+          "nombre": "Tim Hardaway Jr.",
+          "precio": 130
+        }
+      ]
+    },
+    {
+      "idTeam": 9,
+      "team": "Denver Nuggets",
+      "players": [
+        {
+          "idJugador": 246,
+          "nombre": "Nikola Jokic",
+          "precio": 330
+        },
+        {
+          "idJugador": 38017633,
+          "nombre": "Jamal Murray",
+          "precio": 230
+        },
+        {
+          "idJugador": 38017804,
+          "nombre": "Michael Porter Jr.",
+          "precio": 180
+        },
+        {
+          "idJugador": 38017661,
+          "nombre": "Aaron Gordon",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017727,
+          "nombre": "Kentavious Caldwell-Pope",
+          "precio": 140
+        }
+      ]
+    },
+    {
+      "idTeam": 10,
+      "team": "Detroit Pistons",
+      "players": [
+        {
+          "idJugador": 38017824,
+          "nombre": "Cade Cunningham",
+          "precio": 220
+        },
+        {
+          "idJugador": 38017822,
+          "nombre": "Jalen Duren",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017823,
+          "nombre": "Ausar Thompson",
+          "precio": 160
+        },
+        {
+          "idJugador": 17896052,
+          "nombre": "Bojan Bogdanovic",
+          "precio": 150
+        },
+        {
+          "idJugador": 38017700,
+          "nombre": "Killian Hayes",
+          "precio": 120
+        }
+      ]
+    },
+    {
+      "idTeam": 11,
+      "team": "Golden State Warriors",
+      "players": [
+        {
+          "idJugador": 115,
+          "nombre": "Stephen Curry",
+          "precio": 310
+        },
+        {
+          "idJugador": 38017752,
+          "nombre": "Klay Thompson",
+          "precio": 200
+        },
+        {
+          "idJugador": 38017751,
+          "nombre": "Draymond Green",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017649,
+          "nombre": "Andrew Wiggins",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017716,
+          "nombre": "Jonathan Kuminga",
+          "precio": 160
+        }
+      ]
+    },
+    {
+      "idTeam": 14,
+      "team": "Houston Rockets",
+      "players": [
+        {
+          "idJugador": 38017732,
+          "nombre": "Jalen Green",
+          "precio": 200
+        },
+        {
+          "idJugador": 38017725,
+          "nombre": "Alperen Sengun",
+          "precio": 210
+        },
+        {
+          "idJugador": 38017834,
+          "nombre": "Fred VanVleet",
+          "precio": 190
+        },
+        {
+          "idJugador": 38017833,
+          "nombre": "Dillon Brooks",
+          "precio": 160
+        },
+        {
+          "idJugador": 38017614,
+          "nombre": "Jabari Smith Jr.",
+          "precio": 160
+        }
+      ]
+    },
+    {
+      "idTeam": 15,
+      "team": "Indiana Pacers",
+      "players": [
+        {
+          "idJugador": 38017674,
+          "nombre": "Tyrese Haliburton",
+          "precio": 270
+        },
+        {
+          "idJugador": 38017756,
+          "nombre": "Myles Turner",
+          "precio": 200
+        },
+        {
+          "idJugador": 38017757,
+          "nombre": "Bennedict Mathurin",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017839,
+          "nombre": "Bruce Brown",
+          "precio": 160
+        },
+        {
+          "idJugador": 38017789,
+          "nombre": "Obi Toppin",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 16,
+      "team": "LA Clippers",
+      "players": [
+        {
+          "idJugador": 38017635,
+          "nombre": "Kawhi Leonard",
+          "precio": 260
+        },
+        {
+          "idJugador": 38017810,
+          "nombre": "Paul George",
+          "precio": 240
+        },
+        {
+          "idJugador": 38017671,
+          "nombre": "James Harden",
+          "precio": 220
+        },
+        {
+          "idJugador": 38017812,
+          "nombre": "Ivica Zubac",
+          "precio": 170
+        },
+        {
+          "idJugador": 0,
+          "nombre": "Russell Westbrook",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 17,
+      "team": "Los Angeles Lakers",
+      "players": [
+        {
+          "idJugador": 38017640,
+          "nombre": "LeBron James",
+          "precio": 310
+        },
+        {
+          "idJugador": 38017603,
+          "nombre": "Anthony Davis",
+          "precio": 290
+        },
+        {
+          "idJugador": 38017728,
+          "nombre": "D'Angelo Russell",
+          "precio": 180
+        },
+        {
+          "idJugador": 38017659,
+          "nombre": "Austin Reaves",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017813,
+          "nombre": "Rui Hachimura",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 19,
+      "team": "Memphis Grizzlies",
+      "players": [
+        {
+          "idJugador": 38017682,
+          "nombre": "Ja Morant",
+          "precio": 260
+        },
+        {
+          "idJugador": 38017665,
+          "nombre": "Jaren Jackson Jr.",
+          "precio": 200
+        },
+        {
+          "idJugador": 38017842,
+          "nombre": "Desmond Bane",
+          "precio": 200
+        },
+        {
+          "idJugador": 38017841,
+          "nombre": "Marcus Smart",
+          "precio": 160
+        },
+        {
+          "idJugador": 17896026,
+          "nombre": "Steven Adams",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 20,
+      "team": "Miami Heat",
+      "players": [
+        {
+          "idJugador": 38017639,
+          "nombre": "Jimmy Butler",
+          "precio": 260
+        },
+        {
+          "idJugador": 38017619,
+          "nombre": "Bam Adebayo",
+          "precio": 240
+        },
+        {
+          "idJugador": 38017847,
+          "nombre": "Tyler Herro",
+          "precio": 200
+        },
+        {
+          "idJugador": 38017794,
+          "nombre": "Terry Rozier",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017846,
+          "nombre": "Duncan Robinson",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 21,
+      "team": "Milwaukee Bucks",
+      "players": [
+        {
+          "idJugador": 38017642,
+          "nombre": "Giannis Antetokounmpo",
+          "precio": 320
+        },
+        {
+          "idJugador": 38017666,
+          "nombre": "Damian Lillard",
+          "precio": 290
+        },
+        {
+          "idJugador": 38017755,
+          "nombre": "Khris Middleton",
+          "precio": 190
+        },
+        {
+          "idJugador": 38017631,
+          "nombre": "Brook Lopez",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017849,
+          "nombre": "Bobby Portis",
+          "precio": 160
+        }
+      ]
+    },
+    {
+      "idTeam": 22,
+      "team": "Minnesota Timberwolves",
+      "players": [
+        {
+          "idJugador": 38017609,
+          "nombre": "Anthony Edwards",
+          "precio": 290
+        },
+        {
+          "idJugador": 38017601,
+          "nombre": "Karl-Anthony Towns",
+          "precio": 240
+        },
+        {
+          "idJugador": 38017686,
+          "nombre": "Rudy Gobert",
+          "precio": 200
+        },
+        {
+          "idJugador": 38017852,
+          "nombre": "Mike Conley",
+          "precio": 160
+        },
+        {
+          "idJugador": 38017853,
+          "nombre": "Jaden McDaniels",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 23,
+      "team": "New Orleans Pelicans",
+      "players": [
+        {
+          "idJugador": 38017602,
+          "nombre": "Zion Williamson",
+          "precio": 260
+        },
+        {
+          "idJugador": 38017854,
+          "nombre": "Brandon Ingram",
+          "precio": 230
+        },
+        {
+          "idJugador": 38017617,
+          "nombre": "CJ McCollum",
+          "precio": 200
+        },
+        {
+          "idJugador": 38017683,
+          "nombre": "Jonas Valanciunas",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017855,
+          "nombre": "Herbert Jones",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 24,
+      "team": "New York Knicks",
+      "players": [
+        {
+          "idJugador": 38017648,
+          "nombre": "Jalen Brunson",
+          "precio": 260
+        },
+        {
+          "idJugador": 38017627,
+          "nombre": "Julius Randle",
+          "precio": 220
+        },
+        {
+          "idJugador": 38017675,
+          "nombre": "RJ Barrett",
+          "precio": 180
+        },
+        {
+          "idJugador": 38017858,
+          "nombre": "Mitchell Robinson",
+          "precio": 160
+        },
+        {
+          "idJugador": 38017857,
+          "nombre": "Josh Hart",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 25,
+      "team": "Oklahoma City Thunder",
+      "players": [
+        {
+          "idJugador": 38017606,
+          "nombre": "Shai Gilgeous-Alexander",
+          "precio": 310
+        },
+        {
+          "idJugador": 38017861,
+          "nombre": "Chet Holmgren",
+          "precio": 240
+        },
+        {
+          "idJugador": 38017860,
+          "nombre": "Jalen Williams",
+          "precio": 200
+        },
+        {
+          "idJugador": 38017862,
+          "nombre": "Josh Giddey",
+          "precio": 180
+        },
+        {
+          "idJugador": 38017680,
+          "nombre": "Luguentz Dort",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 26,
+      "team": "Orlando Magic",
+      "players": [
+        {
+          "idJugador": 38017864,
+          "nombre": "Paolo Banchero",
+          "precio": 240
+        },
+        {
+          "idJugador": 38017863,
+          "nombre": "Franz Wagner",
+          "precio": 200
+        },
+        {
+          "idJugador": 38017865,
+          "nombre": "Jalen Suggs",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017689,
+          "nombre": "Wendell Carter Jr.",
+          "precio": 160
+        },
+        {
+          "idJugador": 38017866,
+          "nombre": "Cole Anthony",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 27,
+      "team": "Philadelphia 76ers",
+      "players": [
+        {
+          "idJugador": 38017633,
+          "nombre": "Joel Embiid",
+          "precio": 320
+        },
+        {
+          "idJugador": 38017664,
+          "nombre": "Tyrese Maxey",
+          "precio": 240
+        },
+        {
+          "idJugador": 38017869,
+          "nombre": "Tobias Harris",
+          "precio": 180
+        },
+        {
+          "idJugador": 38017867,
+          "nombre": "Kelly Oubre Jr.",
+          "precio": 160
+        },
+        {
+          "idJugador": 38017868,
+          "nombre": "De'Anthony Melton",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 28,
+      "team": "Phoenix Suns",
+      "players": [
+        {
+          "idJugador": 38017603,
+          "nombre": "Kevin Durant",
+          "precio": 290
+        },
+        {
+          "idJugador": 38017668,
+          "nombre": "Devin Booker",
+          "precio": 280
+        },
+        {
+          "idJugador": 38017636,
+          "nombre": "Bradley Beal",
+          "precio": 220
+        },
+        {
+          "idJugador": 38017872,
+          "nombre": "Jusuf Nurkic",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017873,
+          "nombre": "Grayson Allen",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 29,
+      "team": "Portland Trail Blazers",
+      "players": [
+        {
+          "idJugador": 38017876,
+          "nombre": "Scoot Henderson",
+          "precio": 180
+        },
+        {
+          "idJugador": 38017875,
+          "nombre": "Anfernee Simons",
+          "precio": 200
+        },
+        {
+          "idJugador": 38017877,
+          "nombre": "Shaedon Sharpe",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017874,
+          "nombre": "Deandre Ayton",
+          "precio": 190
+        },
+        {
+          "idJugador": 38017878,
+          "nombre": "Jerami Grant",
+          "precio": 180
+        }
+      ]
+    },
+    {
+      "idTeam": 30,
+      "team": "Sacramento Kings",
+      "players": [
+        {
+          "idJugador": 38017643,
+          "nombre": "Domantas Sabonis",
+          "precio": 250
+        },
+        {
+          "idJugador": 38017669,
+          "nombre": "De'Aaron Fox",
+          "precio": 270
+        },
+        {
+          "idJugador": 38017880,
+          "nombre": "Keegan Murray",
+          "precio": 180
+        },
+        {
+          "idJugador": 38017881,
+          "nombre": "Harrison Barnes",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017882,
+          "nombre": "Kevin Huerter",
+          "precio": 160
+        }
+      ]
+    },
+    {
+      "idTeam": 31,
+      "team": "San Antonio Spurs",
+      "players": [
+        {
+          "idJugador": 38017884,
+          "nombre": "Victor Wembanyama",
+          "precio": 300
+        },
+        {
+          "idJugador": 38017885,
+          "nombre": "Devin Vassell",
+          "precio": 190
+        },
+        {
+          "idJugador": 38017886,
+          "nombre": "Keldon Johnson",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017883,
+          "nombre": "Tre Jones",
+          "precio": 150
+        },
+        {
+          "idJugador": 38017887,
+          "nombre": "Zach Collins",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 32,
+      "team": "Toronto Raptors",
+      "players": [
+        {
+          "idJugador": 38017890,
+          "nombre": "Scottie Barnes",
+          "precio": 230
+        },
+        {
+          "idJugador": 38017888,
+          "nombre": "RJ Barrett",
+          "precio": 200
+        },
+        {
+          "idJugador": 38017889,
+          "nombre": "Immanuel Quickley",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017891,
+          "nombre": "Jakob Poeltl",
+          "precio": 160
+        },
+        {
+          "idJugador": 38017650,
+          "nombre": "Gary Trent Jr.",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 33,
+      "team": "Utah Jazz",
+      "players": [
+        {
+          "idJugador": 38017892,
+          "nombre": "Lauri Markkanen",
+          "precio": 240
+        },
+        {
+          "idJugador": 38017893,
+          "nombre": "Jordan Clarkson",
+          "precio": 180
+        },
+        {
+          "idJugador": 38017894,
+          "nombre": "Collin Sexton",
+          "precio": 170
+        },
+        {
+          "idJugador": 38017895,
+          "nombre": "John Collins",
+          "precio": 160
+        },
+        {
+          "idJugador": 38017896,
+          "nombre": "Walker Kessler",
+          "precio": 150
+        }
+      ]
+    },
+    {
+      "idTeam": 34,
+      "team": "Washington Wizards",
+      "players": [
+        {
+          "idJugador": 38017670,
+          "nombre": "Kyle Kuzma",
+          "precio": 210
+        },
+        {
+          "idJugador": 38017898,
+          "nombre": "Jordan Poole",
+          "precio": 180
+        },
+        {
+          "idJugador": 38017899,
+          "nombre": "Deni Avdija",
+          "precio": 160
+        },
+        {
+          "idJugador": 38017900,
+          "nombre": "Tyus Jones",
+          "precio": 150
+        },
+        {
+          "idJugador": 38017901,
+          "nombre": "Marvin Bagley III",
+          "precio": 150
+        }
+      ]
     }
   ]
 }

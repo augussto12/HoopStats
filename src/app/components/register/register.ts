@@ -57,7 +57,13 @@ export class Register {
         password: password!,
         gender: gender! as User['gender'],
         totalPredictionPoints: 0,
-        favorites: { teams: [], players: [] }
+        favorites: { teams: [], players: [] },
+        fantasy: {
+          name: "",
+          totalPoints: 0,
+          budget: 1000,
+          players: []
+        }
       };
 
       await this.auth.register(user);

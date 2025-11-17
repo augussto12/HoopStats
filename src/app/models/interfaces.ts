@@ -9,6 +9,7 @@ export interface User {
         teams: any[];
         players: any[];
     };
+    fantasy: FantasyTeam;
 }
 
 
@@ -141,4 +142,17 @@ export interface Prediction {
 
 export interface CountryOption {
     name: string;
+}
+
+export interface FantasyPlayer {
+    id: number;
+    name: string;
+    price: number;
+}
+
+export interface FantasyTeam {
+    name: string;
+    totalPoints: number;
+    budget: number;
+    players: FantasyPlayer[];
 }

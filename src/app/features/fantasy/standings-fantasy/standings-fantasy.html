@@ -1,0 +1,27 @@
+<div class="tables-wrapper">
+    <div class="table-box">
+        <h2>Ranking de Fantasy Team</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Usuario</th>
+                    <th>Puntos Totales</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let user of ranking; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                        <div class="team-cell">
+                            <span>{{ user.fullname }}</span>
+                        </div>
+                    </td>
+                    <td>{{ user.totalPredictionPoints }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -15,6 +15,9 @@ import { Favorites } from './features/favorites/favorites';
 import { Prediction } from './features/predictions/prediction/prediction';
 import { MyPredictions } from './features/predictions/my-predictions/my-predictions';
 import { StandingsPredictions } from './features/predictions/standings-predictions/standings-predictions';
+import { FantasyHome } from './features/fantasy/fantasy-home/fantasy-home';
+import { MyTeam } from './features/fantasy/my-team/my-team';
+import { StandingsFantasy } from './features/fantasy/standings-fantasy/standings-fantasy';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -33,5 +36,8 @@ export const routes: Routes = [
     { path: 'predictions', component: Prediction },
     { path: 'my-predictions', component: MyPredictions },
     { path: 'standings-predictions', component: StandingsPredictions },
+    { path: 'fantasy-home', component: FantasyHome},
+    { path: 'my-team', component: MyTeam},
+    { path: 'standings-fantasy', component: StandingsFantasy},
     { path: '**', redirectTo: 'home' }
 ];

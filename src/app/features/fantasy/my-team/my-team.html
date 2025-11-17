@@ -1,0 +1,82 @@
+<div class="fantasy-team-container">
+
+    <h1>Mi Fantasy Team</h1>
+
+    <div class="team-name-section">
+
+        <div class="header-row">
+            <label>Nombre del equipo</label>
+            <span class="budget">Presupuesto disponible: {{ fantasyTeam?.budget }} créditos</span>
+        </div>
+
+        <div *ngIf="editingName">
+            <input type="text" [(ngModel)]="newName" placeholder="Nombre de tu equipo" />
+            <button (click)="saveName()">Guardar</button>
+        </div>
+
+        <div *ngIf="!editingName" class="team-info">
+            <h2>{{ fantasyTeam?.name || 'Sin equipo' }}</h2>
+            <button (click)="editingName = true">Editar</button>
+        </div>
+
+    </div>
+
+
+
+    <hr>
+
+    <h3>Jugadores</h3>
+    <div *ngIf="fantasyTeam?.players?.length === 0">
+        <p>No tienes jugadores aún.</p>
+    </div>
+
+    <div class="players-list">
+        <div class="player-card" *ngFor="let p of fantasyTeam?.players">
+            <div class="player-info">
+                <h4>{{ p.name }}</h4>
+                <p>Precio: {{ p.price }}</p>
+            </div>
+
+            <button class="remove-btn" (click)="removePlayer(p.id)">Eliminar</button>
+        </div>
+    </div>
+
+    <hr>
+
+    <button class="add-btn" (click)="toggleAddForm()">
+        {{ showAddForm ? 'Cerrar' : 'Agregar jugador' }}
+    </button>
+
+    <div *ngIf="showAddForm" class="add-player-form">
+
+        <h3>Elegí un equipo</h3>
+
+        <label>Equipo:</label>
+        <select [(ngModel)]="selectedTeamId" (change)="onTeamChange()" class="select">
+            <option [ngValue]="null" disabled selected>Selecciona un equipo</option>
+            <option *ngFor="let t of teams" [value]="t.idTeam">
+                {{ t.team }}
+            </option>
+        </select>
+
+        <div class="players-grid" *ngIf="players.length > 0">
+
+            <div class="player-card selectable" *ngFor="let p of players">
+                <div class="player-info">
+                    <h4>{{ p.nombre }}</h4>
+                    <p>Precio: {{ p.precio }} créditos</p>
+                </div>
+
+                <button class="add-player-btn" (click)="addSelectedPlayer(p)">
+                    Agregar
+                </button>
+            </div>
+
+        </div>
+
+        <p class="success" *ngIf="success">{{ success }}</p>
+        <p class="error" *ngIf="error">{{ error }}</p>
+
+    </div>
+
+</div>
