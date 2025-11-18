@@ -176,7 +176,7 @@
         },
         {
           "idJugador": 38017789,
-          "nombre": "Dejounte Murray",
+          "nombre": "Kristaps Porziņģis",
           "precio": 220
         },
         {
@@ -186,12 +186,12 @@
         },
         {
           "idJugador": 38017770,
-          "nombre": "Clint Capela",
+          "nombre": "Nickeil Alexander-Walker",
           "precio": 150
         },
         {
           "idJugador": 38018681,
-          "nombre": "De'Andre Hunter",
+          "nombre": "Zaccharie Risacher",
           "precio": 140
         }
       ]
@@ -212,12 +212,12 @@
         },
         {
           "idJugador": 38017796,
-          "nombre": "Kristaps Porzingis",
+          "nombre": "Payton Pritchard",
           "precio": 210
         },
         {
           "idJugador": 38017757,
-          "nombre": "Jrue Holiday",
+          "nombre": "Anfernee Simons",
           "precio": 200
         },
         {
@@ -233,7 +233,7 @@
       "players": [
         {
           "idJugador": 38017674,
-          "nombre": "Mikal Bridges",
+          "nombre": "Michael Porter Jr.",
           "precio": 220
         },
         {
@@ -248,12 +248,12 @@
         },
         {
           "idJugador": 38017670,
-          "nombre": "Cameron Johnson",
+          "nombre": "Terance Mann",
           "precio": 150
         },
         {
           "idJugador": 66678666,
-          "nombre": "Ben Simmons",
+          "nombre": "Egor Demin",
           "precio": 120
         }
       ]
@@ -279,12 +279,12 @@
         },
         {
           "idJugador": 38017613,
-          "nombre": "Mark Williams",
+          "nombre": "Ryan Kalkbrenner",
           "precio": 150
         },
         {
           "idJugador": 38017772,
-          "nombre": "Terry Rozier",
+          "nombre": "Kon Knueppel",
           "precio": 140
         }
       ]
@@ -295,12 +295,12 @@
       "players": [
         {
           "idJugador": 7841100,
-          "nombre": "Zach LaVine",
+          "nombre": "Josh Giddey",
           "precio": 230
         },
         {
           "idJugador": 666987,
-          "nombre": "DeMar DeRozan",
+          "nombre": "Matas Buzelis",
           "precio": 210
         },
         {
@@ -357,7 +357,7 @@
       "players": [
         {
           "idJugador": 38017682,
-          "nombre": "Luka Doncic",
+          "nombre": "Cooper Flagg",
           "precio": 320
         },
         {
@@ -377,7 +377,7 @@
         },
         {
           "idJugador": 38017815,
-          "nombre": "Tim Hardaway Jr.",
+          "nombre": "Anthony Davis",
           "precio": 130
         }
       ]
@@ -398,7 +398,7 @@
         },
         {
           "idJugador": 38017804,
-          "nombre": "Michael Porter Jr.",
+          "nombre": "Cameron Johnson",
           "precio": 180
         },
         {
@@ -408,7 +408,7 @@
         },
         {
           "idJugador": 38017727,
-          "nombre": "Kentavious Caldwell-Pope",
+          "nombre": "Christian Braun",
           "precio": 140
         }
       ]
@@ -434,12 +434,12 @@
         },
         {
           "idJugador": 17896052,
-          "nombre": "Bojan Bogdanovic",
+          "nombre": "Duncan Robinson",
           "precio": 150
         },
         {
           "idJugador": 38017700,
-          "nombre": "Killian Hayes",
+          "nombre": "Tobias Harris",
           "precio": 120
         }
       ]
@@ -455,7 +455,7 @@
         },
         {
           "idJugador": 38017752,
-          "nombre": "Klay Thompson",
+          "nombre": "Jimmy Butler",
           "precio": 200
         },
         {
@@ -465,7 +465,7 @@
         },
         {
           "idJugador": 38017649,
-          "nombre": "Andrew Wiggins",
+          "nombre": "Moses Moody",
           "precio": 170
         },
         {
@@ -481,7 +481,7 @@
       "players": [
         {
           "idJugador": 38017732,
-          "nombre": "Jalen Green",
+          "nombre": "Kevin Durant",
           "precio": 200
         },
         {
@@ -496,7 +496,7 @@
         },
         {
           "idJugador": 38017833,
-          "nombre": "Dillon Brooks",
+          "nombre": "Amen Thompsons",
           "precio": 160
         },
         {
@@ -517,7 +517,7 @@
         },
         {
           "idJugador": 38017756,
-          "nombre": "Myles Turner",
+          "nombre": "Pascal Siakam",
           "precio": 200
         },
         {
@@ -527,12 +527,12 @@
         },
         {
           "idJugador": 38017839,
-          "nombre": "Bruce Brown",
+          "nombre": "Andrew Nembhard",
           "precio": 160
         },
         {
           "idJugador": 38017789,
-          "nombre": "Obi Toppin",
+          "nombre": "Aaron Nesmith",
           "precio": 150
         }
       ]
@@ -548,7 +548,7 @@
         },
         {
           "idJugador": 38017810,
-          "nombre": "Paul George",
+          "nombre": "Bradley Beal",
           "precio": 240
         },
         {
@@ -563,7 +563,7 @@
         },
         {
           "idJugador": 0,
-          "nombre": "Russell Westbrook",
+          "nombre": "John Collins",
           "precio": 150
         }
       ]
@@ -579,12 +579,12 @@
         },
         {
           "idJugador": 38017603,
-          "nombre": "Anthony Davis",
+          "nombre": "Luka Dončić",
           "precio": 290
         },
         {
           "idJugador": 38017728,
-          "nombre": "D'Angelo Russell",
+          "nombre": "DeAndre Ayton",
           "precio": 180
         },
         {
@@ -615,17 +615,17 @@
         },
         {
           "idJugador": 38017842,
-          "nombre": "Desmond Bane",
+          "nombre": "Zach Edey",
           "precio": 200
         },
         {
           "idJugador": 38017841,
-          "nombre": "Marcus Smart",
+          "nombre": "Cedric Coward",
           "precio": 160
         },
         {
           "idJugador": 17896026,
-          "nombre": "Steven Adams",
+          "nombre": "Kentavious Caldwell-Pope",
           "precio": 150
         }
       ]
@@ -636,7 +636,7 @@
       "players": [
         {
           "idJugador": 38017639,
-          "nombre": "Jimmy Butler",
+          "nombre": "Norman Powell",
           "precio": 260
         },
         {
@@ -651,12 +651,12 @@
         },
         {
           "idJugador": 38017794,
-          "nombre": "Terry Rozier",
+          "nombre": "Davion Mitchell",
           "precio": 170
         },
         {
           "idJugador": 38017846,
-          "nombre": "Duncan Robinson",
+          "nombre": "Andrew Wiggins",
           "precio": 150
         }
       ]
@@ -672,17 +672,17 @@
         },
         {
           "idJugador": 38017666,
-          "nombre": "Damian Lillard",
+          "nombre": "Myles Turner",
           "precio": 290
         },
         {
           "idJugador": 38017755,
-          "nombre": "Khris Middleton",
+          "nombre": "Kyle Kuzma",
           "precio": 190
         },
         {
           "idJugador": 38017631,
-          "nombre": "Brook Lopez",
+          "nombre": "Ryan Rollins",
           "precio": 170
         },
         {
@@ -703,7 +703,7 @@
         },
         {
           "idJugador": 38017601,
-          "nombre": "Karl-Anthony Towns",
+          "nombre": "Julius Randle",
           "precio": 240
         },
         {
@@ -713,7 +713,7 @@
         },
         {
           "idJugador": 38017852,
-          "nombre": "Mike Conley",
+          "nombre": "Donte DiVincenzo",
           "precio": 160
         },
         {
@@ -734,22 +734,22 @@
         },
         {
           "idJugador": 38017854,
-          "nombre": "Brandon Ingram",
+          "nombre": "Jordan Poole",
           "precio": 230
         },
         {
           "idJugador": 38017617,
-          "nombre": "CJ McCollum",
+          "nombre": "Trey Murphy III",
           "precio": 200
         },
         {
           "idJugador": 38017683,
-          "nombre": "Jonas Valanciunas",
+          "nombre": "Dejounte Murray",
           "precio": 170
         },
         {
           "idJugador": 38017855,
-          "nombre": "Herbert Jones",
+          "nombre": "Kevon Looney",
           "precio": 150
         }
       ]
@@ -765,17 +765,17 @@
         },
         {
           "idJugador": 38017627,
-          "nombre": "Julius Randle",
+          "nombre": "Karl-Anthony Towns",
           "precio": 220
         },
         {
           "idJugador": 38017675,
-          "nombre": "RJ Barrett",
+          "nombre": "OG Anunoby",
           "precio": 180
         },
         {
           "idJugador": 38017858,
-          "nombre": "Mitchell Robinson",
+          "nombre": "Mikal Bridges",
           "precio": 160
         },
         {
@@ -806,7 +806,7 @@
         },
         {
           "idJugador": 38017862,
-          "nombre": "Josh Giddey",
+          "nombre": "Isaiah Hartenstein",
           "precio": 180
         },
         {
@@ -842,7 +842,7 @@
         },
         {
           "idJugador": 38017866,
-          "nombre": "Cole Anthony",
+          "nombre": "Desmond Bane",
           "precio": 150
         }
       ]
@@ -863,7 +863,7 @@
         },
         {
           "idJugador": 38017869,
-          "nombre": "Tobias Harris",
+          "nombre": "V. J. Edgecombe",
           "precio": 180
         },
         {
@@ -873,7 +873,7 @@
         },
         {
           "idJugador": 38017868,
-          "nombre": "De'Anthony Melton",
+          "nombre": "Paul George",
           "precio": 150
         }
       ]
@@ -884,7 +884,7 @@
       "players": [
         {
           "idJugador": 38017603,
-          "nombre": "Kevin Durant",
+          "nombre": "Jalen Green",
           "precio": 290
         },
         {
@@ -894,12 +894,12 @@
         },
         {
           "idJugador": 38017636,
-          "nombre": "Bradley Beal",
+          "nombre": "Dillon Brooks",
           "precio": 220
         },
         {
           "idJugador": 38017872,
-          "nombre": "Jusuf Nurkic",
+          "nombre": "Mark Williams",
           "precio": 170
         },
         {
@@ -915,12 +915,12 @@
       "players": [
         {
           "idJugador": 38017876,
-          "nombre": "Scoot Henderson",
+          "nombre": "Deni Avdija",
           "precio": 180
         },
         {
           "idJugador": 38017875,
-          "nombre": "Anfernee Simons",
+          "nombre": "Damian Lillard",
           "precio": 200
         },
         {
@@ -930,7 +930,7 @@
         },
         {
           "idJugador": 38017874,
-          "nombre": "Deandre Ayton",
+          "nombre": "Jrue Holiday",
           "precio": 190
         },
         {
@@ -951,22 +951,22 @@
         },
         {
           "idJugador": 38017669,
-          "nombre": "De'Aaron Fox",
+          "nombre": "Russell Westbrook",
           "precio": 270
         },
         {
           "idJugador": 38017880,
-          "nombre": "Keegan Murray",
+          "nombre": "DeMar DeRozan",
           "precio": 180
         },
         {
           "idJugador": 38017881,
-          "nombre": "Harrison Barnes",
+          "nombre": "Zach LaVine",
           "precio": 170
         },
         {
           "idJugador": 38017882,
-          "nombre": "Kevin Huerter",
+          "nombre": "Dennis Schröder",
           "precio": 160
         }
       ]
@@ -982,22 +982,22 @@
         },
         {
           "idJugador": 38017885,
-          "nombre": "Devin Vassell",
+          "nombre": "Stephon Castle",
           "precio": 190
         },
         {
           "idJugador": 38017886,
-          "nombre": "Keldon Johnson",
+          "nombre": "De'Aaron Fox",
           "precio": 170
         },
         {
           "idJugador": 38017883,
-          "nombre": "Tre Jones",
+          "nombre": "Devin Vassell",
           "precio": 150
         },
         {
           "idJugador": 38017887,
-          "nombre": "Zach Collins",
+          "nombre": "Harrison Barnes",
           "precio": 150
         }
       ]
@@ -1018,17 +1018,17 @@
         },
         {
           "idJugador": 38017889,
-          "nombre": "Immanuel Quickley",
+          "nombre": "Brandon Ingram",
           "precio": 170
         },
         {
           "idJugador": 38017891,
-          "nombre": "Jakob Poeltl",
+          "nombre": "Immanuel Quickley",
           "precio": 160
         },
         {
           "idJugador": 38017650,
-          "nombre": "Gary Trent Jr.",
+          "nombre": "Jakob Pöltl",
           "precio": 150
         }
       ]
@@ -1044,17 +1044,17 @@
         },
         {
           "idJugador": 38017893,
-          "nombre": "Jordan Clarkson",
+          "nombre": "Keyonte George",
           "precio": 180
         },
         {
           "idJugador": 38017894,
-          "nombre": "Collin Sexton",
+          "nombre": "Isaiah Collier",
           "precio": 170
         },
         {
           "idJugador": 38017895,
-          "nombre": "John Collins",
+          "nombre": "Jusuf Nurkić",
           "precio": 160
         },
         {
@@ -1070,27 +1070,27 @@
       "players": [
         {
           "idJugador": 38017670,
-          "nombre": "Kyle Kuzma",
+          "nombre": "Alexandre Sarr",
           "precio": 210
         },
         {
           "idJugador": 38017898,
-          "nombre": "Jordan Poole",
+          "nombre": "C. J. McCollum",
           "precio": 180
         },
         {
           "idJugador": 38017899,
-          "nombre": "Deni Avdija",
+          "nombre": "Khris Middleton",
           "precio": 160
         },
         {
           "idJugador": 38017900,
-          "nombre": "Tyus Jones",
+          "nombre": "Bilal Coulibaly",
           "precio": 150
         },
         {
           "idJugador": 38017901,
-          "nombre": "Marvin Bagley III",
+          "nombre": "Kyshawn George",
           "precio": 150
         }
       ]
