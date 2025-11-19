@@ -148,6 +148,7 @@ export interface FantasyPlayer {
     id: number;
     name: string;
     price: number;
+    totalPts?: number;
 }
 
 export interface FantasyTeam {

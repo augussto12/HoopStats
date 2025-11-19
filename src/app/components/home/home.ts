@@ -5,7 +5,7 @@ import { NbaApiService } from '../../services/nba-api';
 import { mapGame } from '../../utils/mapGame';
 import { Game, TopStat, PlayerStats } from '../../models/interfaces';
 import { AuthService } from '../../services/auth.service';
-import { PredictionCalulator } from '../../services/prediction-calculator';
+import { PredictionCalulator } from '../../services/predictions/prediction-calculator';
 
 @Component({
   selector: 'app-home',
@@ -24,29 +24,20 @@ export class Home implements OnInit {
 
   errorLive: string | null = null;
   errorPlayers: string | null = null;
-  
+
 
   private statsCache = new Map<number, PlayerStats[]>();
 
   constructor(
     private nbaService: NbaApiService,
-    public auth: AuthService,
-    private predictionCald: PredictionCalulator
+    public auth: AuthService
   ) { }
 
   ngOnInit(): void {
     this.loadLiveGames();
     this.loadBestPlayersYesterday();
-    this.runPredictionProcessorInBackground();
   }
 
-  private async runPredictionProcessorInBackground() {
-    try {
-      this.predictionCald.evaluatePendingPredictions();
-    } catch (err) {
-      console.error("Error procesando predicciones:", err);
-    }
-  }
 
   async loadLiveGames() {
     this.loadingLive = true;

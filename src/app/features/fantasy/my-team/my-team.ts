@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FantasyService } from '../../../services/fantasy-service';
+import { FantasyService } from '../../../services/fantasy/fantasy-service';
 import { LocalApiService } from '../../../services/local-api';
 import { FantasyTeam } from '../../../models/interfaces';
 import { CommonModule } from '@angular/common';

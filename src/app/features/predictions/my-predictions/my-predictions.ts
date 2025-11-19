@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PrediccionService } from '../../../services/predictions-service';
+import { PrediccionService } from '../../../services/predictions/predictions-service';
 import { AuthService } from '../../../services/auth.service';
 import { Prediction } from '../../../models/interfaces';
 import { CommonModule } from '@angular/common';

@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NbaApiService } from '../../../services/nba-api';
 import { mapGame } from '../../../utils/mapGame';
 import { AuthService } from '../../../services/auth.service';
-import { PrediccionService } from '../../../services/predictions-service';
+import { PrediccionService } from '../../../services/predictions/predictions-service';
 
 
 type APIGame = any;
