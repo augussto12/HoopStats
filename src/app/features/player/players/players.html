@@ -2,8 +2,8 @@
   <h1>Listado de jugadores</h1>
 
   <div class="filters">
-    <label>Nombre:</label>
-    <input type="text" [(ngModel)]="selectedLastName" placeholder="Apellido" />
+    <label>Apellido:</label>
+    <input type="text" [(ngModel)]="selectedLastName" placeholder="Ej: Doncic" />
 
     <label>País:</label>
     <select [(ngModel)]="selectedCountry" class="inputSelect">
@@ -21,8 +21,8 @@
     <button (click)="getPlayersFiltered()">Buscar</button>
   </div>
 
-  <div *ngIf="loading">Cargando jugadores...</div>
-  <div *ngIf="error" class="error">{{ error }}</div>
+  <div *ngIf="loading" class="no-players">Cargando jugadores...</div>
+  <div *ngIf="error" class="no-players">{{ error }}</div>
 
   <div class="players-list">
     <div *ngFor="let player of players" class="player-card">

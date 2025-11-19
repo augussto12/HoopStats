@@ -1,70 +1,81 @@
 <div>
     <h1 class="title-stats">Estadísticas</h1>
 
-    <div class="view-toggle">
-        <button [class.active]="view === 'game'" (click)="view = 'game'">Partido</button>
-        <button [class.active]="view === 'players'" (click)="view = 'players'">Jugadores</button>
-    </div>
-</div>
-
-
-<div *ngIf="view === 'game' && gameDetails.length === 2" class="stats-card">
-    <div class="teams-header">
-        <div class="team">
-            <h2>{{ gameDetails[0].team.name }}</h2>
-            <img [src]="gameDetails[0].team.logo" width="100" />
-        </div>
-
-        <div class="team">
-            <h2>{{ gameDetails[1].team.name }}</h2>
-            <img [src]="gameDetails[1].team.logo" width="100" />
-        </div>
+    <div *ngIf="loading" class="loading-box">
+        Cargando datos del partido...
     </div>
 
-    <div class="stats-body">
-        <div class="stat-row" *ngFor="let stat of statList">
-            <div>{{ gameDetails[0].statistics[0][stat.key] || '-' }}</div>
-            <div>{{ stat.label }}</div>
-            <div>{{ gameDetails[1].statistics[0][stat.key] || '-' }}</div>
-        </div>
+    <div *ngIf="!loading && error" class="error-box">
+        {{ error }}
     </div>
-</div>
 
+    <ng-container *ngIf="!loading && !error">
 
-<div *ngIf="view === 'players'" class="players-stats-layout">
-    <div *ngFor="let team of groupedPlayers">
-        <div>
-            <h2 class="team-title">{{ team.team.name }}</h2>
-            <img [src]="team.team.logo" width="80" />
+        <div class="view-toggle">
+            <button [class.active]="view === 'game'" (click)="view = 'game'">Partido</button>
+            <button [class.active]="view === 'players'" (click)="view = 'players'">Jugadores</button>
         </div>
 
-        <table class="player-table">
-            <thead>
-                <tr>
-                    <th>Jugador</th>
-                    <th>PTS</th>
-                    <th>AST</th>
-                    <th>REB</th>
-                    <th>ROB</th>
-                    <th>BLK</th>
-                    <th>MIN</th>
-                    <th>3PM</th>
-                    <th>FG%</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let p of team.players">
-                    <td>{{ p.player.firstname }} {{ p.player.lastname }}</td>
-                    <td>{{ p.points }}</td>
-                    <td>{{ p.assists }}</td>
-                    <td>{{ p.totReb }}</td>
-                    <td>{{ p.steals }}</td>
-                    <td>{{ p.blocks }}</td>
-                    <td>{{p.min}}</td>
-                    <td>{{p.tpm}}</td>
-                    <td>{{ p.fgp }}%</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <div *ngIf="view === 'game' && gameDetails.length === 2" class="stats-card">
+            <div class="teams-header">
+                <div class="team">
+                    <h2>{{ gameDetails[0].team.name }}</h2>
+                    <img [src]="gameDetails[0].team.logo" width="100" />
+                </div>
+
+                <div class="team">
+                    <h2>{{ gameDetails[1].team.name }}</h2>
+                    <img [src]="gameDetails[1].team.logo" width="100" />
+                </div>
+            </div>
+
+            <div class="stats-body">
+                <div class="stat-row" *ngFor="let stat of statList">
+                    <div>{{ gameDetails[0].statistics[0][stat.key] || '-' }}</div>
+                    <div>{{ stat.label }}</div>
+                    <div>{{ gameDetails[1].statistics[0][stat.key] || '-' }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VISTA JUGADORES -->
+        <div *ngIf="view === 'players'" class="players-stats-layout">
+            <div *ngFor="let team of groupedPlayers">
+                <div>
+                    <h2 class="team-title">{{ team.team.name }}</h2>
+                    <img [src]="team.team.logo" width="80" />
+                </div>
+
+                <table class="player-table">
+                    <thead>
+                        <tr>
+                            <th>Jugador</th>
+                            <th>PTS</th>
+                            <th>AST</th>
+                            <th>REB</th>
+                            <th>ROB</th>
+                            <th>BLK</th>
+                            <th>MIN</th>
+                            <th>3PM</th>
+                            <th>FG%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of team.players">
+                            <td>{{ p.player.firstname }} {{ p.player.lastname }}</td>
+                            <td>{{ p.points }}</td>
+                            <td>{{ p.assists }}</td>
+                            <td>{{ p.totReb }}</td>
+                            <td>{{ p.steals }}</td>
+                            <td>{{ p.blocks }}</td>
+                            <td>{{ p.min }}</td>
+                            <td>{{ p.tpm }}</td>
+                            <td>{{ p.fgp }}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </ng-container>
 </div>

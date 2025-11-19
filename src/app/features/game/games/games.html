@@ -60,33 +60,32 @@
                 </div>
 
                 <div class="arena" *ngIf="g.arena">{{ g.arena }}</div>
-
                 <ng-container *ngIf="auth.isLoggedIn()">
-                    <div class="prediction-box" (click)="$event.stopPropagation()" *ngIf="g.status === 'Programado'">
+                    <div class="prediction-box" *ngIf="g.status === 'Programado'">
 
                         <h4>Tu predicción</h4>
 
                         <div class="prediction-inputs">
                             <div class="team-pred">
                                 <label>{{ g.visitors.name }}</label>
-                                <input type="number" min="0" [(ngModel)]="g.predVisitors" placeholder="Pts"
-                                    (click)="$event.stopPropagation()" />
+                                <input type="number" min="0" [(ngModel)]="g.predVisitors" placeholder="Pts" />
                             </div>
-
-                            <div class="vs">-</div>
 
                             <div class="team-pred">
                                 <label>{{ g.home.name }}</label>
-                                <input type="number" min="0" [(ngModel)]="g.predHome" placeholder="Pts"
-                                    (click)="$event.stopPropagation()" />
+                                <input type="number" min="0" [(ngModel)]="g.predHome" placeholder="Pts" />
                             </div>
                         </div>
 
-                        <button class="btn-predict" (click)="savePrediction(g); $event.stopPropagation()">
+                        <button class="btn-predict" (click)="savePrediction(g)">
                             Guardar predicción
                         </button>
 
-                        <p class="saved" *ngIf="g.savedPrediction">✔ Predicción guardada</p>
+                        <p class="error-msg" *ngIf="g.predictionError">
+                            {{ g.predictionError }}
+                        </p>
+
+                        <p class="saved" *ngIf="g.savedPrediction">Predicción guardada</p>
                     </div>
                 </ng-container>
             </div>

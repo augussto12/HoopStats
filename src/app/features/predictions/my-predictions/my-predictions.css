@@ -1,5 +1,5 @@
 .predictions-container {
-    max-width: 900px;
+    width: 90%;
     margin: 2rem auto;
     padding: 2rem;
     background: #15264b;
@@ -13,6 +13,7 @@
     font-size: 2rem;
     margin-bottom: 1.5rem;
     font-weight: 700;
+    color: #f8c471;
 }
 
 .loading,
@@ -23,15 +24,17 @@
 
 .predictions-grid {
     display: grid;
-    gap: 1.2rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
     margin-top: 2rem;
 }
 
 .prediction-card {
     background: #1b2f5b;
-    padding: 1.2rem;
+    padding: 1rem;
     border-radius: 10px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    text-align: left;
 }
 
 .prediction-card:hover {
@@ -42,6 +45,7 @@
     font-size: 1.2rem;
     margin-bottom: .8rem;
     font-weight: 600;
+    color: #f8c471;
 }
 
 .prediction-row {
@@ -57,4 +61,26 @@
 .points {
     font-weight: bold;
     color: #4caf50;
+}
+
+/* Ajustes responsive */
+@media (max-width: 1024px) {
+    .predictions-grid {
+        grid-template-columns: repeat(3, 1fr);
+        /* 3 por fila */
+    }
+}
+
+@media (max-width: 768px) {
+    .predictions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 por fila */
+    }
+}
+
+@media (max-width: 480px) {
+    .predictions-grid {
+        grid-template-columns: 1fr;
+        /* 1 por fila */
+    }
 }

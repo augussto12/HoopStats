@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { NbaApiService } from '../../../services/nba-api';
 import { Player, PlayerStats } from '../../../models/interfaces';
 
 @Component({
   selector: 'app-player-data',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, RouterLink],
   templateUrl: './player-data.html',
   styleUrls: ['./player-data.css']
 })
@@ -20,7 +20,7 @@ export class PlayerData implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private api: NbaApiService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));

@@ -25,11 +25,15 @@
             <div *ngIf="error" class="error">{{ error }}</div>
         </section>
 
-        <section class="games-grid" *ngIf="!loading && !error">
-            <div *ngIf="!games.length" class="empty">
-                No hay enfrentamientos entre estos equipos.
-            </div>
+        <div *ngIf="!hasSearched" class="empty">
+            Ingrese los dos equipos para buscar enfrentamientos
+        </div>
 
+        <div *ngIf="hasSearched && !games.length && !loading && !error" class="empty">
+            No hay enfrentamientos entre estos equipos.
+        </div>
+
+        <section class="games-grid" *ngIf="!loading && !error">
             <div class="game-card" *ngFor="let g of games" [routerLink]="['/game-details', g.id]">
                 <div class="game-time">
                     <span class="pill" [class.live]="g.status === 'LIVE'" [class.final]="g.status === 'Final'">
@@ -63,5 +67,6 @@
                 <div class="arena" *ngIf="g.arena">{{ g.arena }}</div>
             </div>
         </section>
-    </main>
+          
+    </main>
 </div>

@@ -18,9 +18,9 @@
 
             <div class="prediction-row">
                 <span class="label">Puntos obtenidos:</span>
-                <span class="points">{{ p.puntosObtenidos }}</span>
+                <span *ngIf="!p.procesada">Pendiente</span>
+                <span class="points" *ngIf="p.procesada">{{p.puntosObtenidos}}</span>
             </div>
-
         </div>
     </div>
 </div>

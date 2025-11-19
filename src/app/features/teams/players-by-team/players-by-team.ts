@@ -16,7 +16,7 @@ import { AuthService } from '../../../services/auth.service';
   styleUrls: ['./players-by-team.css', '../../game/games/games.css']
 })
 export class PlayersByTeam implements OnInit {
-  
+
   public teamId!: number;
   public team: Team | null = null;
   public players: any[] = [];
@@ -40,9 +40,28 @@ export class PlayersByTeam implements OnInit {
   ) { }
 
   async ngOnInit() {
+    
     this.teamId = Number(this.route.snapshot.paramMap.get('id'));
-    if (!this.teamId) return;
+    if (!this.teamId) {
+      this.error = "ID de equipo inválido.";
+      return;
+    }
 
+    this.loading = true;
+    this.error = null;
+
+    try {
+      await this.loadAllData();
+    } catch (e) {
+      console.error(e);
+      this.error = "Hubo un problema cargando la información del equipo.";
+    } finally {
+      this.loading = false;
+    }
+  }
+
+
+  private async loadAllData() {
     await this.loadTeam(this.teamId);
     await this.loadPlayers(this.teamId);
     await this.loadGames(this.teamId);

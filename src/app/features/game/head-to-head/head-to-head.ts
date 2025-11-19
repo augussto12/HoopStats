@@ -19,6 +19,7 @@ export class HeadToHead implements OnInit {
 
   public selectedFirstTeam: number | null = null;
   public selectedSecondTeam: number | null = null;
+  public hasSearched = false;
 
   public teams: any[] = [];
   public nbaTeams: any[] = [];
@@ -43,8 +44,13 @@ export class HeadToHead implements OnInit {
   }
 
   public async fetchHeadToHead() {
+    this.hasSearched = true;
+
     if (!this.selectedFirstTeam || !this.selectedSecondTeam) {
-      this.error = 'Seleccioná ambos equipos.';
+      this.error = 'Seleccione ambos equipos.';
+      return;
+    } else if (this.selectedFirstTeam === this.selectedSecondTeam) {
+      this.error = 'Seleccione dos equipos diferentes.';
       return;
     }
 
@@ -58,9 +64,7 @@ export class HeadToHead implements OnInit {
       );
 
       const mapped = response.map((g: any) => mapGame(g));
-
       this.games = mapped;
-      console.log("games", this.games);
     } catch (e) {
       console.error(e);
       this.error = 'Error al obtener los enfrentamientos.';

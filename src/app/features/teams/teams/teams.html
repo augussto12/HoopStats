@@ -11,6 +11,9 @@
         </select>
     </div>
 
+    <div *ngIf="loadingTeams" class="empty">Cargando equipos...</div>
+    <div *ngIf="!loadingTeams && error" class="empty">{{ error }}</div>
+
     <div class="columns">
         <section class="panel">
             <h2 class="panel-title">Conferencia Este</h2>

@@ -13,16 +13,45 @@
 }
 
 .app-footer {
-  text-align: center;
-  padding: 35px 0;
-  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 35px 40px;
+  font-size: 15px;
   font-weight: 500;
   color: #d4d4d4;
   background: #0e162e;
   border-top: 1px solid #1d2745;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .app-footer p {
   margin: 0;
   letter-spacing: 0.5px;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+  flex: 1;
+  text-align: center;
+}
+
+.footer-left {
+  text-align: left;
+}
+
+.footer-right {
+  text-align: right;
+}
+
+/* Responsive para celulares */
+@media (max-width: 768px) {
+
+  .footer-left,
+  .footer-center,
+  .footer-right {
+    text-align: center;
+  }
 }

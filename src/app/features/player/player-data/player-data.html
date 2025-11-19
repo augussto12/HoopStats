@@ -58,7 +58,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let stat of playerData">
-                        <td>#{{ stat.game.id }}</td>
+                        <td class="link" [routerLink]="['/game-details', stat.game.id]">Ver datos</td>
                         <td>{{ stat.points }}</td>
                         <td>{{ stat.min ?? '-' }}</td>
                         <td>{{ stat.fgp }}%</td>

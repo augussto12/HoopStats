@@ -6,6 +6,7 @@ import { NbaApiService } from '../nba-api';
 export class FantasyPointsService {
 
   private gamesCache = new Map<number, any>();
+  private playerStatsCache = new Map<number, any>();
 
   constructor(
     private api: LocalApiService,
@@ -19,8 +20,10 @@ export class FantasyPointsService {
     const config = await this.getLastUpdated();
     const lastUpdate = new Date(config.lastUpdatedFantasy);
 
+    console.log("paso");
     if (!this.pasoUnaHora(lastUpdate)) return;
 
+    console.log("paso23123");
     const users = await this.api.getAll("users");
 
     // juntar todos los jugadores
@@ -89,38 +92,49 @@ export class FantasyPointsService {
 
   private pasoUnaHora(last: Date) {
     const ONE_HOUR = 3600000;
+    console.log("ultimo", last);
+    console.log("ahora", Date.now());
     return (Date.now() - last.getTime()) >= ONE_HOUR;
   }
 
-  private async getAllPlayersStats(ids: number[]) {
-    const responses = await Promise.all(
-      ids.map(id => this.nbaApi.getPlayerStats(id))
-    );
+  async getAllPlayersStats(ids: number[]) {
+    const results: any[] = [];
 
-    return responses.map(r => {
-      if (!r || r.length === 0) return null;
-      return r[r.length - 1]; // ultimo partido del jugador
-    });
+    for (const id of ids) {
+
+      // Si esta en cache usamos eso y seguimos
+      if (this.playerStatsCache.has(id)) {
+        results.push(this.playerStatsCache.get(id));
+        continue;
+      }
+
+      // Si no esta en cache buscamos la info del jugador
+      const res = await this.nbaApi.getPlayerStats(id);
+      const last = res?.[res.length - 1] ?? null;
+
+      this.playerStatsCache.set(id, last);
+      results.push(last);
+    }
+
+    return results;
   }
-
 
   private async getAllGames(gameIds: number[]) {
     const map = new Map<number, any>();
 
     for (const id of gameIds) {
 
-      // Si el partido esta en cache, no se consulta la API para no hacer mas requests
+      // Si esta en cache usamos eso y seguimos
       if (this.gamesCache.has(id)) {
         map.set(id, this.gamesCache.get(id));
         continue;
       }
 
-      // Si no esta en cache, traermos la informacion del partido
+      // Si no esta en cache buscamos la info del partido
       const apiData = await this.nbaApi.getGameData(id);
       const game = apiData?.[0];
 
       if (game) {
-        // Se guarda en cache
         this.gamesCache.set(id, game);
         map.set(id, game);
       }
@@ -128,7 +142,6 @@ export class FantasyPointsService {
 
     return map;
   }
-
 
   private procesarUsuario(user: any, lastUpdate: Date, statsList: any[], gamesMap: Map<number, any>) {
     let added = 0;
@@ -159,9 +172,10 @@ export class FantasyPointsService {
   }
 
   private async actualizarUsuario(user: any, added: number) {
-    user.fantasy.totalPoints += added;
+    user.fantasy.totalPoints = Number((user.fantasy.totalPoints + added).toFixed(2));
     await this.api.patch("users", user.id, { fantasy: user.fantasy });
   }
+
 
   private async actualizarLastUpdated(configId: number) {
     const now = new Date().toISOString();
@@ -181,4 +195,11 @@ export class FantasyPointsService {
       (s.turnovers ?? 0) * -1
     );
   }
+
+  // delay para bajar la cantidad de requests por segundo a la api
+  // sino tira error por el rateLimit que tiene
+  private delay(ms: number) {
+    return new Promise(res => setTimeout(res, ms));
+  }
+
 }

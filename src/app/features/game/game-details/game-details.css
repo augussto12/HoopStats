@@ -133,9 +133,28 @@ body {
     font-weight: 600;
 }
 
+.loading-box,
+.error-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 0.6rem;
+    margin-top: 1rem;
+    text-align: center;
+    color: #cfd9e8;
+}
+
+
+.error-box {
+    background: rgba(255, 82, 82, 0.1);
+    color: #ff5252;
+    border: 1px solid #ff5252;
+}
+
+
 
 @media (max-width: 1450px) {
-    .players-stats-layout{
+    .players-stats-layout {
         flex-wrap: wrap;
         justify-content: center;
     }

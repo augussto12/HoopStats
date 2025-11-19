@@ -37,8 +37,8 @@ input[type='date'],
   padding: 0.45rem 0.8rem;
   font-size: 0.95rem;
   cursor: pointer;
+  margin-bottom: 10px;
 }
-
 
 
 .btn {
@@ -64,7 +64,7 @@ input[type='date'],
 
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(4, minmax(320px, 1fr));
   gap: 1rem;
   margin-top: 1rem;
 }
@@ -146,17 +146,24 @@ input[type='date'],
   text-align: center;
 }
 
+.error-msg {
+  color: #ff6b6b;
+  font-size: 0.9rem;
+  margin-top: 8px;
+  font-weight: 500;
+  text-align: center;
+}
+
 .prediction-box {
-  margin-top: 0.6rem;
+  margin-top: 0.8rem;
   padding: 1rem;
-  background: #0e1a28;
-  border: 1px solid #213144;
-  border-radius: 8px;
-  width: 100%;
-  box-sizing: border-box;
+  background: #0b1524;
+  border: 1px solid #1f3048;
+  border-radius: 10px;
 }
 
 .prediction-box h4 {
+  text-align: center;
   margin-bottom: .6rem;
   font-size: 1rem;
   color: #00bcd4;
@@ -176,33 +183,65 @@ input[type='date'],
   flex-direction: column;
 }
 
-.team-pred label {
-  font-size: .8rem;
-  color: #ccc;
-  margin-bottom: 3px;
-}
-
 .team-pred input {
-  width: 100%;
+  background: #0b1a32;
+  color: #e6eeff;
+  border: 1px solid #2f4b72;
+  border-radius: 6px;
+  padding: 0.45rem;
+  font-size: 0.95rem;
+  text-align: center;
+  transition: all 0.2s ease;
 }
 
-.vs {
-  width: 24px;
-  text-align: center;
-  font-weight: 600;
+.team-pred input:hover {
+  background: #12294a;
+  border-color: #3c6aa3;
 }
+
+.team-pred input:focus {
+  outline: none;
+  background: #16335c;
+  border-color: #5aa0ff;
+  box-shadow: 0 0 6px rgba(90, 160, 255, 0.3);
+}
+
+.prediction-inputs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 0.8rem;
+}
+
+.team-pred {
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.team-pred label {
+  font-size: .85rem;
+  color: #c7d6f2;
+  margin-bottom: 6px;
+}
+
 
 .btn-predict {
-  margin-top: .8rem;
-  width: 100%;
-  padding: .55rem;
-  background: #0c2468;
+  margin: 20px auto 0;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  background: #344988;
   border: none;
   border-radius: 6px;
   color: #fff;
-  font-weight: 600;
   cursor: pointer;
+  display: block;
+  width: fit-content;
+  padding: 5px;
 }
+
 
 .btn-predict:hover {
   background: #2050d3;

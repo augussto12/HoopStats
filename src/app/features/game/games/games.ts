@@ -77,6 +77,7 @@ export class Games implements OnInit {
       // Mapeamos y aplicamos filtro
       const mapped = this.games.map(mapGame);
       this.gamesShown = this.filterByStatus(mapped);
+      await this.injectUserPredictions();
 
     } catch (e: any) {
       this.error = 'No se pudieron cargar los partidos.';
@@ -85,6 +86,25 @@ export class Games implements OnInit {
       this.loading = false;
     }
   }
+
+  private async injectUserPredictions() {
+    if (!this.auth.isLoggedIn()) return;
+
+    const user = JSON.parse(localStorage.getItem('user')!);
+    const predictions = await this.predictionService.getByUser(user.id);
+
+    for (let g of this.gamesShown) {
+      const pred = predictions.find((p: any) => p.idGame === g.id);
+      if (pred) {
+        g.predHome = pred.puntosLocalPrediccion;
+        g.predVisitors = pred.puntosVisitantePrediccion;
+        g.savedPrediction = true;
+        g.predictionId = pred.id;
+        g.savedPrediction = false;
+      }
+    }
+  }
+
 
   public goToday() {
     this.selectedDate = this.toYYYYMMDD(new Date());
@@ -97,8 +117,9 @@ export class Games implements OnInit {
     this.loadGames();
   }
 
-  public applyFilter() {
+  public async applyFilter() {
     this.gamesShown = this.filterByStatus(this.games.map(mapGame));
+    await this.injectUserPredictions();
   }
 
   // Lógica del filtro por estado
@@ -126,6 +147,20 @@ export class Games implements OnInit {
   public async savePrediction(g: any) {
     const user = JSON.parse(localStorage.getItem('user')!);
 
+    // limpiar error
+    g.predictionError = null;
+
+    // validaciones
+    if (g.predHome == null || g.predHome === '') {
+      g.predictionError = 'Debe ingresar la predicción del local.';
+      return;
+    }
+
+    if (g.predVisitors == null || g.predVisitors === '') {
+      g.predictionError = 'Debe ingresar la predicción del visitante.';
+      return;
+    }
+
     const payload = {
       idUser: user.id,
       idGame: g.id,
@@ -137,17 +172,17 @@ export class Games implements OnInit {
       procesada: false
     };
 
-
     const existing = await this.predictionService.getForGame(user.id, g.id);
 
     if (existing.length > 0) {
-      const id = existing[0].id;
-      await this.predictionService.update(id, payload);
+      await this.predictionService.update(existing[0].id, payload);
     } else {
       await this.predictionService.create(payload);
     }
+
     g.savedPrediction = true;
   }
+
 
   public getLink(g: any) {
     if (g.status === 'Programado') {

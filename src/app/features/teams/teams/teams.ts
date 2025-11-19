@@ -19,6 +19,8 @@ export class TeamsComponent implements OnInit {
   public searchTerm = '';
   public selectedDivision = '';
   public favoriteTeamIds: number[] = [];
+  public loadingTeams = false;
+  public error = '';
 
   public divisions = ['Atlantic', 'Central', 'Southeast', 'Northwest', 'Pacific', 'Southwest'];
 
@@ -29,17 +31,35 @@ export class TeamsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    const allTeams = await this.nbaService.getTeams();
 
-    const nbaTeams = allTeams.filter(
-      (team: any) => team.nbaFranchise && team.leagues?.standard && !team.allStar
-    );
+    this.getTeams();
+    
+  }
 
-    this.teamsEast = nbaTeams.filter((t: any) => t.leagues.standard.conference === 'East');
-    this.teamsWest = nbaTeams.filter((t: any) => t.leagues.standard.conference === 'West');
+  async getTeams() {
 
-    const favorites = await this.favoritesService.getFavorites();
-    this.favoriteTeamIds = favorites.teams.map((t: any) => t.id);
+    this.loadingTeams = true;
+
+    try {
+      const allTeams = await this.nbaService.getTeams();
+
+      const nbaTeams = allTeams.filter(
+        (team: any) => team.nbaFranchise && team.leagues?.standard && !team.allStar
+      );
+
+      this.teamsEast = nbaTeams.filter((t: any) => t.leagues.standard.conference === 'East');
+      this.teamsWest = nbaTeams.filter((t: any) => t.leagues.standard.conference === 'West');
+
+      const favorites = await this.favoritesService.getFavorites();
+      this.favoriteTeamIds = favorites.teams.map((t: any) => t.id);
+
+      this.loadingTeams = false;
+
+    } catch (err) {
+      console.error(err);
+      this.error = 'Error al cargar los equipos.'
+    }
+
   }
 
   isFavorite(team: any): boolean {
