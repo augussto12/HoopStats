@@ -19,7 +19,7 @@
                         <div class="clock">{{ g.period }}C - {{ g.clock }}</div>
                     </div>
                     <div class="team">
-                        <img [src]="g.home.logo" [alt]="g.home.name"/>
+                        <img [src]="g.home.logo" [alt]="g.home.name" />
                         <div class="team-name">{{ g.home.name }}</div>
                     </div>
                 </div>
@@ -53,16 +53,17 @@
                 <h2>Head To Head</h2>
                 <p>Compará el historial entre dos equipos.</p>
             </div>
-
-            <div class="menu-card" routerLink="/fantasy-home">
-                <h2>Equipo Fantasy</h2>
-                <p>Seleccione sus 5 jugadores para establecer su fantasy team.</p>
-            </div>
-
+            
             <ng-container *ngIf="auth.isLoggedIn()">
+                <div class="menu-card" routerLink="/fantasy-home">
+                    <h2>Equipo Fantasy</h2>
+                    <p>Seleccione sus 5 jugadores para establecer su fantasy team.</p>
+                </div>
+
+
                 <div class="menu-card" routerLink="/predictions">
                     <h2>Predicciones</h2>
-                    <p>Haga prdicciones sobre partidos futuros para sumar puntos en la tabla general.</p>
+                    <p>Haga predicciones sobre partidos futuros para sumar puntos en la tabla general.</p>
                 </div>
 
                 <div class="menu-card" routerLink="/favorites">

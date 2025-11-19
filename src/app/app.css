@@ -10,5 +10,19 @@
 .main-content {
   flex: 1;
   padding: 1.5rem;
-  overflow-y: auto;
+}
+
+.app-footer {
+  text-align: center;
+  padding: 35px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #d4d4d4;
+  background: #0e162e;
+  border-top: 1px solid #1d2745;
+}
+
+.app-footer p {
+  margin: 0;
+  letter-spacing: 0.5px;
 }

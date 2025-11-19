@@ -7,9 +7,6 @@ import { mapGame } from '../../../utils/mapGame';
 import { AuthService } from '../../../services/auth.service';
 import { PrediccionService } from '../../../services/predictions/predictions-service';
 
-
-type APIGame = any;
-
 @Component({
   selector: 'app-Games',
   standalone: true,

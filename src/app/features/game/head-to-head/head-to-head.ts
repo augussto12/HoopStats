@@ -21,6 +21,7 @@ export class HeadToHead implements OnInit {
   public selectedSecondTeam: number | null = null;
 
   public teams: any[] = [];
+  public nbaTeams: any[] = [];
   public games: any[] = [];
 
   constructor(private api: NbaApiService) { }
@@ -32,6 +33,9 @@ export class HeadToHead implements OnInit {
   public async loadTeams() {
     try {
       this.teams = await this.api.getTeams();
+      this.nbaTeams = this.teams.filter(
+        (team: any) => team.nbaFranchise === true && team.leagues?.standard && !team.allStar
+      );
     } catch (e) {
       console.error(e);
       this.error = 'Error al cargar los equipos.';

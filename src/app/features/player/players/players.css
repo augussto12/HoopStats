@@ -1,12 +1,3 @@
-:host {
-    display: block;
-    background-color: #14273f;
-    color: #fff;
-    font-family: 'Poppins', sans-serif;
-    min-height: 100vh;
-    padding: 2rem;
-}
-
 h1 {
     text-align: center;
     color: #ffb347;

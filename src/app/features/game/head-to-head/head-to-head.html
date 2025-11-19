@@ -8,12 +8,12 @@
             <div class="filters">
                 <select [(ngModel)]="selectedFirstTeam" class="inputSelect">
                     <option [ngValue]="null">Equipo 1</option>
-                    <option *ngFor="let t of teams" [ngValue]="t.id">{{ t.name }}</option>
+                    <option *ngFor="let t of nbaTeams" [ngValue]="t.id">{{ t.name }}</option>
                 </select>
 
                 <select [(ngModel)]="selectedSecondTeam" class="inputSelect">
                     <option [ngValue]="null">Equipo 2</option>
-                    <option *ngFor="let t of teams" [ngValue]="t.id">{{ t.name }}</option>
+                    <option *ngFor="let t of nbaTeams" [ngValue]="t.id">{{ t.name }}</option>
                 </select>
 
                 <button class="btn" (click)="fetchHeadToHead()">Buscar</button>

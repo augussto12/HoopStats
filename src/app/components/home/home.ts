@@ -5,7 +5,6 @@ import { NbaApiService } from '../../services/nba-api';
 import { mapGame } from '../../utils/mapGame';
 import { Game, TopStat, PlayerStats } from '../../models/interfaces';
 import { AuthService } from '../../services/auth.service';
-import { PredictionCalulator } from '../../services/predictions/prediction-calculator';
 
 @Component({
   selector: 'app-home',

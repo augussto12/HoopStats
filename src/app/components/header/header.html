@@ -10,12 +10,12 @@
 
         <nav class="menu" [ngClass]="{ 'active': menuOpen }">
             <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn">
-                <a routerLink="/login" (click)="closeMenu()">Iniciar sesión</a>
-                <a routerLink="/register" (click)="closeMenu()">Registrarse</a>
+                <a routerLink="/login" (click)="closeMenu()" routerLinkActive="active" >Iniciar sesión</a>
+                <a routerLink="/register" (click)="closeMenu()" routerLinkActive="active" >Registrarse</a>
             </ng-container>
 
             <ng-template #loggedIn>
-                <a routerLink="/profile" (click)="closeMenu()">Perfil</a>
+                <a routerLink="/profile" (click)="closeMenu()" routerLinkActive="active" >Perfil</a>
                 <a href="#" (click)="logout(); closeMenu()">Cerrar sesión</a>
             </ng-template>
         </nav>

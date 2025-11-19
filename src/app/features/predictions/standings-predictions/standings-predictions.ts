@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-standings-predictions',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './standings-predictions.html',
   styleUrls: ['./standings-predictions.css', '../../standings/standings.css'],

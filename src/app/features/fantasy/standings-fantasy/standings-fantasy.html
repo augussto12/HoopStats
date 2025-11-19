@@ -7,6 +7,7 @@
                 <tr>
                     <th>#</th>
                     <th>Usuario</th>
+                    <th>Nombre del equipo</th>
                     <th>Puntos Totales</th>
                 </tr>
             </thead>
@@ -19,7 +20,8 @@
                             <span>{{ user.fullname }}</span>
                         </div>
                     </td>
-                    <td>{{ user.totalPredictionPoints }}</td>
+                    <td>{{user.fantasyName}}</td>
+                    <td>{{ user.fantasyPoints }}</td>
                 </tr>
             </tbody>
         </table>
