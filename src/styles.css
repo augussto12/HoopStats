@@ -1,7 +1,34 @@
-/* You can add global styles to this file, and also import other style files */
-html, body {
+/* ============================
+   GLOBAL / RESET + FUENTE
+============================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background: #0b1223; /* mismo color del layout */
+}
+
+html,
+body {
   height: 100%;
+}
+
+body {
+  background: radial-gradient(circle at top, #153a2e 0%, #050814 45%, #020308 100%);
+  color: #e5e7eb;
+  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
 }
