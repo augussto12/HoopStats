@@ -18,6 +18,16 @@ export class Home implements OnInit {
   liveGames: Game[] = [];
   bestPlayers: TopStat[] = [];
 
+  news = [
+  {
+    image: 'https://ds-images.bolavip.com/news/image?src=https%3A%2F%2Fimages.bolavip.com%2Fwebp%2Fmx%2Ffull%2FBMX_20251120_BMX_390380_Lakers-despidio-a-dos-piezas-del-equipo-de-LeBron-y-compania.webp&width=490&height=275',
+    title: 'Ni LeBron lo esperaba: Lakers corta a dos de las piezas más importantes del equipo en plena temporada',
+    description: 'Los Angeles Lakers tomaron una decisión que nadie veía venir en la NBA cortando a dos piezas clave del equipo. ¡Ni LeBron James lo esperaba!',
+    url: 'https://bolavip.com/mx/amp/nba/ni-lebron-lo-esperaba-lakers-corta-a-dos-de-las-piezas-mas-importantes-del-equipo-en-plena-temporada'
+  }
+];
+
+
   loadingLive = false;
   loadingPlayers = false;
 
@@ -36,6 +46,11 @@ export class Home implements OnInit {
     this.loadLiveGames();
     this.loadBestPlayersYesterday();
   }
+
+  openNews(url: string) {
+  window.open(url, '_blank');
+}
+
 
 
   async loadLiveGames() {

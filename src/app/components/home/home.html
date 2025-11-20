@@ -1,91 +1,141 @@
-<div class="home-container">
-    <div class="live-column">
-        <h2> Partidos en vivo
-            <span class="live-dot"></span>
-        </h2>
+<div class="home-wrapper">
 
-        <div *ngIf="loadingLive" class="empty">Cargando partidos...</div>
-        <div *ngIf="!loadingLive && errorLive" class="empty">{{ errorLive }}</div>
+    <!-- SECCIÓN TOP: LATERAL IZQUIERDO + BEST PLAYERS -->
+    <section class="top-section">
 
-        <div *ngIf="!loadingLive && liveGames.length" class="games-grid">
-            <div class="game-card" *ngFor="let g of liveGames" [routerLink]="['/game-details', g.id]">
-                <div class="teams">
-                    <div class="team">
-                        <img [src]="g.visitors.logo" [alt]="g.visitors.name" />
-                        <div class="team-name">{{ g.visitors.name }}</div>
+        <!-- COLUMNA IZQUIERDA: NOTICIAS + PARTIDOS -->
+        <div class="left-column">
+
+            <!-- 🔵 NOTICIAS DESTACADAS -->
+            <div class="panel news-panel">
+                <h2>📰 Noticias destacadas</h2>
+
+                <div *ngIf="!news.length" class="news-empty">
+                    <p>No hay noticias cargadas aún.</p>
+                </div>
+
+                <div *ngIf="news.length" class="news-card">
+                    <div class="news-img-wrapper">
+                        <img [src]="news[0].image" class="news-img" />
                     </div>
-                    <div class="score">
-                        {{ g.visitors.pts }} — {{ g.home.pts }}
-                        <div class="clock">{{ g.period }}C - {{ g.clock }}</div>
-                    </div>
-                    <div class="team">
-                        <img [src]="g.home.logo" [alt]="g.home.name" />
-                        <div class="team-name">{{ g.home.name }}</div>
+
+                    <div class="news-info">
+                        <h3 class="news-title">{{ news[0].title }}</h3>
+
+                        <p class="news-desc">{{ news[0].description }}</p>
+
+                        <button class="news-button" *ngIf="news[0]?.url" (click)="openNews(news[0].url)">
+                            Leer noticia completa
+                        </button>
                     </div>
                 </div>
-                <div class="arena">{{ g.arena }}</div>
+            </div>
+
+
+            <!-- 🔴 PARTIDOS EN VIVO -->
+            <div class="panel live-panel">
+                <h2>
+                    Partidos en vivo <span class="live-dot"></span>
+                </h2>
+
+                <div *ngIf="loadingLive" class="empty">Cargando partidos...</div>
+                <div *ngIf="!loadingLive && errorLive" class="empty">{{ errorLive }}</div>
+
+                <div *ngIf="!loadingLive && liveGames.length" class="live-list">
+                    <div class="live-card" *ngFor="let g of liveGames" [routerLink]="['/game-details', g.id]">
+
+                        <div class="teams">
+                            <div class="team">
+                                <img [src]="g.visitors.logo" />
+                                <span>{{ g.visitors.name }}</span>
+                            </div>
+
+                            <div class="score">
+                                <strong>{{ g.visitors.pts }} - {{ g.home.pts }}</strong>
+                                <small>{{ g.period }}C — {{ g.clock }}</small>
+                            </div>
+
+                            <div class="team">
+                                <img [src]="g.home.logo" />
+                                <span>{{ g.home.name }}</span>
+                            </div>
+                        </div>
+
+                        <div class="arena">{{ g.arena }}</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 🏆 BEST PLAYERS (NO LO TOCO) -->
+        <div class="panel players-panel">
+            <h2>🏆 Mejores jugadores del día</h2>
+
+            <div *ngIf="loadingPlayers" class="empty">Cargando jugadores...</div>
+            <div *ngIf="!loadingPlayers && errorPlayers" class="empty">{{ errorPlayers }}</div>
+
+            <div *ngIf="!loadingPlayers && bestPlayers.length" class="players-grid">
+                <div class="player-card" *ngFor="let p of bestPlayers">
+                    <h3>{{ p.category }}</h3>
+                    <p><span>{{ p.player }}</span> <strong>{{ p.value }}</strong></p>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="menu-column">
+    </section>
+
+    <!-- 📌 MENÚ PRINCIPAL (NO LO TOCO) -->
+    <section class="menu-section">
         <div class="menu-grid">
+
             <div class="menu-card" routerLink="/standings">
                 <h2>Clasificación</h2>
-                <p>Consulte las clasificaciones por conferencia.</p>
+                <p>Conferencias, récords y posiciones.</p>
             </div>
 
             <div class="menu-card" routerLink="/teams">
                 <h2>Equipos</h2>
-                <p>Explorá las franquicias de la NBA y sus jugadores.</p>
+                <p>Información completa de cada franquicia.</p>
             </div>
 
             <div class="menu-card" routerLink="/players">
                 <h2>Jugadores</h2>
-                <p>Consulta estadísticas y evolución de los jugadores.</p>
+                <p>Estadísticas y rendimiento.</p>
             </div>
 
             <div class="menu-card" routerLink="/games">
                 <h2>Partidos</h2>
-                <p>Revisá resultados, próximos juegos y estadísticas.</p>
+                <p>Resultados, próximos juegos y estadísticas.</p>
             </div>
 
             <div class="menu-card" routerLink="/headtohead">
                 <h2>Head To Head</h2>
-                <p>Compará el historial entre dos equipos.</p>
+                <p>Historial entre dos equipos.</p>
             </div>
 
-            <div class="menu-card" [class.disabled]="!auth.isLoggedIn()" [routerLink]="auth.isLoggedIn() ? ['/fantasy-home'] : null">
-                <h2>Equipo Fantasy</h2>
-                <p>Seleccione sus 5 jugadores para establecer su fantasy team.</p>
-                <div class="note" *ngIf="!auth.isLoggedIn()">Requiere inicio de sesión</div>
+            <div class="menu-card" [class.disabled]="!auth.isLoggedIn()"
+                [routerLink]="auth.isLoggedIn() ? ['/fantasy-home'] : null">
+                <h2>Fantasy Team</h2>
+                <p>Gestioná tu equipo de 5 jugadores.</p>
+                <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
             </div>
 
-            <div class="menu-card" [class.disabled]="!auth.isLoggedIn()" [routerLink]="auth.isLoggedIn() ? ['/predictions'] : null">
+            <div class="menu-card" [class.disabled]="!auth.isLoggedIn()"
+                [routerLink]="auth.isLoggedIn() ? ['/predictions'] : null">
                 <h2>Predicciones</h2>
-                <p>Haga predicciones sobre partidos futuros para sumar puntos en la tabla general.</p>
-                <div class="note" *ngIf="!auth.isLoggedIn()">Requiere inicio de sesión</div>
+                <p>Ganá puntos acertando resultados.</p>
+                <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
             </div>
 
-            <div class="menu-card" [class.disabled]="!auth.isLoggedIn()" [routerLink]="auth.isLoggedIn() ? ['/favorites'] : null">
+            <div class="menu-card" [class.disabled]="!auth.isLoggedIn()"
+                [routerLink]="auth.isLoggedIn() ? ['/favorites'] : null">
                 <h2>Favoritos</h2>
-                <p>Accedé rápido a tus equipos y jugadores preferidos.</p>
-                <div class="note" *ngIf="!auth.isLoggedIn()">Requiere inicio de sesión</div>
+                <p>Acceso rápido a tus preferidos.</p>
+                <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
             </div>
+
         </div>
-    </div>
+    </section>
 
-    <div class="stats-column">
-        <h2>🏆 Mejores jugadores del día de ayer</h2>
-
-        <div *ngIf="loadingPlayers" class="empty">Cargando jugadores...</div>
-        <div *ngIf="!loadingPlayers && errorPlayers" class="empty">{{ errorPlayers }}</div>
-
-        <div *ngIf="!loadingPlayers && bestPlayers.length">
-            <div class="stat-card" *ngFor="let p of bestPlayers">
-                <h3>{{ p.category }}</h3>
-                <span>{{ p.player }}</span> <strong>{{ p.value }}</strong>
-            </div>
-        </div>
-    </div>
 </div>
