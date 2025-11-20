@@ -1,4 +1,4 @@
-HoopStats – Plataforma Web de Estadísticas y Predicciones NBA
+HoopStats – Plataforma Web de NBA
 
 HoopStats es una aplicación web desarrollada en Angular que permite explorar información actualizada de la NBA de forma intuitiva, visual y dinámica.
 El sistema reúne estadísticas de equipos, jugadores y partidos, junto con funcionalidades interactivas como favoritos, predicciones y un modo Fantasy, creando una experiencia completa para fanáticos y usuarios casuales.
