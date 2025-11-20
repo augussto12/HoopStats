@@ -148,7 +148,7 @@ export class FantasyPointsService {
       const stats = statsList.find(s => s?.player?.id === player.id);
       if (!stats) continue;
 
-      //Tiene que haber jugado al menos 1 minuto para sumar puntos en el fantasy
+      // Tiene que haber jugado al menos 1 minuto para sumar puntos en el fantasy
       if (stats.min <= 1) continue;
 
       const game = gamesMap.get(stats.game.id);
@@ -192,12 +192,6 @@ export class FantasyPointsService {
       (s.steals ?? 0) * 3 +
       (s.turnovers ?? 0) * -1
     );
-  }
-
-  // delay para bajar la cantidad de requests por segundo a la api
-  // sino tira error por el rateLimit que tiene
-  private delay(ms: number) {
-    return new Promise(res => setTimeout(res, ms));
   }
 
 }

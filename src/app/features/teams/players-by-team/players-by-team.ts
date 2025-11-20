@@ -72,7 +72,6 @@ export class PlayersByTeam implements OnInit {
 
   async loadTeam(teamId: number) {
     this.team = await this.nbaService.getTeamById(teamId);
-    console.log(this.team);
   }
 
   async loadPlayers(teamId: number) {

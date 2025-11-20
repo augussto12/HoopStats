@@ -29,6 +29,5 @@ export class StandingsFantasy {
       }))
       .sort((a, b) => b.fantasyPoints - a.fantasyPoints);
 
-    console.log("rankinggggg",this.ranking);
   }
 }

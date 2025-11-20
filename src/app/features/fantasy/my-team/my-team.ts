@@ -131,17 +131,17 @@ export class MyTeam implements OnInit {
   filterPlayers() {
     let players = [];
 
-    // 1) Si eligió un equipo → usar SOLO esos jugadores
+    // Si eligio un equipo usar solo esos jugadores
     if (this.selectedTeamId) {
       const team = this.teams.find(t => t.idTeam === Number(this.selectedTeamId));
       players = team ? team.players : [];
     }
     else {
-      // Si NO hay equipo → usar todos los jugadores
+      // Si no hay equipo se usan todos los jugadores
       players = this.teams.reduce((acc, t) => acc.concat(t.players), []);
     }
 
-    // 2) Si eligió un rango → filtrar por precio
+    // Si eligió un rango se filtra por precio
     if (this.selectedRange) {
       const { min, max } = this.selectedRange;
 

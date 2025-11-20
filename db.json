@@ -7,7 +7,7 @@
       "email": "augusto@gmail.com",
       "password": "$2b$10$R2tdRelp67ojC.6X7dPCj..taB7aDB82B/QTPQZv/xYsqk66wCr/C",
       "gender": "male",
-      "totalPredictionPoints": 12,
+      "totalPredictionPoints": 27,
       "favorites": {
         "teams": [
           {
@@ -60,7 +60,7 @@
       },
       "fantasy": {
         "name": "Rebeldes de Boston",
-        "totalPoints": 212.1,
+        "totalPoints": 319.5,
         "budget": 0,
         "players": [
           {
@@ -85,13 +85,13 @@
             "id": 279,
             "name": "Nikola Jokić",
             "price": 350,
-            "totalPts": 0
+            "totalPts": 50.2
           },
           {
             "id": 4164,
             "name": "Donovan Clingan",
             "price": 130,
-            "totalPts": 0
+            "totalPts": 57.2
           }
         ]
       }
@@ -110,7 +110,7 @@
       },
       "fantasy": {
         "name": "Magic Five",
-        "totalPoints": 227.1,
+        "totalPoints": 294.8,
         "budget": 0,
         "players": [
           {
@@ -129,7 +129,7 @@
             "id": 2564,
             "name": "Deni Avdija",
             "price": 190,
-            "totalPts": 31.5
+            "totalPts": 99.2
           },
           {
             "id": 64,
@@ -153,7 +153,7 @@
       "email": "pedro@gmail.com",
       "password": "$2b$10$Zbkp0jSd1gdoC5msfvMA3.ROy/7uii1XJmgqyj9ChYdbkjMwFqJnG",
       "gender": "male",
-      "totalPredictionPoints": 25,
+      "totalPredictionPoints": 29,
       "favorites": {
         "teams": [
           {
@@ -198,14 +198,14 @@
       },
       "fantasy": {
         "name": "Galacticos",
-        "totalPoints": 141.9,
+        "totalPoints": 229.2,
         "budget": 0,
         "players": [
           {
             "id": 2564,
             "name": "Deni Avdija",
             "price": 190,
-            "totalPts": 31.5
+            "totalPts": 99.2
           },
           {
             "id": 897,
@@ -223,7 +223,7 @@
             "id": 4145,
             "name": "Yves Missi",
             "price": 170,
-            "totalPts": 15.4
+            "totalPts": 35
           },
           {
             "id": 75,
@@ -430,8 +430,8 @@
       "visitorTeam": "Houston Rockets",
       "puntosLocalPrediccion": 116,
       "puntosVisitantePrediccion": 121,
-      "puntosObtenidos": 0,
-      "procesada": false,
+      "puntosObtenidos": 2,
+      "procesada": true,
       "id": "639d"
     },
     {
@@ -442,8 +442,8 @@
       "visitorTeam": "Houston Rockets",
       "puntosLocalPrediccion": 125,
       "puntosVisitantePrediccion": 131,
-      "puntosObtenidos": 0,
-      "procesada": false
+      "puntosObtenidos": 2,
+      "procesada": true
     },
     {
       "id": "239d",
@@ -453,8 +453,8 @@
       "visitorTeam": "Charlotte Hornets",
       "puntosLocalPrediccion": 114,
       "puntosVisitantePrediccion": 112,
-      "puntosObtenidos": 0,
-      "procesada": false
+      "puntosObtenidos": 2,
+      "procesada": true
     },
     {
       "id": "da1c",
@@ -465,7 +465,7 @@
       "puntosLocalPrediccion": 114,
       "puntosVisitantePrediccion": 122,
       "puntosObtenidos": 0,
-      "procesada": false
+      "procesada": true
     },
     {
       "id": "b841",
@@ -476,7 +476,7 @@
       "puntosLocalPrediccion": 123,
       "puntosVisitantePrediccion": 110,
       "puntosObtenidos": 0,
-      "procesada": false
+      "procesada": true
     },
     {
       "id": "44fe",
@@ -486,8 +486,8 @@
       "visitorTeam": "Washington Wizards",
       "puntosLocalPrediccion": 112,
       "puntosVisitantePrediccion": 105,
-      "puntosObtenidos": 0,
-      "procesada": false
+      "puntosObtenidos": 2,
+      "procesada": true
     },
     {
       "id": "2d4c",
@@ -497,8 +497,8 @@
       "visitorTeam": "Denver Nuggets",
       "puntosLocalPrediccion": 111,
       "puntosVisitantePrediccion": 115,
-      "puntosObtenidos": 0,
-      "procesada": false
+      "puntosObtenidos": 2,
+      "procesada": true
     },
     {
       "id": "ab66",
@@ -508,8 +508,8 @@
       "visitorTeam": "Sacramento Kings",
       "puntosLocalPrediccion": 121,
       "puntosVisitantePrediccion": 98,
-      "puntosObtenidos": 0,
-      "procesada": false
+      "puntosObtenidos": 2,
+      "procesada": true
     },
     {
       "id": "0ee1",
@@ -519,8 +519,8 @@
       "visitorTeam": "New York Knicks",
       "puntosLocalPrediccion": 115,
       "puntosVisitantePrediccion": 113,
-      "puntosObtenidos": 0,
-      "procesada": false
+      "puntosObtenidos": 5,
+      "procesada": true
     },
     {
       "id": "5dbf",
@@ -531,7 +531,7 @@
       "puntosLocalPrediccion": 110,
       "puntosVisitantePrediccion": 120,
       "puntosObtenidos": 0,
-      "procesada": false
+      "procesada": true
     },
     {
       "id": "de4e",
@@ -541,8 +541,8 @@
       "visitorTeam": "Golden State Warriors",
       "puntosLocalPrediccion": 123,
       "puntosVisitantePrediccion": 119,
-      "puntosObtenidos": 0,
-      "procesada": false
+      "puntosObtenidos": 2,
+      "procesada": true
     },
     {
       "id": "b9f4",
@@ -553,13 +553,13 @@
       "puntosLocalPrediccion": 120,
       "puntosVisitantePrediccion": 112,
       "puntosObtenidos": 0,
-      "procesada": false
+      "procesada": true
     }
   ],
   "lastUpdated": [
     {
-      "id": 1,
-      "lastUpdatedFantasy": "2025-11-19T20:53:18.662"
+      "id": "1",
+      "lastUpdatedFantasy": "2025-11-20T10:10:07.023Z"
     }
   ],
   "pricePlayers": [

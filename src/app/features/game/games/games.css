@@ -64,10 +64,11 @@ input[type='date'],
 
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(320px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
   margin-top: 1rem;
 }
+
 
 .game-card {
   background: #13233f;
@@ -254,6 +255,17 @@ input[type='date'],
   text-align: center;
 }
 
+@media (max-width: 1200px) {
+  .games-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .games-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
 @media (max-width: 768px) {
   .content-header {

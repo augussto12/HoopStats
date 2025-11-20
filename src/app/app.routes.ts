@@ -18,6 +18,7 @@ import { StandingsPredictions } from './features/predictions/standings-predictio
 import { FantasyHome } from './features/fantasy/fantasy-home/fantasy-home';
 import { MyTeam } from './features/fantasy/my-team/my-team';
 import { StandingsFantasy } from './features/fantasy/standings-fantasy/standings-fantasy';
+import { AuthGuard } from './auth-guard';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -32,12 +33,17 @@ export const routes: Routes = [
     { path: 'login', component: Login },
     { path: 'register', component: Register },
     { path: 'profile', component: Profile },
-    { path: 'favorites', component: Favorites },
-    { path: 'predictions', component: Prediction },
-    { path: 'my-predictions', component: MyPredictions },
-    { path: 'standings-predictions', component: StandingsPredictions },
-    { path: 'fantasy-home', component: FantasyHome},
-    { path: 'my-team', component: MyTeam},
-    { path: 'standings-fantasy', component: StandingsFantasy},
+
+    // rutas protegidas
+    { path: 'favorites', component: Favorites, canActivate: [AuthGuard] },
+    
+    { path: 'predictions', component: Prediction, canActivate: [AuthGuard] },
+    { path: 'my-predictions', component: MyPredictions, canActivate: [AuthGuard] },
+    { path: 'standings-predictions', component: StandingsPredictions, canActivate: [AuthGuard] },
+
+    { path: 'fantasy-home', component: FantasyHome, canActivate: [AuthGuard] },
+    { path: 'my-team', component: MyTeam, canActivate: [AuthGuard] },
+    { path: 'standings-fantasy', component: StandingsFantasy, canActivate: [AuthGuard] },
+
     { path: '**', redirectTo: 'home' }
 ];
