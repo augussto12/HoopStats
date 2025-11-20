@@ -72,7 +72,7 @@ export class Register {
       this.registerForm.reset();
       setTimeout(() => {
         this.router.navigate(['/login']);
-      }, 3000);
+      }, 1000);
     } catch (err) {
       console.error(err);
       this.error = 'Error al registrar el usuario';

@@ -205,3 +205,12 @@
 .player-card button:hover {
     background: #1d3a6a;
 }
+
+
+@media(max-width: 500px) {
+
+    .options-row {
+        flex-direction: column;
+    }
+
+}

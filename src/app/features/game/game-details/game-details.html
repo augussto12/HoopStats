@@ -46,34 +46,36 @@
                     <img [src]="team.team.logo" width="80" />
                 </div>
 
-                <table class="player-table">
-                    <thead>
-                        <tr>
-                            <th>Jugador</th>
-                            <th>PTS</th>
-                            <th>AST</th>
-                            <th>REB</th>
-                            <th>ROB</th>
-                            <th>BLK</th>
-                            <th>MIN</th>
-                            <th>3PM</th>
-                            <th>FG%</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let p of team.players">
-                            <td>{{ p.player.firstname }} {{ p.player.lastname }}</td>
-                            <td>{{ p.points }}</td>
-                            <td>{{ p.assists }}</td>
-                            <td>{{ p.totReb }}</td>
-                            <td>{{ p.steals }}</td>
-                            <td>{{ p.blocks }}</td>
-                            <td>{{ p.min }}</td>
-                            <td>{{ p.tpm }}</td>
-                            <td>{{ p.fgp }}%</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="player-table-wrapper">
+                    <table class="player-table">
+                        <thead>
+                            <tr>
+                                <th>Jugador</th>
+                                <th>PTS</th>
+                                <th>AST</th>
+                                <th>REB</th>
+                                <th>ROB</th>
+                                <th>BLK</th>
+                                <th>MIN</th>
+                                <th>3PM</th>
+                                <th>FG%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let p of team.players">
+                                <td>{{ p.player.firstname }} {{ p.player.lastname }}</td>
+                                <td>{{ p.points }}</td>
+                                <td>{{ p.assists }}</td>
+                                <td>{{ p.totReb }}</td>
+                                <td>{{ p.steals }}</td>
+                                <td>{{ p.blocks }}</td>
+                                <td>{{ p.min }}</td>
+                                <td>{{ p.tpm }}</td>
+                                <td>{{ p.fgp }}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

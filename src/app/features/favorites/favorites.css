@@ -97,3 +97,29 @@ button {
 button:hover {
     opacity: 0.85;
 }
+
+@media(max-width: 615px) {
+
+    .btn-secondary,
+    .btn-danger {
+        padding: 5px;
+        font-size: small;
+        margin: 0 4px;
+    }
+}
+
+@media(max-width: 375px) {
+    .page {
+        padding: 10px;
+    }
+
+    .section {
+        font-size: 1.1rem;
+    }
+
+    th,
+    td {
+        font-size: 0.85rem;
+        padding: 8px 10px;
+    }
+}

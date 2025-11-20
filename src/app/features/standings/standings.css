@@ -85,17 +85,28 @@ tr:hover {
 }
 
 
-@media (max-width: 1200px) {
-  .table-box {
-    min-width: 100%;
-  }
-
+@media (max-width: 450px) {
   .tables-wrapper {
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* Cambia el diseño a columna */
+  }
+
+  .table-box {
+    width: 90%; /* Ocupa el 100% del ancho disponible */
+    min-width: 90%; /* Asegurarse de que no haya mínimo ancho */
   }
 
   table {
-    min-width: 100%;
+    font-size: 0.7rem; /* Ajustar el tamaño de la fuente en pantallas pequeñas */
+  }
+
+  th,
+  td {
+    padding: 5px; /* Reducir el padding de las celdas */
+  }
+
+  .team-cell img {
+    width: 30px; /* Reducir el tamaño de las imágenes */
+    height: 30px;
   }
 }

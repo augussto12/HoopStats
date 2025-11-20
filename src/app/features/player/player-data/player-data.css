@@ -4,17 +4,21 @@
   align-items: center;
   padding: 3rem 1rem;
   color: #fff;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .player-card {
   background: #1e2a3a;
   border-radius: 16px;
   padding: 2rem;
-  width: fit-content;
+  width: 100%;
+  max-width: 800px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  margin: 0 auto;
 }
 
 .player-header {
@@ -58,7 +62,6 @@
   color: #aaa;
 }
 
-
 .player-stats {
   margin-top: 2rem;
   background: #273347;
@@ -98,11 +101,76 @@
   background-color: rgba(255, 255, 255, 0.05);
 }
 
-.link{
+.link {
   color: #ffb347;
   cursor: pointer;
 }
 
-.link:hover{
+.link:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 1200px) {
+
+  .player-stats {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .player-info h2 {
+    font-size: 1.4rem;
+  }
+
+  .player-meta {
+    font-size: 0.85rem;
+  }
+
+  .player-data {
+    gap: 0.5rem;
+  }
+
+  .stats-table {
+    font-size: 0.95rem;
+  }
+
+  .stats-table th,
+  .stats-table td {
+    padding: 0.4rem;
+  }
+
+  .stats-table {
+    overflow-x: auto;
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .player-info h2 {
+    font-size: 1.2rem;
+  }
+
+  .player-meta {
+    font-size: 0.8rem;
+  }
+
+  .player-card {
+    padding: 1rem;
+    max-width: 100%;
+  }
+
+  .player-data {
+    grid-template-columns: 1fr;
+    font-size: 0.85rem;
+  }
+
+  .stats-table th,
+  .stats-table td {
+    font-size: 0.8rem;
+    padding: 0.3rem;
+  }
+
+  .stats-table {
+    font-size: 0.8rem;
+  }
 }

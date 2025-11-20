@@ -22,7 +22,7 @@
                         <span>{{ t.nombre || t.name }}</span>
                     </td>
                     <td class="actions">
-                        <button class="btn-secondary" [routerLink]="['/teams', t.id]">Ver detalles</button>
+                        <button class="btn-secondary" [routerLink]="['/teams', t.id]">Detalles</button>
                         <button class="btn-danger" (click)="remove('team', t.id)">Eliminar</button>
                     </td>
                 </tr>
@@ -51,7 +51,7 @@
                         <span>{{ t.nombre || t.fullname }}</span>
                     </td>
                     <td class="actions">
-                        <button class="btn-secondary" [routerLink]="['/player', t.id]">Ver detalles</button>
+                        <button class="btn-secondary" [routerLink]="['/player', t.id]">Detalles</button>
                         <button class="btn-danger" (click)="remove('player', t.id)">Eliminar</button>
                     </td>
                 </tr>
