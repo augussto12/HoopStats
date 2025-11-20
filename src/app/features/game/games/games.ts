@@ -2,10 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+
 import { NbaApiService } from '../../../services/nba-api';
-import { mapGame } from '../../../utils/mapGame';
 import { AuthService } from '../../../services/auth.service';
 import { PrediccionService } from '../../../services/predictions/predictions-service';
+import { getGamesByDateMapped,filterByStatus } from '../../../utils/gameUtils';
 
 @Component({
   selector: 'app-Games',
@@ -15,6 +16,7 @@ import { PrediccionService } from '../../../services/predictions/predictions-ser
   styleUrls: ['./games.css']
 })
 export class Games implements OnInit {
+
   public loading = false;
   public error: string | null = null;
 
@@ -25,27 +27,13 @@ export class Games implements OnInit {
   private games: any[] = [];
   private router = inject(Router);
 
-  constructor(private api: NbaApiService, private predictionService: PrediccionService, public auth: AuthService) { }
+  constructor(
+    private api: NbaApiService,
+    private predictionService: PrediccionService,
+    public auth: AuthService
+  ) { }
 
   ngOnInit(): void {
-    this.loadGames();
-  }
-
-  private pad(n: number) {
-    return String(n).padStart(2, '0');
-  }
-
-  private toLocalYYYYMMDD(d: Date) {
-    return `${d.getFullYear()}-${this.pad(d.getMonth() + 1)}-${this.pad(d.getDate())}`;
-  }
-
-  private addDays(dateISO: string, delta: number) {
-    const d = new Date(dateISO + 'T00:00:00');
-    d.setDate(d.getDate() + delta);
-    return this.toLocalYYYYMMDD(d);
-  }
-
-  refresh(): void {
     this.loadGames();
   }
 
@@ -54,37 +42,23 @@ export class Games implements OnInit {
     this.error = null;
 
     try {
-      const day = this.selectedDate;
-      const prev = this.addDays(day, -1);
-      const next = this.addDays(day, +1);
+      const mappedGames = await getGamesByDateMapped(this.api, this.selectedDate);
 
-      const [gPrev, gDay, gNext] = await Promise.all([
-        this.api.getGamesByDate(prev),
-        this.api.getGamesByDate(day),
-        this.api.getGamesByDate(next)
-      ]);
+      this.games = mappedGames;
+      this.gamesShown = filterByStatus(mappedGames, this.selectedStatus);
 
-      const all = [...gPrev, ...gDay, ...gNext];
-      const unique = Array.from(new Map(all.map(g => [g.id, g])).values());
-
-      // Filtramos por día local
-      this.games = unique.filter(g => {
-        const local = new Date(g?.date?.start ?? '');
-        if (isNaN(+local)) return false;
-        return this.toLocalYYYYMMDD(local) === day;
-      });
-
-      // Mapeamos y aplicamos filtro
-      const mapped = this.games.map(mapGame);
-      this.gamesShown = this.filterByStatus(mapped);
       await this.injectUserPredictions();
 
-    } catch (e: any) {
+    } catch (err) {
       this.error = 'No se pudieron cargar los partidos.';
-      console.error(e);
+      console.error(err);
     } finally {
       this.loading = false;
     }
+  }
+
+  refresh() {
+    this.loadGames();
   }
 
   private async injectUserPredictions() {
@@ -112,30 +86,13 @@ export class Games implements OnInit {
   }
 
   public onDateChange(ev: Event) {
-    const value = (ev.target as HTMLInputElement).value;
-    this.selectedDate = value;
+    this.selectedDate = (ev.target as HTMLInputElement).value;
     this.loadGames();
   }
 
   public async applyFilter() {
-    this.gamesShown = this.filterByStatus(this.games.map(mapGame));
+    this.gamesShown = filterByStatus(this.games, this.selectedStatus);
     await this.injectUserPredictions();
-  }
-
-  // Lógica del filtro por estado
-  private filterByStatus(games: any[]) {
-    if (!this.selectedStatus) return games; // sin filtro
-
-    switch (this.selectedStatus) {
-      case 'Finished':
-        return games.filter(g => g.status === 'Final');
-      case 'Live':
-        return games.filter(g => g.status === 'LIVE');
-      case 'Scheduled':
-        return games.filter(g => g.status === 'Programado');
-      default:
-        return games;
-    }
   }
 
   private toYYYYMMDD(d: Date) {
@@ -147,10 +104,8 @@ export class Games implements OnInit {
   public async savePrediction(g: any) {
     const user = JSON.parse(localStorage.getItem('user')!);
 
-    // limpiar error
     g.predictionError = null;
 
-    // validaciones
     if (g.predHome == null || g.predHome === '') {
       g.predictionError = 'Debe ingresar la predicción del local.';
       return;
@@ -182,12 +137,9 @@ export class Games implements OnInit {
 
     g.savedPrediction = true;
   }
-
-
+  
   public getLink(g: any) {
-    if (g.status === 'Programado') {
-      return;
-    } else {
+    if (g.status !== 'Programado') {
       this.router.navigate(['/game-details', g.id]);
     }
   }

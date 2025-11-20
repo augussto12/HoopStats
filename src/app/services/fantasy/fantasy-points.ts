@@ -19,11 +19,9 @@ export class FantasyPointsService {
 
     const config = await this.getLastUpdated();
     const lastUpdate = new Date(config.lastUpdatedFantasy);
+  
+    if (!this.pasoUnDia(lastUpdate)) return;
 
-    console.log("paso");
-    if (!this.pasoUnaHora(lastUpdate)) return;
-
-    console.log("paso23123");
     const users = await this.api.getAll("users");
 
     // juntar todos los jugadores
@@ -90,11 +88,11 @@ export class FantasyPointsService {
     return list[0];
   }
 
-  private pasoUnaHora(last: Date) {
-    const ONE_HOUR = 3600000;
-    console.log("ultimo", last);
-    console.log("ahora", Date.now());
-    return (Date.now() - last.getTime()) >= ONE_HOUR;
+  private pasoUnDia(last: Date): boolean {
+    const today = new Date().toDateString();
+    const lastDay = new Date(last).toDateString();
+
+    return today !== lastDay;
   }
 
   async getAllPlayersStats(ids: number[]) {
