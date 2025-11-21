@@ -1,21 +1,20 @@
 <header class="navbar">
-  <div class="nav-left">
-    <button class="btn back-btn" *ngIf="router.url !== '/'" (click)="goBack()">← Volver</button>
-    <div class="brand" routerLink="/">🏀 HoopStats</div>
-  </div>
+    <div class="nav-left">
+        <button class="btn back-btn" *ngIf="router.url !== '/'" (click)="goBack()">← Volver</button>
+        <div class="brand" routerLink="/">🏀 HoopStats</div>
+    </div>
 
-  <button class="menu-toggle" (click)="toggleMenu()">☰</button>
+    <button class="menu-toggle" (click)="toggleMenu()">☰</button>
 
-        <nav class="menu" [ngClass]="{ 'active': menuOpen }">
-            <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn">
-                <a routerLink="/login" (click)="closeMenu()" routerLinkActive="active">Iniciar sesión</a>
-                <a routerLink="/register" (click)="closeMenu()" routerLinkActive="active">Registrarse</a>
-            </ng-container>
+    <nav class="menu" [ngClass]="{ 'active': menuOpen }">
+        <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn">
+            <a routerLink="/login" (click)="closeMenu()" routerLinkActive="active">Iniciar sesión</a>
+            <a routerLink="/register" (click)="closeMenu()" routerLinkActive="active">Registrarse</a>
+        </ng-container>
 
-            <ng-template #loggedIn>
-                <a routerLink="/profile" (click)="closeMenu()" routerLinkActive="active">Perfil</a>
-                <a (click)="logout(); closeMenu()">Cerrar sesión</a>
-            </ng-template>
-        </nav>
-    </header>
-</div>
+        <ng-template #loggedIn>
+            <a routerLink="/profile" (click)="closeMenu()" routerLinkActive="active">Perfil</a>
+            <a (click)="logout(); closeMenu()">Cerrar sesión</a>
+        </ng-template>
+    </nav>
+</header>
