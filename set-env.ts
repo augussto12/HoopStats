@@ -20,4 +20,7 @@ export const environment = {
 };
 `;
 
+// Genera environment.prod.ts
+writeFileSync('./src/environments/environment.prod.ts', environmentFileContent);
+
 writeFileSync(targetPath, environmentFileContent);
