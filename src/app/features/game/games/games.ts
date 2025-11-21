@@ -13,7 +13,7 @@ import { DbPrediction } from '../../../models/interfaces';
   selector: 'app-Games',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
-  templateUrl: './Games.html',
+  templateUrl: './games.html',
   styleUrls: ['./games.css']
 })
 export class Games implements OnInit {
