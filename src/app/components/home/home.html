@@ -1,12 +1,9 @@
 <div class="home-wrapper">
 
-  <!-- SECCIÓN TOP: LATERAL IZQUIERDO + BEST PLAYERS -->
   <section class="top-section">
 
-    <!-- COLUMNA IZQUIERDA: NOTICIAS + PARTIDOS -->
     <div class="left-column">
 
-      <!-- 🔵 NOTICIAS DESTACADAS -->
       <div class="panel news-panel">
         <h2>📰 Noticias destacadas</h2>
 
@@ -14,24 +11,25 @@
           <p>No hay noticias cargadas aún.</p>
         </div>
 
-        <div *ngIf="news.length" class="news-card">
-          <div class="news-img-wrapper">
-            <img [src]="news[0].image" class="news-img" />
-          </div>
+        <div *ngIf="news.length">
+  <div class="news-card" *ngFor="let n of news">
+    <div class="news-img-wrapper">
+      <img [src]="n.image" class="news-img" />
+    </div>
 
-          <div class="news-info">
-            <h3 class="news-title">{{ news[0].title }}</h3>
+    <div class="news-info">
+      <h3 class="news-title">{{ n.title }}</h3>
 
-            <p class="news-desc">{{ news[0].description }}</p>
+      <p class="news-desc">{{ n.description }}</p>
 
-            <button class="news-button" *ngIf="news[0]?.url" (click)="openNews(news[0].url)">
-              Leer noticia completa
-            </button>
-          </div>
-        </div>
+      <button class="news-button" *ngIf="n?.url" (click)="openNews(n.url)">
+        Leer noticia completa
+      </button>
+    </div>
+  </div>
+</div>
       </div>
 
-      <!-- 🔴 PARTIDOS EN VIVO -->
       <div class="panel live-panel">
         <h2>
           Partidos en vivo <span class="live-dot"></span>
@@ -67,7 +65,6 @@
 
     </div>
 
-    <!-- 🏆 BEST PLAYERS -->
     <div class="panel players-panel">
       <h2>🏆 Mejores jugadores del día</h2>
 
@@ -84,57 +81,69 @@
 
   </section>
 
-  <!-- 📌 MENÚ PRINCIPAL -->
-  <section class="menu-section">
-    <div class="menu-grid">
+<button class="menu-open-btn" (click)="menuOpen = true">☰ Menú</button>
 
-      <div class="menu-card" routerLink="/standings">
-        <h2>Clasificación</h2>
-        <p>Conferencias, récords y posiciones.</p>
-      </div>
+<div class="side-menu" [class.open]="menuOpen">
 
-      <div class="menu-card" routerLink="/teams">
-        <h2>Equipos</h2>
-        <p>Información completa de cada franquicia.</p>
-      </div>
+  <div class="side-menu-header">
+    <h3>Menú principal</h3>
+    <button class="close-btn" (click)="menuOpen = false">✕</button>
+  </div>
 
-      <div class="menu-card" routerLink="/players">
-        <h2>Jugadores</h2>
-        <p>Estadísticas y rendimiento.</p>
-      </div>
+  <div class="side-menu-items">
 
-      <div class="menu-card" routerLink="/games">
-        <h2>Partidos</h2>
-        <p>Resultados, próximos juegos y estadísticas.</p>
-      </div>
-
-      <div class="menu-card" routerLink="/headtohead">
-        <h2>Head To Head</h2>
-        <p>Historial entre dos equipos.</p>
-      </div>
-
-      <div class="menu-card" [class.disabled]="!auth.isLoggedIn()"
-           [routerLink]="auth.isLoggedIn() ? ['/fantasy-home'] : null">
-        <h2>Fantasy Team</h2>
-        <p>Gestioná tu equipo de 5 jugadores.</p>
-        <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
-      </div>
-
-      <div class="menu-card" [class.disabled]="!auth.isLoggedIn()"
-           [routerLink]="auth.isLoggedIn() ? ['/predictions'] : null">
-        <h2>Predicciones</h2>
-        <p>Ganá puntos acertando resultados.</p>
-        <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
-      </div>
-
-      <div class="menu-card" [class.disabled]="!auth.isLoggedIn()"
-           [routerLink]="auth.isLoggedIn() ? ['/favorites'] : null">
-        <h2>Favoritos</h2>
-        <p>Acceso rápido a tus preferidos.</p>
-        <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
-      </div>
-
+    <div class="menu-item" routerLink="/standings" (click)="menuOpen = false">
+      <h4>Clasificación</h4>
+      <p>Conferencias, récords y posiciones.</p>
     </div>
-  </section>
+
+    <div class="menu-item" routerLink="/teams" (click)="menuOpen = false">
+      <h4>Equipos</h4>
+      <p>Información completa de cada franquicia.</p>
+    </div>
+
+    <div class="menu-item" routerLink="/players" (click)="menuOpen = false">
+      <h4>Jugadores</h4>
+      <p>Estadísticas y rendimiento.</p>
+    </div>
+
+    <div class="menu-item" routerLink="/games" (click)="menuOpen = false">
+      <h4>Partidos</h4>
+      <p>Resultados y próximos juegos.</p>
+    </div>
+
+    <div class="menu-item" routerLink="/headtohead" (click)="menuOpen = false">
+      <h4>Head To Head</h4>
+      <p>Historial entre equipos.</p>
+    </div>
+
+    <div class="menu-item" 
+         [class.disabled]="!auth.isLoggedIn()" 
+         [routerLink]="auth.isLoggedIn() ? ['/fantasy-home'] : null"
+         (click)="menuOpen = false">
+      <h4>Fantasy Team</h4>
+      <p>Gestioná tu equipo de 5 jugadores.</p>
+      <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
+    </div>
+
+    <div class="menu-item"
+         [class.disabled]="!auth.isLoggedIn()"
+         [routerLink]="auth.isLoggedIn() ? ['/predictions'] : null"
+         (click)="menuOpen = false">
+      <h4>Predicciones</h4>
+      <p>Ganá puntos acertando resultados.</p>
+      <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
+    </div>
+
+    <div class="menu-item"
+         [class.disabled]="!auth.isLoggedIn()"
+         [routerLink]="auth.isLoggedIn() ? ['/favorites'] : null"
+         (click)="menuOpen = false">
+      <h4>Favoritos</h4>
+      <p>Acceso rápido a tus preferidos.</p>
+      <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
+    </div>
+
+  </div>
 
 </div>

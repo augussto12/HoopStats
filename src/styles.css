@@ -1,5 +1,5 @@
 /* ============================
-   GLOBAL / RESET + FUENTE
+   GLOBAL RESET + FUENTE
 ============================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
@@ -17,11 +17,22 @@ body {
   height: 100%;
 }
 
+/* ============================
+   FONDO GLOBAL
+============================ */
+
 body {
-  background: radial-gradient(circle at top, #153a2e 0%, #050814 45%, #020308 100%);
+  background: #0b1223;
   color: #e5e7eb;
-  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
+
+  /* Fondo con patrón */
+  background-image: url("/assets/bg-basket-pattern.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 a {

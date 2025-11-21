@@ -3,23 +3,21 @@
 ============================ */
 
 .layout {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background: transparent; /* ya viene del body (styles.css) */
-  color: #f9fafb;
 }
 
 .main-content {
   flex: 1;
-  padding: 1.8rem;
   max-width: 1200px;
-  width: 100%;
   margin: 0 auto;
+  width: 100%;
+  padding: 1.8rem;
 }
 
 /* ============================
-   FOOTER GLASS
+   FOOTER
 ============================ */
 
 .app-footer {
@@ -38,11 +36,6 @@
   gap: 8px;
 }
 
-.app-footer p {
-  margin: 0;
-  letter-spacing: 0.04em;
-}
-
 .footer-left,
 .footer-center,
 .footer-right {
@@ -50,13 +43,8 @@
   text-align: center;
 }
 
-.footer-left {
-  text-align: left;
-}
-
-.footer-right {
-  text-align: right;
-}
+.footer-left { text-align: left; }
+.footer-right { text-align: right; }
 
 @media (max-width: 768px) {
   .main-content {
