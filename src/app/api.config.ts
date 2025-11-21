@@ -1,10 +1,6 @@
-export const environment = {
-    nbaApi: {
-        baseUrl: 'https://v2.nba.api-sports.io',
-        headers: {
-            'x-apisports-key': '23eac85ce54c183a6aaf21951f1ef7bd'
-        }
-    },
-    production: false,
-    apiUrl: "https://hoopstats-backend-production.up.railway.app/api"
+import { environment } from '../environments/environment';
+
+export const apiConfig = {
+    apiUrl: environment.apiUrl,
+    nbaApi: environment.nbaApi
 };

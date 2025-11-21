@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
-import { environment } from '../api.config';
+import { apiConfig } from '../api.config';
+import { environment } from '../../environments/environment';
 import { Team } from '../models/interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NbaApiService {
-  private apiUrl = environment.nbaApi.baseUrl;
+  private apiUrl = apiConfig.nbaApi.baseUrl;
   private headers = new HttpHeaders(environment.nbaApi.headers);
 
   constructor(private http: HttpClient) { }
