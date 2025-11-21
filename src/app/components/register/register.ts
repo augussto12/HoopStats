@@ -1,10 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { RouterLink, Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { LocalApiService } from '../../services/local-api';
-import { User } from '../../models/interfaces';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +17,11 @@ export class Register {
   public success = '';
   public registerForm;
 
-  constructor(private fb: FormBuilder, private router: Router, private auth: AuthService, private api: LocalApiService) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private auth: AuthService
+  ) {
     this.registerForm = this.fb.group({
       fullname: ['', [Validators.required, Validators.minLength(3)]],
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -28,7 +30,6 @@ export class Register {
       gender: ['', Validators.required],
     });
   }
-
 
   async register() {
     this.error = '';
@@ -40,42 +41,31 @@ export class Register {
       return;
     }
 
-    const { fullname, username, email, password, gender } = this.registerForm.value;
+    const payload = this.registerForm.value;
 
     try {
-      const users = await this.api.getByData('users', `username=${username}`);
-
-      if (users.length > 0) {
-        this.error = 'El nombre de usuario ya está en uso';
-        return;
-      }
-
-      const user: User = {
-        fullname: fullname!,
-        username: username!,
-        email: email!,
-        password: password!,
-        gender: gender! as User['gender'],
-        totalPredictionPoints: 0,
-        favorites: { teams: [], players: [] },
-        fantasy: {
-          name: "",
-          totalPoints: 0,
-          budget: 1000,
-          players: []
-        }
+      
+      const payload = {
+        fullname: this.registerForm.value.fullname ?? '',
+        username: this.registerForm.value.username ?? '',
+        email: this.registerForm.value.email ?? '',
+        password: this.registerForm.value.password ?? '',
+        gender: this.registerForm.value.gender ?? ''
       };
 
-      await this.auth.register(user);
+      await this.auth.register(payload);
+
 
       this.success = 'Usuario registrado con éxito';
       this.registerForm.reset();
+
       setTimeout(() => {
         this.router.navigate(['/login']);
       }, 1000);
-    } catch (err) {
+
+    } catch (err: any) {
       console.error(err);
-      this.error = 'Error al registrar el usuario';
+      this.error = err?.error?.error || 'Error al registrar el usuario';
     }
   }
 

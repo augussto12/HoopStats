@@ -22,23 +22,34 @@ export class Players implements OnInit {
   public selectedCountry: string = '';
   public selectedLastName: string = '';
   public selectedTeamId: number | null = null;
+
+  // IDs favoritos de jugadores
   public favoritesPlayersIds: number[] = [];
 
   public nbaTeams: any[] = [];
   public countries = NBA_COUNTRIES;
 
-  constructor(private api: NbaApiService, private favService: FavoritesService, public auth: AuthService) { }
+  constructor(
+    private api: NbaApiService,
+    private favService: FavoritesService,
+    public auth: AuthService
+  ) { }
 
   async ngOnInit() {
     const allTeams = await this.api.getTeams();
 
     this.nbaTeams = allTeams.filter(
-      (team: any) => team.nbaFranchise === true && team.leagues?.standard && !team.allStar
+      (team: any) =>
+        team.nbaFranchise === true &&
+        team.leagues?.standard &&
+        !team.allStar
     );
+
     await this.getPlayersFiltered();
 
+    // ✅ Cargar favoritos de jugadores (antes estabas leyendo teams)
     const favorites = await this.favService.getFavorites();
-    this.favoritesPlayersIds = favorites.teams.map((t: any) => t.id);
+    this.favoritesPlayersIds = favorites.players.map((p: any) => p.id);
   }
 
   async getPlayersFiltered() {
@@ -52,9 +63,10 @@ export class Players implements OnInit {
         country: this.selectedCountry || undefined,
       });
 
-      // Filtramos para traer solo jugadores de la nba activos
+      // Solo activos NBA
       this.players = response.filter(
-        (p: any) => p?.leagues?.standard?.active === true);
+        (p: any) => p?.leagues?.standard?.active === true
+      );
     } catch (e) {
       console.error(e);
       this.error = 'Error al cargar los jugadores.';
@@ -70,14 +82,8 @@ export class Players implements OnInit {
   async addToFavorites(player: any) {
     if (this.isFavorite(player)) return;
 
-    const fullName = `${player.firstname} ${player.lastname}`;
+    await this.favService.addFavorite('player', player.id);
 
-    const playerData = {
-      id: player.id,
-      nombre: fullName,
-    };
-
-    await this.favService.addFavorite('player', playerData);
     this.favoritesPlayersIds.push(player.id);
   }
 }

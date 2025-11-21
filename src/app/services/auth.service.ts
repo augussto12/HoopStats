@@ -1,44 +1,100 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { LocalApiService } from './local-api';
-import * as bcrypt from 'bcryptjs';
+import { ApiService } from './api.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    constructor(private api: LocalApiService, private router: Router) { }
 
-    async register(user: any): Promise<boolean> {
+    private tokenKey = 'token';
+    private userKey = 'user';
+
+    constructor(private api: ApiService, private router: Router) { }
+
+    // ------------------------------------
+    // REGISTER
+    // ------------------------------------
+    async register(data: {
+        fullname: string;
+        username: string;
+        gender: string;
+        email: string;
+        password: string;
+    }) {
+        const res: any = await this.api.post('/auth/register', data);
+
+        localStorage.setItem(this.tokenKey, res.token);
+        localStorage.setItem(this.userKey, JSON.stringify(res.user));
+
+        return res;
+    }
+
+    // ------------------------------------
+    // LOGIN (usa username, NO email)
+    // ------------------------------------
+    async login(username: string, password: string): Promise<boolean> {
         try {
-            user.password = await bcrypt.hash(user.password, 10);
-            await this.api.create('users', user);
+            const res: any = await this.api.post('/auth/login', { username, password });
+
+            localStorage.setItem(this.tokenKey, res.token);
+            localStorage.setItem(this.userKey, JSON.stringify(res.user));
+
             return true;
-        } catch {
+        } catch (e) {
             return false;
         }
     }
-    
 
-    async login(username: string, password: string): Promise<boolean> {
-        const users = await this.api.getByData('users', `username=${username}`);
-        if (users.length === 0) return false;
-
-        const user = users[0];
-        const valid = await bcrypt.compare(password, user.password);
-
-        if (valid) {
-            localStorage.setItem('user', JSON.stringify(user));
-            return true;
-        }
-
-        return false;
+    // ------------------------------------
+    // OBTENER PERFIL
+    // ------------------------------------
+    async getProfile() {
+        const profile = await this.api.get('/auth/me');
+        localStorage.setItem(this.userKey, JSON.stringify(profile));
+        return profile;
     }
 
+    // ------------------------------------
+    // EDITAR PERFIL
+    // ------------------------------------
+    async updateProfile(data: any) {
+        const updated: any = await this.api.put('/auth/me', data);
+        localStorage.setItem(this.userKey, JSON.stringify(updated.user));
+        return updated;
+    }
+
+    // ------------------------------------
+    // CAMBIAR PASSWORD
+    // ------------------------------------
+    async updatePassword(oldPassword: string, newPassword: string) {
+        return await this.api.patch('/auth/password', { oldPassword, newPassword });
+    }
+
+    async deleteAccount() {
+        return await this.api.delete('/auth/me');
+    }
+
+    // ------------------------------------
+    // LOGOUT
+    // ------------------------------------
     logout() {
-        localStorage.removeItem('user');
+        localStorage.removeItem(this.tokenKey);
+        localStorage.removeItem(this.userKey);
         this.router.navigate(['/']);
     }
 
-    isLoggedIn(): boolean {
-        return !!localStorage.getItem('user');
+    // ------------------------------------
+    // HELPERS
+    // ------------------------------------
+    getUser() {
+        const u = localStorage.getItem(this.userKey);
+        return u ? JSON.parse(u) : null;
+    }
+
+    getToken() {
+        return localStorage.getItem(this.tokenKey);
+    }
+
+    isLoggedIn() {
+        return !!localStorage.getItem(this.tokenKey);
     }
 }

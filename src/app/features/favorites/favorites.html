@@ -1,5 +1,6 @@
 <div class="page">
     <h1 class="title">Mis Favoritos</h1>
+
     <section class="favorites-section">
         <h3 class="section">Equipos Favoritos</h3>
 
@@ -18,8 +19,8 @@
             <tbody>
                 <tr *ngFor="let t of favoriteTeams">
                     <td class="team">
-                        <img [src]="t.logo" [alt]="t.fullName || t.name" />
-                        <span>{{ t.nombre || t.name }}</span>
+                        <img [src]="t.logo" [alt]="t.full_name" />
+                        <span>{{ t.full_name }}</span>
                     </td>
                     <td class="actions">
                         <button class="btn-secondary" [routerLink]="['/teams', t.id]">Detalles</button>
@@ -46,13 +47,13 @@
             </thead>
 
             <tbody>
-                <tr *ngFor="let t of favoritePlayers">
+                <tr *ngFor="let p of favoritePlayers">
                     <td class="team">
-                        <span>{{ t.nombre || t.fullname }}</span>
+                        <span>{{ p.full_name }}</span>
                     </td>
                     <td class="actions">
-                        <button class="btn-secondary" [routerLink]="['/player', t.id]">Detalles</button>
-                        <button class="btn-danger" (click)="remove('player', t.id)">Eliminar</button>
+                        <button class="btn-secondary" [routerLink]="['/player', p.id]">Detalles</button>
+                        <button class="btn-danger" (click)="remove('player', p.id)">Eliminar</button>
                     </td>
                 </tr>
             </tbody>

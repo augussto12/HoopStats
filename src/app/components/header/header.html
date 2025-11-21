@@ -8,16 +8,16 @@
 
     <button class="menu-toggle" (click)="toggleMenu()">☰</button>
 
-    <nav class="menu" [ngClass]="{ 'active': menuOpen }">
-        <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn">
-            <a routerLink="/login" (click)="closeMenu()" routerLinkActive="active" >Iniciar sesión</a>
-            <a routerLink="/register" (click)="closeMenu()" routerLinkActive="active" >Registrarse</a>
-        </ng-container>
+        <nav class="menu" [ngClass]="{ 'active': menuOpen }">
+            <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn">
+                <a routerLink="/login" (click)="closeMenu()" routerLinkActive="active">Iniciar sesión</a>
+                <a routerLink="/register" (click)="closeMenu()" routerLinkActive="active">Registrarse</a>
+            </ng-container>
 
-        <ng-template #loggedIn>
-            <a routerLink="/profile" (click)="closeMenu()" routerLinkActive="active" >Perfil</a>
-            <a href="#" (click)="logout(); closeMenu()">Cerrar sesión</a>
-        </ng-template>
-    </nav>
-</header>
+            <ng-template #loggedIn>
+                <a routerLink="/profile" (click)="closeMenu()" routerLinkActive="active">Perfil</a>
+                <a (click)="logout(); closeMenu()">Cerrar sesión</a>
+            </ng-template>
+        </nav>
+    </header>
 </div>

@@ -9,17 +9,17 @@
 
     <div class="predictions-grid" *ngIf="predictions.length > 0">
         <div class="prediction-card" *ngFor="let p of predictions">
-            <h2>{{ p.homeTeam }} vs {{ p.visitorTeam }}</h2>
+            <h2>{{ p.home_team }} vs {{ p.visitor_team }}</h2>
 
             <div class="prediction-row">
                 <span class="label">Tu predicción:</span>
-                <span>{{ p.puntosLocalPrediccion }} - {{ p.puntosVisitantePrediccion }}</span>
+                <span>{{ p.puntos_local_prediccion }} - {{ p.puntos_visitante_prediccion }}</span>
             </div>
 
             <div class="prediction-row">
                 <span class="label">Puntos obtenidos:</span>
                 <span *ngIf="!p.procesada">Pendiente</span>
-                <span class="points" *ngIf="p.procesada">{{p.puntosObtenidos}}</span>
+                <span class="points" *ngIf="p.procesada">{{ p.puntos_obtenidos }}</span>
             </div>
         </div>
     </div>
