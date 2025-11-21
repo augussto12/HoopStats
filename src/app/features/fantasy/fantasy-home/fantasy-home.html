@@ -1,18 +1,13 @@
 <div class="container">
     <h1 class="title">Fantasy Team</h1>
 
-    <p *ngIf="loading" class="loading-msg">Actualizando datos de los equipos...</p>
+    <div class="menu-card" routerLink="/my-team">
+        <h2>Mi equipo</h2>
+        <p>Accede a los jugadores de tu equipo.</p>
+    </div>
 
-    <div class="menu-grid" [class.disabled]="loading">
-
-        <div class="menu-card" [class.card-disabled]="loading" [routerLink]="loading ? null : '/my-team'">
-            <h2>Mi equipo</h2>
-            <p>Accede a los jugadores de tu equipo.</p>
-        </div>
-
-        <div class="menu-card" [class.card-disabled]="loading" [routerLink]="loading ? null : '/standings-fantasy'">
-            <h2>Tabla de Clasificación</h2>
-            <p>Consulta tu posición y los puntos acumulados.</p>
-        </div>
+    <div class="menu-card" routerLink="/standings-fantasy">
+        <h2>Tabla de Clasificación</h2>
+        <p>Consulta tu posición y los puntos acumulados.</p>
     </div>
 </div>

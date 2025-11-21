@@ -5,7 +5,6 @@ export const environment = {
             'x-apisports-key': '23eac85ce54c183a6aaf21951f1ef7bd'
         }
     },
-    localApi: {
-        baseUrl: 'http://localhost:3000'
-    }
+    production: false,
+    apiUrl: "https://hoopstats-backend-production.up.railway.app/api"
 };

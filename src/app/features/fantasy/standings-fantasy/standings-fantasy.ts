@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { LocalApiService } from '../../../services/local-api';
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../../../services/api.service';
 
 @Component({
   selector: 'app-standings-fantasy',
@@ -13,22 +13,18 @@ export class StandingsFantasy {
 
   public ranking: any[] = [];
 
-  constructor(private localApi: LocalApiService) { }
+  constructor(private api: ApiService) { }
 
   async ngOnInit() {
     this.loadRanking();
   }
 
   async loadRanking() {
-    const users = await this.localApi.getAll('users');
-    this.ranking = users
-      .map(u => ({
-        ...u,
-        fantasyName: u?.fantasy?.name,
-        fantasyPoints: u?.fantasy?.totalPoints || 0
-      }))
-      .sort((a, b) => b.fantasyPoints - a.fantasyPoints);
+    try {
+      this.ranking = await this.api.get<any[]>('/fantasy/ranking');
 
-    console.log("rankinggggg",this.ranking);
+    } catch (err) {
+      console.error('Error al obtener ranking:', err);
+    }
   }
 }

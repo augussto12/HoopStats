@@ -18,12 +18,14 @@ export class Favorites implements OnInit {
 
   async ngOnInit() {
     const favorites = await this.favoritesService.getFavorites();
+
     this.favoriteTeams = favorites.teams;
     this.favoritePlayers = favorites.players;
   }
 
   async remove(type: 'team' | 'player', id: number) {
     await this.favoritesService.removeFavorite(type, id);
+
     if (type === 'team') {
       this.favoriteTeams = this.favoriteTeams.filter(t => t.id !== id);
     } else {

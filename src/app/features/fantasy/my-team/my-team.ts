@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FantasyService } from '../../../services/fantasy/fantasy-service';
-import { LocalApiService } from '../../../services/local-api';
-import { FantasyTeam } from '../../../models/interfaces';
+import { FantasyService } from '../../../services/fantasy-service';
+import { NbaApiService } from '../../../services/nba-api';
+import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NbaApiService } from '../../../services/nba-api';
 
 @Component({
   selector: 'app-my-team',
@@ -15,109 +14,156 @@ import { NbaApiService } from '../../../services/nba-api';
 })
 export class MyTeam implements OnInit {
 
-  fantasyTeam: FantasyTeam | null = null;
+  team: any = null;
+  players: any[] = []; // jugadores del team
 
+  // UI
   editingName = false;
-  newName = '';
-
-  teams: any[] = [];
-  players: any[] = [];
-
-  selectedTeamId: number | null = null;
-  selectedPlayerId: number | null = null;
-
+  newName = "";
   showAddForm = false;
 
-  error = '';
-  success = '';
+  // Jugadores disponibles
+  allPlayers: any[] = [];
+  filteredPlayers: any[] = [];
 
+  // Filtros
   priceRanges = [
-    { label: "Sin filtro", min: 50, max: 450 },
-    { label: "100 - 150", min: 100, max: 150 },
-    { label: "150 - 200", min: 150, max: 200 },
-    { label: "200 - 250", min: 200, max: 250 },
-    { label: "250 - 300", min: 250, max: 300 },
-    { label: "300 - 350", min: 300, max: 350 },
-    { label: "350 - 400", min: 350, max: 400 },
+    { label: "Cualquiera", min: 0, max: 9999 },
+    { label: "100 - 200", min: 100, max: 200 },
+    { label: "200 - 300", min: 200, max: 300 },
+    { label: "300 - 400", min: 300, max: 400 }
   ];
-
   selectedRange: any = null;
-  playersFiltered: any[] = [];
+  selectedTeam: number | null = null;
 
+  nbaTeams: any[] = [];
   liveGames: any[] = [];
 
+  // mensajes
+  error = "";
+  success = "";
+
   constructor(
-    private fantasyService: FantasyService,
-    private api: LocalApiService,
-    private nbaApi: NbaApiService
+    private fantasy: FantasyService,
+    private api: ApiService,
+    private nba: NbaApiService
   ) { }
 
   async ngOnInit() {
-    this.fantasyTeam = await this.fantasyService.getFantasyTeam();
-    this.liveGames = await this.nbaApi.getLiveGames();
+    await this.loadFantasyTeam();
+    await this.loadLiveGames();
+    await this.loadNbaTeams();
+    await this.loadAllPlayers();
+  }
 
-    // JSON de jugadores con precios
-    this.teams = await this.api.getAll("pricePlayers");
+  // ============================
+  // CARGAR DATOS
+  // ============================
 
-    if (!this.fantasyTeam) {
+  async loadFantasyTeam() {
+    const res = await this.fantasy.getMyTeam();
+    this.team = res.team;
+    this.players = res.players;
+
+    if (!this.team) {
       this.editingName = true;
     } else {
-      this.newName = this.fantasyTeam.name;
+      this.newName = this.team.name;
     }
   }
 
+  async loadLiveGames() {
+    this.liveGames = await this.nba.getLiveGames();
+  }
+
+  async loadNbaTeams() {
+    this.nbaTeams = await this.nba.getTeams();
+  }
+
+  async loadAllPlayers() {
+    // Traemos TODOS los jugadores desde el backend
+    this.allPlayers = await this.api.get('/players');
+    this.filteredPlayers = this.allPlayers;
+  }
+
+  // ============================
+  // CREAR O RENOMBRAR EQUIPO
+  // ============================
   async saveName() {
     if (this.newName.trim().length < 3) {
       this.error = "El nombre debe tener al menos 3 caracteres";
       return;
     }
 
-    await this.fantasyService.createFantasyTeam(this.newName);
-    this.fantasyTeam = await this.fantasyService.getFantasyTeam();
-
-    this.success = "Nombre guardado";
+    await this.fantasy.createTeam(this.newName);
     this.error = "";
+    this.success = "Equipo creado";
     this.editingName = false;
+
+    await this.loadFantasyTeam();
   }
 
-  async removePlayer(idPlayer: number) {
-    const updated = await this.fantasyService.removePlayer(idPlayer);
-    if (updated) this.fantasyTeam = updated;
-  }
-
-  // Cuando cambia el equipo
-  onTeamChange() {
-    const team = this.teams.find(t => t.idTeam === Number(this.selectedTeamId));
-
-    // Previene errores si no encuentra el equipo o no tiene players
-    this.players = team?.players ?? [];
-    this.selectedPlayerId = null;
-  }
-
-  // Agregar jugador al equipo fantasy
-  async addSelectedPlayer(player: any) {
+  // ============================
+  // AGREGAR JUGADOR
+  // ============================
+  async addPlayer(playerId: number) {
     try {
-      const team = await this.fantasyService.addPlayer({
-        id: player.idJugador,
-        name: player.nombre,
-        price: player.precio
-      });
-
-      // Si no explota, funciona
-      this.success = "Jugador agregado correctamente";
+      await this.fantasy.addPlayer(playerId);
+      this.success = "Jugador agregado";
       this.error = "";
-      this.fantasyTeam = team;
 
-      this.resetFilters();
+      await this.loadFantasyTeam();
       this.showAddForm = false;
 
     } catch (err: any) {
-      this.error = err.message || "Error inesperado";
+      this.error = err.error?.error || "Error inesperado";
       this.success = "";
     }
   }
 
+  // ============================
+  // QUITAR JUGADOR
+  // ============================
+  async removePlayer(playerId: number) {
+    try {
+      await this.fantasy.removePlayer(playerId);
+      this.success = "Jugador eliminado";
+      this.error = "";
 
+      await this.loadFantasyTeam();
+    } catch (err: any) {
+      this.error = err.error?.error || "Error al eliminar jugador";
+      this.success = "";
+    }
+  }
+
+  // ============================
+  // FILTROS
+  // ============================
+  filterPlayers() {
+    let list = [...this.allPlayers];
+
+    // Por equipo
+    if (this.selectedTeam) {
+      list = list.filter(p => p.team_id === Number(this.selectedTeam));
+    }
+
+    // Por precio
+    if (this.selectedRange) {
+      list = list.filter(p =>
+        p.price >= this.selectedRange.min &&
+        p.price <= this.selectedRange.max
+      );
+    }
+
+    this.filteredPlayers = list;
+  }
+
+  resetFilters() {
+    this.selectedRange = null;
+    this.selectedTeam = null;
+    this.filteredPlayers = this.allPlayers;
+  }
 
   toggleAddForm() {
     this.showAddForm = !this.showAddForm;
@@ -126,41 +172,4 @@ export class MyTeam implements OnInit {
       this.resetFilters();
     }
   }
-
-
-  filterPlayers() {
-    let players = [];
-
-    // 1) Si eligió un equipo → usar SOLO esos jugadores
-    if (this.selectedTeamId) {
-      const team = this.teams.find(t => t.idTeam === Number(this.selectedTeamId));
-      players = team ? team.players : [];
-    }
-    else {
-      // Si NO hay equipo → usar todos los jugadores
-      players = this.teams.reduce((acc, t) => acc.concat(t.players), []);
-    }
-
-    // 2) Si eligió un rango → filtrar por precio
-    if (this.selectedRange) {
-      const { min, max } = this.selectedRange;
-
-      players = players.filter(
-        (p: any) => p.precio >= min && p.precio <= max
-      );
-    }
-
-    // Resultado final
-    this.playersFiltered = players;
-  }
-
-  resetFilters() {
-    this.selectedTeamId = null;
-    this.selectedRange = null;
-    this.selectedPlayerId = null;
-
-    this.players = [];
-    this.playersFiltered = [];
-  }
-
 }

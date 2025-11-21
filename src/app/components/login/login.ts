@@ -19,7 +19,10 @@ export class Login {
   constructor(private auth: AuthService, private router: Router) { }
 
   async login() {
+    this.error = '';
+
     const success = await this.auth.login(this.username, this.password);
+
     if (success) {
       this.router.navigate(['/']);
     } else {
