@@ -2,12 +2,10 @@
 import { writeFileSync } from 'fs';
 import * as dotenv from 'dotenv';
 
-// En producción Netlify ignora .env.local y usa sus propias variables
+// Cargar las env de Netlify
 dotenv.config();
 
-const targetPath = './src/environments/environment.prod.ts';
-
-const environmentFileContent = `
+const envContent = `
 export const environment = {
   production: true,
   apiUrl: '${process.env['API_URL']}',
@@ -20,4 +18,8 @@ export const environment = {
 };
 `;
 
-writeFileSync(targetPath, environmentFileContent);
+// Genera environment.prod.ts
+writeFileSync('./src/environments/environment.prod.ts', envContent);
+
+// GENERA TAMBIÉN environment.ts (Angular lo busca SIEMPRE)
+writeFileSync('./src/environments/environment.ts', envContent);
