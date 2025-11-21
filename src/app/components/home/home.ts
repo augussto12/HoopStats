@@ -144,6 +144,11 @@ export class Home implements OnInit {
 
       const gamesYesterday: Game[] = await this.nbaService.getGamesByDate(yesterdayStr);
 
+      if (!gamesYesterday.length) {
+        this.errorPlayers = 'No hubo partidos ayer.';
+        return;
+      }
+
       const finishedGames = gamesYesterday.filter(
         (g: Game) =>
           g.status?.short === 'FT' ||

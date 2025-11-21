@@ -5,8 +5,9 @@ import { FormsModule } from '@angular/forms';
 
 import { NbaApiService } from '../../../services/nba-api';
 import { AuthService } from '../../../services/auth.service';
-import { PrediccionService } from '../../../services/predictions/predictions-service';
-import { getGamesByDateMapped,filterByStatus } from '../../../utils/gameUtils';
+import { PredictionService } from '../../../services/predictions-service';
+import { getGamesByDateMapped, filterByStatus } from '../../../utils/gameUtils';
+import { DbPrediction } from '../../../models/interfaces';
 
 @Component({
   selector: 'app-Games',
@@ -23,13 +24,14 @@ export class Games implements OnInit {
   public selectedStatus = '';
   public selectedDate = this.toYYYYMMDD(new Date());
   public gamesShown: any[] = [];
+  private myPredictionsCache: DbPrediction[] | null = null;
 
   private games: any[] = [];
   private router = inject(Router);
 
   constructor(
     private api: NbaApiService,
-    private predictionService: PrediccionService,
+    private predictionService: PredictionService,
     public auth: AuthService
   ) { }
 
@@ -37,7 +39,7 @@ export class Games implements OnInit {
     this.loadGames();
   }
 
-  public async loadGames() {
+  async loadGames() {
     this.loading = true;
     this.error = null;
 
@@ -57,28 +59,33 @@ export class Games implements OnInit {
     }
   }
 
-  refresh() {
-    this.loadGames();
-  }
+
 
   private async injectUserPredictions() {
     if (!this.auth.isLoggedIn()) return;
 
-    const user = JSON.parse(localStorage.getItem('user')!);
-    const predictions = await this.predictionService.getByUser(user.id);
+    if (!this.myPredictionsCache) {
+      this.myPredictionsCache = await this.predictionService.getMyPredictions();
+    }
+
+    const preds = this.myPredictionsCache;
 
     for (let g of this.gamesShown) {
-      const pred = predictions.find((p: any) => p.idGame === g.id);
+      const pred = preds.find(p => p.game_id === g.id);
+
       if (pred) {
-        g.predHome = pred.puntosLocalPrediccion;
-        g.predVisitors = pred.puntosVisitantePrediccion;
+        g.predHome = pred.puntos_local_prediccion;
+        g.predVisitors = pred.puntos_visitante_prediccion;
         g.savedPrediction = true;
         g.predictionId = pred.id;
-        g.savedPrediction = false;
       }
     }
   }
 
+
+  refresh() {
+    this.loadGames();
+  }
 
   public goToday() {
     this.selectedDate = this.toYYYYMMDD(new Date());
@@ -100,9 +107,7 @@ export class Games implements OnInit {
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   }
 
-
   public async savePrediction(g: any) {
-    const user = JSON.parse(localStorage.getItem('user')!);
 
     g.predictionError = null;
 
@@ -116,32 +121,26 @@ export class Games implements OnInit {
       return;
     }
 
-    const payload = {
-      idUser: user.id,
-      idGame: g.id,
-      homeTeam: g.home.name,
-      visitorTeam: g.visitors.name,
-      puntosLocalPrediccion: g.predHome,
-      puntosVisitantePrediccion: g.predVisitors,
-      puntosObtenidos: 0,
-      procesada: false
-    };
+    const existing = await this.predictionService.getPredictionForGame(g.id);
 
-    const existing = await this.predictionService.getForGame(user.id, g.id);
-
-    if (existing.length > 0) {
-      await this.predictionService.update(existing[0].id, payload);
-    } else {
-      await this.predictionService.create(payload);
+    if (existing) {
+      await this.predictionService.deletePrediction(existing.id);
     }
+
+    await this.predictionService.createPrediction({
+      game_id: g.id,
+      home_team: g.home.name,
+      visitor_team: g.visitors.name,
+      puntos_local_prediccion: g.predHome,
+      puntos_visitante_prediccion: g.predVisitors
+    });
 
     g.savedPrediction = true;
   }
-  
+
   public getLink(g: any) {
     if (g.status !== 'Programado') {
       this.router.navigate(['/game-details', g.id]);
     }
   }
-
 }

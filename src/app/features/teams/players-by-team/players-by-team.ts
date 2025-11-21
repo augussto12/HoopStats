@@ -40,7 +40,6 @@ export class PlayersByTeam implements OnInit {
   ) { }
 
   async ngOnInit() {
-    
     this.teamId = Number(this.route.snapshot.paramMap.get('id'));
     if (!this.teamId) {
       this.error = "ID de equipo inválido.";
@@ -67,8 +66,9 @@ export class PlayersByTeam implements OnInit {
     await this.loadGames(this.teamId);
 
     const favorites = await this.favService.getFavorites();
-    this.favoritesPlayersIds = favorites.teams.map((t: any) => t.id);
+    this.favoritesPlayersIds = favorites.players.map((p: any) => p.id);  // ← CORREGIDO
   }
+
 
   async loadTeam(teamId: number) {
     this.team = await this.nbaService.getTeamById(teamId);
@@ -195,14 +195,8 @@ export class PlayersByTeam implements OnInit {
   async addToFavorites(player: any) {
     if (this.isFavorite(player)) return;
 
-    const fullName = `${player.firstname} ${player.lastname}`;
-
-    const playerData = {
-      id: player.id,
-      nombre: fullName,
-    };
-
-    await this.favService.addFavorite('player', playerData);
+    await this.favService.addFavorite('player', player.id); 
     this.favoritesPlayersIds.push(player.id);
   }
+
 }

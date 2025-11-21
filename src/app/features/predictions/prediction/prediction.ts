@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { PredictionCalulator } from '../../../services/predictions/prediction-calculator';
 
 @Component({
   selector: 'app-prediction',
@@ -8,11 +7,6 @@ import { PredictionCalulator } from '../../../services/predictions/prediction-ca
   templateUrl: './prediction.html',
   styleUrl: './prediction.css',
 })
-export class Prediction implements OnInit {
+export class Prediction {
 
-  constructor(private predCalc: PredictionCalulator) { }
-
-  ngOnInit() {
-    this.predCalc.evaluatePendingPredictions();
-  }
 }

@@ -1,18 +1,26 @@
+// ========================
+// Usuario
+// ========================
 export interface User {
-    fullname: string;
-    username: string;
+    id?: number;
+    fullname?: string;
+    username?: string;
     email: string;
-    password: string;
-    gender: 'male' | 'female' | 'other' | 'prefer_not';
-    totalPredictionPoints: number;
-    favorites: {
+    gender?: 'male' | 'female' | 'other' | 'prefer_not';
+
+    totalPredictionPoints?: number;
+
+    favorites?: {
         teams: any[];
         players: any[];
     };
-    fantasy: FantasyTeam;
+
+    fantasy?: FantasyTeam;
 }
 
-
+// ========================
+// Jugador NBA API
+// ========================
 export interface Player {
     id: number;
     firstname: string;
@@ -44,7 +52,9 @@ export interface Player {
     };
 }
 
-
+// ========================
+// Estadísticas de jugador
+// ========================
 export interface PlayerStats {
     player: {
         id: number;
@@ -72,7 +82,16 @@ export interface PlayerStats {
     tpm: number;
 }
 
+export interface TopStat {
+    category: string;
+    player: string;
+    value: number;
+}
 
+
+// ========================
+// Partido (mapeado)
+// ========================
 export interface Game {
     id: number;
     date: string;
@@ -98,13 +117,14 @@ export interface Game {
     };
 }
 
-
-export interface TopStat {
-    category: string;
-    player: string;
-    value: number;
+export interface PlayerGroup {
+    team: Team;
+    players: PlayerStats[];
 }
 
+// ========================
+// Equipo NBA
+// ========================
 export interface Team {
     id: number;
     name: string;
@@ -122,28 +142,41 @@ export interface Team {
     };
 }
 
+// ========================
+// Predicción (BACKEND FORMAT)
+// ========================
+export interface Prediction {
+    id?: number;
+    user_id?: number;
 
-export interface PlayerGroup {
-    team: Team;
-    players: PlayerStats[];
+    game_id: number;
+    home_team: string;
+    visitor_team: string;
+
+    puntos_local_prediccion: number;
+    puntos_visitante_prediccion: number;
+
+    puntos_obtenidos?: number;
+    procesada?: boolean;
+
+    created_at?: string;
 }
 
-export interface Prediction {
-    id?: string;
-    idUser: string | number;
-    idGame: number;
-    homeTeam: string;
-    visitorTeam: string;
-    puntosLocalPrediccion: number;
-    puntosVisitantePrediccion: number;
-    puntosObtenidos: number;
+export interface DbPrediction {
+    id: number;
+    game_id: number;
+    home_team: string;
+    visitor_team: string;
+    puntos_local_prediccion: number;
+    puntos_visitante_prediccion: number;
+    puntos_obtenidos?: number;
     procesada: boolean;
 }
 
-export interface CountryOption {
-    name: string;
-}
 
+// ========================
+// Fantasy
+// ========================
 export interface FantasyPlayer {
     id: number;
     name: string;
@@ -152,8 +185,28 @@ export interface FantasyPlayer {
 }
 
 export interface FantasyTeam {
+    id?: number;
     name: string;
     totalPoints: number;
     budget: number;
     players: FantasyPlayer[];
+}
+
+// ========================
+// Login / Register Response
+// ========================
+export interface AuthResponse {
+    message: string;
+    token: string;
+    user: {
+        id: number;
+        email: string;
+        fullname?: string;
+        username?: string;
+        gender?: string;
+    };
+}
+
+export interface CountryOption {
+    name: string;
 }

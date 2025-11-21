@@ -36,13 +36,6 @@ export async function getGamesByDateMapped(api: NbaApiService, dateISO: string) 
         .map(mapGame);
 }
 
-// Obtener partidos por equipo
-export async function getGamesByTeamMapped(api: NbaApiService, teamId: number) {
-    const response = await api.getGamesByTeam(teamId);
-    return response
-        .filter((g: any) => g.stage === 2).map(mapGame);
-}
-
 // Filtro por estado 
 export function filterByStatus(games: any[], status: string) {
     if (!status) return games;

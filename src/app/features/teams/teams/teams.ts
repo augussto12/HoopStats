@@ -33,7 +33,7 @@ export class TeamsComponent implements OnInit {
   async ngOnInit() {
 
     this.getTeams();
-    
+
   }
 
   async getTeams() {
@@ -69,15 +69,10 @@ export class TeamsComponent implements OnInit {
   async addToFavorites(team: any) {
     if (this.isFavorite(team)) return;
 
-    const teamData = {
-      id: team.id,
-      nombre: team.fullName || team.name,
-      logo: team.logo,
-    };
-
-    await this.favoritesService.addFavorite('team', teamData);
+    await this.favoritesService.addFavorite('team', team.id);
     this.favoriteTeamIds.push(team.id);
   }
+
 
   filteredTeams(teams: any[]): any[] {
     const term = this.searchTerm.trim().toLowerCase();
