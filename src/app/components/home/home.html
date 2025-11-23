@@ -77,7 +77,7 @@
       <div *ngIf="!loadingPlayers && bestPlayers.length" class="players-grid">
         <div class="player-card" *ngFor="let p of bestPlayers; trackBy: trackPlayers">
           <h3>{{ p.category }}</h3>
-          <p><span>{{ p.player }}</span> <strong>{{ p.value }}</strong></p>
+          <p><span>{{ p.player }} </span>|<strong> {{ p.value }}</strong></p>
         </div>
       </div>
     </div>

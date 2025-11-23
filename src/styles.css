@@ -18,6 +18,15 @@ body {
 }
 
 /* ============================
+   BLOQUEO DE SCROLL PARA MENÚ
+============================ */
+body.no-scroll {
+  overflow: hidden !important;
+  height: 100vh;
+}
+
+
+/* ============================
    FONDO GLOBAL
 ============================ */
 

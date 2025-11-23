@@ -20,19 +20,29 @@ export class Header {
   constructor(
     public router: Router,
     public auth: AuthService
-  ) { }
+  ) {
+    this.router.events.subscribe(() => {
+      document.body.classList.remove("no-scroll");
+    });
+  }
+
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
 
-    // Evitar scroll del body
-    document.body.style.overflow = this.menuOpen ? 'hidden' : 'auto';
+    if (this.menuOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
   }
 
   closeMenu() {
     this.menuOpen = false;
-    document.body.style.overflow = "auto";
+    document.body.classList.remove("no-scroll");
   }
+
+
 
   logout() {
     this.auth.logout();
