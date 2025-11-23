@@ -81,7 +81,8 @@ export class Home implements OnInit {
 
     try {
       const data = await this.bestPlayersService.getLatest();
-      this.bestPlayers = data.players || [];
+
+      this.bestPlayers = Array.isArray(data) ? data : [];
 
       if (!this.bestPlayers.length) {
         this.errorPlayers = 'No se pudieron cargar los jugadores destacados.';
@@ -93,4 +94,5 @@ export class Home implements OnInit {
       this.loadingPlayers = false;
     }
   }
+
 }
