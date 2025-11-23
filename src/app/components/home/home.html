@@ -12,22 +12,20 @@
         </div>
 
         <div *ngIf="news.length">
-  <div class="news-card" *ngFor="let n of news">
-    <div class="news-img-wrapper">
-      <img [src]="n.image" class="news-img" />
-    </div>
+          <div class="news-card" *ngFor="let n of news; trackBy: trackNews">
 
-    <div class="news-info">
-      <h3 class="news-title">{{ n.title }}</h3>
+            <img [src]="n.image" class="news-img" loading="lazy" width="180" height="115" />
 
-      <p class="news-desc">{{ n.description }}</p>
+            <div class="news-info">
+              <h3 class="news-title">{{ n.title }}</h3>
+              <p class="news-desc">{{ n.description }}</p>
 
-      <button class="news-button" *ngIf="n?.url" (click)="openNews(n.url)">
-        Leer noticia completa
-      </button>
-    </div>
-  </div>
-</div>
+              <button class="news-button" *ngIf="n?.url" (click)="openNews(n.url)">
+                Leer noticia completa
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="panel live-panel">
@@ -39,11 +37,13 @@
         <div *ngIf="!loadingLive && errorLive" class="empty">{{ errorLive }}</div>
 
         <div *ngIf="!loadingLive && liveGames.length" class="live-list">
-          <div class="live-card" *ngFor="let g of liveGames" [routerLink]="['/game-details', g.id]">
+
+          <div class="live-card" *ngFor="let g of liveGames; trackBy: trackGame" [routerLink]="['/game-details', g.id]">
 
             <div class="teams">
+
               <div class="team">
-                <img [src]="g.visitors.logo" />
+                <img [src]="g.visitors.logo" loading="lazy" width="38" height="38" />
                 <span>{{ g.visitors.name }}</span>
               </div>
 
@@ -53,13 +53,16 @@
               </div>
 
               <div class="team">
-                <img [src]="g.home.logo" />
+                <img [src]="g.home.logo" loading="lazy" width="38" height="38" />
                 <span>{{ g.home.name }}</span>
               </div>
+
             </div>
 
             <div class="arena">{{ g.arena }}</div>
+
           </div>
+
         </div>
       </div>
 
@@ -72,7 +75,7 @@
       <div *ngIf="!loadingPlayers && errorPlayers" class="empty">{{ errorPlayers }}</div>
 
       <div *ngIf="!loadingPlayers && bestPlayers.length" class="players-grid">
-        <div class="player-card" *ngFor="let p of bestPlayers">
+        <div class="player-card" *ngFor="let p of bestPlayers; trackBy: trackPlayers">
           <h3>{{ p.category }}</h3>
           <p><span>{{ p.player }}</span> <strong>{{ p.value }}</strong></p>
         </div>
@@ -80,70 +83,4 @@
     </div>
 
   </section>
-
-<button class="menu-open-btn" (click)="menuOpen = true">☰ Menú</button>
-
-<div class="side-menu" [class.open]="menuOpen">
-
-  <div class="side-menu-header">
-    <h3>Menú principal</h3>
-    <button class="close-btn" (click)="menuOpen = false">✕</button>
-  </div>
-
-  <div class="side-menu-items">
-
-    <div class="menu-item" routerLink="/standings" (click)="menuOpen = false">
-      <h4>Clasificación</h4>
-      <p>Conferencias, récords y posiciones.</p>
-    </div>
-
-    <div class="menu-item" routerLink="/teams" (click)="menuOpen = false">
-      <h4>Equipos</h4>
-      <p>Información completa de cada franquicia.</p>
-    </div>
-
-    <div class="menu-item" routerLink="/players" (click)="menuOpen = false">
-      <h4>Jugadores</h4>
-      <p>Estadísticas y rendimiento.</p>
-    </div>
-
-    <div class="menu-item" routerLink="/games" (click)="menuOpen = false">
-      <h4>Partidos</h4>
-      <p>Resultados y próximos juegos.</p>
-    </div>
-
-    <div class="menu-item" routerLink="/headtohead" (click)="menuOpen = false">
-      <h4>Head To Head</h4>
-      <p>Historial entre equipos.</p>
-    </div>
-
-    <div class="menu-item" 
-         [class.disabled]="!auth.isLoggedIn()" 
-         [routerLink]="auth.isLoggedIn() ? ['/fantasy-home'] : null"
-         (click)="menuOpen = false">
-      <h4>Fantasy Team</h4>
-      <p>Gestioná tu equipo de 5 jugadores.</p>
-      <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
-    </div>
-
-    <div class="menu-item"
-         [class.disabled]="!auth.isLoggedIn()"
-         [routerLink]="auth.isLoggedIn() ? ['/predictions'] : null"
-         (click)="menuOpen = false">
-      <h4>Predicciones</h4>
-      <p>Ganá puntos acertando resultados.</p>
-      <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
-    </div>
-
-    <div class="menu-item"
-         [class.disabled]="!auth.isLoggedIn()"
-         [routerLink]="auth.isLoggedIn() ? ['/favorites'] : null"
-         (click)="menuOpen = false">
-      <h4>Favoritos</h4>
-      <p>Acceso rápido a tus preferidos.</p>
-      <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
-    </div>
-
-  </div>
-
 </div>

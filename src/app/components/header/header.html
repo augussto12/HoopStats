@@ -1,20 +1,84 @@
 <header class="navbar">
-    <div class="nav-left">
-        <button class="btn back-btn" *ngIf="router.url !== '/'" (click)="goBack()">← Volver</button>
-        <div class="brand" routerLink="/">🏀 HoopStats</div>
+
+    <button class="back-btn" *ngIf="router.url !== '/'" (click)="goBack()">
+        Volver
+    </button>
+
+    <div class="brand" routerLink="/">
+        🏀 HoopStats
     </div>
 
-    <button class="menu-toggle" (click)="toggleMenu()">☰</button>
+    <button class="menu-toggle" (click)="toggleMenu()">
+        <span [class.active]="menuOpen"></span>
+    </button>
 
-    <nav class="menu" [ngClass]="{ 'active': menuOpen }">
-        <ng-container *ngIf="!auth.isLoggedIn(); else loggedIn">
-            <a routerLink="/login" (click)="closeMenu()" routerLinkActive="active">Iniciar sesión</a>
-            <a routerLink="/register" (click)="closeMenu()" routerLinkActive="active">Registrarse</a>
+</header>
+
+
+
+<div class="overlay" *ngIf="menuOpen" (click)="toggleMenu()"></div>
+
+<div class="side-menu" [class.open]="menuOpen">
+
+    <div class="side-menu-header">
+
+        <ng-container *ngIf="auth.isLoggedIn(); else notLoggedHeader">
+            <div class="auth-buttons">
+                <a routerLink="/profile" class="menu-btn" (click)="menuOpen = false">Perfil</a>
+                <button class="menu-btn logout" (click)="logout(); menuOpen = false">Cerrar sesión</button>
+            </div>
         </ng-container>
 
-        <ng-template #loggedIn>
-            <a routerLink="/profile" (click)="closeMenu()" routerLinkActive="active">Perfil</a>
-            <a (click)="logout(); closeMenu()">Cerrar sesión</a>
+        <ng-template #notLoggedHeader>
+            <div class="auth-buttons">
+                <a routerLink="/login" class="menu-btn" (click)="menuOpen = false">Login</a>
+                <a routerLink="/register" class="menu-btn" (click)="menuOpen = false">Registrarse</a>
+            </div>
         </ng-template>
-    </nav>
-</header>
+
+        <button class="close-btn" (click)="menuOpen = false">✕</button>
+    </div>
+
+    <div class="side-menu-items">
+
+        <a routerLink="/standings" class="menu-item" (click)="menuOpen = false">
+            <h4>Clasificación</h4>
+            <p>Conferencias y posiciones.</p>
+        </a>
+
+        <a routerLink="/teams" class="menu-item" (click)="menuOpen = false">
+            <h4>Equipos</h4>
+            <p>Planteles, récords y datos generales.</p>
+        </a>
+
+        <a routerLink="/players" class="menu-item" (click)="menuOpen = false">
+            <h4>Jugadores</h4>
+            <p>Estadísticas, rendimiento y perfiles.</p>
+        </a>
+
+        <a routerLink="/games" class="menu-item" (click)="menuOpen = false">
+            <h4>Partidos</h4>
+            <p>Resultados, próximos juegos y detalles.</p>
+        </a>
+
+        <a routerLink="/headtohead" class="menu-item" (click)="menuOpen = false">
+            <h4>Head to Head</h4>
+            <p>Historial de enfrentamientos.</p>
+        </a>
+
+        <a class="menu-item" [class.disabled]="!auth.isLoggedIn()"
+            [routerLink]="auth.isLoggedIn() ? ['/fantasy-home'] : null" (click)="menuOpen = false">
+            <h4>Fantasy Team</h4>
+            <p>Gestioná tu equipo de 5 jugadores.</p>
+            <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
+        </a>
+
+        <a class="menu-item" [class.disabled]="!auth.isLoggedIn()"
+            [routerLink]="auth.isLoggedIn() ? ['/predictions'] : null" (click)="menuOpen = false">
+            <h4>Predicciones</h4>
+            <p>Sumá puntos acertando resultados.</p>
+            <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
+        </a>
+
+    </div>
+</div>

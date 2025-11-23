@@ -45,5 +45,5 @@ export const routes: Routes = [
     { path: 'my-team', component: MyTeam, canActivate: [AuthGuard] },
     { path: 'standings-fantasy', component: StandingsFantasy, canActivate: [AuthGuard] },
 
-    { path: '**', redirectTo: 'home' }
+    { path: '**', redirectTo: '' }
 ];
