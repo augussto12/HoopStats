@@ -12,21 +12,55 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./login.css']
 })
 export class Login {
-  public username = '';
+
+  public identifier = '';
   public password = '';
+
   public error = '';
+  public success = '';
+
+  public loading = false;
+  public showPassword = false;
+  public capsOn = false;
+  public fading = false;
 
   constructor(private auth: AuthService, private router: Router) { }
 
   async login() {
     this.error = '';
+    this.success = '';
+    this.loading = true;
 
-    const success = await this.auth.login(this.username, this.password);
+    const identifier = this.identifier.trim().toLowerCase();
 
-    if (success) {
-      this.router.navigate(['/']);
-    } else {
-      this.error = 'Usuario o contraseña incorrectos';
+    try {
+      const logged = await this.auth.login(identifier, this.password);
+
+      if (logged) {
+        this.loading = false;
+        this.success = "Sesión iniciada";
+
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 900);
+
+      } else {
+        this.loading = false;
+        this.error = "Usuario/email o contraseña incorrectos";
+      }
+
+    } catch (err) {
+      console.error(err);
+      this.loading = false;
+      this.error = 'Ocurrió un error al iniciar sesión';
     }
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+
+  checkCaps(e: KeyboardEvent) {
+    this.capsOn = e.getModifierState && e.getModifierState('CapsLock');
   }
 }

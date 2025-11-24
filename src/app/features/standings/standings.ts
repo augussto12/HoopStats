@@ -1,29 +1,40 @@
-import { Component, OnInit } from '@angular/core';
-import { NbaApiService } from '../../services/nba-api';
+import { Component, Injector, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NbaApiService } from '../../services/nba-api';
+import { WithLoader } from '../../decorators/with-loader.decorator';
 
+@WithLoader()
 @Component({
   selector: 'app-standings',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './standings.html',
-  styleUrl: './standings.css'
+  styleUrls: ['./standings.css']
 })
 export class Standings implements OnInit {
 
   public westTeams: any[] = [];
   public eastTeams: any[] = [];
+  public error = '';
 
-  constructor(private api: NbaApiService) { }
+  private api = inject(NbaApiService);
+
+  constructor(public injector: Injector) { }
 
   async ngOnInit() {
-    const allTeams = await this.api.getStandings();
-    this.westTeams = allTeams.filter((item: any) => item.conference.name === 'west');
-    this.eastTeams = allTeams.filter((item: any) => item.conference.name === 'east');
+    try {
+      const allTeams = await this.api.getStandings();
 
-    this.westTeams.sort((a, b) => a.conference.rank - b.conference.rank);
-    this.eastTeams.sort((a, b) => a.conference.rank - b.conference.rank);
+      this.westTeams = allTeams
+        .filter((t: any) => t.conference.name === 'west')
+        .sort((a: any, b: any) => a.conference.rank - b.conference.rank);
 
+      this.eastTeams = allTeams
+        .filter((t: any) => t.conference.name === 'east')
+        .sort((a: any, b: any) => a.conference.rank - b.conference.rank);
+
+    } catch (err) {
+      this.error = 'No se pudieron cargar las posiciones.';
+    }
   }
-
-
 }

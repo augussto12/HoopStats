@@ -1,7 +1,3 @@
-/* ============================
-   LAYOUT GENERAL DE LA APP
-============================ */
-
 .layout {
   min-height: 100vh;
   display: flex;
@@ -16,44 +12,43 @@
   padding: 1.8rem;
 }
 
-/* ============================
-   FOOTER
-============================ */
 
 .app-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 32px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #d4d4d4;
-  background: rgba(21, 29, 54, 0.97);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 22px 30px;
+  background: rgba(15, 23, 42, 0.92);
   backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  flex-wrap: wrap;
-  gap: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+
+  color: #dbe2f5;
+  font-family: 'Poppins', sans-serif;
 }
 
-.footer-left,
-.footer-center,
-.footer-right {
-  flex: 1;
-  text-align: center;
+/* COPYRIGHT */
+.footer-copy {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #f4b453;
 }
 
-.footer-left { text-align: left; }
-.footer-right { text-align: right; }
+/* SLOGAN */
+.footer-slogan {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  color: #dbe2f5;
+}
 
+/* RESPONSIVE */
 @media (max-width: 768px) {
   .main-content {
     padding: 1.2rem;
   }
 
-  .footer-left,
-  .footer-center,
-  .footer-right {
-    text-align: center;
+  .app-footer {
+    padding: 18px 20px;
   }
 }

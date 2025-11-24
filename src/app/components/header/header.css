@@ -1,7 +1,3 @@
-/* ======================================================
-   SIDE MENU — Optimizado
-====================================================== */
-
 .side-menu {
   position: fixed;
   top: 0;
@@ -9,32 +5,34 @@
   width: 270px;
   height: 100vh;
 
-  background: rgba(25, 40, 73, 0.96);
-
   padding: 1.6rem 1.2rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 
+  background: rgba(25, 40, 73, 0.96);
   border-right: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow: 4px 0 16px rgba(0, 0, 0, 0.35);
 
   transform: translateX(-100%);
   transition: transform .25s cubic-bezier(.25, .8, .25, 1);
-  will-change: transform;
 
-  z-index: 500;
   backdrop-filter: blur(14px);
   overflow-y: auto;
+  z-index: 500;
 }
 
 .side-menu.open {
   transform: translateX(0);
 }
 
-/* ======================================================
-   MENU HEADER — Botones de Auth (arriba)
-====================================================== */
+.panel,
+.side-menu,
+.news-card,
+.live-card {
+  will-change: transform;
+}
+
 
 .side-menu-header {
   display: flex;
@@ -45,18 +43,18 @@
 .auth-buttons {
   display: flex;
   gap: 0.5rem;
-
-  flex-shrink: 0;
 }
 
 .menu-btn {
-  background: rgba(12, 19, 40, 0.85);
   padding: 0.35rem 0.7rem;
-  border-radius: 8px;
+  background: rgba(12, 19, 40, 0.85);
   color: #e5e7eb;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
   font-size: 0.78rem;
   font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.30);
   cursor: pointer;
   transition: .18s ease;
@@ -83,13 +81,11 @@
   color: #fff;
   font-size: 1.4rem;
   cursor: pointer;
-  z-index: 999;
-  position: relative;
 }
 
-/* ======================================================
-   MENU ITEMS
-====================================================== */
+/* ======
+//MENU ITEMS
+===== */
 
 .side-menu-items {
   display: flex;
@@ -98,13 +94,15 @@
 }
 
 .menu-item {
-  background: rgba(12, 19, 40, 0.92);
   padding: 0.9rem;
+  background: rgba(12, 19, 40, 0.92);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.05);
+
   cursor: pointer;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.38);
   transition: transform .22s ease, background .22s ease;
+
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.38);
 }
 
 .menu-item:hover {
@@ -130,14 +128,14 @@
 }
 
 .menu-item .note {
-  color: #facc6b;
   margin-top: 4px;
   font-size: 0.75rem;
+  color: #facc6b;
 }
 
-/* ======================================================
+/* =========
    NAVBAR
-====================================================== */
+========= */
 
 .navbar {
   position: sticky;
@@ -145,21 +143,15 @@
   z-index: 200;
 
   height: 56px;
+
+  padding: 0 1.4rem;
+
   display: flex;
   justify-content: center;
   align-items: center;
 
-  padding: 0 1.4rem;
-
   background: rgba(21, 29, 54, 0.97);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-
-  position: relative;
-}
-
-.nav-spacer {
-  width: 34px;
-  height: 30px;
 }
 
 .brand {
@@ -167,14 +159,16 @@
   font-weight: 700;
   color: #e9cd2e;
   cursor: pointer;
-
-  text-align: center;
   user-select: none;
 }
 
 .brand:hover {
   color: #4fd1c5;
 }
+
+/* =======
+   BOTÓN VOLVER (HEADER)
+=======*/
 
 .back-btn {
   position: absolute;
@@ -185,30 +179,22 @@
   padding: 0.35rem 0.85rem;
   border-radius: 10px;
 
-  background: rgba(12, 19, 40, 0.6);
+  background: rgba(46, 75, 155, 0.97);
   color: #e5e7eb;
   border: 1px solid rgba(255, 255, 255, 0.12);
 
   font-size: 0.9rem;
   font-weight: 600;
-
   cursor: pointer;
 
-  transition:
-    background 0.22s ease,
-    border-color 0.22s ease,
-    color 0.22s ease,
-    transform 0.22s ease,
-    box-shadow 0.22s ease;
+  transition: background .22s ease, border-color .22s ease,
+    color .22s ease, transform .22s ease, box-shadow .22s ease;
 }
 
 .back-btn:hover {
-  background: rgba(22, 32, 64, 0.88);
   border-color: #e9cd2e;
   color: #e9cd2e;
-
   box-shadow: 0 0 14px rgba(233, 205, 46, 0.35);
-
   transform: translateY(-52%);
 }
 
@@ -217,20 +203,19 @@
   box-shadow: 0 0 6px rgba(233, 205, 46, 0.2);
 }
 
-
-/* ======================================================
+/* ======
    HAMBURGER BUTTON
-====================================================== */
-.menu-toggle {
+====== */
+
+.menu-toggle.left {
   position: absolute;
-  right: 1rem;
+  left: 1rem;
   top: 50%;
   transform: translateY(-50%);
 
   background: none;
   border: none;
   cursor: pointer;
-
   width: 34px;
   height: 30px;
 }
@@ -275,9 +260,9 @@
   transform: rotate(-45deg);
 }
 
-/* ======================================================
-   OVERLAY — liviano
-====================================================== */
+/* ========
+   OVERLAY
+======= */
 
 .overlay {
   position: fixed;
@@ -285,3 +270,112 @@
   background: rgba(0, 0, 0, 0.55);
   z-index: 450;
 }
+
+
+.back-header-btn {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  background: linear-gradient(145deg, #233a74, #121a38);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f4d86b;
+  cursor: pointer;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, .35);
+  transition: 0.22s ease;
+}
+
+.back-header-btn:hover {
+  background: rgba(233, 205, 46, 0.18);
+  box-shadow: 0 0 12px rgba(233, 205, 46, 0.4);
+  color: #e9cd2e;
+}
+
+
+/* =========
+   RESPONSIVE
+=========== */
+
+@media (min-width: 601px) {
+  .back-header-btn {
+    position: fixed;
+    top: 72px; 
+    left: 1.2rem;
+    z-index: 350;    
+    transform: none; 
+  }
+
+  .menu-toggle.left {
+    left: 1.4rem;  
+  }
+}
+
+@media (max-width: 600px) {
+
+  .brand {
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+  }
+
+  .menu-toggle.left {
+    width: 28px;
+    height: 24px;
+    left: 0.6rem;
+  }
+
+  .menu-toggle span,
+  .menu-toggle span::before,
+  .menu-toggle span::after {
+    width: 22px;
+    height: 2.5px;
+  }
+
+  .menu-toggle span::before {
+    top: -7px;
+  }
+
+  .menu-toggle span::after {
+    top: 7px;
+  }
+
+  .side-menu {
+    width: 82vw;
+    padding: 1.2rem 1rem;
+  }
+
+  .auth-buttons .menu-btn {
+    padding: 0.3rem 0.55rem;
+    font-size: 0.7rem;
+  }
+
+  .menu-item {
+    padding: 0.75rem;
+  }
+
+  .menu-item h4 {
+    font-size: 0.9rem;
+  }
+
+  .menu-item p {
+    font-size: 0.75rem;
+  }
+
+  .back-header-btn {
+    left: 0.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 300;
+  }
+
+  .menu-toggle.left {
+    left: auto;
+    right: 0.6rem;
+  }
+}
+

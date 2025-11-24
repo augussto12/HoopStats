@@ -1,26 +1,40 @@
-<div class="predictions-container">
-    <h1 class="title">Mis Predicciones</h1>
+<div *ngIf="isReady" class="predictions-wrapper">
 
-    <div *ngIf="loading" class="loading">Cargando...</div>
+    <header class="predictions-header">
+        <h1>Mis Predicciones</h1>
+        <p class="subtitle">Historial de todas tus predicciones realizadas</p>
+    </header>
 
-    <div *ngIf="!loading && predictions.length === 0" class="no-predictions">
+    <div *ngIf="error" class="status-box error-box">
+        {{ error }}
+    </div>
+
+    <div *ngIf="!error && predictions.length === 0" class="status-box empty-box">
         Todavía no realizaste predicciones.
     </div>
 
-    <div class="predictions-grid" *ngIf="predictions.length > 0">
-        <div class="prediction-card" *ngFor="let p of predictions">
-            <h2>{{ p.home_team }} vs {{ p.visitor_team }}</h2>
+    <section class="cards-grid" *ngIf="!error && predictions.length > 0">
+        <article class="pred-card" *ngFor="let p of predictions">
 
-            <div class="prediction-row">
-                <span class="label">Tu predicción:</span>
-                <span>{{ p.puntos_local_prediccion }} - {{ p.puntos_visitante_prediccion }}</span>
+            <div class="card-header">
+                <h2>{{ p.home_team }}</h2>
+                <span class="vs">vs</span>
+                <h2>{{ p.visitor_team }}</h2>
             </div>
 
-            <div class="prediction-row">
-                <span class="label">Puntos obtenidos:</span>
-                <span *ngIf="!p.procesada">Pendiente</span>
-                <span class="points" *ngIf="p.procesada">{{ p.puntos_obtenidos }}</span>
+            <div class="divider"></div>
+
+            <div class="stat-row">
+                <span class="label">Tu predicción</span>
+                <span class="value">{{ p.puntos_local_prediccion }} - {{ p.puntos_visitante_prediccion }}</span>
             </div>
-        </div>
-    </div>
+
+            <div class="stat-row">
+                <span class="label">Puntos obtenidos</span>
+
+                <span class="value pending" *ngIf="!p.procesada">Pendiente</span>
+                <span class="value success" *ngIf="p.procesada">{{ p.puntos_obtenidos }}</span>
+            </div>
+        </article>
+    </section>
 </div>

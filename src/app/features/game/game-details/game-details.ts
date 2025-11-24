@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NbaApiService } from '../../../services/nba-api';
 import { PlayerGroup } from '../../../models/interfaces';
+import { WithLoader } from '../../../decorators/with-loader.decorator';
 
+@WithLoader()
 @Component({
   selector: 'app-game-details',
   standalone: true,
@@ -11,15 +13,17 @@ import { PlayerGroup } from '../../../models/interfaces';
   templateUrl: './game-details.html',
   styleUrls: ['./game-details.css']
 })
-
-
 export class GameDetails implements OnInit {
 
   public gameDetails: any[] = [];
   public groupedPlayers: PlayerGroup[] = [];
-  public loading = false;
   public error: string | null = null;
   public view: 'game' | 'players' = 'game';
+
+  private route = inject(ActivatedRoute);
+  private api = inject(NbaApiService);
+
+  constructor(public injector: Injector) { } // Necesario para WithLoader
 
   public readonly statList = [
     { key: 'points', label: 'Puntos' },
@@ -39,34 +43,28 @@ export class GameDetails implements OnInit {
     { key: 'pFouls', label: 'Faltas personales' }
   ];
 
-  constructor(
-    private route: ActivatedRoute,
-    private api: NbaApiService
-  ) { }
-
-
   async ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+
     if (!id) {
       this.error = 'Partido no encontrado.';
       return;
     }
 
-    this.loading = true;
     try {
       const data = await this.api.getGameStats(id);
 
-      if (data && data.length > 0) {
-        this.gameDetails = data;
-        await this.loadPlayerStats(id);
-      } else {
+      if (!data || data.length === 0) {
         this.error = 'No se encontró información del partido.';
+        return;
       }
+
+      this.gameDetails = data;
+      await this.loadPlayerStats(id);
+
     } catch (err) {
       console.error(err);
       this.error = 'Error al cargar los datos del partido.';
-    } finally {
-      this.loading = false;
     }
   }
 
@@ -75,9 +73,11 @@ export class GameDetails implements OnInit {
 
     const grouped = stats.reduce((acc: Record<number, PlayerGroup>, s: any) => {
       const teamId = s.team.id;
+
       if (!acc[teamId]) {
         acc[teamId] = { team: s.team, players: [] };
       }
+
       acc[teamId].players.push(s);
       return acc;
     }, {});

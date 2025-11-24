@@ -1,7 +1,6 @@
-<div class="tables-wrapper">
+<div class="tables-wrapper" *ngIf="isReady && !error">
     <div class="table-box">
         <h2>Ranking de Predicciones</h2>
-
         <table>
             <thead>
                 <tr>
@@ -10,13 +9,12 @@
                     <th>Puntos Totales</th>
                 </tr>
             </thead>
-
             <tbody>
                 <tr *ngFor="let user of ranking; let i = index">
                     <td>{{ i + 1 }}</td>
                     <td>
                         <div class="team-cell">
-                            <span>{{ user.username }}</span>
+                            <span class="username-cell">{{ user.username }}</span>
                         </div>
                     </td>
                     <td>{{ user.total_prediction_points }}</td>
@@ -24,4 +22,7 @@
             </tbody>
         </table>
     </div>
+</div>
+<div *ngIf="isReady && error" class="error">
+    {{ error }}
 </div>

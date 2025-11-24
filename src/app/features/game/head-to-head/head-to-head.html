@@ -20,8 +20,12 @@
             </div>
         </header>
 
-        <section class="status" *ngIf="loading || error">
-            <div *ngIf="loading" class="loading">Cargando enfrentamientos...</div>
+        <div class="statistics-loading" *ngIf="loading">
+            <div class="spinnering"></div>
+            <p>Cargando enfrentamientos...</p>
+        </div>
+
+        <section class="status" *ngIf="error">
             <div *ngIf="error" class="error">{{ error }}</div>
         </section>
 
@@ -67,6 +71,5 @@
                 <div class="arena" *ngIf="g.arena">{{ g.arena }}</div>
             </div>
         </section>
-          
     </main>
 </div>

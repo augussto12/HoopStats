@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector, inject } from '@angular/core';
 import { NbaApiService } from '../../../services/nba-api';
 import { FavoritesService } from '../../../services/favorites-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { WithLoader } from '../../../decorators/with-loader.decorator';
 
+@WithLoader()
 @Component({
   selector: 'app-teams',
   standalone: true,
@@ -14,32 +16,27 @@ import { AuthService } from '../../../services/auth.service';
   styleUrls: ['./teams.css']
 })
 export class TeamsComponent implements OnInit {
+
   public teamsWest: any[] = [];
   public teamsEast: any[] = [];
   public searchTerm = '';
   public selectedDivision = '';
   public favoriteTeamIds: number[] = [];
-  public loadingTeams = false;
   public error = '';
 
   public divisions = ['Atlantic', 'Central', 'Southeast', 'Northwest', 'Pacific', 'Southwest'];
 
-  constructor(
-    private nbaService: NbaApiService,
-    private favoritesService: FavoritesService,
-    public auth: AuthService
-  ) { }
+  private nbaService = inject(NbaApiService);
+  private favoritesService = inject(FavoritesService);
+  public auth = inject(AuthService);
+
+  constructor(public injector: Injector) { }
 
   async ngOnInit() {
-
-    this.getTeams();
-
+    await this.getTeams();
   }
 
   async getTeams() {
-
-    this.loadingTeams = true;
-
     try {
       const allTeams = await this.nbaService.getTeams();
 
@@ -50,16 +47,20 @@ export class TeamsComponent implements OnInit {
       this.teamsEast = nbaTeams.filter((t: any) => t.leagues.standard.conference === 'East');
       this.teamsWest = nbaTeams.filter((t: any) => t.leagues.standard.conference === 'West');
 
-      const favorites = await this.favoritesService.getFavorites();
-      this.favoriteTeamIds = favorites.teams.map((t: any) => t.id);
-
-      this.loadingTeams = false;
+      // 🟢 Solo pedir favoritos si está logueado
+      if (this.auth.isLoggedIn()) {
+        try {
+          const favorites = await this.favoritesService.getFavorites();
+          this.favoriteTeamIds = favorites.teams.map((t: any) => t.id);
+        } catch (favErr) {
+          console.warn("⚠ No se pudieron cargar los favoritos (user no logueado o error)");
+        }
+      }
 
     } catch (err) {
       console.error(err);
-      this.error = 'Error al cargar los equipos.'
+      this.error = 'Error al cargar los equipos.';
     }
-
   }
 
   isFavorite(team: any): boolean {
@@ -73,9 +74,9 @@ export class TeamsComponent implements OnInit {
     this.favoriteTeamIds.push(team.id);
   }
 
-
   filteredTeams(teams: any[]): any[] {
     const term = this.searchTerm.trim().toLowerCase();
+
     return teams.filter(t => {
       const matchesName =
         !term ||

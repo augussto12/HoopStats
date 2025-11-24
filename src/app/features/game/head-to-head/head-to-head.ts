@@ -45,17 +45,23 @@ export class HeadToHead implements OnInit {
 
   public async fetchHeadToHead() {
     this.hasSearched = true;
+    this.loading = true;  // 👈 ACTIVÁS SIEMPRE
+    this.error = null;
+
+    // 👇 Permití que Angular pinte el spinner
+    await new Promise(r => setTimeout(r));
 
     if (!this.selectedFirstTeam || !this.selectedSecondTeam) {
       this.error = 'Seleccione ambos equipos.';
-      return;
-    } else if (this.selectedFirstTeam === this.selectedSecondTeam) {
-      this.error = 'Seleccione dos equipos diferentes.';
+      this.loading = false;
       return;
     }
 
-    this.loading = true;
-    this.error = null;
+    if (this.selectedFirstTeam === this.selectedSecondTeam) {
+      this.error = 'Seleccione dos equipos diferentes.';
+      this.loading = false;
+      return;
+    }
 
     try {
       const response = await this.api.getHeadToHead(
@@ -63,8 +69,7 @@ export class HeadToHead implements OnInit {
         this.selectedSecondTeam
       );
 
-      const mapped = response.map((g: any) => mapGame(g));
-      this.games = mapped;
+      this.games = response.map(mapGame);
     } catch (e) {
       console.error(e);
       this.error = 'Error al obtener los enfrentamientos.';

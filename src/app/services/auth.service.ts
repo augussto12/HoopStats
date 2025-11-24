@@ -10,9 +10,6 @@ export class AuthService {
 
     constructor(private api: ApiService, private router: Router) { }
 
-    // ------------------------------------
-    // REGISTER
-    // ------------------------------------
     async register(data: {
         fullname: string;
         username: string;
@@ -28,12 +25,10 @@ export class AuthService {
         return res;
     }
 
-    // ------------------------------------
-    // LOGIN (usa username, NO email)
-    // ------------------------------------
-    async login(username: string, password: string): Promise<boolean> {
+    // LOGIN con username O email
+    async login(identifier: string, password: string): Promise<boolean> {
         try {
-            const res: any = await this.api.post('/auth/login', { username, password });
+            const res: any = await this.api.post('/auth/login', { identifier, password });
 
             localStorage.setItem(this.tokenKey, res.token);
             localStorage.setItem(this.userKey, JSON.stringify(res.user));
@@ -44,27 +39,18 @@ export class AuthService {
         }
     }
 
-    // ------------------------------------
-    // OBTENER PERFIL
-    // ------------------------------------
     async getProfile() {
         const profile = await this.api.get('/auth/me');
         localStorage.setItem(this.userKey, JSON.stringify(profile));
         return profile;
     }
 
-    // ------------------------------------
-    // EDITAR PERFIL
-    // ------------------------------------
     async updateProfile(data: any) {
         const updated: any = await this.api.put('/auth/me', data);
         localStorage.setItem(this.userKey, JSON.stringify(updated.user));
         return updated;
     }
 
-    // ------------------------------------
-    // CAMBIAR PASSWORD
-    // ------------------------------------
     async updatePassword(oldPassword: string, newPassword: string) {
         return await this.api.patch('/auth/password', { oldPassword, newPassword });
     }
@@ -73,18 +59,15 @@ export class AuthService {
         return await this.api.delete('/auth/me');
     }
 
-    // ------------------------------------
-    // LOGOUT
-    // ------------------------------------
     logout() {
         localStorage.removeItem(this.tokenKey);
         localStorage.removeItem(this.userKey);
-        this.router.navigate(['/']);
+
+        this.router.navigate(['/']).then(() => {
+            window.location.reload();
+        });
     }
 
-    // ------------------------------------
-    // HELPERS
-    // ------------------------------------
     getUser() {
         const u = localStorage.getItem(this.userKey);
         return u ? JSON.parse(u) : null;

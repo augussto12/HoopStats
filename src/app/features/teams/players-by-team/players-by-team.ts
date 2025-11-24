@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NbaApiService } from '../../../services/nba-api';
 import { CommonModule } from '@angular/common';
@@ -7,7 +7,9 @@ import { mapGame } from '../../../utils/mapGame';
 import { FavoritesService } from '../../../services/favorites-service';
 import { Team } from '../../../models/interfaces';
 import { AuthService } from '../../../services/auth.service';
+import { WithLoader } from '../../../decorators/with-loader.decorator';
 
+@WithLoader()
 @Component({
   selector: 'app-players-by-team',
   standalone: true,
@@ -29,46 +31,45 @@ export class PlayersByTeam implements OnInit {
   public selectedView: 'players' | 'games' | 'stats' = 'players';
   public selectedStatus = '';
 
-  public loading = false;
   public error: string | null = null;
 
-  constructor(
-    private route: ActivatedRoute,
-    private nbaService: NbaApiService,
-    private favService: FavoritesService,
-    public auth: AuthService
-  ) { }
+  private route = inject(ActivatedRoute);
+  private nbaService = inject(NbaApiService);
+  private favService = inject(FavoritesService);
+  public auth = inject(AuthService);
+
+  constructor(public injector: Injector) { }
 
   async ngOnInit() {
     this.teamId = Number(this.route.snapshot.paramMap.get('id'));
+
     if (!this.teamId) {
       this.error = "ID de equipo inválido.";
       return;
     }
-
-    this.loading = true;
-    this.error = null;
 
     try {
       await this.loadAllData();
     } catch (e) {
       console.error(e);
       this.error = "Hubo un problema cargando la información del equipo.";
-    } finally {
-      this.loading = false;
     }
   }
-
 
   private async loadAllData() {
     await this.loadTeam(this.teamId);
     await this.loadPlayers(this.teamId);
     await this.loadGames(this.teamId);
 
-    const favorites = await this.favService.getFavorites();
-    this.favoritesPlayersIds = favorites.players.map((p: any) => p.id);  // ← CORREGIDO
+    if (this.auth.isLoggedIn()) {
+      try {
+        const favorites = await this.favService.getFavorites();
+        this.favoritesPlayersIds = favorites.players.map((p: any) => p.id);
+      } catch {
+        console.warn("No se pudieron cargar los favoritos.");
+      }
+    }
   }
-
 
   async loadTeam(teamId: number) {
     this.team = await this.nbaService.getTeamById(teamId);
@@ -79,8 +80,6 @@ export class PlayersByTeam implements OnInit {
   }
 
   async loadGames(teamId: number) {
-    this.loading = true;
-    this.error = null;
     try {
       const response = await this.nbaService.getGamesByTeam(teamId);
 
@@ -89,16 +88,12 @@ export class PlayersByTeam implements OnInit {
 
       this.games = mapped;
       this.applyFilter();
-
       this.streak = this.getStreak(teamId);
     } catch (e) {
-      this.error = 'Error al cargar los partidos.';
       console.error(e);
-    } finally {
-      this.loading = false;
+      this.error = 'Error al cargar los partidos.';
     }
   }
-
 
   async onViewChange() {
     if (this.selectedView === 'games' && this.games.length === 0) {
@@ -109,7 +104,6 @@ export class PlayersByTeam implements OnInit {
       await this.loadStats(this.teamId);
     }
   }
-
 
   applyFilter() {
     if (!this.selectedStatus) {
@@ -135,35 +129,29 @@ export class PlayersByTeam implements OnInit {
   getStreak(teamId: number): string[] {
     if (!this.games?.length) return [];
 
-    // Solo partidos finalizados
-    const finishedGames = this.games.filter((g: any) => g.status === 'Final');
-    if (!finishedGames.length) return [];
+    const finished = this.games.filter((g: any) => g.status === 'Final');
+    if (!finished.length) return [];
 
-    // Tomar los últimos 5
-    const lastFive = finishedGames.slice(-5).reverse();
+    const lastFive = finished.slice(-5).reverse();
 
-    // Determinar victoria y derrota
     return lastFive.map((g: any) => {
-      const esLocal = g.home.id === teamId;
-      const puntosPropios = esLocal ? g.home.pts : g.visitors.pts;
-      const puntosRival = esLocal ? g.visitors.pts : g.home.pts;
-      return puntosPropios > puntosRival ? 'W' : 'L';
+      const isHome = g.home.id === teamId;
+      const ptsOwn = isHome ? g.home.pts : g.visitors.pts;
+      const ptsOpp = isHome ? g.visitors.pts : g.home.pts;
+      return ptsOwn > ptsOpp ? 'W' : 'L';
     });
   }
-
 
   async loadStats(teamId: number) {
     try {
       const response = await this.nbaService.getTeamStats(teamId);
-
-      if (!response || !response.response?.length) return;
+      if (!response?.response?.length) return;
 
       const data = response.response[0];
       const games = data.games;
 
-      // Calcular promedios por partido
       this.stats = {
-        games: data.games,
+        games,
         points: (data.points / games).toFixed(1),
         fgm: (data.fgm / games).toFixed(1),
         fga: (data.fga / games).toFixed(1),
@@ -187,7 +175,6 @@ export class PlayersByTeam implements OnInit {
     }
   }
 
-
   isFavorite(player: any): boolean {
     return this.favoritesPlayersIds.includes(player.id);
   }
@@ -195,8 +182,7 @@ export class PlayersByTeam implements OnInit {
   async addToFavorites(player: any) {
     if (this.isFavorite(player)) return;
 
-    await this.favService.addFavorite('player', player.id); 
+    await this.favService.addFavorite('player', player.id);
     this.favoritesPlayersIds.push(player.id);
   }
-
 }

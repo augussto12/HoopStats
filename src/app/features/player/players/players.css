@@ -1,6 +1,6 @@
 h1 {
     text-align: center;
-    color: #ffb347;
+    color: #fff;
     margin-bottom: 2rem;
     font-size: 2rem;
 }
@@ -19,14 +19,37 @@ h1 {
 }
 
 
-.no-players {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+.stats-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem auto;
     padding: 1rem;
-    border-radius: 0.6rem;
-    margin-top: 1rem;
     text-align: center;
-    color: #cfd9e8;
+    color: #ffb347;
+    font-size: 1.2rem;
+    animation: fadeInStats .4s ease-out;
+}
+
+.spinner {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 179, 71, 0.3);
+    border-top-color: #ffb347;
+    animation: spinStats 0.8s linear infinite;
+    margin-bottom: 1rem;
+}
+
+.nothing {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  border-radius: 0.6rem;
+  margin-top: 1rem;
+  text-align: center;
+  color: #cfd9e8;
 }
 
 .filters label {

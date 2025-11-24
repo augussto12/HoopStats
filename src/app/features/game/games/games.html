@@ -3,7 +3,7 @@
         <header class="content-header">
             <div>
                 <h1>Partidos</h1>
-                <p class="subtitle">Ingrese la fecha para mostrar los partidos</p>
+                <p class="subtitle">Busque partidos por fecha o por estado</p>
             </div>
 
             <div class="toolbar">
@@ -13,19 +13,19 @@
                     <option value="Live">En vivo</option>
                     <option value="Scheduled">Programado</option>
                 </select>
+
                 <input type="date" [value]="selectedDate" (change)="onDateChange($event)" />
                 <button class="btn" (click)="goToday()">Hoy</button>
                 <button class="btn" (click)="loadGames()">Actualizar</button>
             </div>
         </header>
 
-        <section class="status" *ngIf="loading || error">
-            <div *ngIf="loading" class="loading">Cargando partidos…</div>
-            <div *ngIf="error" class="error">{{ error }}</div>
+        <section class="status" *ngIf="error">
+            <div class="error">{{ error }}</div>
         </section>
 
-        <section class="games-grid" *ngIf="!loading && !error">
-            <div *ngIf="!gamesShown?.length" class="empty">
+        <section class="games-grid" *ngIf="!error">
+            <div *ngIf="isReady && !gamesShown?.length" class="empty">
                 No hay partidos para el filtro seleccionado.
             </div>
 
@@ -47,9 +47,11 @@
                         <span *ngIf="g.visitors.pts !== null && g.home.pts !== null">
                             {{ g.visitors.pts }} — {{ g.home.pts }}
                         </span>
+
                         <span *ngIf="g.status==='LIVE' && g.clock">
-                            {{g.period}}C-{{g.clock}}
+                            {{ g.period }}C - {{ g.clock }}
                         </span>
+
                         <span *ngIf="g.visitors.pts === null || g.home.pts === null">vs</span>
                     </div>
 
@@ -60,6 +62,7 @@
                 </div>
 
                 <div class="arena" *ngIf="g.arena">{{ g.arena }}</div>
+
                 <ng-container *ngIf="auth.isLoggedIn()">
                     <div class="prediction-box" *ngIf="g.status === 'Programado'">
 

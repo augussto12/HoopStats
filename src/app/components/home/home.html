@@ -14,7 +14,7 @@
         <div *ngIf="news.length">
           <div class="news-card" *ngFor="let n of news; trackBy: trackNews">
 
-            <img [src]="n.image" class="news-img" loading="lazy" width="180" height="115" />
+            <img [src]="n.image" class="news-img" loading="lazy" decoding="async" width="180" height="115" />
 
             <div class="news-info">
               <h3 class="news-title">{{ n.title }}</h3>
@@ -28,48 +28,10 @@
         </div>
       </div>
 
-      <div class="panel live-panel">
-        <h2>
-          Partidos en vivo <span class="live-dot"></span>
-        </h2>
-
-        <div *ngIf="loadingLive" class="empty">Cargando partidos...</div>
-        <div *ngIf="!loadingLive && errorLive" class="empty">{{ errorLive }}</div>
-
-        <div *ngIf="!loadingLive && liveGames.length" class="live-list">
-
-          <div class="live-card" *ngFor="let g of liveGames; trackBy: trackGame" [routerLink]="['/game-details', g.id]">
-
-            <div class="teams">
-
-              <div class="team">
-                <img [src]="g.visitors.logo" loading="lazy" width="38" height="38" />
-                <span>{{ g.visitors.name }}</span>
-              </div>
-
-              <div class="score">
-                <strong>{{ g.visitors.pts }} - {{ g.home.pts }}</strong>
-                <small>{{ g.period }}C — {{ g.clock || 'En juego' }}</small>
-              </div>
-
-              <div class="team">
-                <img [src]="g.home.logo" loading="lazy" width="38" height="38" />
-                <span>{{ g.home.name }}</span>
-              </div>
-
-            </div>
-
-            <div class="arena">{{ g.arena }}</div>
-
-          </div>
-
-        </div>
-      </div>
-
     </div>
 
     <div class="panel players-panel">
-      <h2>🏆 Mejores jugadores del día</h2>
+      <h2>🏆 Mejores jugadores del día de ayer</h2>
 
       <div *ngIf="loadingPlayers" class="empty">Cargando jugadores...</div>
       <div *ngIf="!loadingPlayers && errorPlayers" class="empty">{{ errorPlayers }}</div>
@@ -79,6 +41,44 @@
           <h3>{{ p.category }}</h3>
           <p><span>{{ p.player }} </span>|<strong> {{ p.value }}</strong></p>
         </div>
+      </div>
+    </div>
+
+    <div class="panel live-panel">
+      <h2>
+        Partidos en vivo <span class="live-dot"></span>
+      </h2>
+
+      <div *ngIf="loadingLive" class="empty">Cargando partidos...</div>
+      <div *ngIf="!loadingLive && errorLive" class="empty">{{ errorLive }}</div>
+
+      <div *ngIf="!loadingLive && liveGames.length" class="live-list">
+
+        <div class="live-card" *ngFor="let g of liveGames; trackBy: trackGame" [routerLink]="['/game-details', g.id]">
+
+          <div class="teams">
+
+            <div class="team">
+              <img [src]="g.visitors.logo" loading="lazy" width="38" decoding="async" height="38" />
+              <span>{{ g.visitors.name }}</span>
+            </div>
+
+            <div class="score">
+              <strong>{{ g.visitors.pts }} - {{ g.home.pts }}</strong>
+              <small>{{ g.period }}C — {{ g.clock || 'En juego' }}</small>
+            </div>
+
+            <div class="team">
+              <img [src]="g.home.logo" loading="lazy" width="38" height="38" />
+              <span>{{ g.home.name }}</span>
+            </div>
+
+          </div>
+
+          <div class="arena">{{ g.arena }}</div>
+
+        </div>
+
       </div>
     </div>
 

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit, Injector, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -8,7 +8,9 @@ import { AuthService } from '../../../services/auth.service';
 import { PredictionService } from '../../../services/predictions-service';
 import { getGamesByDateMapped, filterByStatus } from '../../../utils/gameUtils';
 import { DbPrediction } from '../../../models/interfaces';
+import { WithLoader } from '../../../decorators/with-loader.decorator';
 
+@WithLoader()
 @Component({
   selector: 'app-Games',
   standalone: true,
@@ -18,30 +20,32 @@ import { DbPrediction } from '../../../models/interfaces';
 })
 export class Games implements OnInit {
 
-  public loading = false;
   public error: string | null = null;
 
   public selectedStatus = '';
   public selectedDate = this.toYYYYMMDD(new Date());
   public gamesShown: any[] = [];
-  private myPredictionsCache: DbPrediction[] | null = null;
 
+  private myPredictionsCache: DbPrediction[] | null = null;
   private games: any[] = [];
   private router = inject(Router);
 
-  constructor(
-    private api: NbaApiService,
-    private predictionService: PredictionService,
-    public auth: AuthService
-  ) { }
+  // 🔥 Flag para controlar renderizado post-loader
+  public isReady = false;
 
-  ngOnInit(): void {
-    this.loadGames();
+  private api = inject(NbaApiService);
+  private predictionService = inject(PredictionService);
+  public auth = inject(AuthService);
+
+  constructor(public injector: Injector) { }
+
+  async ngOnInit(): Promise<void> {
+    await this.loadGames();
   }
 
   async loadGames() {
-    this.loading = true;
     this.error = null;
+    this.isReady = false;   // 🔥 el componente NO está listo aún
 
     try {
       const mappedGames = await getGamesByDateMapped(this.api, this.selectedDate);
@@ -54,12 +58,11 @@ export class Games implements OnInit {
     } catch (err) {
       this.error = 'No se pudieron cargar los partidos.';
       console.error(err);
+
     } finally {
-      this.loading = false;
+      this.isReady = true;  // 🔥 ahora SÍ puede renderizar mensajes vacíos
     }
   }
-
-
 
   private async injectUserPredictions() {
     if (!this.auth.isLoggedIn()) return;
@@ -81,7 +84,6 @@ export class Games implements OnInit {
       }
     }
   }
-
 
   refresh() {
     this.loadGames();
@@ -108,7 +110,6 @@ export class Games implements OnInit {
   }
 
   public async savePrediction(g: any) {
-
     g.predictionError = null;
 
     if (g.predHome == null || g.predHome === '') {

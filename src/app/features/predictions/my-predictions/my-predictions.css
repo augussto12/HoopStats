@@ -1,88 +1,157 @@
-.predictions-container {
-    width: 90%;
-    margin: 2rem auto;
-    padding: 2rem;
-    background: #15264b;
-    border-radius: 12px;
-    color: #fff;
-    text-align: center;
-    font-family: 'Poppins', sans-serif;
-    box-sizing: border-box;
-}
-
-.title {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    font-weight: 700;
-    color: #f8c471;
-}
-
-.loading,
-.no-predictions {
-    font-size: 1.2rem;
-    opacity: 0.8;
-}
-
-.predictions-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    margin-top: 2rem;
-}
-
-.prediction-card {
-    background: #1b2f5b;
+/* CONTENEDOR GENERAL */
+.predictions-wrapper {
+    width: min(900px, 94%);
+    margin: 2.5rem auto;
     padding: 1rem;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* HEADER */
+.predictions-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.predictions-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.4rem;
+    font-weight: 700;
+    color: #f4b453;
+}
+
+.subtitle {
+    font-size: 0.95rem;
+    color: #c9d2ea;
+}
+
+/* STATUS BOXES */
+.status-box {
+    margin: 2rem auto;
+    padding: 1rem 1.4rem;
     border-radius: 10px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
-    text-align: left;
+    text-align: center;
+    width: 100%;
 }
 
-.prediction-card:hover {
-    transform: scale(1.03);
+.empty-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.prediction-card h2 {
-    font-size: 1.2rem;
-    margin-bottom: .8rem;
+.error-box {
+    background: rgba(255, 60, 60, 0.12);
+    border: 1px solid rgba(255, 60, 60, 0.25);
+    color: #ff6b6b;
+}
+
+/* GRID DE TARJETAS */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.4rem;
+}
+
+/* TARJETA */
+.pred-card {
+    background: #122341;
+    padding: 1.4rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+    transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.pred-card:hover {
+    transform: translateY(-4px);
+    background: #1a355e;
+}
+
+/* HEADER TARJETA */
+.card-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .6rem;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+
+.card-header h2 {
+    font-size: 1.15rem;
     font-weight: 600;
-    color: #f8c471;
+    color: #4da0ff;
 }
 
-.prediction-row {
+.vs {
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+/* LÍNEA DIVISORIA */
+.divider {
+    width: 100%;
+    height: 1px;
+    margin: 1rem 0;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* FILAS DE DATOS */
+.stat-row {
     display: flex;
     justify-content: space-between;
-    margin: .4rem 0;
+    margin: 0.6rem 0;
 }
 
 .label {
-    opacity: 0.8;
+    opacity: 0.75;
+    font-size: 0.9rem;
 }
 
-.points {
-    font-weight: bold;
-    color: #4caf50;
+.value {
+    font-weight: 600;
+    font-size: 1rem;
 }
 
-@media (max-width: 1024px) {
-    .predictions-grid {
-        grid-template-columns: repeat(3, 1fr);
+.pending {
+    color: #ffe082;
+}
+
+.success {
+    color: #7CFF7C;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 950px) {
+    .card-header h2 {
+        font-size: 1rem;
     }
 }
 
-@media (max-width: 768px) {
-    .predictions-grid {
-        grid-template-columns: repeat(2, 1fr);
+@media (max-width: 750px) {
+    .card-header h2 {
+        font-size: 0.9rem;
     }
 }
 
-@media (max-width: 530px) {
-    .predictions-container {
-        max-width: 800px;
-        padding: 2rem;
+@media (max-width: 500px) {
+    .card-header h2 {
+        font-size: 0.85rem;
     }
 
-    .predictions-grid {
-        grid-template-columns: 1fr;
+    .vs {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .predictions-header h1 {
+        font-size: 1.7rem;
+    }
+
+    .pred-card {
+        padding: 1.1rem;
     }
 }

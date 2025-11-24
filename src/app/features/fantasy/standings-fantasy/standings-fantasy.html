@@ -1,29 +1,35 @@
-<div class="tables-wrapper">
-    <div class="table-box">
-        <h2>Ranking de Fantasy Team</h2>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Usuario</th>
-                    <th>Nombre del equipo</th>
-                    <th>Puntos Totales</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr *ngFor="let team of ranking; let i = index">
-                    <td>{{ i + 1 }}</td>
-                    <td>
-                        <div class="team-cell">
-                            <span>{{ team.username }}</span>
-                        </div>
-                    </td>
-                    <td>{{ team.name }}</td>
-                    <td>{{ team.total_points }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<div *ngIf="error" class="error-box">
+    {{ error }}
 </div>
+
+<div class="tables-wrapper" *ngIf="!error && ranking.length > 0">
+
+    <div class="tables-wrapper">
+        <div class="table-box">
+            <h2>Ranking de Fantasy Team</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Usuario</th>
+                        <th>Nombre del equipo</th>
+                        <th>Puntos Totales</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let team of ranking; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>
+                            <div class="team-cell">
+                                <span>{{ team.username }}</span>
+                            </div>
+                        </td>
+                        <td>{{ team.name }}</td>
+                        <td>{{ team.total_points }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

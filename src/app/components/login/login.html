@@ -1,11 +1,57 @@
-<div class="auth-container">
-    <h2>Iniciar sesión</h2>
-    <form (ngSubmit)="login()">
-        <input type="text" placeholder="Usuario" [(ngModel)]="username" name="username" required />
-        <input type="password" placeholder="Contraseña" [(ngModel)]="password" name="password" required />
-        <button type="submit">Entrar</button>
-    </form>
+<div class="auth-fullscreen fade-swap">
+    <div class="auth-wrapper">
+        <div class="auth-card fade-in">
 
-    <p *ngIf="error" style="color: red">{{ error }}</p>
-    <p>¿No tienes cuenta? <a routerLink="/register">Regístrate</a></p>
+            <h2>Iniciar sesión</h2>
+
+            <form (ngSubmit)="login()">
+
+                <div class="input-group">
+                    <input type="text" [(ngModel)]="identifier" name="identifier" required />
+                    <label>Usuario o Email</label>
+                </div>
+
+                <div class="input-group password-group">
+                    <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" required
+                        (keydown)="checkCaps($event)" />
+
+                    <label>Contraseña</label>
+
+                    <div class="toggle-eye" [class.show]="showPassword" (click)="togglePassword()"></div>
+                </div>
+
+                <p class="caps-warning" *ngIf="capsOn">
+                    Mayus activado
+                </p>
+
+                <button class="auth-btn" type="submit">
+                    Entrar
+                </button>
+            </form>
+
+            <p *ngIf="error" class="error">{{ error }}</p>
+
+            <p class="switch-text">
+                ¿No tienes cuenta?
+                <a routerLink="/register">Regístrate</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="login-loading-overlay" *ngIf="loading || success">
+    <div class="login-loader">
+
+        <ng-container *ngIf="loading">
+            <div class="spinner"></div>
+            <p>Verificando credenciales...</p>
+        </ng-container>
+
+        <ng-container *ngIf="success">
+            <div class="checkmark">✔</div>
+            <p class="success-text">{{ success }}</p>
+            <p class="redirect-text">Ingresando...</p>
+        </ng-container>
+
+    </div>
 </div>

@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { PredictionService } from '../../../services/predictions-service';
 import { AuthService } from '../../../services/auth.service';
 import { DbPrediction } from '../../../models/interfaces';
 import { CommonModule } from '@angular/common';
+import { WithLoader } from '../../../decorators/with-loader.decorator';
 
+@WithLoader()
 @Component({
   selector: 'app-my-predictions',
   standalone: true,
@@ -14,31 +16,27 @@ import { CommonModule } from '@angular/common';
 export class MyPredictions implements OnInit {
 
   public predictions: DbPrediction[] = [];
-  public loading = true;
   public error = '';
+  public isReady = false;
 
   constructor(
     private predictionsService: PredictionService,
-    private auth: AuthService
+    private auth: AuthService,
+    public injector: Injector
   ) { }
 
   async ngOnInit() {
     try {
       if (!this.auth.isLoggedIn()) {
         this.error = 'No estás logueado';
-        this.loading = false;
-        return;
+      } else {
+        this.predictions = await this.predictionsService.getMyPredictions();
       }
-
-      const resp = await this.predictionsService.getMyPredictions();
-
-      this.predictions = resp;
-
     } catch (err) {
       console.error(err);
       this.error = 'Error al cargar tus predicciones';
-    } finally {
-      this.loading = false;
     }
+
+    this.isReady = true;
   }
 }

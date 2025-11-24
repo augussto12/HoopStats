@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injector } from '@angular/core';
 import { FantasyService } from '../../../services/fantasy-service';
 import { NbaApiService } from '../../../services/nba-api';
 import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { WithLoader } from '../../../decorators/with-loader.decorator';
 
+@WithLoader()
 @Component({
   selector: 'app-my-team',
   standalone: true,
@@ -44,6 +46,7 @@ export class MyTeam implements OnInit {
   success = "";
 
   constructor(
+    public injector: Injector,
     private fantasy: FantasyService,
     private api: ApiService,
     private nba: NbaApiService
@@ -55,10 +58,6 @@ export class MyTeam implements OnInit {
     await this.loadNbaTeams();
     await this.loadAllPlayers();
   }
-
-  // ============================
-  // CARGAR DATOS
-  // ============================
 
   async loadFantasyTeam() {
     const res = await this.fantasy.getMyTeam();
@@ -81,17 +80,15 @@ export class MyTeam implements OnInit {
   }
 
   async loadAllPlayers() {
-    // Traemos TODOS los jugadores desde el backend
     this.allPlayers = await this.api.get('/players');
     this.filteredPlayers = this.allPlayers;
   }
 
-  // ============================
-  // CREAR O RENOMBRAR EQUIPO
-  // ============================
+
   async saveName() {
     if (this.newName.trim().length < 3) {
       this.error = "El nombre debe tener al menos 3 caracteres";
+      this.success = "";
       return;
     }
 
@@ -103,9 +100,7 @@ export class MyTeam implements OnInit {
     await this.loadFantasyTeam();
   }
 
-  // ============================
-  // AGREGAR JUGADOR
-  // ============================
+
   async addPlayer(playerId: number) {
     try {
       await this.fantasy.addPlayer(playerId);
@@ -121,9 +116,7 @@ export class MyTeam implements OnInit {
     }
   }
 
-  // ============================
-  // QUITAR JUGADOR
-  // ============================
+
   async removePlayer(playerId: number) {
     try {
       await this.fantasy.removePlayer(playerId);
@@ -137,18 +130,14 @@ export class MyTeam implements OnInit {
     }
   }
 
-  // ============================
-  // FILTROS
-  // ============================
+
   filterPlayers() {
     let list = [...this.allPlayers];
 
-    // Por equipo
     if (this.selectedTeam) {
       list = list.filter(p => p.team_id === Number(this.selectedTeam));
     }
 
-    // Por precio
     if (this.selectedRange) {
       list = list.filter(p =>
         p.price >= this.selectedRange.min &&

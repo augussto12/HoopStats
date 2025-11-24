@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../services/api.service';
+import { WithLoader } from '../../../decorators/with-loader.decorator';
 
+@WithLoader()
 @Component({
   selector: 'app-standings-fantasy',
   standalone: true,
@@ -12,18 +14,22 @@ import { ApiService } from '../../../services/api.service';
 export class StandingsFantasy {
 
   public ranking: any[] = [];
+  public error = '';
 
-  constructor(private api: ApiService) { }
+  constructor(
+    private api: ApiService,
+    public injector: Injector  // <- NECESARIO para el decorador
+  ) { }
 
   async ngOnInit() {
-    this.loadRanking();
+    await this.loadRanking();
   }
 
   async loadRanking() {
     try {
       this.ranking = await this.api.get<any[]>('/fantasy/ranking');
-
     } catch (err) {
+      this.error = 'Error al obtener el ranking';
       console.error('Error al obtener ranking:', err);
     }
   }

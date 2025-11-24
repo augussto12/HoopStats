@@ -1,92 +1,94 @@
-<div class="fantasy-team">
+<div *ngIf="team !== null">
 
-    <div class="team-header">
-        <div class="team-row">
-            <h2>{{ team?.name || 'Sin equipo' }}</h2>
-            <button (click)="editingName = true">Editar nombre</button>
+    <div *ngIf="team; else createTeam" class="fantasy-team">
+
+        <div class="team-header">
+            <div class="team-row">
+                <h2>{{ team.name }}</h2>
+                <button (click)="editingName = true">Editar nombre</button>
+            </div>
+
+            <div *ngIf="editingName" class="edit-name">
+                <input type="text" [(ngModel)]="newName" placeholder="Nuevo nombre" />
+                <button (click)="saveName()">Guardar</button>
+            </div>
+
+            <div class="team-stats">
+                <span>Presupuesto: <strong>{{ team.budget }}</strong></span>
+                <span>Puntos totales: <strong>{{ team.total_points }}</strong></span>
+            </div>
         </div>
 
-        <div *ngIf="editingName" class="edit-name">
-            <input type="text" [(ngModel)]="newName" placeholder="Nuevo nombre" />
-            <button (click)="saveName()">Guardar</button>
+        <p class="success" *ngIf="success">{{ success }}</p>
+        <p class="error" *ngIf="error">{{ error }}</p>
+
+        <div class="court">
+            <h3 class="court-title">Mi alineación</h3>
+
+            <div class="court-grid">
+                <div class="slot" *ngFor="let p of players">
+                    <div class="player-data">
+                        <strong>{{ p.full_name }}</strong>
+                        <p>Precio: {{ p.price }} créditos</p>
+                        <p>Pts: {{ p.total_pts }} pts</p>
+
+                        <button class="remove-btn" (click)="removePlayer(p.player_id)"
+                            [disabled]="liveGames.length > 0">
+                            Quitar
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="team-stats" *ngIf="team">
-            <span>Presupuesto: <strong>{{ team?.budget }}</strong></span>
-            <span>Puntos totales: <strong>{{ team?.total_points }}</strong></span>
-        </div>
-    </div>
+        <p class="error" *ngIf="liveGames.length > 0">
+            No se puede modificar el equipo mientras hay partidos en vivo
+        </p>
 
-    <p class="success" *ngIf="success">{{ success }}</p>
-    <p class="error" *ngIf="error">{{ error }}</p>
+        <button class="toggle-add" (click)="toggleAddForm()" [disabled]="liveGames.length > 0">
+            {{ showAddForm ? 'Cerrar' : 'Agregar jugador' }}
+        </button>
 
-    <div class="court" *ngIf="team">
-        <h3 class="court-title">Mi alineación</h3>
+        <div *ngIf="showAddForm" class="add-form">
 
-        <div class="court-grid">
-            <div class="slot" *ngFor="let p of players">
-
-                <div class="player-data">
-                    <strong>{{ p.full_name }}</strong>
-                    <p>Precio: {{ p.price }} créditos</p>
-                    <p>Pts: {{ p.total_pts }} pts</p>
-
-                    <button class="remove-btn" (click)="removePlayer(p.player_id)" [disabled]="liveGames.length > 0">
-                        Quitar
-                    </button>
+            <div class="options-row">
+                <div class="option">
+                    <label>Equipo</label>
+                    <select [(ngModel)]="selectedTeam" (change)="filterPlayers()" class="select">
+                        <option [ngValue]="null">Todos</option>
+                        <option *ngFor="let t of nbaTeams" [value]="t.id">{{ t.name }}</option>
+                    </select>
                 </div>
 
+                <div class="option">
+                    <label>Precio</label>
+                    <select [(ngModel)]="selectedRange" (change)="filterPlayers()" class="select">
+                        <option [ngValue]="null">Todos</option>
+                        <option *ngFor="let r of priceRanges" [ngValue]="r">{{ r.label }}</option>
+                    </select>
+                </div>
             </div>
+
+            <div class="players-grid" *ngIf="filteredPlayers.length > 0">
+                <div class="player-card selectable" *ngFor="let p of filteredPlayers">
+                    <h4>{{ p.full_name }}</h4>
+                    <p>Precio: {{ p.price }}</p>
+                    <button (click)="addPlayer(p.id)">Agregar</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <p class="error" *ngIf="liveGames.length > 0">
-        No se puede modificar el equipo mientras hay partidos en vivo
-    </p>
+    <ng-template #createTeam>
+        <div class="fantasy-team">
+            <h2>Crear tu equipo</h2>
 
-    <button class="toggle-add" (click)="toggleAddForm()" [disabled]="liveGames.length > 0">
-        {{ showAddForm ? 'Cerrar' : 'Agregar jugador' }}
-    </button>
+            <input type="text" [(ngModel)]="newName" placeholder="Nombre del equipo" />
+            <button (click)="saveName()">Crear equipo</button>
 
-    <div *ngIf="showAddForm" class="add-form">
-
-        <div class="options-row">
-
-            <div class="option">
-                <label>Equipo</label>
-                <select [(ngModel)]="selectedTeam" (change)="filterPlayers()" class="select">
-                    <option [ngValue]="null">Todos</option>
-
-                    <option *ngFor="let t of nbaTeams" [value]="t.id">
-                        {{ t.name }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="option">
-                <label>Precio</label>
-
-                <select [(ngModel)]="selectedRange" (change)="filterPlayers()" class="select">
-
-                    <option [ngValue]="null">Todos</option>
-
-                    <option *ngFor="let r of priceRanges" [ngValue]="r">
-                        {{ r.label }}
-                    </option>
-
-                </select>
-            </div>
-
+            <p class="error" *ngIf="error">{{ error }}</p>
         </div>
+    </ng-template>
 
-        <div class="players-grid" *ngIf="filteredPlayers.length > 0">
-            <div class="player-card selectable" *ngFor="let p of filteredPlayers">
-
-                <h4>{{ p.full_name }}</h4>
-                <p>Precio: {{ p.price }}</p>
-
-                <button (click)="addPlayer(p.id)">Agregar</button>
-            </div>
-        </div>
-    </div>
 </div>

@@ -1,4 +1,9 @@
-<div class="tables-wrapper">
+<div *ngIf="error" class="error-box">
+  {{ error }}
+</div>
+
+<div class="tables-wrapper" *ngIf="!error && eastTeams.length > 0 && westTeams.length > 0">
+
   <div class="table-box">
     <h2>Conferencia Este</h2>
     <table>

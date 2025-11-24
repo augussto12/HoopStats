@@ -1,62 +1,87 @@
-<div class="page">
-    <h1 class="title">Mis Favoritos</h1>
+<div class="favorites-wrapper" *ngIf="isReady">
 
-    <section class="favorites-section">
-        <h3 class="section">Equipos Favoritos</h3>
+    <h1 class="page-title">Mis Favoritos</h1>
 
-        <div *ngIf="!favoriteTeams.length" class="empty">
-            No tienes equipos favoritos aún
-        </div>
+    <div *ngIf="error" class="error-box">
+        {{ error }}
+    </div>
 
-        <table *ngIf="favoriteTeams.length" class="table">
-            <thead>
-                <tr>
-                    <th>Equipo</th>
-                    <th class="actions">Acciones</th>
-                </tr>
-            </thead>
+    <ng-container *ngIf="!error">
 
-            <tbody>
-                <tr *ngFor="let t of favoriteTeams">
-                    <td class="team">
-                        <img [src]="t.logo" [alt]="t.full_name" />
-                        <span>{{ t.full_name }}</span>
-                    </td>
-                    <td class="actions">
-                        <button class="btn-secondary" [routerLink]="['/teams', t.id]">Detalles</button>
-                        <button class="btn-danger" (click)="remove('team', t.id)">Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+        <section class="fav-section">
+            <h2 class="section-title">Equipos Favoritos</h2>
 
-    <section class="favorites-section">
-        <h3 class="section">Jugadores Favoritos</h3>
+            <p *ngIf="!favoriteTeams.length" class="empty-msg">
+                No tienes equipos favoritos aún.
+            </p>
 
-        <div *ngIf="!favoritePlayers.length" class="empty">
-            No tienes jugadores favoritos aún
-        </div>
+            <div class="cards-grid" *ngIf="favoriteTeams.length">
+                <div class="fav-card" *ngFor="let t of favoriteTeams">
 
-        <table *ngIf="favoritePlayers.length" class="table">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th class="actions">Acciones</th>
-                </tr>
-            </thead>
+                    <img class="team-logo" [src]="t.logo" [alt]="t.name" />
 
-            <tbody>
-                <tr *ngFor="let p of favoritePlayers">
-                    <td class="team">
-                        <span>{{ p.full_name }}</span>
-                    </td>
-                    <td class="actions">
-                        <button class="btn-secondary" [routerLink]="['/player', p.id]">Detalles</button>
-                        <button class="btn-danger" (click)="remove('player', p.id)">Eliminar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
+                    <h3 class="item-title">{{ t.name }}</h3>
+
+                    <div class="actions-row">
+                        <button class="btn icon info" [routerLink]="['/teams', t.id]">
+                            <svg class="icon-svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M10 2a8 8 0 105.29 14.71l4 4a1 1 0 001.42-1.42l-4-4A8 8 0 0010 2zm0 2a6 6 0 110 12A6 6 0 0110 4z" />
+                            </svg>
+                            Detalles
+                        </button>
+
+                        <button class="btn icon danger" (click)="remove('team', t.id)">
+                            <svg class="icon-svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M9 3a1 1 0 00-1 1v1H4v2h16V5h-4V4a1 1 0 00-1-1H9zm1 6v9h2V9h-2zm4 0v9h2V9h-2zM7 9v9h2V9H7z" />
+                            </svg>
+                            Eliminar
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="fav-section">
+            <h2 class="section-title">Jugadores Favoritos</h2>
+
+            <p *ngIf="!favoritePlayers.length" class="empty-msg">
+                No tienes jugadores favoritos aún.
+            </p>
+
+            <div class="cards-grid" *ngIf="favoritePlayers.length">
+                <div class="fav-card" *ngFor="let p of favoritePlayers">
+
+                    <div class="player-avatar">
+                        {{ p.full_name[0] }}
+                    </div>
+
+                    <h3 class="item-title">{{ p.full_name }}</h3>
+
+                    <div class="actions-row">
+                        <button class="btn icon info" [routerLink]="['/player', p.id]">
+                            <svg class="icon-svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M10 2a8 8 0 105.29 14.71l4 4a1 1 0 001.42-1.42l-4-4A8 8 0 0010 2zm0 2a6 6 0 110 12A6 6 0 0110 4z" />
+                            </svg>
+                            Detalles
+                        </button>
+
+                        <button class="btn icon danger" (click)="remove('player', p.id)">
+                            <svg class="icon-svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M9 3a1 1 0 00-1 1v1H4v2h16V5h-4V4a1 1 0 00-1-1H9zm1 6v9h2V9h-2zm4 0v9h2V9h-2zM7 9v9h2V9H7z" />
+                            </svg>
+                            Eliminar
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </ng-container>
+
 </div>

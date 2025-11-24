@@ -1,9 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Injector, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { NbaApiService } from '../../../services/nba-api';
 import { Player, PlayerStats } from '../../../models/interfaces';
+import { WithLoader } from '../../../decorators/with-loader.decorator';
 
+@WithLoader()
 @Component({
   selector: 'app-player-data',
   standalone: true,
@@ -12,39 +14,39 @@ import { Player, PlayerStats } from '../../../models/interfaces';
   styleUrls: ['./player-data.css']
 })
 export class PlayerData implements OnInit {
+
   public player: Player | null = null;
   public playerData: PlayerStats[] = [];
-  public loading = false;
   public error: string | null = null;
 
-  constructor(
-    private route: ActivatedRoute,
-    private api: NbaApiService
-  ) { }
+  private route = inject(ActivatedRoute);
+  private api = inject(NbaApiService);
+
+  constructor(public injector: Injector) { } 
 
   async ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
+
     if (!id) {
       this.error = 'Jugador no encontrado.';
       return;
     }
 
-    this.loading = true;
     try {
-      const data = await this.api.getPlayer(id);
-      const dataPlayer = await this.api.getPlayerStats(id);
+      const playerInfo = await this.api.getPlayer(id);
+      const playerStats = await this.api.getPlayerStats(id);
 
-      if (data && data.length > 0) {
-        this.player = data[0];
-        this.playerData = dataPlayer || [];
-      } else {
+      if (!playerInfo || playerInfo.length === 0) {
         this.error = 'No se encontró información del jugador.';
+        return;
       }
+
+      this.player = playerInfo[0];
+      this.playerData = playerStats || [];
+
     } catch (err) {
       console.error(err);
       this.error = 'Error al cargar los datos del jugador.';
-    } finally {
-      this.loading = false;
     }
   }
 }

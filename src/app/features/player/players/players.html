@@ -11,7 +11,6 @@
       <option *ngFor="let c of countries" [ngValue]="c.name">{{ c.name }}</option>
     </select>
 
-
     <label>Equipo:</label>
     <select [(ngModel)]="selectedTeamId" class="inputSelect">
       <option [ngValue]="null">Todos los equipos</option>
@@ -21,10 +20,22 @@
     <button (click)="getPlayersFiltered()">Buscar</button>
   </div>
 
-  <div *ngIf="loading" class="no-players">Cargando jugadores...</div>
+  <div class="stats-loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando jugadores...</p>
+  </div>
+
   <div *ngIf="error" class="no-players">{{ error }}</div>
 
-  <div class="players-list">
+  <div *ngIf="!hasFilters() && !loading && !error" class="nothing">
+    Ingrese un filtro para buscar jugadores.
+  </div>
+
+  <div *ngIf="hasFilters() && !players.length && !loading && !error" class="nothing">
+    No hay jugadores que coincidan con los filtros seleccionados.
+  </div>
+
+  <div class="players-list" *ngIf="players.length > 0">
     <div *ngFor="let player of players" class="player-card">
       <div class="player-info">
         <h3 class="player-name" [routerLink]="['/player', player.id]">
@@ -41,9 +52,4 @@
       </div>
     </div>
   </div>
-
-  <div *ngIf="!players.length && !loading" class="no-players">
-    No hay jugadores disponibles.
-  </div>
-
 </div>

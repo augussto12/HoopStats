@@ -1,7 +1,9 @@
 <div class="team-detail-container" *ngIf="team">
+
     <div class="team-header">
         <div class="team-logo-container">
             <img [src]="team.logo" class="team-logo" />
+
             <div *ngIf="streak.length" class="team-streak">
                 <div class="streak-bubbles">
                     <span *ngFor="let r of streak" [class.win]="r === 'W'" [class.loss]="r === 'L'">
@@ -32,15 +34,16 @@
     </div>
 
     <div class="data">
+
         <div *ngIf="selectedView === 'players'">
             <h2>Plantilla actual</h2>
 
-            <div class="loading" *ngIf="loading">Cargando información...</div>
             <div class="error" *ngIf="error">{{ error }}</div>
 
             <div class="players-list">
                 <div *ngFor="let player of players" class="player-card">
                     <div class="player-info">
+
                         <h3 class="player-name" [routerLink]="['/player', player.id]">
                             {{ player.firstname }} {{ player.lastname }}
                         </h3>
@@ -52,11 +55,12 @@
                                 <span *ngIf="isFavorite(player)">✔</span>
                             </button>
                         </ng-container>
+
                     </div>
                 </div>
             </div>
 
-            <div *ngIf="!players.length && !loading" class="no-players">
+            <div *ngIf="!players.length" class="no-players">
                 No hay jugadores disponibles.
             </div>
         </div>
@@ -73,50 +77,51 @@
                 </select>
             </div>
 
-            <section class="status" *ngIf="loading || error">
-                <div *ngIf="loading" class="loading">Cargando partidos…</div>
-                <div *ngIf="error" class="error">{{ error }}</div>
-            </section>
+            <div class="error" *ngIf="error">{{ error }}</div>
 
-            <div *ngIf="!loading && !error">
-                <div *ngIf="!gamesShown.length" class="empty">No hay partidos disponibles.</div>
+            <div *ngIf="!gamesShown.length && !error" class="empty">
+                No hay partidos disponibles.
+            </div>
 
-                <div *ngFor="let g of gamesShown" class="game-card">
-                    <div class="game-time">
-                        <span class="pill" [class.live]="g.status==='LIVE'" [class.final]="g.status==='Final'">
-                            {{ g.status }}
-                        </span>
-                        <span class="time">{{g.date}} - {{ g.timeLocal }}</span>
-                    </div>
+            <div *ngFor="let g of gamesShown" class="game-card">
 
-                    <div class="teams">
-                        <div class="team">
-                            <img [src]="g.visitors.logo" [alt]="g.visitors.name" />
-                            <div class="team-name">{{ g.visitors.name }}</div>
-                        </div>
-
-                        <div class="score">
-                            <span *ngIf="g.visitors.pts !== null && g.home.pts !== null">
-                                {{ g.visitors.pts }} — {{ g.home.pts }}
-                            </span>
-                            <span *ngIf="g.visitors.pts === null || g.home.pts === null">vs</span>
-                        </div>
-
-                        <div class="team">
-                            <img [src]="g.home.logo" [alt]="g.home.name" />
-                            <div class="team-name">{{ g.home.name }}</div>
-                        </div>
-                    </div>
-
-                    <div class="arena" *ngIf="g.arena">{{ g.arena }}</div>
+                <div class="game-time">
+                    <span class="pill" [class.live]="g.status === 'LIVE'" [class.final]="g.status === 'Final'">
+                        {{ g.status }}
+                    </span>
+                    <span class="time">{{ g.date }} - {{ g.timeLocal }}</span>
                 </div>
+
+                <div class="teams">
+                    <div class="team">
+                        <img [src]="g.visitors.logo" [alt]="g.visitors.name" />
+                        <div class="team-name">{{ g.visitors.name }}</div>
+                    </div>
+
+                    <div class="score">
+                        <span *ngIf="g.visitors.pts !== null && g.home.pts !== null">
+                            {{ g.visitors.pts }} — {{ g.home.pts }}
+                        </span>
+                        <span *ngIf="g.visitors.pts === null || g.home.pts === null">vs</span>
+                    </div>
+
+                    <div class="team">
+                        <img [src]="g.home.logo" [alt]="g.home.name" />
+                        <div class="team-name">{{ g.home.name }}</div>
+                    </div>
+                </div>
+
+                <div class="arena" *ngIf="g.arena">{{ g.arena }}</div>
             </div>
         </div>
 
         <div *ngIf="selectedView === 'stats'">
             <h2>Promedios del equipo por partido</h2>
 
-            <div *ngIf="!stats">Cargando estadísticas...</div>
+            <div class="stats-loading" *ngIf="!stats">
+                <div class="spinner"></div>
+                <p>Cargando estadísticas...</p>
+            </div>
 
             <div *ngIf="stats" class="team-stats">
                 <div class="stat-item"><strong>Puntos:</strong> {{ stats.points }}</div>
@@ -132,7 +137,5 @@
                 <div class="stat-item"><strong>+/-:</strong> {{ stats.plusMinus }}</div>
             </div>
         </div>
-
     </div>
-
 </div>

@@ -1,125 +1,174 @@
-.page {
-    min-height: 100vh;
-    padding: 20px;
-    color: #f5f5f5;
+.favorites-wrapper {
+    width: min(760px, 92%);
+    margin: 1.8rem auto;
+    color: #f5f7ff;
     font-family: 'Poppins', sans-serif;
+}
+
+.page-title {
     text-align: center;
-}
-
-.title {
-    color: #ffb347;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-}
-
-.favorites-section {
-    margin-bottom: 3rem;
-}
-
-.section {
-    color: #ffb347;
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid #1f2f57;
-    display: inline-block;
-    padding-bottom: 4px;
-}
-
-.empty {
-    font-style: italic;
-    color: #bbb;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #fff;
     margin-bottom: 1.5rem;
 }
 
-.table {
-    width: 80%;
-    margin: 0 auto;
-    border-collapse: collapse;
-    background: #15264b;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-th,
-td {
-    padding: 10px 14px;
+.error-box {
+    background: rgba(255, 60, 60, 0.12);
+    border: 1px solid rgba(255, 60, 60, 0.25);
+    padding: 0.8rem;
     text-align: center;
+    color: #ff7b7b;
+    border-radius: 10px;
+    margin-bottom: 1.6rem;
 }
 
-thead {
-    background: #1f2f57;
+.fav-section {
+    margin-bottom: 2.2rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    color: #ffb347;
     font-weight: 600;
+    margin-bottom: 0.8rem;
 }
 
-tbody tr {
-    border-top: 1px solid #223b71;
+.empty-msg {
+    text-align: center;
+    color: #aab4ce;
+    margin: 0.8rem 0 1.6rem 0;
+    font-style: italic;
 }
 
-tbody tr:hover {
-    background: #1b2f55;
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
 }
 
-td.team {
+/* TARJETA */
+.fav-card {
+    background: #142441;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.30);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    transition: transform 0.16s ease, background 0.16s ease;
+}
+
+.fav-card:hover {
+    transform: translateY(-3px);
+    background: #1a2f59;
+}
+
+/* LOGO DE EQUIPO */
+.team-logo {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+    background: #0c162c;
+    padding: 5px;
+}
+
+/* AVATAR JUGADORES */
+.player-avatar {
+    width: 55px;
+    height: 55px;
+    background: #244b82;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.8rem;
+}
+
+/* NOMBRE ITEM */
+.item-title {
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #e8ecf5;
+    margin-bottom: 1rem;
+    min-height: 32px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
 }
 
-td.team img {
-    width: 36px;
-    height: 36px;
+.btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 6px 10px;
     border-radius: 6px;
-    background: #0e1a32;
-    object-fit: contain;
-}
-
-.actions button {
-    margin: 0 4px;
-}
-
-button {
     border: none;
-    padding: 5px 10px;
-    border-radius: 6px;
-    color: #fff;
     cursor: pointer;
+
+    font-size: 0.82rem;
+    font-weight: 500;
+
+    color: #fff;
+    transition: background .18s ease, transform .12s;
 }
 
-.btn-secondary {
-    background: #2980b9;
+.btn:hover {
+    transform: translateY(-2px);
 }
 
-.btn-danger {
-    background: #e74c3c;
+/* ÍCONOS */
+.icon-svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
 }
 
-button:hover {
-    opacity: 0.85;
+/* Colores */
+.btn.info {
+    background: #3c7acc;
 }
 
-@media(max-width: 615px) {
+.btn.info:hover {
+    background: #193a68;
+}
 
-    .btn-secondary,
-    .btn-danger {
-        padding: 5px;
-        font-size: small;
-        margin: 0 4px;
+.btn.danger {
+    background: #a54646;
+}
+
+.btn.danger:hover {
+    background: #6d1c1c;
+}
+
+/* Contenedor */
+.actions-row {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+
+/* RESPONSIVE */
+@media(max-width: 480px) {
+    .page-title {
+        font-size: 1.6rem;
     }
-}
 
-@media(max-width: 375px) {
-    .page {
-        padding: 10px;
+    .fav-card {
+        padding: 0.9rem;
     }
 
-    .section {
-        font-size: 1.1rem;
-    }
-
-    th,
-    td {
-        font-size: 0.85rem;
-        padding: 8px 10px;
+    .item-title {
+        font-size: 0.9rem;
     }
 }

@@ -1,0 +1,137 @@
+body.no-scroll {
+    overflow: hidden;
+}
+
+.loader-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    animation: fadeIn .3s ease-out;
+}
+
+.nba-ball-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* PELOTA */
+.ball {
+    width: 70px;
+    height: 70px;
+    background: radial-gradient(circle at 30% 30%, #d39a55, #c4842b 70%);
+    border-radius: 50%;
+    position: relative;
+
+    box-shadow:
+        inset -5px -6px 8px rgba(0, 0, 0, 0.3),
+        inset 5px 5px 8px rgba(255, 255, 255, 0.1),
+        0 6px 12px rgba(0, 0, 0, 0.5);
+
+    animation: bounce 1.15s infinite ease-in-out,
+        rotate 7s infinite linear;
+
+    will-change: transform, opacity;
+}
+
+.nba-ball-loader p {
+    color: #e89a38;
+    font-size: 1.1rem;
+    font-weight: 600;
+    animation: fadeText .8s infinite alternate;
+}
+
+.ball::before,
+.ball::after {
+    content: "";
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow:
+        -20px 0 0 0 rgba(0, 0, 0, 0.4),
+        20px 0 0 0 rgba(0, 0, 0, 0.4);
+}
+
+
+.ball::before {
+    width: 6px;
+    height: 100%;
+    left: calc(50% - 3px);
+    top: 0;
+    border-radius: 3px;
+}
+
+.ball::after {
+    height: 6px;
+    width: 100%;
+    top: calc(50% - 3px);
+    left: 0;
+    border-radius: 3px;
+}
+
+/* Animación de rotación */
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Animación de rebote */
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-22px);
+    }
+
+    70% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Animación de texto */
+@keyframes fadeText {
+    from {
+        opacity: 0.5;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Fade-in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .ball {
+        width: 55px;
+        height: 55px;
+    }
+
+    .nba-ball-loader p {
+        font-size: 0.9rem;
+    }
+}

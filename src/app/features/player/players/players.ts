@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NbaApiService } from '../../../services/nba-api';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NBA_COUNTRIES } from '../../../utils/countries';
 import { FavoritesService } from '../../../services/favorites-service';
 import { AuthService } from '../../../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   imports: [CommonModule, FormsModule, RouterModule],
@@ -18,12 +18,10 @@ export class Players implements OnInit {
   public error: string | null = null;
   public players: any[] = [];
 
-  // Filtros
   public selectedCountry: string = '';
   public selectedLastName: string = '';
   public selectedTeamId: number | null = null;
 
-  // IDs favoritos de jugadores
   public favoritesPlayersIds: number[] = [];
 
   public nbaTeams: any[] = [];
@@ -47,12 +45,20 @@ export class Players implements OnInit {
 
     await this.getPlayersFiltered();
 
-    // ✅ Cargar favoritos de jugadores (antes estabas leyendo teams)
     const favorites = await this.favService.getFavorites();
     this.favoritesPlayersIds = favorites.players.map((p: any) => p.id);
   }
 
+  hasFilters(): boolean {
+    return (
+      this.selectedLastName.trim() !== '' ||
+      this.selectedCountry.trim() !== '' ||
+      this.selectedTeamId !== null
+    );
+  }
+
   async getPlayersFiltered() {
+    this.players = [];
     this.loading = true;
     this.error = null;
 
@@ -63,7 +69,6 @@ export class Players implements OnInit {
         country: this.selectedCountry || undefined,
       });
 
-      // Solo activos NBA
       this.players = response.filter(
         (p: any) => p?.leagues?.standard?.active === true
       );
@@ -83,7 +88,6 @@ export class Players implements OnInit {
     if (this.isFavorite(player)) return;
 
     await this.favService.addFavorite('player', player.id);
-
     this.favoritesPlayersIds.push(player.id);
   }
 }

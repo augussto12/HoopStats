@@ -16,6 +16,8 @@ export class Register {
   public error = '';
   public success = '';
   public registerForm;
+  public submitted = false;
+  public loading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -24,47 +26,58 @@ export class Register {
   ) {
     this.registerForm = this.fb.group({
       fullname: ['', [Validators.required, Validators.minLength(3)]],
-      username: ['', [Validators.required, Validators.minLength(3)]],
+      username: ['',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(30),
+          Validators.pattern(/^[a-zA-Z0-9._-]+$/)
+        ]
+      ],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       gender: ['', Validators.required],
     });
+
   }
 
   async register() {
+    this.submitted = true;
     this.error = '';
     this.success = '';
 
     if (this.registerForm.invalid) {
-      this.error = 'Por favor completa todos los campos correctamente';
       this.registerForm.markAllAsTouched();
       return;
     }
 
-    const payload = this.registerForm.value;
+    this.registerForm.patchValue({
+      username: this.registerForm.value.username?.toLowerCase().trim()
+    });
+
+    const payload = {
+      fullname: this.registerForm.value.fullname ?? '',
+      username: this.registerForm.value.username ?? '',
+      email: this.registerForm.value.email ?? '',
+      password: this.registerForm.value.password ?? '',
+      gender: this.registerForm.value.gender ?? ''
+    };
 
     try {
-      
-      const payload = {
-        fullname: this.registerForm.value.fullname ?? '',
-        username: this.registerForm.value.username ?? '',
-        email: this.registerForm.value.email ?? '',
-        password: this.registerForm.value.password ?? '',
-        gender: this.registerForm.value.gender ?? ''
-      };
+      this.loading = true;
 
       await this.auth.register(payload);
 
-
-      this.success = 'Usuario registrado con éxito';
-      this.registerForm.reset();
+      this.loading = false;
+      this.success = 'Registrado con éxito';
 
       setTimeout(() => {
         this.router.navigate(['/login']);
-      }, 1000);
+      }, 1200);
 
     } catch (err: any) {
       console.error(err);
+      this.loading = false;
       this.error = err?.error?.error || 'Error al registrar el usuario';
     }
   }
