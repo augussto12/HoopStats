@@ -21,23 +21,22 @@ body.no-scroll {
     gap: 1rem;
 }
 
-/* PELOTA */
+/* PELOTA REAL */
 .ball {
-    width: 70px;
-    height: 70px;
-    background: radial-gradient(circle at 30% 30%, #d39a55, #c4842b 70%);
+    --ball-size: 70px;
+
+    width: var(--ball-size);
+    height: var(--ball-size);
+
+    object-fit: contain;
     border-radius: 50%;
-    position: relative;
 
-    box-shadow:
-        inset -5px -6px 8px rgba(0, 0, 0, 0.3),
-        inset 5px 5px 8px rgba(255, 255, 255, 0.1),
-        0 6px 12px rgba(0, 0, 0, 0.5);
+    /* Sombra */
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
 
+    /* Animaciones */
     animation: bounce 1.15s infinite ease-in-out,
         rotate 7s infinite linear;
-
-    will-change: transform, opacity;
 }
 
 .nba-ball-loader p {
@@ -47,45 +46,17 @@ body.no-scroll {
     animation: fadeText .8s infinite alternate;
 }
 
-.ball::before,
-.ball::after {
-    content: "";
-    position: absolute;
-    background: rgba(0, 0, 0, 0.5);
-    box-shadow:
-        -20px 0 0 0 rgba(0, 0, 0, 0.4),
-        20px 0 0 0 rgba(0, 0, 0, 0.4);
-}
-
-
-.ball::before {
-    width: 6px;
-    height: 100%;
-    left: calc(50% - 3px);
-    top: 0;
-    border-radius: 3px;
-}
-
-.ball::after {
-    height: 6px;
-    width: 100%;
-    top: calc(50% - 3px);
-    left: 0;
-    border-radius: 3px;
-}
-
-/* Animación de rotación */
+/* Animaciones */
 @keyframes rotate {
-    0% {
+    from {
         transform: rotate(0deg);
     }
 
-    100% {
+    to {
         transform: rotate(360deg);
     }
 }
 
-/* Animación de rebote */
 @keyframes bounce {
 
     0%,
@@ -102,7 +73,6 @@ body.no-scroll {
     }
 }
 
-/* Animación de texto */
 @keyframes fadeText {
     from {
         opacity: 0.5;
@@ -113,7 +83,6 @@ body.no-scroll {
     }
 }
 
-/* Fade-in */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -124,11 +93,10 @@ body.no-scroll {
     }
 }
 
-/* Responsive */
+/* RESPONSIVE */
 @media (max-width: 480px) {
     .ball {
-        width: 55px;
-        height: 55px;
+        --ball-size: 55px;
     }
 
     .nba-ball-loader p {

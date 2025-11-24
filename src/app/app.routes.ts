@@ -19,6 +19,10 @@ import { FantasyHome } from './features/fantasy/fantasy-home/fantasy-home';
 import { MyTeam } from './features/fantasy/my-team/my-team';
 import { StandingsFantasy } from './features/fantasy/standings-fantasy/standings-fantasy';
 import { AuthGuard } from './auth-guard';
+import { ForgotPassword } from './components/auth/forgot-password/forgot-password';
+import { VerifyEmail } from './components/auth/verify-email/verify-email';
+import { ResetPassword } from './components/auth/reset-password/reset-password';
+import { EmailVerifiedGuard } from './guards/email-verified.guard';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -34,16 +38,48 @@ export const routes: Routes = [
     { path: 'register', component: Register },
     { path: 'profile', component: Profile },
 
-    // rutas protegidas
-    { path: 'favorites', component: Favorites, canActivate: [AuthGuard] },
-    
-    { path: 'predictions', component: Prediction, canActivate: [AuthGuard] },
-    { path: 'my-predictions', component: MyPredictions, canActivate: [AuthGuard] },
-    { path: 'standings-predictions', component: StandingsPredictions, canActivate: [AuthGuard] },
+    { path: 'forgot-password', component: ForgotPassword },
+    { path: 'verify-email', component: VerifyEmail },
+    { path: 'reset-password', component: ResetPassword },
 
-    { path: 'fantasy-home', component: FantasyHome, canActivate: [AuthGuard] },
-    { path: 'my-team', component: MyTeam, canActivate: [AuthGuard] },
-    { path: 'standings-fantasy', component: StandingsFantasy, canActivate: [AuthGuard] },
+    // rutas protegidas
+    // rutas protegidas
+    {
+        path: 'favorites',
+        component: Favorites,
+        canActivate: [AuthGuard, EmailVerifiedGuard]
+    },
+    {
+        path: 'predictions',
+        component: Prediction,
+        canActivate: [AuthGuard, EmailVerifiedGuard]
+    },
+    {
+        path: 'my-predictions',
+        component: MyPredictions,
+        canActivate: [AuthGuard, EmailVerifiedGuard]
+    },
+    {
+        path: 'standings-predictions',
+        component: StandingsPredictions,
+        canActivate: [AuthGuard, EmailVerifiedGuard]
+    },
+    {
+        path: 'fantasy-home',
+        component: FantasyHome,
+        canActivate: [AuthGuard, EmailVerifiedGuard]
+    },
+    {
+        path: 'my-team',
+        component: MyTeam,
+        canActivate: [AuthGuard, EmailVerifiedGuard]
+    },
+    {
+        path: 'standings-fantasy',
+        component: StandingsFantasy,
+        canActivate: [AuthGuard, EmailVerifiedGuard]
+    },
+
 
     { path: '**', redirectTo: '' }
 ];

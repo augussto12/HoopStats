@@ -22,15 +22,16 @@
         <p class="success" *ngIf="success">{{ success }}</p>
         <p class="error" *ngIf="error">{{ error }}</p>
 
+        <!-- Alineación -->
         <div class="court">
             <h3 class="court-title">Mi alineación</h3>
 
             <div class="court-grid">
                 <div class="slot" *ngFor="let p of players">
                     <div class="player-data">
-                        <strong>{{ p.full_name }}</strong>
-                        <p>Precio: {{ p.price }} créditos</p>
-                        <p>Pts: {{ p.total_pts }} pts</p>
+                        <strong class="player-name">{{ p.full_name }}</strong>
+                        <p class="player-price">💰 {{ p.price }} créditos</p>
+                        <p class="player-pts">🏀 {{ p.total_pts }} pts</p>
 
                         <button class="remove-btn" (click)="removePlayer(p.player_id)"
                             [disabled]="liveGames.length > 0">
@@ -45,10 +46,12 @@
             No se puede modificar el equipo mientras hay partidos en vivo
         </p>
 
+        <!-- Botón toggle -->
         <button class="toggle-add" (click)="toggleAddForm()" [disabled]="liveGames.length > 0">
             {{ showAddForm ? 'Cerrar' : 'Agregar jugador' }}
         </button>
 
+        <!-- Formulario agregar jugador -->
         <div *ngIf="showAddForm" class="add-form">
 
             <div class="options-row">
@@ -81,7 +84,7 @@
     </div>
 
     <ng-template #createTeam>
-        <div class="fantasy-team">
+        <div class="fantasy-team create">
             <h2>Crear tu equipo</h2>
 
             <input type="text" [(ngModel)]="newName" placeholder="Nombre del equipo" />

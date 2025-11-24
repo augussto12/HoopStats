@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { ApiService } from '../../services/api.service';
+import { WithLoader } from '../../decorators/with-loader.decorator';
 
+@WithLoader()
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -17,18 +20,26 @@ export class Profile implements OnInit {
 
   public editing = false;
   public changingPassword = false;
-  public showConfirm = false;   // ✅ FALTABA ESTO
+  public showConfirm = false;
 
   public error = '';
   public success = '';
 
-  // Password
+  // Passwords
   public oldPassword = '';
   public newPassword = '';
 
+  public resendMessage = '';
+  public resendError = '';
+  public resendLoading = false;
+  public passLoading = false;
+
+
   constructor(
     private auth: AuthService,
-    private router: Router
+    private api: ApiService,
+    private router: Router,
+    public injector: Injector
   ) { }
 
   async ngOnInit() {
@@ -38,6 +49,13 @@ export class Profile implements OnInit {
       this.error = 'No se pudo cargar tu perfil.';
     }
   }
+
+  genderMap: any = {
+    male: "Masculino",
+    female: "Femenino",
+    other: "Otro"
+  };
+
 
   // ------------------------------------------------
   // EDITAR PERFIL
@@ -68,7 +86,7 @@ export class Profile implements OnInit {
 
   cancelEdit() {
     this.editing = false;
-    this.ngOnInit(); // recargar del backend nuevamente
+    this.ngOnInit();
   }
 
   // ------------------------------------------------
@@ -86,11 +104,14 @@ export class Profile implements OnInit {
       return;
     }
 
+    this.passLoading = true;
+    this.error = '';
+    this.success = '';
+
     try {
       await this.auth.updatePassword(this.oldPassword, this.newPassword);
 
       this.success = 'Contraseña actualizada correctamente';
-      this.error = '';
       this.changingPassword = false;
 
       this.oldPassword = '';
@@ -99,8 +120,11 @@ export class Profile implements OnInit {
     } catch (err: any) {
       console.error(err);
       this.error = err?.error?.error || 'No se pudo cambiar la contraseña';
+    } finally {
+      this.passLoading = false;
     }
   }
+
 
   // ------------------------------------------------
   // ELIMINAR CUENTA
@@ -118,11 +142,32 @@ export class Profile implements OnInit {
 
       this.showConfirm = false;
       this.router.navigate(['/']);
-
     } catch (err) {
       console.error(err);
       this.error = "No se pudo eliminar la cuenta";
       this.showConfirm = false;
     }
   }
+
+  // ------------------------------------------------
+  // REENVIAR VERIFICACIÓN
+  // ------------------------------------------------
+  async resendVerification() {
+    this.resendMessage = '';
+    this.resendError = '';
+    this.resendLoading = true;
+
+    try {
+      await this.api.post("/auth/resend-verification", {
+        email: this.user.email
+      });
+
+      this.resendMessage = "Email de verificación reenviado.";
+    } catch (err) {
+      this.resendError = "No se pudo reenviar el email.";
+    } finally {
+      this.resendLoading = false;
+    }
+  }
+
 }

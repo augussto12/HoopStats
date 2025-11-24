@@ -1,0 +1,23 @@
+<div class="auth-fullscreen fade-swap">
+    <div class="auth-wrapper">
+        <div class="auth-card fade-in">
+
+            <h2>Verificación de email</h2>
+
+            <ng-container *ngIf="loading">
+                <div class="spinner" style="margin: 20px auto;"></div>
+                <p style="text-align:center;">Verificando...</p>
+            </ng-container>
+
+            <p *ngIf="success" class="success-text" style="text-align:center; color:#7CFF7C; margin-top:1rem;">
+                {{ success }}
+            </p>
+
+            <div *ngIf="error" style="text-align:center; margin-top:1rem;">
+                <p class="error">{{ error }}</p>
+                <button class="auth-btn" (click)="resend()">Reenviar email</button>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -49,11 +49,11 @@ export class Login {
         this.error = "Usuario/email o contraseña incorrectos";
       }
 
-    } catch (err) {
-      console.error(err);
+    } catch (err: any) {
       this.loading = false;
-      this.error = 'Ocurrió un error al iniciar sesión';
+      this.error = "Usuario/email o contraseña incorrectos";
     }
+
   }
 
   togglePassword() {

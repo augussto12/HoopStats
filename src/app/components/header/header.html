@@ -69,25 +69,48 @@
             <p>Historial de enfrentamientos.</p>
         </a>
 
-        <a class="menu-item" [class.disabled]="!auth.isLoggedIn()"
-            [routerLink]="auth.isLoggedIn() ? ['/fantasy-home'] : null" (click)="menuOpen = false">
+        <a class="menu-item" [class.disabled]="!auth.isLoggedIn() || !auth.isEmailVerified()"
+            [routerLink]="auth.isLoggedIn() && auth.isEmailVerified() ? ['/fantasy-home'] : null"
+            (click)="menuOpen = false">
+
             <h4>Fantasy Team</h4>
             <p>Gestioná tu equipo de 5 jugadores.</p>
-            <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
+
+            <div class="note" *ngIf="!auth.isLoggedIn()">
+                Requiere login
+            </div>
+
+            <div class="note" *ngIf="auth.isLoggedIn() && !auth.isEmailVerified()">
+                Validá tu email
+            </div>
         </a>
 
-        <a class="menu-item" [class.disabled]="!auth.isLoggedIn()"
-            [routerLink]="auth.isLoggedIn() ? ['/predictions'] : null" (click)="menuOpen = false">
+        <a class="menu-item" [class.disabled]="!auth.isLoggedIn() || !auth.isEmailVerified()"
+            [routerLink]="auth.isLoggedIn() && auth.isEmailVerified() ? ['/predictions'] : null"
+            (click)="menuOpen = false">
+
             <h4>Predicciones</h4>
             <p>Sumá puntos acertando resultados.</p>
+
             <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
+
+            <div class="note" *ngIf="auth.isLoggedIn() && !auth.isEmailVerified()">
+                Validá tu email
+            </div>
         </a>
 
-        <a class="menu-item" [class.disabled]="!auth.isLoggedIn()"
-            [routerLink]="auth.isLoggedIn() ? ['/favorites'] : null" (click)="menuOpen = false">
+        <a class="menu-item" [class.disabled]="!auth.isLoggedIn() || !auth.isEmailVerified()"
+            [routerLink]="auth.isLoggedIn() && auth.isEmailVerified() ? ['/favorites'] : null"
+            (click)="menuOpen = false">
+
             <h4>Favoritos</h4>
             <p>Acceso rápido a tus preferidos.</p>
+
             <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
+
+            <div class="note" *ngIf="auth.isLoggedIn() && !auth.isEmailVerified()">
+                Validá tu email
+            </div>
         </a>
 
     </div>

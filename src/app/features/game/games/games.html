@@ -29,7 +29,8 @@
                 No hay partidos para el filtro seleccionado.
             </div>
 
-            <div class="game-card" *ngFor="let g of gamesShown" (click)="getLink(g)">
+            <div class="game-card" *ngFor="let g of gamesShown" [class.no-click]="g.status === 'Programado'"
+                (click)="getLink(g)">
                 <div class="game-time">
                     <span class="pill" [class.live]="g.status==='LIVE'" [class.final]="g.status==='Final'">
                         {{ g.status }}
@@ -40,7 +41,10 @@
                 <div class="teams">
                     <div class="team">
                         <img [src]="g.visitors.logo" [alt]="g.visitors.name" />
-                        <div class="team-name">{{ g.visitors.name }}</div>
+                        <div class="team-name" [routerLink]="['/teams', g.visitors.id]"
+                            (click)="$event.stopPropagation()">
+                            {{ g.visitors.name }}
+                        </div>
                     </div>
 
                     <div class="score">
@@ -57,7 +61,9 @@
 
                     <div class="team">
                         <img [src]="g.home.logo" [alt]="g.home.name" />
-                        <div class="team-name">{{ g.home.name }}</div>
+                        <div class="team-name" [routerLink]="['/teams', g.home.id]" (click)="$event.stopPropagation()">
+                            {{ g.home.name }}
+                        </div>
                     </div>
                 </div>
 

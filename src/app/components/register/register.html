@@ -96,7 +96,9 @@
 
         <ng-container *ngIf="success">
             <div class="checkmark">✔</div>
-            <p class="success-text">{{ success }}</p>
+            <p class="success-text" *ngIf="success" style="text-align:center; color:#7CFF7C;">
+                {{ success }}
+            </p>
             <p class="redirect-text">Redirigiendo al inicio de sesión...</p>
         </ng-container>
 

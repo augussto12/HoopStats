@@ -69,11 +69,11 @@ export class Register {
       await this.auth.register(payload);
 
       this.loading = false;
-      this.success = 'Registrado con éxito';
+      this.success = 'Registro exitoso. Revisa tu email para verificar tu cuenta.';
 
       setTimeout(() => {
         this.router.navigate(['/login']);
-      }, 1200);
+      }, 2300);
 
     } catch (err: any) {
       console.error(err);

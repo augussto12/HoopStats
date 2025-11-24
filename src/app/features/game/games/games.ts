@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { NbaApiService } from '../../../services/nba-api';
@@ -14,7 +14,7 @@ import { WithLoader } from '../../../decorators/with-loader.decorator';
 @Component({
   selector: 'app-Games',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, RouterLink],
   templateUrl: './games.html',
   styleUrls: ['./games.css']
 })

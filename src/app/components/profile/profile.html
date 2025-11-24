@@ -1,50 +1,120 @@
-<div class="profile-card">
-    <h1>Perfil de usuario</h1>
-
-    <table *ngIf="!editing">
-        <tr>
-            <th>Nombre y apellido</th>
-            <td>{{ user?.fullname }}</td>
-        </tr>
-        <tr>
-            <th>Usuario</th>
-            <td>{{ user?.username }}</td>
-        </tr>
-        <tr>
-            <th>Email</th>
-            <td>{{ user?.email }}</td>
-        </tr>
-    </table>
-
-    <form *ngIf="editing" (ngSubmit)="saveChanges()">
-        <label>Nombre y apellido:</label>
-        <input [(ngModel)]="user.fullname" name="fullname" required />
-
-        <label>Usuario:</label>
-        <input [(ngModel)]="user.username" name="username" required />
-
-        <label>Email:</label>
-        <input [(ngModel)]="user.email" name="email" type="email" required />
-
-        <button type="submit">Guardar</button>
-        <button type="button" class="cancel" (click)="cancelEdit()">Cancelar</button>
-    </form>
-
-    <p *ngIf="error" style="color: red; margin-top: 10px;">{{ error }}</p>
-
-    <button *ngIf="!editing" (click)="editProfile()">Editar datos de perfil</button>
-    <button *ngIf="!editing" (click)="deleteProfile()">Eliminar cuenta</button>
-
+<div class="tables-wrapper" *ngIf="error; else profileContent">
+    <p class="msg-error" style="text-align:center; margin-top:2rem;">
+        {{ error }}
+    </p>
 </div>
 
-<div class="modal-backdrop" *ngIf="showConfirm">
-    <div class="modal">
-        <h3>¿Eliminar cuenta?</h3>
-        <p>Esta acción no se puede deshacer.</p>
+<ng-template #profileContent>
 
-        <div class="modal-buttons">
-            <button class="btn-cancel" (click)="showConfirm = false">Cancelar</button>
-            <button class="btn-delete" (click)="confirmDelete()">Eliminar</button>
+    <div class="profile-container animate-fade">
+        <div class="profile-card">
+            <h1>Mi Perfil</h1>
+
+            <div *ngIf="user && !user.email_verified" class="verify-alert animate-slide">
+                <span>⚠ Tu email no está verificado.</span>
+                <button class="small-btn" (click)="resendVerification()" [disabled]="resendLoading"
+                    style="display: flex; align-items:center; gap:6px;">
+                    <span *ngIf="!resendLoading">Reenviar verificación</span>
+                    <div *ngIf="resendLoading" class="mini-spinner"></div>
+                </button>
+            </div>
+
+            <p *ngIf="resendMessage" class="msg-success animate-fade">{{ resendMessage }}</p>
+            <p *ngIf="resendError" class="msg-error animate-fade">{{ resendError }}</p>
+
+
+            <table *ngIf="!editing" class="animate-fade">
+                <tr>
+                    <th>Nombre y apellido</th>
+                    <td>{{ user?.fullname }}</td>
+                </tr>
+                <tr>
+                    <th>Usuario</th>
+                    <td>{{ user?.username }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ user?.email }}</td>
+                </tr>
+                <tr>
+                    <th>Género</th>
+                    <td>{{ genderMap[user?.gender] }}</td>
+                </tr>
+            </table>
+
+            <form *ngIf="editing" (ngSubmit)="saveChanges()" class="animate-slide">
+                <label>Nombre y apellido:</label>
+                <input [(ngModel)]="user.fullname" name="fullname" required />
+
+                <label>Usuario:</label>
+                <input [(ngModel)]="user.username" name="username" required />
+
+                <label>Email:</label>
+                <input [(ngModel)]="user.email" name="email" type="email" required />
+
+                <label>Género:</label>
+                <select [(ngModel)]="user.gender" name="gender" required>
+                    <option value="male">Masculino</option>
+                    <option value="female">Femenino</option>
+                    <option value="other">Otro</option>
+                </select>
+
+                <div class="btn-group">
+                    <button type="submit" class="primary-btn">Guardar</button>
+                    <button type="button" class="secondary-btn" (click)="cancelEdit()">Cancelar</button>
+                </div>
+            </form>
+
+            <p *ngIf="success" class="msg-success">{{ success }}</p>
+
+            <div class="btn-group actions">
+                <button *ngIf="!editing" (click)="editProfile()" class="primary-btn">
+                    Editar perfil
+                </button>
+                <button *ngIf="!editing" (click)="startPasswordChange()" class="secondary-btn">
+                    Cambiar contraseña
+                </button>
+                <button *ngIf="!editing" (click)="deleteProfile()" class="danger-btn">
+                    Eliminar cuenta
+                </button>
+            </div>
         </div>
     </div>
-</div>
+
+    <div *ngIf="changingPassword" class="change-pass animate-slide">
+        <h3>Cambiar contraseña</h3>
+
+        <label>Contraseña actual:</label>
+        <input type="password" [(ngModel)]="oldPassword" name="oldPassword" required />
+
+        <label>Nueva contraseña:</label>
+        <input type="password" [(ngModel)]="newPassword" name="newPassword" required />
+
+        <div class="btn-group">
+            <button (click)="changePassword()" class="primary-btn" [disabled]="passLoading"
+                style="display: flex; align-items:center; gap:6px;">
+                <span *ngIf="!passLoading">Guardar</span>
+                <div *ngIf="passLoading" class="mini-spinner"></div>
+            </button>
+
+            <button (click)="changingPassword = false" class="secondary-btn">Cancelar</button>
+        </div>
+
+        <p *ngIf="error" class="msg-error">{{ error }}</p>
+        <p *ngIf="success" class="msg-success">{{ success }}</p>
+    </div>
+
+
+    <div class="modal-backdrop" *ngIf="showConfirm">
+        <div class="modal animate-zoom">
+            <h3>¿Eliminar cuenta?</h3>
+            <p>Esta acción no se puede deshacer.</p>
+
+            <div class="modal-buttons">
+                <button class="btn-cancel" (click)="showConfirm = false">Cancelar</button>
+                <button class="btn-delete" (click)="confirmDelete()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
