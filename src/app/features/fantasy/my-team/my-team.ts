@@ -37,6 +37,7 @@ export class MyTeam implements OnInit {
   ];
   selectedRange: any = null;
   selectedTeam: number | null = null;
+  loadingTeam = true;
 
   nbaTeams: any[] = [];
   liveGames: any[] = [];
@@ -60,16 +61,22 @@ export class MyTeam implements OnInit {
   }
 
   async loadFantasyTeam() {
+    this.loadingTeam = true;
+
     const res = await this.fantasy.getMyTeam();
     this.team = res.team;
     this.players = res.players;
 
     if (!this.team) {
       this.editingName = true;
+      this.newName = "";
     } else {
       this.newName = this.team.name;
     }
+
+    this.loadingTeam = false;
   }
+
 
   async loadLiveGames() {
     this.liveGames = await this.nba.getLiveGames();

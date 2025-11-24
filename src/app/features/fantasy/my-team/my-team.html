@@ -1,4 +1,10 @@
-<div *ngIf="team !== null">
+<div *ngIf="loadingTeam" class="loader-center">
+    <div class="spinner"></div>
+    <p>Cargando equipo...</p>
+</div>
+
+
+<div *ngIf="!loadingTeam">
 
     <div *ngIf="team; else createTeam" class="fantasy-team">
 
@@ -19,10 +25,10 @@
             </div>
         </div>
 
+        <!-- MENSAJES -->
         <p class="success" *ngIf="success">{{ success }}</p>
         <p class="error" *ngIf="error">{{ error }}</p>
 
-        <!-- Alineación -->
         <div class="court">
             <h3 class="court-title">Mi alineación</h3>
 
@@ -46,12 +52,10 @@
             No se puede modificar el equipo mientras hay partidos en vivo
         </p>
 
-        <!-- Botón toggle -->
         <button class="toggle-add" (click)="toggleAddForm()" [disabled]="liveGames.length > 0">
             {{ showAddForm ? 'Cerrar' : 'Agregar jugador' }}
         </button>
 
-        <!-- Formulario agregar jugador -->
         <div *ngIf="showAddForm" class="add-form">
 
             <div class="options-row">
@@ -59,7 +63,9 @@
                     <label>Equipo</label>
                     <select [(ngModel)]="selectedTeam" (change)="filterPlayers()" class="select">
                         <option [ngValue]="null">Todos</option>
-                        <option *ngFor="let t of nbaTeams" [value]="t.id">{{ t.name }}</option>
+                        <option *ngFor="let t of nbaTeams" [value]="t.id">
+                            {{ t.name }}
+                        </option>
                     </select>
                 </div>
 
@@ -67,7 +73,9 @@
                     <label>Precio</label>
                     <select [(ngModel)]="selectedRange" (change)="filterPlayers()" class="select">
                         <option [ngValue]="null">Todos</option>
-                        <option *ngFor="let r of priceRanges" [ngValue]="r">{{ r.label }}</option>
+                        <option *ngFor="let r of priceRanges" [ngValue]="r">
+                            {{ r.label }}
+                        </option>
                     </select>
                 </div>
             </div>
@@ -88,6 +96,7 @@
             <h2>Crear tu equipo</h2>
 
             <input type="text" [(ngModel)]="newName" placeholder="Nombre del equipo" />
+
             <button (click)="saveName()">Crear equipo</button>
 
             <p class="error" *ngIf="error">{{ error }}</p>

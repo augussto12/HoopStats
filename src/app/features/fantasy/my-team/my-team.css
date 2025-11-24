@@ -114,6 +114,7 @@
     gap: 25px;
     justify-content: center;
 }
+
 .slot {
     width: 160px;
 }
@@ -272,17 +273,15 @@
     transform: translateY(-2px);
 }
 
-/* RESPONSIVE */
-/* RESPONSIVE — pasa a 2 columnas */
+/* RESPONSIVE — pasa a 2 columnas con flex */
 @media(max-width: 650px) {
     .court-grid {
-        grid-template-columns: repeat(2, 150px);
-        grid-template-areas:
-            "j1 j2"
-            "j3 j4"
-            "j5 j5";
+        justify-content: center;
     }
+
     .slot {
-        width: 150px;
+        width: 45%;
+        /* Así entran 2 columnas fluidas */
+        max-width: 160px;
     }
 }
