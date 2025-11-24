@@ -38,6 +38,10 @@ export class MyTeam implements OnInit {
   selectedRange: any = null;
   selectedTeam: number | null = null;
   loadingTeam = true;
+  loadingCreate = false;
+  loadingAdd = false;
+  loadingRemove: number | null = null;
+  loadingRename = false;
 
   nbaTeams: any[] = [];
   liveGames: any[] = [];
@@ -93,49 +97,84 @@ export class MyTeam implements OnInit {
 
 
   async saveName() {
-    if (this.newName.trim().length < 3) {
+    const name = this.newName.trim();
+
+    if (name.length < 3) {
       this.error = "El nombre debe tener al menos 3 caracteres";
       this.success = "";
       return;
     }
 
-    await this.fantasy.createTeam(this.newName);
     this.error = "";
-    this.success = "Equipo creado";
-    this.editingName = false;
+    this.success = "";
 
-    await this.loadFantasyTeam();
+    try {
+      if (!this.team) {
+        // Crear equipo
+        this.loadingCreate = true;
+        await this.fantasy.createTeam(name);
+
+        this.success = "Equipo creado";
+        await this.loadFantasyTeam();
+      } else {
+        // Renombrar equipo
+        this.loadingRename = true;
+        const res: any = await this.fantasy.updateName(name);
+
+        this.team = res.team;
+        this.success = "Nombre actualizado";
+      }
+
+      this.editingName = false;
+
+    } catch (err: any) {
+      this.error = err.error?.error || "Error inesperado";
+    } finally {
+      this.loadingCreate = false;
+      this.loadingRename = false;
+    }
   }
 
 
+
+
   async addPlayer(playerId: number) {
+    this.loadingAdd = true;
+    this.error = "";
+    this.success = "";
+
     try {
       await this.fantasy.addPlayer(playerId);
-      this.success = "Jugador agregado";
-      this.error = "";
 
+      this.success = "Jugador agregado";
       await this.loadFantasyTeam();
       this.showAddForm = false;
 
     } catch (err: any) {
       this.error = err.error?.error || "Error inesperado";
-      this.success = "";
+    } finally {
+      this.loadingAdd = false;
     }
   }
+
 
 
   async removePlayer(playerId: number) {
+    this.loadingRemove = playerId;
+    this.error = "";
+    this.success = "";
+
     try {
       await this.fantasy.removePlayer(playerId);
       this.success = "Jugador eliminado";
-      this.error = "";
-
       await this.loadFantasyTeam();
     } catch (err: any) {
-      this.error = err.error?.error || "Error al eliminar jugador";
-      this.success = "";
+      this.error = err.error?.error || "No se pudo eliminar";
+    } finally {
+      this.loadingRemove = null;
     }
   }
+
 
 
   filterPlayers() {

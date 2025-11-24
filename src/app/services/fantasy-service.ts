@@ -48,4 +48,8 @@ export class FantasyService {
     getRanking() {
         return this.api.get<any[]>('/fantasy/ranking');
     }
+
+    updateName(name: string) {
+        return this.api.put('/fantasy/update-name', { name });
+    }
 }

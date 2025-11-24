@@ -273,6 +273,295 @@
     transform: translateY(-2px);
 }
 
+
+/* === CONTENEDOR GENERAL === */
+.fantasy-team {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 22px;
+    background: rgba(18, 30, 52, 0.65);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    color: #fff;
+}
+
+/* HEADER */
+.team-header {
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.team-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.team-row h2 {
+    margin: 0;
+    color: #ffcb69;
+    font-size: 1.9rem;
+    text-shadow: 0 0 12px rgba(255, 210, 110, 0.6);
+}
+
+.team-row button,
+.edit-name button {
+    background: linear-gradient(135deg, #2a4f8e, #1c3259);
+    border: none;
+    color: #fff;
+    padding: 7px 13px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s ease;
+}
+
+.team-row button:hover,
+.edit-name button:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #3766b6, #243f6e);
+}
+
+.team-stats {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    font-size: 1.1rem;
+}
+
+.team-stats span strong {
+    color: #7CFF7C;
+    text-shadow: 0 0 8px rgba(124, 255, 124, 0.5);
+}
+
+/* EDITAR NOMBRE */
+.edit-name {
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.edit-name input {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #3b4a62;
+    background: #0f1a2f;
+    color: white;
+}
+
+/* MENSAJES */
+.error {
+    color: #ff7a7a;
+    text-align: center;
+}
+
+.success {
+    color: #7cff9f;
+    text-align: center;
+}
+
+/* === CANCHA / ALINEACIÓN === */
+.court {
+    border-radius: 16px;
+    padding: 20px 12px;
+    margin: 25px auto;
+    max-width: 650px;
+    background: rgba(12, 22, 44, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.court-title {
+    text-align: center;
+    color: #ffd16a;
+    font-size: 1.55rem;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px rgba(255, 210, 106, 0.6);
+}
+
+/* GRID DE JUGADORES */
+.court-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+}
+
+.slot {
+    width: 160px;
+}
+
+
+
+/* CARD */
+.player-data {
+    background: rgba(14, 24, 45, 0.85);
+    padding: 14px;
+    border-radius: 14px;
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.player-data:hover {
+    transform: translateY(-6px);
+    box-shadow: 0px 12px 30px rgba(0, 150, 255, 0.45);
+}
+
+.player-name {
+    font-size: 1.1rem;
+    color: #ffd77a;
+}
+
+.player-price,
+.player-pts {
+    margin: 4px 0;
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
+/* BOTÓN QUITAR */
+.remove-btn {
+    background: #d15151;
+    border: none;
+    color: white;
+    padding: 7px 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.remove-btn:hover {
+    background: #b74242;
+    transform: scale(1.07);
+}
+
+/* BOTÓN AGREGAR */
+.toggle-add {
+    display: block;
+    margin: 25px auto;
+    padding: 9px 18px;
+    background: #e2bb72;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.25s ease;
+}
+
+.toggle-add:hover {
+    background: #f4cb84;
+    transform: translateY(-2px);
+}
+
+/* FORM AGREGAR */
+.add-form {
+    background: rgba(15, 27, 48, 0.75);
+    padding: 18px;
+    border-radius: 16px;
+    margin-top: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* FILTROS */
+.options-row {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+}
+
+.option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.option label {
+    margin-bottom: 5px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.select {
+    background: #1c3766;
+    border: 1px solid #2a4f8e;
+    color: #f5f5f5;
+    padding: 8px 12px;
+    border-radius: 10px;
+    min-width: 220px;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.select:hover {
+    border-color: #6fa8ff;
+}
+
+/* GRID jugadores para agregar */
+.players-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    justify-content: center;
+}
+
+.player-card {
+    background: rgba(10, 18, 36, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 14px;
+    border-radius: 12px;
+    width: 180px;
+    color: #fff;
+    text-align: center;
+    transition: .25s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.player-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 26px rgba(0, 130, 255, 0.35);
+}
+
+/* Botón agregar */
+.player-card button {
+    margin-top: 12px;
+    background: #2a4f8e;
+    border: none;
+    color: #fff;
+    padding: 7px 13px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.player-card button:hover {
+    background: #3a65b6;
+    transform: translateY(-2px);
+}
+
+/* RESPONSIVE — pasa a 2 columnas con flex */
+@media(max-width: 650px) {
+    .court-grid {
+        justify-content: center;
+    }
+
+    .slot {
+        width: 45%;
+        /* Así entran 2 columnas fluidas */
+        max-width: 160px;
+    }
+}
+
 /* RESPONSIVE — pasa a 2 columnas con flex */
 @media(max-width: 650px) {
     .court-grid {
