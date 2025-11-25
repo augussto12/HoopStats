@@ -5,16 +5,29 @@
         <p class="subtitle">Historial de todas tus predicciones realizadas</p>
     </header>
 
+    <!-- FILTROS -->
+    <section class="filters-box">
+        <div class="filter-item">
+            <label>Filtrar por fecha</label>
+            <input type="date" [(ngModel)]="filterDate" (change)="applyFilters()" />
+        </div>
+
+        <button class="btn-clear" *ngIf="filterDate" (click)="clearFilters()">
+            Limpiar filtros
+        </button>
+    </section>
+
     <div *ngIf="error" class="status-box error-box">
         {{ error }}
     </div>
 
     <div *ngIf="!error && predictions.length === 0" class="status-box empty-box">
-        Todavía no realizaste predicciones.
+        No hay predicciones para esta fecha.
     </div>
 
+    <!-- GRID DE CARDS -->
     <section class="cards-grid" *ngIf="!error && predictions.length > 0">
-        <article class="pred-card" *ngFor="let p of predictions">
+        <article class="pred-card" *ngFor="let p of paginated">
 
             <div class="card-header">
                 <h2>{{ p.home_team }}</h2>
@@ -24,17 +37,44 @@
 
             <div class="divider"></div>
 
+            <div class="stat-row date-row" *ngIf="p.game_date">
+                <span class="label">Fecha</span>
+                <span class="value">{{ p.game_date }}</span>
+            </div>
+
             <div class="stat-row">
                 <span class="label">Tu predicción</span>
                 <span class="value">{{ p.puntos_local_prediccion }} - {{ p.puntos_visitante_prediccion }}</span>
+            </div>
+
+            <div class="stat-row" *ngIf="p.procesada">
+                <span class="label">Resultado</span>
+                <span class="value real-score">{{ p.puntos_local_real }} - {{ p.puntos_visitante_real }}</span>
             </div>
 
             <div class="stat-row">
                 <span class="label">Puntos obtenidos</span>
 
                 <span class="value pending" *ngIf="!p.procesada">Pendiente</span>
-                <span class="value success" *ngIf="p.procesada">{{ p.puntos_obtenidos }}</span>
+
+                <span class="value"
+                    [ngClass]="{ 'success': (p.puntos_obtenidos ?? 0) > 0, 'fail': (p.puntos_obtenidos ?? 0) === 0 }"
+                    *ngIf="p.procesada">
+                    {{ p.puntos_obtenidos }}
+                </span>
             </div>
+
         </article>
     </section>
+
+    <!-- PAGINADO -->
+    <div class="pagination" *ngIf="totalPages > 1">
+        <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">◀</button>
+
+        <span class="page-info">
+            Página {{ currentPage }} / {{ totalPages }}
+        </span>
+
+        <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages">▶</button>
+    </div>
 </div>

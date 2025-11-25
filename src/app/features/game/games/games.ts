@@ -30,8 +30,8 @@ export class Games implements OnInit {
   private games: any[] = [];
   private router = inject(Router);
 
-  // 🔥 Flag para controlar renderizado post-loader
   public isReady = false;
+
 
   private api = inject(NbaApiService);
   private predictionService = inject(PredictionService);
@@ -111,33 +111,46 @@ export class Games implements OnInit {
 
   public async savePrediction(g: any) {
     g.predictionError = null;
+    g.loadingPrediction = true;
 
-    if (g.predHome == null || g.predHome === '') {
-      g.predictionError = 'Debe ingresar la predicción del local.';
-      return;
+    try {
+      if (g.predHome == null || g.predHome === '') {
+        g.loadingPrediction = false;
+        g.predictionError = 'Debe ingresar la predicción del local.';
+        return;
+      }
+
+      if (g.predVisitors == null || g.predVisitors === '') {
+        g.loadingPrediction = false;
+        g.predictionError = 'Debe ingresar la predicción del visitante.';
+        return;
+      }
+
+      const existing = await this.predictionService.getPredictionForGame(g.id);
+      if (existing) {
+        await this.predictionService.deletePrediction(existing.id);
+      }
+
+      await this.predictionService.createPrediction({
+        game_id: g.id,
+        home_team: g.home.name,
+        game_date: g.dateISO,
+        visitor_team: g.visitors.name,
+        puntos_local_prediccion: g.predHome,
+        puntos_visitante_prediccion: g.predVisitors
+      });
+
+      g.savedPrediction = true;
+
+    } catch (e) {
+      console.error(e);
+      g.predictionError = "Error al guardar la predicción";
+
+    } finally {
+      g.loadingPrediction = false;   // 🔥 apagar spinner
     }
-
-    if (g.predVisitors == null || g.predVisitors === '') {
-      g.predictionError = 'Debe ingresar la predicción del visitante.';
-      return;
-    }
-
-    const existing = await this.predictionService.getPredictionForGame(g.id);
-
-    if (existing) {
-      await this.predictionService.deletePrediction(existing.id);
-    }
-
-    await this.predictionService.createPrediction({
-      game_id: g.id,
-      home_team: g.home.name,
-      visitor_team: g.visitors.name,
-      puntos_local_prediccion: g.predHome,
-      puntos_visitante_prediccion: g.predVisitors
-    });
-
-    g.savedPrediction = true;
   }
+
 
   public getLink(g: any) {
     if (g.status !== 'Programado') {

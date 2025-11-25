@@ -1,13 +1,8 @@
-<div *ngIf="loadingTeam" class="loader-center">
-    <div class="spinner"></div>
-    <p>Cargando equipo...</p>
-</div>
-
-
 <div *ngIf="!loadingTeam">
 
     <div *ngIf="team; else createTeam" class="fantasy-team">
 
+        <!-- HEADER DEL EQUIPO -->
         <div class="team-header">
             <div class="team-row">
                 <h2>{{ team.name }}</h2>
@@ -29,20 +24,23 @@
         <p class="success" *ngIf="success">{{ success }}</p>
         <p class="error" *ngIf="error">{{ error }}</p>
 
+        <!-- CANCHA -->
         <div class="court">
             <h3 class="court-title">Mi alineación</h3>
 
             <div class="court-grid">
                 <div class="slot" *ngFor="let p of players">
                     <div class="player-data">
+
                         <strong class="player-name">{{ p.full_name }}</strong>
                         <p class="player-price">💰 {{ p.price }} créditos</p>
                         <p class="player-pts">🏀 {{ p.total_pts }} pts</p>
 
                         <button class="remove-btn" (click)="removePlayer(p.player_id)"
                             [disabled]="liveGames.length > 0">
-                            Quitar
+                            Cambiar
                         </button>
+
                     </div>
                 </div>
             </div>
@@ -56,9 +54,13 @@
             {{ showAddForm ? 'Cerrar' : 'Agregar jugador' }}
         </button>
 
+
+        <!-- FORMULARIO PARA AGREGAR JUGADORES -->
         <div *ngIf="showAddForm" class="add-form">
 
+            <!-- FILTROS -->
             <div class="options-row">
+
                 <div class="option">
                     <label>Equipo</label>
                     <select [(ngModel)]="selectedTeam" (change)="filterPlayers()" class="select">
@@ -70,7 +72,7 @@
                 </div>
 
                 <div class="option">
-                    <label>Precio</label>
+                    <label>Precio (rangos)</label>
                     <select [(ngModel)]="selectedRange" (change)="filterPlayers()" class="select">
                         <option [ngValue]="null">Todos</option>
                         <option *ngFor="let r of priceRanges" [ngValue]="r">
@@ -78,19 +80,40 @@
                         </option>
                     </select>
                 </div>
+
+                <div class="option">
+                    <label>Precio exacto</label>
+                    <input type="number" class="select" min="0" [(ngModel)]="exactPrice" (input)="filterPlayers()" />
+                </div>
+
             </div>
 
-            <div class="players-grid" *ngIf="filteredPlayers.length > 0">
-                <div class="player-card selectable" *ngFor="let p of filteredPlayers">
+            <div class="players-grid" *ngIf="paginatedPlayers.length > 0">
+                <div class="player-card selectable" *ngFor="let p of paginatedPlayers">
                     <h4>{{ p.full_name }}</h4>
                     <p>Precio: {{ p.price }}</p>
                     <button (click)="addPlayer(p.id)">Agregar</button>
                 </div>
             </div>
 
+            <div class="pagination" *ngIf="totalPages > 1">
+
+                <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">
+                    ◀ Anterior
+                </button>
+
+                <span>Página {{ currentPage }} / {{ totalPages }}</span>
+
+                <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages">
+                    Siguiente ▶
+                </button>
+
+            </div>
+
         </div>
     </div>
 
+    <!-- CREAR EQUIPO -->
     <ng-template #createTeam>
         <div class="fantasy-team create">
             <h2>Crear tu equipo</h2>

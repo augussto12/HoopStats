@@ -27,7 +27,6 @@
     margin: 0;
     color: #ffcb69;
     font-size: 1.9rem;
-    text-shadow: 0 0 12px rgba(255, 210, 110, 0.6);
 }
 
 .team-row button,
@@ -549,6 +548,46 @@
     transform: translateY(-2px);
 }
 
+/* === PAGINADOR === */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    margin: 25px 0 10px;
+}
+
+.pagination button {
+    background: linear-gradient(135deg, #2a4f8e, #1c3259);
+    color: white;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.pagination button:hover {
+    background: linear-gradient(135deg, #3766b6, #243f6e);
+    transform: translateY(-2px);
+}
+
+.pagination button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.pagination span {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #ffd77a;
+    text-shadow: 0 0 8px rgba(255, 200, 90, 0.55);
+}
+
+
 /* RESPONSIVE — pasa a 2 columnas con flex */
 @media(max-width: 650px) {
     .court-grid {
@@ -572,5 +611,40 @@
         width: 45%;
         /* Así entran 2 columnas fluidas */
         max-width: 160px;
+    }
+}
+
+/* PAGINADOR RESPONSIVO */
+@media (max-width: 480px) {
+    .pagination span {
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: #ffd77a;
+        text-shadow: 0 0 8px rgba(255, 200, 90, 0.55);
+    }
+
+    .pagination button {
+        padding: 7px 10px;
+    }
+
+    .pagination button::after,
+    .pagination button::before {
+        font-size: 1.3rem;
+    }
+
+    .pagination button {
+        font-size: 0;
+    }
+
+    .pagination button:first-child::before {
+        content: "◀";
+        font-size: 1.3rem;
+        color: white;
+    }
+
+    .pagination button:last-child::after {
+        content: "▶";
+        font-size: 1.3rem;
+        color: white;
     }
 }

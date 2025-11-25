@@ -32,6 +32,40 @@
     margin-bottom: 1rem;
 }
 
+.pagination {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.pagination button {
+  background: #2a4f8e;
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #3a65b6;
+}
+
+.pagination button:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-weight: 600;
+  color: #ffd77a;
+}
+
+
 /* Animación del spinner */
 @keyframes spinStats {
     from {

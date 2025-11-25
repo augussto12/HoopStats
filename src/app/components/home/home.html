@@ -63,10 +63,38 @@
               <span>{{ g.visitors.name }}</span>
             </div>
 
-            <div class="score">
-              <strong>{{ g.visitors.pts }} - {{ g.home.pts }}</strong>
-              <small>{{ g.period }}C — {{ g.clock || 'En juego' }}</small>
+            <div class="score-box">
+
+              <div class="score-line">
+                <span class="score-num" [ngClass]="{
+                    'winner': (g.visitors?.pts ?? 0) > (g.home?.pts ?? 0),
+                    'loser':  (g.visitors?.pts ?? 0) < (g.home?.pts ?? 0),
+                    'draw':   (g.visitors?.pts ?? 0) === (g.home?.pts ?? 0)
+                    }">
+                  {{ g.visitors?.pts }}
+                </span>
+
+                <span class="dash">–</span>
+
+                <span class="score-num" [ngClass]="{
+                    'winner': (g.home?.pts ?? 0) > (g.visitors?.pts ?? 0),
+                    'loser':  (g.home?.pts ?? 0) < (g.visitors?.pts ?? 0),
+                    'draw':   (g.home?.pts ?? 0) === (g.visitors?.pts ?? 0)
+                    }">
+                  {{ g.home?.pts }}
+                </span>
+
+
+              </div>
+
+              <div class="score-meta">
+                <span class="period">{{ g.period }}C</span>
+                <span class="dot">•</span>
+                <span class="clock">{{ g.clock || 'En juego' }}</span>
+              </div>
+
             </div>
+
 
             <div class="team">
               <img [src]="g.home.logo" loading="lazy" width="38" height="38" />

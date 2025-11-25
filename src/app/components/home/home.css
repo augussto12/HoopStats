@@ -55,6 +55,9 @@
   transition: 0.25s ease;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
   will-change: transform;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .news-card:hover {
@@ -68,6 +71,7 @@
   height: 115px;
   object-fit: cover;
   border-radius: 12px;
+  max-width: 100%;
 }
 
 .news-info {
@@ -101,59 +105,150 @@
 
 /* =========
    LIVE GAMES
-======= */
+============ */
+
 .live-panel {
   grid-column: 1 / -1;
   margin-top: 0.5rem;
 }
 
 .live-list {
-  display: flex;
-  flex-direction: column;
-  gap: .9rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.1rem;
 }
 
 .live-card {
-  background: rgba(12, 19, 40, .95);
-  border-radius: 12px;
-  padding: .9rem;
-  border-left: 3px solid #4da0ff;
-  transition: .25s ease;
-  will-change: transform;
+  background: rgba(12, 19, 40, 0.98);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  border: 2px solid rgba(77, 160, 255, 0.25);
+  /* azul tenue */
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
+
+  transition: transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+
   cursor: pointer;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .live-card:hover {
-  transform: translateX(6px);
+  transform: translateY(-5px);
   border-color: #e9cd2e;
+  /* dorado */
+  box-shadow: 0 10px 24px rgba(233, 205, 46, 0.28);
 }
 
 .teams {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: .5rem;
+  flex-wrap: wrap;
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
 }
 
 .team img {
   width: 38px;
   height: 38px;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .team span {
-  font-size: .8rem;
+  font-size: .85rem;
   color: #e5e7ff;
+  font-weight: 500;
 }
 
-.score strong {
-  color: #e9cd2e;
-  font-size: 1.2rem;
+/* === SCORE BOX MEJORADO === */
+
+.score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+  margin: .4rem 0;
 }
+
+/* Línea principal del resultado */
+.score-line {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+}
+
+.score-num {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #e9cd2e;
+  letter-spacing: 1px;
+}
+
+.score-num.winner {
+  color: #7cff7c;
+  text-shadow: 0 0 8px rgba(60, 255, 60, 0.35);
+}
+
+.score-num.loser {
+  color: #ff6b6b;
+  opacity: .85;
+}
+
+.score-num.draw {
+  color: #ffe27a;
+}
+
+.dash {
+  color: #e5e7eb;
+  font-size: 1.3rem;
+  opacity: .8;
+}
+
+/* Caja del período y reloj */
+.score-meta {
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+
+  padding: .25rem .55rem;
+  border-radius: 8px;
+  font-size: .75rem;
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.score-meta .period {
+  color: #4da0ff;
+  font-weight: 600;
+}
+
+.score-meta .dot {
+  color: #cdd6f4;
+  opacity: .7;
+  font-size: .75rem;
+}
+
+.score-meta .clock {
+  color: #ffffff;
+  font-weight: 500;
+}
+
 
 .arena {
   text-align: center;
   font-size: .75rem;
   color: #9ca3c8;
+  margin-top: .4rem;
 }
 
 .live-dot {
@@ -161,7 +256,10 @@
   height: 10px;
   background: #ff5963;
   border-radius: 50%;
+  margin-left: 5px;
+  box-shadow: 0 0 8px rgba(255, 89, 99, 0.7);
 }
+
 
 /* ==========
    BEST PLAYERS
@@ -181,15 +279,21 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
   will-change: transform;
   transition: .2s ease;
+  border-left: 3px solid rgba(77, 160, 255, 0.22);
 }
 
 .player-card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 0 14px rgba(77, 160, 255, 0.4);
+  border-color: #e9cd2e;
 }
 
 .player-card h3 {
   color: #4da0ff;
   margin-bottom: 4px;
+  text-transform: uppercase;
+  font-size: .9rem;
+  letter-spacing: .5px;
 }
 
 .player-card span {
@@ -227,5 +331,25 @@
 
   .players-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .live-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .score-num {
+    font-size: 1.25rem;
+  }
+
+  .team span {
+    font-size: .75rem;
+  }
+
+  .news-title {
+    font-size: .95rem;
   }
 }

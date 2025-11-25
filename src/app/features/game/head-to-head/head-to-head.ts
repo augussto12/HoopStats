@@ -43,12 +43,23 @@ export class HeadToHead implements OnInit {
     }
   }
 
+  public currentPage = 1;
+  public pageSize = 16;
+  public get totalPages() {
+    return Math.ceil(this.games.length / this.pageSize);
+  }
+
+  public get paginated() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.games.slice(start, start + this.pageSize);
+  }
+
+
   public async fetchHeadToHead() {
     this.hasSearched = true;
-    this.loading = true;  // 👈 ACTIVÁS SIEMPRE
+    this.loading = true;
     this.error = null;
 
-    // 👇 Permití que Angular pinte el spinner
     await new Promise(r => setTimeout(r));
 
     if (!this.selectedFirstTeam || !this.selectedSecondTeam) {
@@ -70,12 +81,15 @@ export class HeadToHead implements OnInit {
       );
 
       this.games = response.map(mapGame);
+      this.currentPage = 1;
+
     } catch (e) {
       console.error(e);
       this.error = 'Error al obtener los enfrentamientos.';
     } finally {
       this.loading = false;
     }
+
   }
 
 }

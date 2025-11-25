@@ -6,10 +6,17 @@ export class BestPlayersService {
 
     constructor(private api: ApiService) { }
 
-    // Obtener últimos mejores jugadores (día más reciente en DB)
+    // Obtener últimos mejores jugadores
     async getLatest() {
-        return await this.api.get<{ date: string, players: any[] }>(`/best-players/latest`);
+        const res = await this.api.get<any[]>(`/best-players/latest`);
+
+        return res.map(p => ({
+            ...p,
+            value: parseInt(p.value)  // "44.0" a 44
+        }));
     }
+
+
 
     // Obtener mejores jugadores por fecha específica (YYYY-MM-DD)
     async getByDate(date: string) {

@@ -1,7 +1,7 @@
 <div>
     <div class="title">
         <h1>Enfrentamientos entre equipos</h1>
-        <p>Seleccioná dos equipos para ver sus últimos partidos</p>
+        <p>Seleccioná dos equipos para ver su historial</p>
     </div>
     <main class="content">
         <header>
@@ -38,7 +38,7 @@
         </div>
 
         <section class="games-grid" *ngIf="!loading && !error">
-            <div class="game-card" *ngFor="let g of games" [routerLink]="['/game-details', g.id]">
+            <div class="game-card" *ngFor="let g of paginated" [routerLink]="['/game-details', g.id]">
                 <div class="game-time">
                     <span class="pill" [class.live]="g.status === 'LIVE'" [class.final]="g.status === 'Final'">
                         {{ g.status }}
@@ -71,5 +71,17 @@
                 <div class="arena" *ngIf="g.arena">{{ g.arena }}</div>
             </div>
         </section>
+
+        <div class="pagination" *ngIf="totalPages > 1">
+            <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">◀</button>
+
+            <span class="page-info">
+                Página {{ currentPage }} / {{ totalPages }}
+            </span>
+
+            <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages">▶</button>
+        </div>
+
+
     </main>
 </div>

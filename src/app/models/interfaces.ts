@@ -169,6 +169,9 @@ export interface DbPrediction {
     visitor_team: string;
     puntos_local_prediccion: number;
     puntos_visitante_prediccion: number;
+    puntos_local_real: number;
+    puntos_visitante_real: number;
+    game_date: string;
     puntos_obtenidos?: number;
     procesada: boolean;
 }

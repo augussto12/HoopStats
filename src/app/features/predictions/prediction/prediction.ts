@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
   selector: 'app-prediction',
   imports: [RouterLink],
   templateUrl: './prediction.html',
-  styleUrl: './prediction.css',
+  styleUrls: ['./prediction.css'],
 })
 export class Prediction {
 

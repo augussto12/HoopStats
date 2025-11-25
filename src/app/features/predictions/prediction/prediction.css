@@ -1,3 +1,4 @@
+/* CONTENEDOR GENERAL */
 .container {
     margin: 2rem auto;
     padding: 2rem;
@@ -10,14 +11,29 @@
     align-items: center;
     gap: 1.5rem;
     min-height: auto;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .container .title {
-    color: #f8c471;
+    color: #fff;
     font-size: 2rem;
-    font-weight: 600;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(80, 150, 255, 0.4);
 }
 
+/* GRID DE OPCIONES */
 .menu-grid {
     display: flex;
     justify-content: center;
@@ -27,32 +43,64 @@
     max-width: 1100px;
 }
 
+/* TARJETA DEL MENÚ */
 .menu-card {
     background: #162a54;
-    border-radius: 10px;
+    border-radius: 12px;
     width: 300px;
-    padding: 1.5rem;
+    padding: 1.6rem;
     text-align: center;
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* HOVER MODERNO + GLOW AZUL */
 .menu-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
     background: #1d3a6f;
+    border-color: rgba(90, 160, 255, 0.45);
+    box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.4),
+        0 0 12px rgba(80, 150, 255, 0.25);
 }
 
+/* TÍTULO DE LA TARJETA */
 .menu-card h2 {
-    color: #ff6f4d;
+    color: #70b9ff;
+    /* azul más brillante */
     font-size: 1.3rem;
     margin-bottom: 0.5rem;
+    font-weight: 600;
+    text-shadow: 0 0 6px rgba(90, 160, 255, 0.35);
+    transition: color .25s ease, text-shadow .25s ease;
 }
 
+.menu-card:hover h2 {
+    color: #a7d4ff;
+    text-shadow: 0 0 8px rgba(120, 190, 255, 0.45);
+}
+
+/* DESCRIPCIÓN */
 .menu-card p {
     color: #cbd3e1;
     font-size: 0.95rem;
+    opacity: 0.9;
+    transition: opacity .25s ease;
 }
 
+.menu-card:hover p {
+    opacity: 1;
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
     .menu-card {
         width: 90%;

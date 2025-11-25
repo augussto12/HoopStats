@@ -267,46 +267,15 @@ input[type='date'],
 }
 
 
-@media (max-width: 1200px) {
-  .games-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 900px) {
-  .games-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .content-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .toolbar {
-    flex-wrap: wrap;
-  }
-
-  .games-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-
-/* Suaviza animaciones generales */
 * {
   transition: all 0.25s ease;
 }
 
-/* Glow suave al hacer hover en los inputs y selects */
 .inputSelect:hover,
 input[type='date']:hover {
   box-shadow: 0 0 8px rgba(90, 160, 255, 0.25);
 }
 
-/* Efecto focus mejorado */
 .inputSelect:focus,
 input[type='date']:focus {
   outline: none;
@@ -315,13 +284,11 @@ input[type='date']:focus {
   box-shadow: 0 0 10px rgba(90, 160, 255, 0.35);
 }
 
-/* Botón con efecto de presión */
 .btn:active,
 .btn-predict:active {
   transform: scale(0.95);
 }
 
-/* Tarjeta con efecto neumórfico sutil */
 .game-card {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
 }
@@ -330,7 +297,6 @@ input[type='date']:focus {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.45);
 }
 
-/* Animación suave al cargar grid y cards */
 .games-grid {
   animation: fadeIn 0.5s ease forwards;
 }
@@ -352,7 +318,6 @@ input[type='date']:focus {
   }
 }
 
-/* Glow en escudos */
 .team img {
   transition: transform 0.2s, box-shadow 0.3s;
 }
@@ -362,13 +327,11 @@ input[type='date']:focus {
   box-shadow: 0 0 10px rgba(80, 140, 255, 0.4);
 }
 
-/* Efecto de brillo al pasar por pill */
 .pill:hover {
   background: rgba(255, 255, 255, 0.12);
   transform: scale(1.05);
 }
 
-/* Título con leve aparición */
 .content-header h1 {
   animation: fadeSlideDown 0.5s ease;
 }
@@ -385,54 +348,40 @@ input[type='date']:focus {
   }
 }
 
-/* Hover suave en la arena y nombres */
 .team-name:hover,
 .arena:hover {
   color: #ffffff;
 }
 
-/* Caja de predicción con borde brillando al hover */
 .prediction-box:hover {
   border-color: #3c6aa3;
   box-shadow: 0 0 10px rgba(90, 160, 255, 0.15);
 }
 
-/* Inputs de predicción con efecto glow extra */
 .team-pred input:hover {
   box-shadow: 0 0 8px rgba(90, 160, 255, 0.2);
 }
 
-/* Quitar click y pointer para los programados */
-/* La card programada no muestra cursor pointer */
 .game-card.no-click {
   cursor: default;
 }
 
-/* También quitamos hover visual en programados */
 .game-card.no-click:hover {
   background: #13233f;
   transform: none;
   box-shadow: none;
 }
 
-/* Los elementos internos mantienen el pointer cuando corresponde */
 .game-card.no-click .btn-predict,
 .game-card.no-click input,
 .game-card.no-click select {
   cursor: pointer !important;
 }
 
-/* La card programada NO muestra cursor pointer */
 .game-card.no-click {
   cursor: default;
 }
 
-/* Pero NO tocamos el hover:
-   La card puede seguir levantándose y mostrando efectos visuales.
-   Solo que NO ejecuta el click. */
-
-
-/* Los elementos internos mantienen el pointer (botón, inputs, etc) */
 .game-card.no-click .btn-predict,
 .game-card.no-click input,
 .game-card.no-click select,
@@ -440,12 +389,65 @@ input[type='date']:focus {
   cursor: pointer !important;
 }
 
-/* Evita que getLink(g) se ejecute al clickear la card */
 .game-card.no-click {
   pointer-events: none;
 }
 
-/* Pero reactivamos pointer-events en hijos */
 .game-card.no-click * {
   pointer-events: auto;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #fff;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 6px;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.btn-predict[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+
+@media (max-width: 1200px) {
+  .games-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .games-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .content-header {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .toolbar {
+    flex-wrap: wrap;
+  }
+
+  .games-grid {
+    grid-template-columns: 1fr;
+  }
 }

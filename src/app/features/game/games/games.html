@@ -86,9 +86,18 @@
                             </div>
                         </div>
 
-                        <button class="btn-predict" (click)="savePrediction(g)">
-                            Guardar predicción
+                        <button class="btn-predict" (click)="savePrediction(g)" [disabled]="g.loadingPrediction">
+
+                            <ng-container *ngIf="!g.loadingPrediction">
+                                Guardar predicción
+                            </ng-container>
+
+                            <ng-container *ngIf="g.loadingPrediction">
+                                <span class="spinner"></span> Guardando...
+                            </ng-container>
+
                         </button>
+
 
                         <p class="error-msg" *ngIf="g.predictionError">
                             {{ g.predictionError }}

@@ -1,23 +1,30 @@
 export function mapGame(g: any) {
     const startUtc = g?.date?.start ? new Date(g.date.start) : null;
-    const statusShort = g?.status?.short;
-    const statusLong = g?.status?.long ?? '';
-    const isFinished = statusShort === 3 || statusLong === 'Finished';
-    const isLive = statusLong?.toLowerCase().includes('in play');
 
     const toLocalDate = (d: Date | null) =>
         d ? d.toLocaleDateString([], { day: '2-digit', month: '2-digit', year: 'numeric' }) : '—';
-    const toLocalTime = (d: Date | null) =>
-        d ? d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '—';
+
+    const toLocalISO = (d: Date | null) =>
+        d ? d.toISOString().split('T')[0] : null;
 
     return {
         id: g.id,
         arena: `${g?.arena?.name ?? ''}${g?.arena?.city ? ' — ' + g.arena.city : ''}`.trim(),
-        date: toLocalDate(startUtc),
-        timeLocal: toLocalTime(startUtc),
-        status: isLive ? 'LIVE' : isFinished ? 'Final' : 'Programado',
+
+        dateReadable: toLocalDate(startUtc),  // DD/MM/YYYY
+        dateISO: toLocalISO(startUtc),        // YYYY-MM-DD (importante para DB)
+
+        timeLocal: startUtc
+            ? startUtc.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            : '—',
+
+        status: g?.status?.short === 3 ? 'Final' :
+            g?.status?.long?.toLowerCase().includes('in play') ? 'LIVE' :
+                'Programado',
+
         period: g?.periods?.current,
         clock: g?.status?.clock,
+
         visitors: {
             id: g?.teams?.visitors?.id,
             name: g?.teams?.visitors?.name,
