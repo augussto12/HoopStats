@@ -1,346 +1,141 @@
 /* === CONTENEDOR GENERAL === */
-.fantasy-team {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 22px;
-    background: rgba(18, 30, 52, 0.65);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
-    color: #fff;
-}
-
-/* HEADER */
-.team-header {
-    margin-bottom: 25px;
-    text-align: center;
-}
-
-.team-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-}
-
-.team-row h2 {
-    margin: 0;
-    color: #ffcb69;
-    font-size: 1.9rem;
-}
-
-.team-row button,
-.edit-name button {
-    background: linear-gradient(135deg, #2a4f8e, #1c3259);
-    border: none;
-    color: #fff;
-    padding: 7px 13px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.25s ease;
-}
-
-.team-row button:hover,
-.edit-name button:hover {
-    transform: translateY(-2px);
-    background: linear-gradient(135deg, #3766b6, #243f6e);
-}
-
-.team-stats {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    font-size: 1.1rem;
-}
-
-.team-stats span strong {
-    color: #7CFF7C;
-    text-shadow: 0 0 8px rgba(124, 255, 124, 0.5);
-}
-
-/* EDITAR NOMBRE */
-.edit-name {
-    margin-top: 14px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-.edit-name input {
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid #3b4a62;
-    background: #0f1a2f;
-    color: white;
-}
-
-/* MENSAJES */
-.error {
-    color: #ff7a7a;
-    text-align: center;
-}
-
-.success {
-    color: #7cff9f;
-    text-align: center;
-}
-
-/* === CANCHA / ALINEACIÓN === */
-.court {
-    border-radius: 16px;
-    padding: 20px 12px;
-    margin: 25px auto;
-    max-width: 650px;
-    background: rgba(12, 22, 44, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-}
-
-.court-title {
-    text-align: center;
-    color: #ffd16a;
-    font-size: 1.55rem;
-    margin-bottom: 15px;
-    text-shadow: 0 0 10px rgba(255, 210, 106, 0.6);
-}
-
-/* GRID DE JUGADORES */
-.court-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 25px;
-    justify-content: center;
-}
-
-.slot {
-    width: 160px;
-}
-
-
-
-/* CARD */
-.player-data {
-    background: rgba(14, 24, 45, 0.85);
-    padding: 14px;
-    border-radius: 14px;
-    width: 100%;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    text-align: center;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-    transition: transform .25s ease, box-shadow .25s ease;
-}
-
-.player-data:hover {
-    transform: translateY(-6px);
-    box-shadow: 0px 12px 30px rgba(0, 150, 255, 0.45);
-}
-
-.player-name {
-    font-size: 1.1rem;
-    color: #ffd77a;
-}
-
-.player-price,
-.player-pts {
-    margin: 4px 0;
-    font-size: 0.95rem;
-    opacity: 0.9;
-}
-
-/* BOTÓN QUITAR */
-.remove-btn {
-    background: #d15151;
-    border: none;
-    color: white;
-    padding: 7px 12px;
-    border-radius: 8px;
-    margin-top: 10px;
-    cursor: pointer;
-    transition: 0.25s ease;
-}
-
-.remove-btn:hover {
-    background: #b74242;
-    transform: scale(1.07);
-}
-
-/* BOTÓN AGREGAR */
-.toggle-add {
-    display: block;
-    margin: 25px auto;
-    padding: 9px 18px;
-    background: #e2bb72;
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.25s ease;
-}
-
-.toggle-add:hover {
-    background: #f4cb84;
-    transform: translateY(-2px);
-}
-
-/* FORM AGREGAR */
-.add-form {
-    background: rgba(15, 27, 48, 0.75);
-    padding: 18px;
-    border-radius: 16px;
-    margin-top: 20px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
-}
-
-/* FILTROS */
-.options-row {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin-bottom: 22px;
-    flex-wrap: wrap;
-}
-
-.option {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.option label {
-    margin-bottom: 5px;
-    color: #fff;
-    font-weight: 600;
-}
-
-.select {
-    background: #1c3766;
-    border: 1px solid #2a4f8e;
-    color: #f5f5f5;
-    padding: 8px 12px;
-    border-radius: 10px;
-    min-width: 220px;
-    cursor: pointer;
-    transition: .25s ease;
-}
-
-.select:hover {
-    border-color: #6fa8ff;
-}
-
-/* GRID jugadores para agregar */
-.players-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 22px;
-    justify-content: center;
-}
-
-.player-card {
-    background: rgba(10, 18, 36, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 14px;
-    border-radius: 12px;
-    width: 180px;
-    color: #fff;
-    text-align: center;
-    transition: .25s ease;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-}
-
-.player-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 26px rgba(0, 130, 255, 0.35);
-}
-
-/* Botón agregar */
-.player-card button {
-    margin-top: 12px;
-    background: #2a4f8e;
-    border: none;
-    color: #fff;
-    padding: 7px 13px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.25s ease;
-}
-
-.player-card button:hover {
-    background: #3a65b6;
-    transform: translateY(-2px);
-}
-
-
 /* === CONTENEDOR GENERAL === */
 .fantasy-team {
-    max-width: 900px;
+    max-width: 1100px;
     margin: 0 auto;
-    padding: 22px;
-    background: rgba(18, 30, 52, 0.65);
-    backdrop-filter: blur(10px);
+    padding: 20px 18px;
+    background: #0F1A2F;
     border-radius: 20px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
     color: #fff;
 }
 
-/* HEADER */
+/* LOCK BANNER (más sobrio) */
+.lock-banner {
+    background: rgba(233, 196, 106, 0.12);
+    color: #E9C46A;
+    border: 1px solid rgba(233, 196, 106, 0.35);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* ================= HEADER ================= */
+
 .team-header {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
+}
+
+/* fila título + acciones */
+.team-header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+
+.team-title {
+    color: #fff;
+    font-size: 1.8rem;
+    margin: 0;
     text-align: center;
 }
 
-.team-row {
+.team-title-wrapper {
+    flex: 1;
     display: flex;
+    justify-content: start;
+    align-items: start;
+}
+
+/* acciones de header (editar + trades) */
+.header-actions {
+    display: flex;
+    gap: 10px;
     justify-content: center;
     align-items: center;
-    gap: 12px;
+    flex-wrap: wrap;
 }
 
-.team-row h2 {
-    margin: 0;
-    color: #ffcb69;
-    font-size: 1.9rem;
-    text-shadow: 0 0 12px rgba(255, 210, 110, 0.6);
-}
 
-.team-row button,
-.edit-name button {
-    background: linear-gradient(135deg, #2a4f8e, #1c3259);
-    border: none;
-    color: #fff;
-    padding: 7px 13px;
+
+.header-chip-btn {
+    background: #264A8A;
+    padding: 6px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
-    cursor: pointer;
+    font-size: .85rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    transition: 0.25s ease;
+    color: #fff;
+    align-items: center;
+
+    transition:
+        background 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+    cursor: pointer;
 }
 
-.team-row button:hover,
-.edit-name button:hover {
-    transform: translateY(-2px);
-    background: linear-gradient(135deg, #3766b6, #243f6e);
+.header-chip-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+    background: linear-gradient(135deg, #3b64b0, #223b6c);
 }
 
-.team-stats {
-    margin-top: 10px;
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    font-size: 1.1rem;
+.fantasy-team.create button:disabled {
+    opacity: .65;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
-.team-stats span strong {
-    color: #7CFF7C;
-    text-shadow: 0 0 8px rgba(124, 255, 124, 0.5);
+.spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+
+    animation: spin .6s linear infinite;
 }
 
-/* EDITAR NOMBRE */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* pill trades hoy */
+.header-chip-trades {
+    background: rgba(233, 196, 106, 0.2);
+    color: #E9C46A;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: .85rem;
+}
+
+.header-chip-trades span {
+    margin: 0 2px;
+}
+
+/* editar nombre */
 .edit-name {
     margin-top: 14px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 10px;
 }
 
@@ -352,7 +147,36 @@
     color: white;
 }
 
-/* MENSAJES */
+/* stats */
+.team-stats {
+    margin-top: 8px;
+    display: flex;
+    gap: 16px;
+    font-size: .9rem;
+}
+
+.team-stats strong {
+    color: #7CE387;
+}
+
+.save-name-btn {
+    background: linear-gradient(135deg, #2a4f8e, #1c3259);
+    color: white;
+    border: none;
+    padding: 7px 13px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.save-name-btn:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(135deg, #3b64b6, #263e6e);
+}
+
+
+/* === MENSAJES === */
 .error {
     color: #ff7a7a;
     text-align: center;
@@ -363,23 +187,38 @@
     text-align: center;
 }
 
+.global-error,
+.global-success {
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin: 10px 0 15px;
+    text-align: center;
+    animation: fadeIn .3s ease;
+}
+
+.global-error {
+    background: rgba(255, 80, 80, 0.15);
+    border: 1px solid rgba(255, 0, 0, 0.35);
+}
+
+.global-success {
+    background: rgba(80, 255, 120, 0.15);
+    border: 1px solid rgba(0, 255, 100, 0.35);
+}
+
 /* === CANCHA / ALINEACIÓN === */
 .court {
-    border-radius: 16px;
-    padding: 20px 12px;
-    margin: 25px auto;
-    max-width: 650px;
-    background: rgba(12, 22, 44, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    background: #16223A;
+    padding: 18px;
+    border-radius: 14px;
+    margin: 18px 0;
 }
 
 .court-title {
     text-align: center;
-    color: #ffd16a;
-    font-size: 1.55rem;
-    margin-bottom: 15px;
-    text-shadow: 0 0 10px rgba(255, 210, 106, 0.6);
+    color: #E9C46A;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
 }
 
 /* GRID DE JUGADORES */
@@ -391,27 +230,46 @@
 }
 
 .slot {
-    width: 160px;
+    width: 170px;
 }
 
-
-
-/* CARD */
+/* CARD LINEUP */
 .player-data {
-    background: rgba(14, 24, 45, 0.85);
-    padding: 14px;
-    border-radius: 14px;
-    width: 100%;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(14, 24, 45, 0.9);
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     text-align: center;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
-    transition: transform .25s ease, box-shadow .25s ease;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
 
+
+
 .player-data:hover {
-    transform: translateY(-6px);
-    box-shadow: 0px 12px 30px rgba(0, 150, 255, 0.45);
+    transform: translateY(-3px);
+    border-color: rgba(233, 196, 106, 0.4);
 }
+
+/* glow cuando se selecciona para salir */
+.player-data.selected {
+    border-color: #ffd86b;
+    box-shadow: 0 0 0 2px #ffd86b, 0 0 18px rgba(255, 210, 110, 0.55);
+    transform: translateY(-4px);
+}
+
+.player-data,
+.player-card {
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+}
+
+.player-data.selected,
+.player-card.selected {
+    border-color: #ffd86b;
+    box-shadow: 0 0 0 1px #ffd86b, 0 0 3px rgba(255, 210, 110, 0.55);
+    transform: translateY(-4px);
+}
+
 
 .player-name {
     font-size: 1.1rem;
@@ -427,47 +285,77 @@
 
 /* BOTÓN QUITAR */
 .remove-btn {
-    background: #d15151;
+    background: #294a7a;
     border: none;
     color: white;
-    padding: 7px 12px;
+    padding: 6px 10px;
     border-radius: 8px;
-    margin-top: 10px;
+    margin-top: 8px;
     cursor: pointer;
     transition: 0.25s ease;
+    width: 100%;
+    font-weight: 600;
+    font-size: 0.85rem;
+    opacity: 0.95;
 }
 
-.remove-btn:hover {
-    background: #b74242;
-    transform: scale(1.07);
+.remove-btn:hover:not(:disabled) {
+    background: #355d9c;
+    transform: translateY(-2px);
 }
 
-/* BOTÓN AGREGAR */
+.remove-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+
+
+/* BOTÓN AGREGAR / TOGGLE FORM */
 .toggle-add {
     display: block;
-    margin: 25px auto;
-    padding: 9px 18px;
+    margin: 25px auto 10px;
+    padding: 10px 20px;
     background: #e2bb72;
     color: #000;
-    border: none;
-    border-radius: 8px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
     cursor: pointer;
-    font-weight: bold;
-    transition: 0.25s ease;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition:
+        background 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
 }
 
-.toggle-add:hover {
+.toggle-add:hover:not(:disabled) {
     background: #f4cb84;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+.toggle-add:disabled {
+    opacity: .45;
+    cursor: not-allowed;
 }
 
 /* FORM AGREGAR */
 .add-form {
-    background: rgba(15, 27, 48, 0.75);
-    padding: 18px;
-    border-radius: 16px;
-    margin-top: 20px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
+    background: #16223A;
+    padding: 14px;
+    border-radius: 14px;
+}
+
+
+
+.changes-title {
+    text-align: center;
+    margin-bottom: 18px;
+    color: #ffd86b;
 }
 
 /* FILTROS */
@@ -514,16 +402,17 @@
     justify-content: center;
 }
 
+/* card del listado de jugadores */
 .player-card {
-    background: rgba(10, 18, 36, 0.85);
+    background: rgba(5, 15, 37, 0.92);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 14px;
+    padding: 12px;
     border-radius: 12px;
-    width: 180px;
-    color: #fff;
+    width: 160px;
     text-align: center;
     transition: .25s ease;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
 }
 
 .player-card:hover {
@@ -531,22 +420,10 @@
     box-shadow: 0 10px 26px rgba(0, 130, 255, 0.35);
 }
 
-/* Botón agregar */
-.player-card button {
-    margin-top: 12px;
-    background: #2a4f8e;
-    border: none;
-    color: #fff;
-    padding: 7px 13px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.25s ease;
+.player-card p {
+    color: #ffd86b;
 }
 
-.player-card button:hover {
-    background: #3a65b6;
-    transform: translateY(-2px);
-}
 
 /* === PAGINADOR === */
 .pagination {
@@ -569,7 +446,7 @@
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
-.pagination button:hover {
+.pagination button:hover:not(:disabled) {
     background: linear-gradient(135deg, #3766b6, #243f6e);
     transform: translateY(-2px);
 }
@@ -587,30 +464,582 @@
     text-shadow: 0 0 8px rgba(255, 200, 90, 0.55);
 }
 
+/* === RESUMEN DE TRADES === */
+.trade-summary {
+    margin-top: 25px;
+    background: rgba(20, 32, 55, 0.75);
+    padding: 18px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    animation: fadeIn .3s ease;
+}
 
-/* RESPONSIVE — pasa a 2 columnas con flex */
-@media(max-width: 650px) {
-    .court-grid {
-        justify-content: center;
+.summary-title {
+    text-align: center;
+    color: #ffd86b;
+    margin-bottom: 15px;
+}
+
+.summary-box {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.summary-column {
+    text-align: center;
+}
+
+.summary-label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #7ab8ff;
+}
+
+.summary-player {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #fff;
+    text-shadow: 0 0 6px rgba(255, 200, 110, .4);
+}
+
+.summary-empty {
+    opacity: .4;
+}
+
+.trade-error {
+    color: #ff7a7a;
+    text-align: center;
+    margin-top: 6px;
+    font-weight: 600;
+}
+
+.shake {
+    animation: shakeAnim .35s ease;
+}
+
+@keyframes shakeAnim {
+    0% {
+        transform: translateX(0);
     }
 
-    .slot {
-        width: 45%;
-        /* Así entran 2 columnas fluidas */
-        max-width: 160px;
+    20% {
+        transform: translateX(-6px);
+    }
+
+    40% {
+        transform: translateX(6px);
+    }
+
+    60% {
+        transform: translateX(-4px);
+    }
+
+    80% {
+        transform: translateX(4px);
+    }
+
+    100% {
+        transform: translateX(0);
     }
 }
 
-/* RESPONSIVE — pasa a 2 columnas con flex */
-@media(max-width: 650px) {
+/* Botón aplicar (desktop) */
+.apply-trade-btn {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 22px;
+    background: #e2bb72;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #000;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition:
+        background 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+}
+
+.apply-trade-btn:hover:not(:disabled) {
+    background: #f4cb84;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+.apply-trade-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* === SHAKE EFFECT === */
+.trade-summary.shake {
+    animation: shake .35s ease;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    20% {
+        transform: translateX(-4px);
+    }
+
+    40% {
+        transform: translateX(4px);
+    }
+
+    60% {
+        transform: translateX(-3px);
+    }
+
+    80% {
+        transform: translateX(3px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+/* === HISTORIAL === */
+.history-box {
+    margin-top: 35px;
+}
+
+.history-title {
+    text-align: center;
+    color: #ffd86b;
+    margin-bottom: 20px;
+}
+
+.history-item {
+    background: rgba(15, 27, 48, 0.8);
+    padding: 14px;
+    border-radius: 14px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: background .25s ease, transform .25s ease;
+}
+
+.history-item:hover {
+    background: rgba(20, 32, 55, 0.9);
+    transform: translateY(-3px);
+}
+
+.history-header {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.history-body {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.history-col h4 {
+    margin: 0 0 6px;
+    color: #89c4ff;
+}
+
+.empty-history {
+    opacity: .6;
+    text-align: center;
+}
+
+.summary-budget {
+    text-align: center;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    margin-top: 12px;
+}
+
+.summary-budget strong.good {
+    color: #78dd78;
+
+}
+
+.summary-budget strong.bad {
+    color: #ff7a7a;
+    text-shadow: 0 0 8px rgba(255, 80, 80, 0.5);
+    font-weight: 700;
+}
+
+strong.bad {
+    color: #ff7a7a !important;
+}
+
+.view-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.gral-button {
+    background: rgba(20, 35, 60, 0.6);
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    align-items: center;
+
+    transition:
+        background 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* Hover */
+.gral-button:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Active (click) */
+.gral-button:active:not(:disabled) {
+    transform: scale(0.96);
+    box-shadow: none;
+}
+
+/* Disabled */
+.gral-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+/* Botones base */
+.view-toggle button {
+    background: rgba(20, 35, 60, 0.6);
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    cursor: pointer;
+    font-size: small;
+    font-weight: 600;
+
+    /* transiciones suaves */
+    transition:
+        background 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* Hover: se levanta suavemente */
+.view-toggle button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Click (active press) */
+.view-toggle button:active {
+    transform: scale(0.96);
+    box-shadow: none;
+}
+
+/* Botón activo */
+.view-toggle button.active {
+    background: #e2bb72;
+    color: #000;
+    border-color: #e2bb72;
+
+    /* glow más suave */
+    box-shadow: 0 0 14px rgba(255, 210, 110, 0.5),
+        0 4px 10px rgba(0, 0, 0, 0.4);
+
+    /* animación ligera */
+    animation: activePulse 0.35s ease-out;
+}
+
+/* Keyframes para un efecto de aparición suave */
+@keyframes activePulse {
+    from {
+        transform: scale(0.95);
+        box-shadow: 0 0 4px rgba(255, 210, 110, 0.1);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+
+
+.delete-btn {
+    background: #974c4c;
+    border: none;
+    color: #e4e4e4;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-top: 6px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: 600;
+    font-size: 0.82rem;
+    transition: 0.25s ease;
+}
+
+.delete-btn:hover:not(:disabled) {
+    background: #b96060;
+    transform: translateY(-2px);
+}
+
+.delete-btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+
+.fab-trade:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: translateX(-50%);
+}
+
+/* ======================================= */
+/*       CREAR EQUIPO (estilos nuevos)     */
+/* ======================================= */
+
+.fantasy-team.create {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 26px 22px;
+    background: rgba(15, 26, 47, 0.9);
+    border-radius: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    text-align: center;
+    animation: fadeIn .35s ease;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4);
+}
+
+.fantasy-team.create h2 {
+    color: #ffd86b;
+    margin-bottom: 20px;
+    font-size: 1.6rem;
+    font-weight: 700;
+    text-shadow: 0 0 8px rgba(255, 210, 110, 0.4);
+}
+
+/* Input nombre */
+.fantasy-team.create input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #314461;
+    background: #0e1a30;
+    color: #fff;
+    font-size: 1rem;
+    margin-bottom: 20px;
+
+    transition: border-color .25s, box-shadow .25s;
+}
+
+.fantasy-team.create input:focus {
+    border-color: #6fa8ff;
+    box-shadow: 0 0 8px rgba(110, 170, 255, 0.4);
+    outline: none;
+}
+
+/* Botón crear */
+.fantasy-team.create button {
+    width: 100%;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+
+    background: linear-gradient(135deg, #2a4f8e, #1c3259);
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+
+    transition:
+        background .25s ease,
+        transform .2s ease,
+        box-shadow .25s ease;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.fantasy-team.create button:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #3867b7, #233f6d);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+}
+
+.fantasy-team.create button:active {
+    transform: scale(0.97);
+}
+
+/* error */
+.fantasy-team.create .error {
+    margin-top: 12px;
+    font-weight: 600;
+    color: #ff7a7a;
+    background: rgba(255, 80, 80, 0.18);
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 0, 0, 0.35);
+    animation: fadeIn .3s ease;
+}
+
+
+/* === ANIMACIONES GENERALES === */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.6) translateY(10px);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1.15) translateY(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+    .fantasy-team {
+        padding: 20px 16px;
+    }
+
+    .team-header-main {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .team-title-wrapper h2 {
+        font-size: 1.9rem;
+    }
+
+    .header-actions {
+        justify-content: flex-start;
+    }
+
+    .team-stats {
+        justify-content: flex-start;
+    }
+
+    .summary-box {
+        flex-direction: column;
+        text-align: center;
+    }
+
+}
+
+@media (max-width: 650px) {
+
     .court-grid {
         justify-content: center;
     }
 
     .slot {
         width: 45%;
-        /* Así entran 2 columnas fluidas */
         max-width: 160px;
+    }
+
+    .team-title {
+        font-size: 1.6rem;
+    }
+
+    .header-chip-btn,
+    .header-chip-trades {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    .slot {
+        width: 45%;
+    }
+
+    .player-card,
+    .player-data {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .team-header-main {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .team-title-wrapper {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .header-chip-btn,
+    .header-chip-trades {
+        width: 100%;
+        max-width: 220px;
+        text-align: center;
+        font-size: .85rem;
+        padding: 6px 10px;
+    }
+
+    .team-stats {
+        flex-direction: row;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        gap: 10px;
+    }
+
+    .team-stats strong {
+        font-size: 0.9rem;
+    }
+
+    .remove-btn,
+    .delete-btn {
+        width: 100%;
+        padding: 6px 8px;
+        font-size: 0.8rem;
+        margin-top: 6px;
     }
 }
 
@@ -619,17 +1048,10 @@
     .pagination span {
         font-size: 0.8rem;
         font-weight: 400;
-        color: #ffd77a;
-        text-shadow: 0 0 8px rgba(255, 200, 90, 0.55);
     }
 
     .pagination button {
         padding: 7px 10px;
-    }
-
-    .pagination button::after,
-    .pagination button::before {
-        font-size: 1.3rem;
     }
 
     .pagination button {

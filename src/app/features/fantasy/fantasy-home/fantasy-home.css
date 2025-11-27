@@ -1,20 +1,312 @@
-.loading-msg {
-    color: #ffd700;
-    font-size: 1.1rem;
-    margin-bottom: 15px;
+/* === BACKDROP === */
+.invite-panel-backdrop {
+    position: fixed;
+    inset: 0;
+    backdrop-filter: blur(3px);
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 90;
+    animation: fadeIn .25s ease;
 }
 
-.menu-grid.disabled {
-    opacity: 0.4;
-    pointer-events: none;
+/* === PANEL DESLIZABLE === */
+.invite-panel {
+    position: fixed;
+    top: 0;
+    right: -360px;
+    width: 320px;
+    height: 100%;
+    background: #0F1A2F;
+    border-left: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 18px;
+    z-index: 100;
+    transition: right .35s cubic-bezier(.25, .8, .25, 1);
+    box-shadow: -6px 0 18px rgba(0, 0, 0, 0.45);
 }
 
-.card-disabled {
+.invite-panel.open {
+    right: 0;
+}
+
+/* === HEADER DEL PANEL === */
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.panel-header h2 {
+    color: #E9C46A;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.close-btn:hover {
+    transform: scale(1.1);
+    color: #E9C46A;
+}
+
+/* === NOTIFICATION ITEM === */
+.invite-item {
+    background: rgba(16, 26, 44, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px;
+    border-radius: 12px;
+    margin: 14px 0;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    transform: translateX(25px);
+    transition: 0.45s cubic-bezier(.25, .8, .25, 1);
+}
+
+.slide-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.invite-item:hover {
+    transform: translateY(-3px);
+    border-color: rgba(233, 196, 106, 0.4);
+    box-shadow: 0 6px 20px rgba(233, 196, 106, 0.18);
+}
+
+.invite-item h3 {
+    color: #E9C46A;
+    margin-bottom: 6px;
+    font-size: 1rem;
+}
+
+.invite-item p {
+    margin: 0;
+    font-size: 0.85rem;
+    opacity: .85;
+}
+
+.date {
+    display: block;
+    font-size: 11px;
+    opacity: 0.6;
+    margin: 6px 0 8px;
+}
+
+/* === NOTIFICATION STATUS === */
+.status-pill {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 12px;
+    margin: 5px 0 10px;
+    text-align: center;
+}
+
+.status-pill.unread {
+    background: rgba(233, 196, 106, 0.3);
+    color: #FFD56B;
+}
+
+.status-pill.read {
+    background: rgba(80, 200, 120, 0.25);
+    color: #4ae36d;
+}
+
+/* === BOTONES === */
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.accept-btn,
+.reject-btn {
+    flex: 1;
+    padding: 8px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+/* Marcar como leída */
+.accept-btn {
+    background: linear-gradient(135deg, #2a4f8e, #1c3259);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.accept-btn:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #3d6dba, #25416f);
+    box-shadow: 0 6px 16px rgba(0, 128, 255, 0.35);
+}
+
+/* Borrar */
+.reject-btn {
+    background: rgba(180, 65, 65, 0.35);
+    color: #ff9f9f;
+    border: 1px solid rgba(255, 130, 130, 0.25);
+}
+
+.reject-btn:hover {
+    transform: translateY(-3px);
+    background: rgba(200, 50, 50, 0.45);
+    box-shadow: 0 6px 16px rgba(255, 80, 80, 0.35);
+}
+
+.accept-btn:disabled,
+.reject-btn:disabled {
+    opacity: 0.55;
     cursor: not-allowed;
+    transform: none !important;
 }
 
-@media (max-width: 768px) {
-    .menu-card {
-        width: 90%;
+.mini-spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+.mini-spinner.red {
+    border-top-color: #ffe1e1;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* === MENSAJE VACÍO === */
+.empty-msg {
+    color: #bbb;
+    text-align: center;
+    margin-top: 40px;
+    opacity: .75;
+}
+
+/* === ERROR DEL PANEL === */
+.error-msg {
+    background: rgba(255, 80, 80, 0.15);
+    border: 1px solid rgba(255, 0, 0, 0.35);
+    padding: 10px 14px;
+    border-radius: 10px;
+    text-align: center;
+    color: #ff7a7a;
+    font-weight: 600;
+    margin-bottom: 12px;
+    animation: fadeIn .25s ease;
+}
+
+/* === CAMPANITA === */
+.invite-bell {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: rgba(20, 35, 60, .6);
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, .15);
+    cursor: pointer;
+    font-size: 1.3rem;
+    color: white;
+    transition: .25s ease;
+}
+
+.invite-bell:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+/* Badge */
+.badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #ff5252;
+    padding: 3px 7px;
+    border-radius: 999px;
+    font-size: .7rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+/* === ANIMACIÓN SHAKE === */
+.shake-once {
+    animation: shakeBell 0.8s ease;
+}
+
+@keyframes shakeBell {
+    0% {
+        transform: rotate(0);
+    }
+
+    20% {
+        transform: rotate(-12deg);
+    }
+
+    40% {
+        transform: rotate(12deg);
+    }
+
+    60% {
+        transform: rotate(-7deg);
+    }
+
+    80% {
+        transform: rotate(7deg);
+    }
+
+    100% {
+        transform: rotate(0);
+    }
+}
+
+/* Pulse */
+.pulse {
+    animation: pulseBell 0.8s ease-out;
+}
+
+@keyframes pulseBell {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 215, 120, 0.0);
+    }
+
+    50% {
+        transform: scale(1.12);
+        box-shadow: 0 0 14px rgba(255, 215, 120, 0.45);
+    }
+
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 215, 120, 0);
+    }
+}
+
+/* Fade-in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

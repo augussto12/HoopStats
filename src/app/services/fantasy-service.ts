@@ -6,9 +6,7 @@ export class FantasyService {
 
     constructor(private api: ApiService) { }
 
-    // ============================
-    // Obtener mi equipo
-    // ============================
+    //        MI EQUIPO
     getMyTeam() {
         return this.api.get<{
             team: {
@@ -16,40 +14,57 @@ export class FantasyService {
                 name: string;
                 total_points: number;
                 budget: number;
+                trades_remaining: number;
             } | null;
             players: any[];
         }>('/fantasy/my-team');
     }
 
-    // ============================
-    // Crear equipo
-    // ============================
     createTeam(name: string) {
         return this.api.post('/fantasy/create', { name });
     }
 
-    // ============================
-    // Agregar jugador
-    // ============================
+    updateName(name: string) {
+        return this.api.put('/fantasy/update-name', { name });
+    }
+
+    //        TRADES INDIVIDUALES
     addPlayer(playerId: number) {
         return this.api.post(`/fantasy/add-player/${playerId}`, {});
     }
 
-    // ============================
-    // Eliminar jugador
-    // ============================
     removePlayer(playerId: number) {
         return this.api.delete(`/fantasy/remove-player/${playerId}`);
     }
 
-    // ============================
-    // Ranking global
-    // ============================
-    getRanking() {
-        return this.api.get<any[]>('/fantasy/ranking');
+    //        TRADES EN LOTE
+    applyTrades(add: number[], drop: number[]) {
+        return this.api.post('/fantasy/apply-trades', { add, drop });
     }
 
-    updateName(name: string) {
-        return this.api.put('/fantasy/update-name', { name });
+    //        LIMITES DE TRADES
+    getTradesToday(): Promise<{
+        teamId: number;
+        tradesHoy: number;
+        tradesRestantes: number;
+        limiteDiario: number;
+    }> {
+        return this.api.get('/fantasy/trades/today');
+    }
+
+
+    //        HISTORIAL SIMPLE
+    getMyTransactions() {
+        return this.api.get('/fantasy/trades/history');
+    }
+
+    //        HISTORIAL COMBINADO
+    getGroupedTransactionsByTeam(teamId: number) {
+        return this.api.get<any[]>(`/fantasy/trades/history-by-team?teamId=${teamId}`);
+    }
+
+    //        RANKING GLOBAL
+    getRanking() {
+        return this.api.get('/fantasy/ranking');
     }
 }

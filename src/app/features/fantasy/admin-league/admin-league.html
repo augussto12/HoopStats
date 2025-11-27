@@ -1,0 +1,170 @@
+<!-- TOGGLE DE LIGAS -->
+<div class="admin-container" *ngIf="!loading">
+
+    <h2 class="title">Ligas</h2>
+    <div class="view-toggle league-toggle" *ngIf="adminLeagues.length > 1">
+        <button *ngFor="let lg of adminLeagues; index as i" class="league-btn gral-button"
+            [class.active]="selectedLeagueIndex === i" (click)="selectedLeagueIndex = i; onLeagueChange()">
+            {{ lg.league.name }}
+        </button>
+    </div>
+
+
+    <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+    <p class="success" *ngIf="successMsg">{{ successMsg }}</p>
+
+    <!-- ============================
+          SECCIÓN: INFO DE LA LIGA
+    ============================= -->
+    <div class="league-box">
+        <div class="league-header">
+            <h3 class="league-name">{{ league?.name }}</h3>
+            <p class="league-id">ID: {{ league?.id }}</p>
+        </div>
+
+        <div class="privacy-row">
+            <label class="privacy-title">Privacidad:</label>
+
+            <label class="switch">
+                <input type="checkbox" [(ngModel)]="isPrivate">
+                <span class="slider"></span>
+            </label>
+
+            <span class="privacy-label" [class.private]="isPrivate" [class.public]="!isPrivate">
+                {{ isPrivate ? 'Privada' : 'Pública' }}
+            </span>
+        </div>
+    </div>
+
+    <!-- ============================
+            SECCIÓN: MIEMBROS
+    ============================= -->
+    <div class="members-section">
+        <h3>Miembros ({{ members.length }})</h3>
+
+        <div class="empty" *ngIf="members.length === 0">
+            Todavía no hay miembros en esta liga.
+        </div>
+
+        <div class="user-grid">
+            <div class="user-card" *ngFor="let u of members" [class.appearing]="u._new"
+                [class.admin]="u.role === 'admin'">
+
+                <div class="user-info">
+
+                    <!-- NOMBRE -->
+                    <span class="user-name">
+                        {{ u.username }}
+                    </span>
+
+                    <!-- BADGES DE ESTADO / ROL -->
+                    <div class="user-badges">
+                        <!-- Rol admin -->
+                        <span class="admin-badge" *ngIf="u.role === 'admin'">ADMIN</span>
+
+                        <!-- Estados reales -->
+                        <span class="status-badge active" *ngIf="u.status === 'active'">
+                            Activo
+                        </span>
+
+                        <span class="status-badge inactive" *ngIf="u.status === 'inactive'">
+                            Inactivo
+                        </span>
+
+                        <!-- Invitaciones -->
+                        <span class="status-badge pending" *ngIf="u.status === 'pending'">
+                            Pendiente
+                        </span>
+
+                        <span class="status-badge rejected" *ngIf="u.status === 'rejected'">
+                            Rechazada
+                        </span>
+                    </div>
+
+
+                    <span class="user-email">{{ u.email }}</span>
+
+                </div>
+
+                <!-- ACCIONES -->
+                <div class="user-actions">
+
+                    <!-- Admin -->
+                    <button class="promote-btn" *ngIf="u.role !== 'admin' && u.status === 'active'"
+                        (click)="makeAdmin(u)">
+                        👑
+                    </button>
+
+                    <button class="demote-btn" *ngIf="u.role === 'admin' && u.id !== league.created_by"
+                        (click)="removeAdmin(u)">
+                        ▼
+                    </button>
+
+                    <!-- Desactivar usuario -->
+                    <button class="inactivate-btn" *ngIf="u.role !== 'admin' && u.status === 'active'"
+                        (click)="openRemoveModal(u, 'inactivate')">
+                        🚫
+                    </button>
+
+                    <!-- Eliminar definitivamente -->
+                    <button class="remove-btn" *ngIf="u.role !== 'admin'" (click)="openRemoveModal(u, 'delete')">
+                        🗑
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================
+          SECCIÓN: AGREGAR USUARIO
+    ============================= -->
+    <div class="invite-box">
+        <h3>Invitar Usuarios</h3>
+
+        <select class="fancy-select" [(ngModel)]="selectedUser" (change)="addUser()">
+            <option [ngValue]="null">Seleccionar usuario</option>
+            <option *ngFor="let u of allUsers" [ngValue]="u" [disabled]="isAlreadyMember(u)">
+                {{ u.username }}
+            </option>
+        </select>
+    </div>
+
+    <!-- BOTÓN GUARDAR -->
+    <button class="save-btn" (click)="saveChanges()" [disabled]="saving">
+        <ng-container *ngIf="saving; else normalBtn">
+            {{ successMsg || 'Guardando...' }}
+        </ng-container>
+        <ng-template #normalBtn>
+            Guardar cambios
+        </ng-template>
+    </button>
+
+</div>
+
+
+<!-- ============================
+            MODAL ELIMINAR
+============================= -->
+<div class="modal-backdrop" *ngIf="modalUser">
+    <div class="modal-box">
+
+        <h3>
+            {{ removeMode === 'delete' ? 'Eliminar usuario' : 'Inactivar usuario' }}
+        </h3>
+
+        <p>
+            {{ removeMode === 'delete'
+            ? '¿Seguro que querés eliminar a'
+            : '¿Querés marcar como inactivo a' }}
+            <strong>{{ modalUser.username }}</strong>?
+        </p>
+
+        <div class="modal-buttons">
+            <button class="cancel-btn" (click)="modalUser = null">Cancelar</button>
+
+            <button class="confirm-btn" (click)="confirmRemove()">
+                {{ removeMode === 'delete' ? 'Eliminar' : 'Inactivar' }}
+            </button>
+        </div>
+    </div>
+</div>

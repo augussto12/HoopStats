@@ -2,21 +2,19 @@
 // Usuario
 // ========================
 export interface User {
-    id?: number;
-    fullname?: string;
-    username?: string;
+    id: number;
+    username: string;
     email: string;
-    gender?: 'male' | 'female' | 'other' | 'prefer_not';
+    fullname?: string;
 
-    totalPredictionPoints?: number;
+    role?: 'admin' | 'member';
 
-    favorites?: {
-        teams: any[];
-        players: any[];
-    };
+    // estados reales según BD
+    status?: 'active' | 'pending' | 'accepted' | 'rejected' | 'kicked' | 'inactive';
 
-    fantasy?: FantasyTeam;
+    _new?: boolean;
 }
+
 
 // ========================
 // Jugador NBA API
@@ -103,19 +101,22 @@ export interface Game {
         short?: string;
         long?: string;
     };
-    home: {
+
+    home?: {
         id: number;
-        name: string;
+        name?: string;
         logo?: string;
-        pts?: number;
+        pts?: number | null;
     };
-    visitors: {
+
+    visitors?: {
         id: number;
-        name: string;
+        name?: string;
         logo?: string;
-        pts?: number;
+        pts?: number | null;
     };
 }
+
 
 export interface PlayerGroup {
     team: Team;
@@ -212,4 +213,52 @@ export interface AuthResponse {
 
 export interface CountryOption {
     name: string;
+}
+
+
+export interface MyLeague {
+    id: number;
+    name: string;
+    privacy: 'public' | 'private';
+    is_admin: boolean;
+}
+
+
+export interface AdminLeagueResponse {
+    league: {
+        id: number;
+        name: string;
+        privacy: 'public' | 'private';
+        description: string | null;
+        created_by: number;
+        is_admin: boolean;
+    };
+    members: any[]; // si querés lo tipamos bien después
+    invites: any[];
+}
+
+export interface MyCreatedLeague {
+    league: {
+        id: number;
+        name: string;
+        description: string | null;
+        created_by: number;
+        privacy: 'private' | 'public';
+        max_teams: number;
+        status: string;
+        created_at: string;
+    };
+    members: any[];
+}
+
+export interface NotificationItem {
+    id: number;
+    user_id: number;
+    type: string;
+    title: string;
+    message: string;
+    link?: string | null;
+    is_read: boolean;
+    created_at: string;
+    data?: any;
 }

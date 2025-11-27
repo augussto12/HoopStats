@@ -23,6 +23,9 @@ import { ForgotPassword } from './components/auth/forgot-password/forgot-passwor
 import { VerifyEmail } from './components/auth/verify-email/verify-email';
 import { ResetPassword } from './components/auth/reset-password/reset-password';
 import { EmailVerifiedGuard } from './guards/email-verified.guard';
+import { CreateLeagueComponent } from './features/fantasy/create-league/create-league';
+import { AdminLeagueComponent } from './features/fantasy/admin-league/admin-league';
+import { MyLeagues } from './features/fantasy/my-leagues/my-leagues';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -75,8 +78,23 @@ export const routes: Routes = [
         canActivate: [AuthGuard, EmailVerifiedGuard]
     },
     {
+        path: 'my-leagues',
+        component: MyLeagues,
+        canActivate: [AuthGuard, EmailVerifiedGuard]
+    },
+    {
         path: 'standings-fantasy',
         component: StandingsFantasy,
+        canActivate: [AuthGuard, EmailVerifiedGuard]
+    },
+    {
+        path: 'create-league',
+        component: CreateLeagueComponent,
+        canActivate: [AuthGuard, EmailVerifiedGuard]
+    },
+    {
+        path: 'admin-league',
+        component: AdminLeagueComponent,
         canActivate: [AuthGuard, EmailVerifiedGuard]
     },
 

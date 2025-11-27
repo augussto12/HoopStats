@@ -59,8 +59,8 @@
           <div class="teams">
 
             <div class="team">
-              <img [src]="g.visitors.logo" loading="lazy" width="38" decoding="async" height="38" />
-              <span>{{ g.visitors.name }}</span>
+              <img [src]="g.visitors?.logo" loading="lazy" width="38" decoding="async" height="38" />
+              <span>{{ g.visitors?.name }}</span>
             </div>
 
             <div class="score-box">
@@ -71,7 +71,7 @@
                     'loser':  (g.visitors?.pts ?? 0) < (g.home?.pts ?? 0),
                     'draw':   (g.visitors?.pts ?? 0) === (g.home?.pts ?? 0)
                     }">
-                  {{ g.visitors?.pts }}
+                  {{ g.visitors?.pts ?? '-' }}
                 </span>
 
                 <span class="dash">–</span>
@@ -81,7 +81,7 @@
                     'loser':  (g.home?.pts ?? 0) < (g.visitors?.pts ?? 0),
                     'draw':   (g.home?.pts ?? 0) === (g.visitors?.pts ?? 0)
                     }">
-                  {{ g.home?.pts }}
+                  {{ g.home?.pts ?? '-' }}
                 </span>
 
 
@@ -97,8 +97,8 @@
 
 
             <div class="team">
-              <img [src]="g.home.logo" loading="lazy" width="38" height="38" />
-              <span>{{ g.home.name }}</span>
+              <img [src]="g.home?.logo" loading="lazy" width="38" height="38" />
+              <span>{{ g.home?.name }}</span>
             </div>
 
           </div>

@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
+import { User } from '../models/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
     constructor(private api: ApiService) { }
+
+    async getAllUsers(): Promise<User[]> {
+        return await this.api.get('/users');
+    }
 
     // Obtener mi perfil
     async getMyProfile() {

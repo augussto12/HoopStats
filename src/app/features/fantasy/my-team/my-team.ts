@@ -5,6 +5,7 @@ import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WithLoader } from '../../../decorators/with-loader.decorator';
+import { MarketLockService } from '../../../services/market-lock.service';
 
 @WithLoader()
 @Component({
@@ -24,9 +25,21 @@ export class MyTeam implements OnInit {
   newName = "";
   showAddForm = false;
 
+  // sistema exacto sale/entra
+  removalCandidate: any = null;
+  additionCandidate: any = null;
+
+  tradesHoy = 0;
+  tradesRestantes = 0;
+  limiteDiario = 2;
+
   // Jugadores disponibles
   allPlayers: any[] = [];
   filteredPlayers: any[] = [];
+
+  isLocked: boolean = false;
+  lockReason: string = "";
+
 
   // Filtros
   priceRanges = [
@@ -40,10 +53,9 @@ export class MyTeam implements OnInit {
   selectedTeam: number | null = null;
   exactPrice: number | null = null;
 
-
-  // PAGINADO
+  // Paginado
   currentPage = 1;
-  pageSize = 12; // jugadores por página
+  pageSize = 12;
 
   get paginatedPlayers() {
     const start = (this.currentPage - 1) * this.pageSize;
@@ -60,33 +72,59 @@ export class MyTeam implements OnInit {
   loadingAdd = false;
   loadingRemove: number | null = null;
   loadingRename = false;
+  loadingTrades = false;
 
+  attemptedApply = false;
   nbaTeams: any[] = [];
-  liveGames: any[] = [];
+  lockWindowMessage: string = "";
+
+
+  // historial agrupado
+  groupedHistory: any[] = [];
 
   error = "";
   success = "";
+  renameMessage = "";
+  tradeError = "";
+
+  lockMessage: string = "";
+  nextUnlockTime: Date | null = null;
+  lockStart: Date | null = null;
+  lockEnd: Date | null = null;
+
+  viewMode: 'change' | 'history' = 'change';
+  shakeTrade = false;
 
   constructor(
     public injector: Injector,
     private fantasy: FantasyService,
     private api: ApiService,
-    private nba: NbaApiService
+    private nba: NbaApiService,
+    private marketLock: MarketLockService
   ) { }
 
   async ngOnInit() {
     await this.loadFantasyTeam();
-    await this.loadLiveGames();
     await this.loadNbaTeams();
+    await this.loadTradeLimits();
     await this.loadAllPlayers();
+    await this.loadMarketLock();
+    await this.loadGroupedHistory();
   }
 
   async loadFantasyTeam() {
     this.loadingTeam = true;
 
     const res = await this.fantasy.getMyTeam();
+
     this.team = res.team;
-    this.players = res.players;
+
+    // Convertir price a entero y total_pts a número
+    this.players = res.players.map((p: any) => ({
+      ...p,
+      price: Math.round(Number(p.price)),
+      total_pts: Number(p.total_pts)
+    }));
 
     this.newName = this.team ? this.team.name : "";
     this.editingName = !this.team;
@@ -94,9 +132,36 @@ export class MyTeam implements OnInit {
     this.loadingTeam = false;
   }
 
-  async loadLiveGames() {
-    this.liveGames = await this.nba.getLiveGames();
+
+  async loadTradeLimits() {
+    try {
+      const res = await this.fantasy.getTradesToday();
+      if (!res) {
+        this.tradesHoy = 0;
+        this.tradesRestantes = this.limiteDiario;
+        return;
+      }
+
+      this.tradesHoy = res.tradesHoy ?? 0;
+      this.tradesRestantes = res.tradesRestantes ?? this.limiteDiario;
+
+    } catch {
+      this.tradesHoy = 0;
+      this.tradesRestantes = this.limiteDiario;
+    }
   }
+
+  async loadGroupedHistory() {
+    if (!this.team) return;
+
+    try {
+      const res = await this.fantasy.getGroupedTransactionsByTeam(this.team.id);
+      this.groupedHistory = Array.isArray(res) ? res : [];
+    } catch {
+      this.groupedHistory = [];
+    }
+  }
+
 
   async loadNbaTeams() {
     this.nbaTeams = await this.api.get('/teams');
@@ -107,6 +172,22 @@ export class MyTeam implements OnInit {
     this.filteredPlayers = this.allPlayers;
   }
 
+  async loadMarketLock() {
+    try {
+      const res: any = await this.marketLock.getMarketLock();
+      this.isLocked = res.isLocked;
+      this.lockStart = new Date(res.lockStart);
+      this.lockEnd = new Date(res.lockEnd);
+    } catch (err) {
+      console.error("Error cargando market lock", err);
+    }
+  }
+
+  get necesitaIniciales(): boolean {
+    return this.players.length < 5;
+  }
+
+
   async saveName() {
     const name = this.newName.trim();
 
@@ -115,20 +196,23 @@ export class MyTeam implements OnInit {
       return;
     }
 
+    this.loadingCreate = true;
     this.error = "";
     this.success = "";
+    this.renameMessage = "";
 
     try {
       if (!this.team) {
-        this.loadingCreate = true;
+        
         await this.fantasy.createTeam(name);
-        this.success = "Equipo creado";
+        this.loadingCreate = false;
         await this.loadFantasyTeam();
+
       } else {
         this.loadingRename = true;
         const res: any = await this.fantasy.updateName(name);
         this.team = res.team;
-        this.success = "Nombre actualizado";
+        this.renameMessage = "Nombre actualizado";
       }
 
       this.editingName = false;
@@ -138,6 +222,93 @@ export class MyTeam implements OnInit {
     } finally {
       this.loadingCreate = false;
       this.loadingRename = false;
+    }
+  }
+
+
+
+  markForRemoval(player: any) {
+    this.removalCandidate = player;
+  }
+
+  markForAddition(player: any) {
+    this.additionCandidate = player;
+  }
+
+  async applyTrades() {
+    this.tradeError = "";
+    this.attemptedApply = true;
+    this.error = "";
+    this.success = "";
+
+    // CASO A: NECESITA COMPLETAR LOS 5
+    if (this.necesitaIniciales) {
+
+      if (!this.additionCandidate) {
+        this.shakeTrade = true;
+        setTimeout(() => this.shakeTrade = false, 600);
+        return;
+      }
+
+      this.loadingTrades = true;
+
+      try {
+        await this.fantasy.addPlayer(this.additionCandidate.id);
+
+        this.success = "Jugador agregado correctamente";
+
+        await this.loadFantasyTeam();
+        await this.loadGroupedHistory();
+
+        this.additionCandidate = null;
+        this.showAddForm = false;
+
+      } catch (err: any) {
+        this.error = err.error?.error || "Error al agregar jugador";
+      } finally {
+        this.loadingTrades = false;
+      }
+
+      return;
+    }
+
+    // CASO 2: TRADE INCOMPLETO
+    if (!this.removalCandidate || !this.additionCandidate) {
+      this.shakeTrade = true;
+      setTimeout(() => (this.shakeTrade = false), 600);
+      return;
+    }
+
+    // CASO 3: SIN PRESUPUESTO
+    if (this.isBudgetInvalid) {
+      this.shakeTrade = true;
+      this.tradeError = "No tenés presupuesto suficiente.";
+      setTimeout(() => (this.shakeTrade = false), 600);
+      return;
+    }
+
+    // CASO 4: TRADE COMPLETO
+    this.loadingTrades = true;
+
+    try {
+      await this.fantasy.applyTrades(
+        [this.additionCandidate.id],
+        [this.removalCandidate.player_id]
+      );
+
+      this.success = "Cambio aplicado correctamente";
+
+      await this.loadFantasyTeam();
+      await this.loadTradeLimits();
+      await this.loadGroupedHistory();
+
+      this.removalCandidate = null;
+      this.additionCandidate = null;
+
+    } catch (err: any) {
+      this.error = err.error?.error || "Error al aplicar cambio";
+    } finally {
+      this.loadingTrades = false;
     }
   }
 
@@ -171,7 +342,6 @@ export class MyTeam implements OnInit {
 
     } catch (err: any) {
       this.error = err.error?.error || "No se pudo eliminar";
-
     } finally {
       this.loadingRemove = null;
     }
@@ -180,12 +350,10 @@ export class MyTeam implements OnInit {
   filterPlayers() {
     let list = [...this.allPlayers];
 
-    // FILTRO POR EQUIPO
     if (this.selectedTeam) {
       list = list.filter(p => p.team_id === Number(this.selectedTeam));
     }
 
-    // FILTRO POR RANGO
     if (this.selectedRange) {
       list = list.filter(
         p => Number(p.price) >= this.selectedRange.min &&
@@ -193,19 +361,16 @@ export class MyTeam implements OnInit {
       );
     }
 
-    // 🔥 FILTRO EXACTO POR PRECIO — FIX REAL
-    if (this.exactPrice !== null && this.exactPrice !== undefined) {
-      const priceNum = Number(this.exactPrice);
-
-      if (!isNaN(priceNum)) {
-        list = list.filter(p => Number(p.price) === priceNum);
+    if (this.exactPrice !== null) {
+      const num = Number(this.exactPrice);
+      if (!isNaN(num)) {
+        list = list.filter(p => Number(p.price) === num);
       }
     }
 
     this.filteredPlayers = list;
     this.currentPage = 1;
   }
-
 
   resetFilters() {
     this.selectedRange = null;
@@ -218,8 +383,61 @@ export class MyTeam implements OnInit {
   toggleAddForm() {
     this.showAddForm = !this.showAddForm;
 
+    this.attemptedApply = false;
+
     if (!this.showAddForm) {
       this.resetFilters();
+      this.additionCandidate = null;
+      this.removalCandidate = null;
     }
   }
+
+  prevPage() {
+    if (this.currentPage > 1) this.currentPage--;
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) this.currentPage++;
+  }
+
+  get budgetPreview(): number | null {
+    if (!this.team) return null;
+
+    const current = Number(this.team.budget);
+
+    // Si agrega solo (no hay jugador que sale)
+    if (this.additionCandidate && !this.removalCandidate) {
+      return current - Number(this.additionCandidate.price);
+    }
+
+    // Si es un trade (sale + entra)
+    if (this.additionCandidate && this.removalCandidate) {
+      return current
+        + Number(this.removalCandidate.price)
+        - Number(this.additionCandidate.price);
+    }
+
+    return null;
+  }
+
+  get isBudgetInvalid(): boolean {
+    return this.budgetPreview !== null && this.budgetPreview < 0;
+  }
+
+  switchToChange() {
+    this.viewMode = 'change';
+    this.error = "";
+    this.success = "";
+  }
+
+  switchToHistory() {
+    this.viewMode = 'history';
+    this.error = "";
+    this.success = "";
+  }
+
+
+
+
+
 }

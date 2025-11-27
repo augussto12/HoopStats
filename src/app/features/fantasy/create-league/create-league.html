@@ -1,0 +1,47 @@
+<div class="league-container">
+
+    <h2 class="title">Crear nueva liga</h2>
+
+    <!-- FORMULARIO -->
+    <form (ngSubmit)="submitLeague()" class="league-form">
+
+        <!-- NOMBRE -->
+        <div class="form-group">
+            <label>Nombre de la liga</label>
+            <input type="text" [(ngModel)]="leagueName" name="leagueName" required placeholder="Ej: Los Pibes NBA">
+        </div>
+
+        <!-- MAX USERS -->
+        <div class="form-group">
+            <label>Cantidad máxima de usuarios (opcional)</label>
+            <input type="number" [(ngModel)]="maxUsers" name="maxUsers" min="2" max="50" placeholder="Ej: 10">
+        </div>
+
+        <!-- PRIVACIDAD -->
+        <!-- PRIVACIDAD -->
+        <div class="form-group privacy-toggle">
+            <label>Privacidad de la liga</label>
+
+            <label class="switch">
+                <input type="checkbox" [(ngModel)]="isPrivate" name="privacyToggle">
+                <span class="slider"></span>
+            </label>
+
+            <div class="privacy-badge" [class.private]="isPrivate" [class.public]="!isPrivate">
+                <span *ngIf="!isPrivate">🔓 Pública — cualquiera puede unirse</span>
+                <span *ngIf="isPrivate">🔒 Privada — solo por invitación</span>
+            </div>
+        </div>
+
+        <!-- BOTÓN CREAR -->
+        <button class="create-btn" type="submit" [disabled]="loading">
+            <ng-container *ngIf="loading; else okBtn">Creando...</ng-container>
+            <ng-template #okBtn>Crear Liga</ng-template>
+        </button>
+
+        <!-- MENSAJES -->
+        <p class="success" *ngIf="successMsg">{{ successMsg }}</p>
+        <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
+
+    </form>
+</div>

@@ -1,13 +1,110 @@
-<div class="container">
-    <h1 class="title">Fantasy Team</h1>
+<div class="container header-home">
 
-    <div class="menu-card" routerLink="/my-team">
-        <h2>Mi equipo</h2>
-        <p>Accede a los jugadores de tu equipo.</p>
+    <!-- CAMPANITA -->
+    <div class="invite-bell" [class.shake-once]="bellShakeOnce" (click)="togglePanel()">
+        🔔
+        <span class="badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
     </div>
 
-    <div class="menu-card" routerLink="/standings-fantasy">
-        <h2>Tabla de Clasificación</h2>
-        <p>Consulta tu posición y los puntos acumulados.</p>
+    <h1 class="title">Fantasy Team</h1>
+
+    <div class="menu-grid">
+        <div class="menu-card" routerLink="/my-team">
+            <h2>Mi equipo</h2>
+            <p>Accede a los jugadores de tu equipo.</p>
+        </div>
+
+        <div class="menu-card" routerLink="/standings-fantasy">
+            <h2>Tabla de Clasificación</h2>
+            <p>Consulta tu posición y los puntos acumulados.</p>
+        </div>
+
+        <div class="menu-card" routerLink="/my-leagues">
+            <h2>Mis Ligas</h2>
+            <p>Ver todas las ligas donde participas.</p>
+        </div>
+
+        <div class="menu-card" routerLink="/create-league">
+            <h2>Crear Liga</h2>
+            <p>Arma una liga privada e invita usuarios.</p>
+        </div>
+
+        <div *ngIf="isAdmin" routerLink="/admin-league" class="menu-card">
+            <h2>Administrar Liga</h2>
+            <p>Gestiona usuarios, privacidad y opciones de tu liga.</p>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- =================================
+        PANEL DE NOTIFICACIONES
+================================= -->
+<div class="invite-panel-backdrop" *ngIf="showPanel" (click)="togglePanel()"></div>
+
+<div class="invite-panel" [class.open]="showPanel">
+
+    <div class="panel-header">
+        <h2>Notificaciones</h2>
+        <button class="close-btn" (click)="togglePanel()">✕</button>
+    </div>
+
+    <!-- VACÍO -->
+    <div class="empty-msg" *ngIf="notifications.length === 0">
+        No tenés notificaciones.
+    </div>
+
+    <!-- ITEMS -->
+    <div class="invite-item" *ngFor="let n of notifications; let i = index"
+        [ngStyle]="{ 'transition-delay': (i * 80) + 'ms' }" [class.slide-in]="showPanel">
+
+        <h3>{{ n.title }}</h3>
+        <p>{{ n.message }}</p>
+
+        <small class="date">{{ n.created_at | date:'short' }}</small>
+
+        <div class="status-pill" [class.unread]="!n.is_read" [class.read]="n.is_read">
+            {{ n.is_read ? "Leída" : "Nueva" }}
+        </div>
+
+        <div class="buttons">
+
+            <!-- 🔵 INVITACIONES -->
+            <ng-container *ngIf="n.type === 'invite_received'">
+                <button class="accept-btn" (click)="acceptInvite(n.data.inviteId)">
+                    Aceptar
+                </button>
+
+                <button class="reject-btn" (click)="rejectInvite(n.data.inviteId)">
+                    Rechazar
+                </button>
+            </ng-container>
+
+
+            <ng-container *ngIf="n.type === 'join_request'">
+                <button class="accept-btn" (click)="approveRequest(n.data.requestId)">
+                    Aceptar
+                </button>
+
+                <button class="reject-btn" (click)="rejectRequest(n.data.requestId)">
+                    Rechazar
+                </button>
+            </ng-container>
+
+            <!-- 🟠 NOTIFICACIONES NORMALES -->
+            <ng-container *ngIf="n.type === 'basic'">
+                <button class="accept-btn" *ngIf="!n.is_read" (click)="markAsRead(n.id)">
+                    Marcar como leída
+                </button>
+
+                <button class="reject-btn" [disabled]="loadingDelete[n.id]" (click)="deleteNotification(n.id)">
+                    <ng-container *ngIf="!loadingDelete[n.id]">Borrar</ng-container>
+                    <ng-container *ngIf="loadingDelete[n.id]">
+                        <span class="mini-spinner red"></span> Borrando...
+                    </ng-container>
+                </button>
+            </ng-container>
+        </div>
     </div>
 </div>

@@ -1,0 +1,200 @@
+.league-dashboard {
+    background: #0F1A2F;
+    padding: 22px;
+    border-radius: 20px;
+    color: white;
+    animation: fadeIn .3s ease;
+}
+
+/* HEADER */
+.league-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.league-title {
+    font-size: 1.9rem;
+    color: #ffd86b;
+    text-shadow: 0 0 10px rgba(255, 200, 90, .4);
+}
+
+.league-meta {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 6px;
+    font-size: 0.9rem;
+    opacity: 0.85;
+}
+
+.private {
+    color: #ff8b8b;
+}
+
+.teams-count,
+.created-at {
+    color: #9ec6ff;
+}
+
+/* GRID */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1fr;
+    gap: 20px;
+}
+
+/* PANELS */
+.panel {
+    background: rgba(20, 35, 60, 0.6);
+    padding: 18px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.35);
+    animation: scaleIn .35s ease;
+}
+
+.panel h3 {
+    margin-bottom: 12px;
+    color: #ffd86b;
+    text-align: center;
+}
+
+
+/* MI EQUIPO */
+.panel-me .me-name {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 14px;
+    color: #a8d0ff;
+}
+
+.me-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 12px;
+}
+
+.me-stats div {
+    text-align: center;
+}
+
+.me-stats label {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.me-stats strong {
+    font-size: 1.1rem;
+    color: #7CE387;
+}
+
+
+/* RANKING */
+.panel-ranking .ranking-list {
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.rank-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.05);
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    transition: .2s;
+}
+
+.rank-item.me {
+    background: #ffd86b;
+    color: #000;
+    font-weight: 700;
+}
+
+.rank-item:hover {
+    transform: translateY(-3px);
+    background: rgba(255,255,255,0.1);
+}
+
+.pos {
+    width: 28px;
+    font-weight: 700;
+}
+
+.team-info {
+    flex: 1;
+}
+
+.owner {
+    font-size: 0.75rem;
+    opacity: 0.75;
+}
+
+.pts {
+    font-weight: bold;
+}
+
+
+/* TRADES */
+.trade-row {
+    background: rgba(255,255,255,0.07);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.trade-action.add {
+    color: #7CE387;
+}
+
+.trade-action.remove {
+    color: #ff7a7a;
+}
+
+.trade-info {
+    flex: 1;
+}
+
+.no-trades {
+    opacity: .6;
+    text-align: center;
+}
+
+
+/* PAGINADOR */
+.pagination-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-row button {
+    background: #e2bb72;
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    transition: .25s ease;
+}
+
+.pagination-row button:hover:not(:disabled) {
+    transform: translateY(-3px);
+    background: #f4cb84;
+}
+
+.animate {
+    animation: fadeIn .3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+    from { transform: scale(.97); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

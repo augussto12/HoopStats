@@ -2,128 +2,282 @@
 
     <div *ngIf="team; else createTeam" class="fantasy-team">
 
-        <!-- HEADER DEL EQUIPO -->
+        <div *ngIf="isLocked" class="lock-banner">
+            Mercado bloqueado hasta:
+            {{ lockEnd | date:'dd/MM HH:mm' }}
+        </div>
+
+        <div *ngIf="!isLocked" class="lock-banner">
+            Mercado abierto — Cierra:
+            {{ lockStart | date:'dd/MM HH:mm' }}
+        </div>
+
+        <!-- HEADER -->
         <div class="team-header">
-            <div class="team-row">
-                <h2>{{ team.name }}</h2>
-                <button (click)="editingName = true">Editar nombre</button>
+
+            <div class="team-header-main">
+
+                <div class="team-title-wrapper">
+                    <h2 class="team-title">{{ team.name }}</h2>
+                </div>
+
+                <div *ngIf="renameMessage" class="rename-success">
+                    {{ renameMessage }}
+                </div>
+
+                <div class="header-actions">
+                    <button class="header-chip-btn" (click)="editingName = !editingName">
+                        Editar nombre
+                    </button>
+
+                    <div class="header-chip-trades">
+                        Trades hoy:
+                        <span>{{ tradesHoy }}</span> / {{ limiteDiario }}
+                    </div>
+                </div>
             </div>
 
+            <!-- EDITAR NOMBRE -->
             <div *ngIf="editingName" class="edit-name">
                 <input type="text" [(ngModel)]="newName" placeholder="Nuevo nombre" />
-                <button (click)="saveName()">Guardar</button>
+                <button class="save-name-btn" (click)="saveName()" [disabled]="loadingRename">
+                    <ng-container *ngIf="loadingRename; else saveNormal">
+                        Guardando...
+                    </ng-container>
+                    <ng-template #saveNormal>Guardar</ng-template>
+                </button>
             </div>
 
+            <!-- PRESUPUESTO / PUNTOS -->
             <div class="team-stats">
-                <span>Presupuesto: <strong>{{ team.budget }}</strong></span>
-                <span>Puntos totales: <strong>{{ team.total_points }}</strong></span>
+                <span>Presupuesto:
+                    <strong [class.bad]="isBudgetInvalid">
+                        {{ budgetPreview !== null ? budgetPreview : team.budget }}
+                    </strong>
+                </span>
+
+                <span>Puntos totales:
+                    <strong>{{ team.total_points }}</strong>
+                </span>
             </div>
         </div>
 
-        <!-- MENSAJES -->
-        <p class="success" *ngIf="success">{{ success }}</p>
-        <p class="error" *ngIf="error">{{ error }}</p>
 
-        <!-- CANCHA -->
-        <div class="court">
-            <h3 class="court-title">Mi alineación</h3>
+        <!-- VIEW SELECTOR -->
+        <div class="view-toggle">
+            <button [class.active]="viewMode === 'change'" (click)="switchToChange()">Mi alineación</button>
+            <button [class.active]="viewMode === 'history'" (click)="switchToHistory()">Historial</button>
+        </div>
 
-            <div class="court-grid">
-                <div class="slot" *ngFor="let p of players">
-                    <div class="player-data">
+        <!-- ========================= -->
+        <!--        CAMBIAR EQUIPO     -->
+        <!-- ========================= -->
+        <div *ngIf="viewMode === 'change'">
 
-                        <strong class="player-name">{{ p.full_name }}</strong>
-                        <p class="player-price">💰 {{ p.price }} créditos</p>
-                        <p class="player-pts">🏀 {{ p.total_pts }} pts</p>
+            <div class="court">
+                <h3 class="court-title">Mi alineación</h3>
 
-                        <button class="remove-btn" (click)="removePlayer(p.player_id)"
-                            [disabled]="liveGames.length > 0">
-                            Cambiar
-                        </button>
+                <div class="court-grid">
+                    <div class="slot" *ngFor="let p of players">
 
+                        <div class="player-data" [class.selected]="removalCandidate?.player_id === p.player_id">
+
+                            <strong class="player-name">{{ p.full_name }}</strong>
+                            <p class="player-price">${{ p.price }}</p>
+                            <p class="player-pts">🏀 {{ p.total_pts }} pts</p>
+
+                            <!-- ELIMINAR SOLO SI AÚN NO COMPLETÓ LOS 5 -->
+                            <button *ngIf="necesitaIniciales" class="delete-btn" (click)="removePlayer(p.player_id)"
+                                [disabled]="loadingRemove === p.player_id">
+
+                                <ng-container *ngIf="loadingRemove === p.player_id; else removeText">
+                                    Eliminando...
+                                </ng-container>
+
+                                <ng-template #removeText>Eliminar</ng-template>
+                            </button>
+
+                            <!-- CAMBIAR SOLO SI YA TIENE LOS 5 -->
+                            <div *ngIf="!necesitaIniciales">
+                                <button class="remove-btn" (click)="markForRemoval(p)"
+                                    [disabled]="loadingTrades || isLocked">
+                                    Cambiar
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <p class="error" *ngIf="isLocked">
+                {{ lockReason }}
+            </p>
+
+            <!-- MENSAJES DEL EQUIPO -->
+            <div *ngIf="success" class="global-success">{{ success }}</div>
+            <div *ngIf="error" class="global-error">{{ error }}</div>
+
+            <!-- BOTÓN MOSTRAR LISTA PARA AGREGAR -->
+            <button class="toggle-add" (click)="toggleAddForm()" [disabled]="isLocked || loadingAdd">
+
+                <ng-container *ngIf="loadingAdd; else toggleText">
+                    Cargando...
+                </ng-container>
+
+                <ng-template #toggleText>
+                    {{ showAddForm ? 'Cerrar selección' : 'Elegir jugador que entra' }}
+                </ng-template>
+
+            </button>
+
+
+            <!-- FORM LISTA JUGADORES DISPONIBLES -->
+            <div *ngIf="showAddForm" class="add-form">
+
+                <h3 class="changes-title">Seleccioná al jugador que entra</h3>
+
+                <!-- FILTROS -->
+                <div class="options-row">
+                    <div class="option">
+                        <label>Equipo</label>
+                        <select [(ngModel)]="selectedTeam" (change)="filterPlayers()" class="select">
+                            <option [ngValue]="null">Todos</option>
+                            <option *ngFor="let t of nbaTeams" [ngValue]="t.id">{{ t.name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="option">
+                        <label>Precio (rango)</label>
+                        <select [(ngModel)]="selectedRange" (change)="filterPlayers()" class="select">
+                            <option [ngValue]="null">Todos</option>
+                            <option *ngFor="let r of priceRanges" [ngValue]="r">{{ r.label }}</option>
+                        </select>
+                    </div>
+
+                    <div class="option">
+                        <label>Precio exacto</label>
+                        <input type="number" class="select" [(ngModel)]="exactPrice" (input)="filterPlayers()" />
+                    </div>
+                </div>
+
+                <!-- LISTA -->
+                <div class="players-grid" *ngIf="paginatedPlayers.length">
+                    <div class="player-card selectable" *ngFor="let p of paginatedPlayers"
+                        [class.selected]="additionCandidate?.id === p.id" (click)="markForAddition(p)">
+                        <h4>{{ p.full_name }}</h4>
+                        <p>${{ p.price }}</p>
+                    </div>
+                </div>
+
+                <!-- PAGINACIÓN -->
+                <div class="pagination" *ngIf="totalPages > 1">
+                    <button (click)="prevPage()" [disabled]="currentPage === 1">◀</button>
+                    <span>{{ currentPage }} / {{ totalPages }}</span>
+                    <button (click)="nextPage()" [disabled]="currentPage === totalPages">▶</button>
+                </div>
+
+            </div>
+
+            <!-- RESUMEN DEL CAMBIO -->
+            <div *ngIf="additionCandidate || (!necesitaIniciales && removalCandidate)" class="trade-summary"
+                [class.shake]="shakeTrade">
+
+                <h3 class="summary-title">Cambio seleccionado</h3>
+
+                <div class="summary-box">
+
+                    <div class="summary-column">
+                        <p class="summary-label">Sale:</p>
+                        <p *ngIf="removalCandidate; else noSale">{{ removalCandidate.full_name }}</p>
+                        <ng-template #noSale>
+                            <p class="summary-empty">– ninguno –</p>
+                        </ng-template>
+                    </div>
+
+                    <div class="summary-column">
+                        <p class="summary-label">Entra:</p>
+                        <p *ngIf="additionCandidate; else noAdd">{{ additionCandidate.full_name }}</p>
+                        <ng-template #noAdd>
+                            <p class="summary-empty">– ninguno –</p>
+                        </ng-template>
+                    </div>
+
+                </div>
+
+                <!-- PRESUPUESTO DESPUÉS -->
+                <div class="summary-budget" *ngIf="budgetPreview !== null">
+                    <p>
+                        Presupuesto final:
+                        <strong [class.bad]="isBudgetInvalid">{{ budgetPreview }}</strong>
+                    </p>
+
+                    <p class="global-error" *ngIf="tradeError">
+                        {{ tradeError }}
+                    </p>
+                </div>
+
+                <!-- ERROR SI FALTAN SELECCIONES (solo para trades, no para iniciales) -->
+                <p class="global-error"
+                    *ngIf="attemptedApply && !necesitaIniciales && (!removalCandidate || !additionCandidate)">
+                    Seleccioná un jugador.
+                </p>
+
+                <!-- BOTÓN FINAL ÚNICO -->
+                <button class="apply-trade-btn" (click)="applyTrades()" [disabled]="loadingTrades || isLocked">
+                    <ng-container *ngIf="loadingTrades; else btnNormal">Procesando...</ng-container>
+                    <ng-template #btnNormal>Aplicar cambios</ng-template>
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================= -->
+        <!--       HISTORIAL          -->
+        <!-- ========================= -->
+        <div *ngIf="viewMode === 'history'" class="history-box">
+            <h3 class="history-title">Historial de movimientos</h3>
+
+            <div *ngIf="groupedHistory.length === 0" class="empty-history">
+                Sin movimientos.
+            </div>
+
+            <div *ngFor="let h of groupedHistory" class="history-item">
+                <div class="history-header">{{ h.timestamp | date:'short' }}</div>
+                <div class="history-body">
+                    <div class="history-col">
+                        <h4>Entraron</h4>
+                        <p *ngFor="let p of h.entran">{{ p }}</p>
+                    </div>
+                    <div class="history-col">
+                        <h4>Salieron</h4>
+                        <p *ngFor="let p of h.salen">{{ p }}</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <p class="error" *ngIf="liveGames.length > 0">
-            No se puede modificar el equipo mientras hay partidos en vivo
-        </p>
-
-        <button class="toggle-add" (click)="toggleAddForm()" [disabled]="liveGames.length > 0">
-            {{ showAddForm ? 'Cerrar' : 'Agregar jugador' }}
-        </button>
-
-
-        <!-- FORMULARIO PARA AGREGAR JUGADORES -->
-        <div *ngIf="showAddForm" class="add-form">
-
-            <!-- FILTROS -->
-            <div class="options-row">
-
-                <div class="option">
-                    <label>Equipo</label>
-                    <select [(ngModel)]="selectedTeam" (change)="filterPlayers()" class="select">
-                        <option [ngValue]="null">Todos</option>
-                        <option *ngFor="let t of nbaTeams" [value]="t.id">
-                            {{ t.name }}
-                        </option>
-                    </select>
-                </div>
-
-                <div class="option">
-                    <label>Precio (rangos)</label>
-                    <select [(ngModel)]="selectedRange" (change)="filterPlayers()" class="select">
-                        <option [ngValue]="null">Todos</option>
-                        <option *ngFor="let r of priceRanges" [ngValue]="r">
-                            {{ r.label }}
-                        </option>
-                    </select>
-                </div>
-
-                <div class="option">
-                    <label>Precio exacto</label>
-                    <input type="number" class="select" min="0" [(ngModel)]="exactPrice" (input)="filterPlayers()" />
-                </div>
-
-            </div>
-
-            <div class="players-grid" *ngIf="paginatedPlayers.length > 0">
-                <div class="player-card selectable" *ngFor="let p of paginatedPlayers">
-                    <h4>{{ p.full_name }}</h4>
-                    <p>Precio: {{ p.price }}</p>
-                    <button (click)="addPlayer(p.id)">Agregar</button>
-                </div>
-            </div>
-
-            <div class="pagination" *ngIf="totalPages > 1">
-
-                <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">
-                    ◀ Anterior
-                </button>
-
-                <span>Página {{ currentPage }} / {{ totalPages }}</span>
-
-                <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages">
-                    Siguiente ▶
-                </button>
-
-            </div>
-
-        </div>
     </div>
 
     <!-- CREAR EQUIPO -->
     <ng-template #createTeam>
         <div class="fantasy-team create">
-            <h2>Crear tu equipo</h2>
+
+
+            <h2>Bienvenido al Fantasy</h2>
 
             <input type="text" [(ngModel)]="newName" placeholder="Nombre del equipo" />
 
-            <button (click)="saveName()">Crear equipo</button>
+            <button (click)="saveName()">
+                <ng-container *ngIf="loadingCreate; else normalBtn">
+                    <span class="spinner"></span> Creando equipo...
+                </ng-container>
+                <ng-template #normalBtn>Crear</ng-template>
+            </button>
 
             <p class="error" *ngIf="error">{{ error }}</p>
         </div>
     </ng-template>
+
 
 </div>
