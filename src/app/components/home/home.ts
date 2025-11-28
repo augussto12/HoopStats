@@ -12,8 +12,9 @@ import { BestPlayersService } from '../../services/best-players.service';
 
 import { NEWS } from '../../data/news';
 import { mapGame } from '../../utils/mapGame';
-import { Game, TopStat } from '../../models/interfaces';
+import { Game, NotificationItem, TopStat } from '../../models/interfaces';
 import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-home',
@@ -29,6 +30,9 @@ export class Home implements OnInit {
   bestPlayers: TopStat[] = [];
   news = NEWS;
 
+  notifications: NotificationItem[] = [];
+  unreadCount = 0;
+
   loadingLive = false;
   loadingPlayers = false;
 
@@ -38,12 +42,23 @@ export class Home implements OnInit {
   constructor(
     private nbaService: NbaApiService,
     private bestPlayersService: BestPlayersService,
-    public auth: AuthService
+    public auth: AuthService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
     this.loadLiveGames();
     this.loadBestPlayers();
+    this.loadNotifications();
+  }
+
+  async loadNotifications() {
+    try {
+      this.notifications = await this.notificationService.getNotifications();
+      this.unreadCount = this.notifications.filter(n => !n.is_read).length;
+    } catch (err) {
+      console.error("Error loading notifications", err);
+    }
   }
 
   openNews(url: string) {

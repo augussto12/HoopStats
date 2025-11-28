@@ -262,3 +262,22 @@ export interface NotificationItem {
     created_at: string;
     data?: any;
 }
+
+export interface League {
+    id: number;
+    name: string;
+    description: string | null;
+
+    privacy: 'public' | 'private';
+
+    creator_username: string;
+
+    current_users: number;
+    max_teams: number | null;
+
+    status_code: string;
+    status_description: string;
+
+    created_at: string;
+}
+

@@ -1,0 +1,256 @@
+/* =========================
+   CONTENEDOR PRINCIPAL
+========================= */
+.league-table-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 22px;
+    color: #fff;
+}
+
+.title {
+    text-align: center;
+    color: #fff;
+    font-size: 1.9rem;
+    font-weight: 800;
+    margin-bottom: 22px;
+    text-shadow: 0 0 8px rgba(233, 196, 106, 0.35);
+}
+
+/* =========================
+   WRAPPER + SCROLL
+========================= */
+.league-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 15px;
+    border: 1px solid rgba(233, 196, 106, 0.7);
+}
+
+/* Scrollbar */
+.league-table-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.league-table-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(233, 196, 106, 0.7);
+    border-radius: 999px;
+}
+
+/* =========================
+   TABLA
+========================= */
+.league-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 680px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.league-table thead tr {
+    background: linear-gradient(90deg, rgba(233, 196, 106, 0.28), rgba(233, 196, 106, 0.10));
+}
+
+.league-table th {
+    padding: 14px;
+    font-size: 0.95rem;
+    color: #E9C46A;
+    border-bottom: 2px solid rgba(201, 94, 7, 0.18);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.league-table td {
+    padding: 14px;
+    font-size: 0.92rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Hover pro */
+.league-table tbody tr {
+    transition: .25s ease;
+}
+
+.league-table tbody tr:hover {
+    background: rgba(233, 196, 106, 0.08);
+    box-shadow: inset 0 0 12px rgba(233, 196, 106, 0.28);
+}
+
+/* =========================
+   BADGES
+========================= */
+.users-badge {
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    min-width: 75px;
+    text-align: center;
+    letter-spacing: .5px;
+    transition: .25s ease;
+}
+
+.users-badge.green {
+    background: rgba(124, 227, 135, 0.18);
+    color: #7CE387;
+    border: 1px solid rgba(124, 227, 135, 0.45);
+}
+
+.users-badge.red {
+    background: rgba(255, 100, 100, 0.2);
+    color: #ff7a7a;
+    border: 1px solid rgba(255, 100, 100, 0.4);
+}
+
+.badge {
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border-radius: 10px;
+    display: inline-block;
+    letter-spacing: .5px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.badge.public {
+    background: rgba(120, 200, 255, 0.18);
+    color: #8bd0ff;
+}
+
+.badge.private {
+    background: rgba(233, 196, 106, 0.18);
+    color: #E9C46A;
+}
+
+/* ============================================= */
+/*   BOTONES   */
+/* ============================================= */
+
+.league-table .join-btn,
+.league-table .request-btn {
+    background: rgba(20, 35, 60, 0.6);
+    padding: 9px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    align-items: center;
+
+    transition:
+        background 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* ===== HOVER ===== */
+.league-table .join-btn:hover:not(:disabled),
+.league-table .request-btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== ACTIVE ===== */
+.league-table .join-btn:active:not(:disabled),
+.league-table .request-btn:active:not(:disabled) {
+    transform: scale(0.96);
+    box-shadow: none;
+}
+
+/* ===== DISABLED ===== */
+.league-table .join-btn:disabled,
+.league-table .request-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* COLORES PERSONALIZADOS (manteniendo estilo Fantasy) */
+.league-table .join-btn {
+    background: linear-gradient(135deg, #2a4f8e, #1c3259);
+    border-color: rgba(42, 79, 142, 0.4);
+}
+
+.league-table .join-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #3867b7, #233f6d);
+}
+
+.league-table .request-btn {
+    background: linear-gradient(135deg, #e2bb72, #c89a4e);
+    color: #000;
+    border-color: rgba(233, 196, 106, 0.4);
+}
+
+.league-table .request-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #f4cb84, #d9ae59);
+}
+
+.action-cell {
+    text-align: center;
+}
+
+.league-table th,
+.league-table td {
+    text-align: center;
+}
+
+
+/* =========================
+   MOBILE → CARDS
+========================= */
+@media (max-width: 650px) {
+
+    .league-table-wrapper {
+        overflow: visible;
+        border: none;
+    }
+
+    .league-table {
+        border: 0;
+        min-width: 0;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody tr {
+        display: block;
+        background: #0F1A2F;
+        margin-bottom: 18px;
+        padding: 12px;
+        border-radius: 14px;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
+        border: 1px solid rgba(233, 196, 106, 0.15);
+    }
+
+    td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 6px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        font-size: 0.88rem;
+    }
+
+    td:last-child {
+        border-bottom: none;
+    }
+
+    td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: #E9C46A;
+        flex: 0 0 48%;
+    }
+
+    .action-cell button {
+        width: 100%;
+    }
+}

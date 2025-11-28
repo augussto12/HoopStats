@@ -1,11 +1,6 @@
 <header class="navbar">
 
-    <button class="back-header-btn" *ngIf="router.url !== '/'" (click)="goBack()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-    </button>
+
 
     <button class="menu-toggle left" (click)="toggleMenu()">
         <span [class.active]="menuOpen"></span>
@@ -17,21 +12,43 @@
 
 </header>
 
+<div class="header-icons" *ngIf="auth.isLoggedIn()">
+    <button class="back-header-btn" *ngIf="router.url !== '/'" (click)="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+    </button>
+
+    <div class="spacer"></div>
+
+    <div class="invite-bell" (click)="togglePanel()">
+        🔔
+        <span class="badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+    </div>
+</div>
 
 
+
+<!-- Fondo oscuro cuando abre el menú -->
 <div class="overlay" *ngIf="menuOpen" (click)="toggleMenu()"></div>
 
+<!-- Menú lateral -->
 <div class="side-menu" [class.open]="menuOpen">
 
     <div class="side-menu-header">
 
+        <!-- Logged -->
         <ng-container *ngIf="auth.isLoggedIn(); else notLoggedHeader">
             <div class="auth-buttons">
                 <a routerLink="/profile" class="menu-btn" (click)="menuOpen = false">Perfil</a>
-                <button class="menu-btn logout" (click)="logout(); menuOpen = false">Cerrar sesión</button>
+                <button class="menu-btn logout" (click)="logout(); menuOpen = false">
+                    Cerrar sesión
+                </button>
             </div>
         </ng-container>
 
+        <!-- Not logged -->
         <ng-template #notLoggedHeader>
             <div class="auth-buttons">
                 <a routerLink="/login" class="menu-btn" (click)="menuOpen = false">Login</a>
@@ -42,6 +59,7 @@
         <button class="close-btn" (click)="menuOpen = false">✕</button>
     </div>
 
+    <!-- Links del menú -->
     <div class="side-menu-items">
 
         <a routerLink="/standings" class="menu-item" (click)="menuOpen = false">
@@ -51,17 +69,17 @@
 
         <a routerLink="/teams" class="menu-item" (click)="menuOpen = false">
             <h4>Equipos</h4>
-            <p>Planteles, récords y datos generales.</p>
+            <p>Planteles y datos.</p>
         </a>
 
         <a routerLink="/players" class="menu-item" (click)="menuOpen = false">
             <h4>Jugadores</h4>
-            <p>Estadísticas, rendimiento y perfiles.</p>
+            <p>Stats y perfiles.</p>
         </a>
 
         <a routerLink="/games" class="menu-item" (click)="menuOpen = false">
             <h4>Partidos</h4>
-            <p>Resultados, próximos juegos y detalles.</p>
+            <p>Resultados y detalles.</p>
         </a>
 
         <a routerLink="/headtohead" class="menu-item" (click)="menuOpen = false">
@@ -69,50 +87,134 @@
             <p>Historial de enfrentamientos.</p>
         </a>
 
+        <!-- Fantasy -->
         <a class="menu-item" [class.disabled]="!auth.isLoggedIn() || !auth.isEmailVerified()"
             [routerLink]="auth.isLoggedIn() && auth.isEmailVerified() ? ['/fantasy-home'] : null"
             (click)="menuOpen = false">
 
             <h4>Fantasy Team</h4>
-            <p>Gestioná tu equipo de 5 jugadores.</p>
+            <p>Gestioná tu equipo.</p>
 
-            <div class="note" *ngIf="!auth.isLoggedIn()">
-                Requiere login
-            </div>
-
-            <div class="note" *ngIf="auth.isLoggedIn() && !auth.isEmailVerified()">
-                Validá tu email
-            </div>
+            <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
+            <div class="note" *ngIf="auth.isLoggedIn() && !auth.isEmailVerified()">Validá tu email</div>
         </a>
 
+        <!-- Predicciones -->
         <a class="menu-item" [class.disabled]="!auth.isLoggedIn() || !auth.isEmailVerified()"
             [routerLink]="auth.isLoggedIn() && auth.isEmailVerified() ? ['/predictions'] : null"
             (click)="menuOpen = false">
-
             <h4>Predicciones</h4>
-            <p>Sumá puntos acertando resultados.</p>
+            <p>Acertá resultados.</p>
 
             <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
-
-            <div class="note" *ngIf="auth.isLoggedIn() && !auth.isEmailVerified()">
-                Validá tu email
-            </div>
+            <div class="note" *ngIf="auth.isLoggedIn() && !auth.isEmailVerified()">Validá tu email</div>
         </a>
 
+        <!-- Favoritos -->
         <a class="menu-item" [class.disabled]="!auth.isLoggedIn() || !auth.isEmailVerified()"
             [routerLink]="auth.isLoggedIn() && auth.isEmailVerified() ? ['/favorites'] : null"
             (click)="menuOpen = false">
 
             <h4>Favoritos</h4>
-            <p>Acceso rápido a tus preferidos.</p>
+            <p>Acceso rápido.</p>
 
             <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
-
-            <div class="note" *ngIf="auth.isLoggedIn() && !auth.isEmailVerified()">
-                Validá tu email
-            </div>
+            <div class="note" *ngIf="auth.isLoggedIn() && !auth.isEmailVerified()">Validá tu email</div>
         </a>
 
     </div>
 
+</div>
+
+
+<!-- =======================
+    PANEL DE NOTIFICACIONES
+======================= -->
+<div class="invite-panel-backdrop" *ngIf="showPanel" (click)="togglePanel()"></div>
+
+<div class="invite-panel" [class.open]="showPanel">
+
+    <div class="panel-header">
+        <h2>Notificaciones</h2>
+        <button class="close-btn" (click)="togglePanel()">✕</button>
+    </div>
+
+    <div class="empty-msg" *ngIf="notifications.length === 0">
+        No tenés notificaciones.
+    </div>
+
+    <div class="invite-item" *ngFor="let n of notifications; let i = index"
+        [ngStyle]="{ 'transition-delay': (i * 80) + 'ms' }" [class.slide-in]="showPanel">
+
+        <h3>{{ n.title }}</h3>
+        <p>{{ n.message }}</p>
+
+        <small class="date">{{ n.created_at | date:'short' }}</small>
+
+        <div class="status-pill" [class.unread]="!n.is_read" [class.read]="n.is_read">
+            {{ n.is_read ? "Leída" : "Nueva" }}
+        </div>
+
+        <div class="buttons">
+
+            <!-- INVITE -->
+            <ng-container *ngIf="n.type === 'invite_received'">
+                <button class="accept-btn" [disabled]="loadingAccept[n.id]"
+                    (click)="acceptInvite(n.data.inviteId, n.id)">
+                    <ng-container *ngIf="!loadingAccept[n.id]">Aceptar</ng-container>
+                    <ng-container *ngIf="loadingAccept[n.id]">
+                        <span class="mini-spinner"></span> Procesando...
+                    </ng-container>
+                </button>
+
+                <button class="reject-btn" [disabled]="loadingReject[n.id]"
+                    (click)="rejectInvite(n.data.inviteId, n.id)">
+                    <ng-container *ngIf="!loadingReject[n.id]">Rechazar</ng-container>
+                    <ng-container *ngIf="loadingReject[n.id]">
+                        <span class="mini-spinner red"></span> Procesando...
+                    </ng-container>
+                </button>
+
+            </ng-container>
+
+            <!-- JOIN REQUEST -->
+            <ng-container *ngIf="n.type === 'join_request'">
+                <button class="accept-btn" [disabled]="loadingAccept[n.id]"
+                    (click)="approveRequest(n.data.requestId, n.id)">
+                    <ng-container *ngIf="!loadingAccept[n.id]">Aceptar</ng-container>
+                    <ng-container *ngIf="loadingAccept[n.id]">
+                        <span class="mini-spinner"></span> Procesando...
+                    </ng-container>
+                </button>
+
+                <button class="reject-btn" [disabled]="loadingReject[n.id]"
+                    (click)="rejectRequest(n.data.requestId, n.id)">
+                    <ng-container *ngIf="!loadingReject[n.id]">Rechazar</ng-container>
+                    <ng-container *ngIf="loadingReject[n.id]">
+                        <span class="mini-spinner red"></span> Procesando...
+                    </ng-container>
+                </button>
+            </ng-container>
+
+            <!-- NORMALES -->
+            <ng-container *ngIf="n.type !== 'join_request' && n.type !== 'invite_received'">
+                <button class="accept-btn" *ngIf="!n.is_read" [disabled]="loadingRead[n.id]" (click)="markAsRead(n.id)">
+
+                    <ng-container *ngIf="!loadingRead[n.id]">Marcar como leída</ng-container>
+                    <ng-container *ngIf="loadingRead[n.id]">
+                        <span class="mini-spinner"></span> Procesando...
+                    </ng-container>
+                </button>
+
+                <button class="reject-btn" [disabled]="loadingDelete[n.id]" (click)="deleteNotification(n.id)">
+
+                    <ng-container *ngIf="!loadingDelete[n.id]">Borrar</ng-container>
+                    <ng-container *ngIf="loadingDelete[n.id]">
+                        <span class="mini-spinner red"></span> Borrando...
+                    </ng-container>
+                </button>
+            </ng-container>
+
+        </div>
+    </div>
 </div>

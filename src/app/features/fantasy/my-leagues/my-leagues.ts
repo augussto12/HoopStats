@@ -13,9 +13,13 @@ import { WithLoader } from '../../../decorators/with-loader.decorator';
 })
 export class MyLeagues {
 
+  loading = false;
   leagues: any[] = [];
   currentIndex = 0;
   currentLeague: any = null;
+
+  animDirection: 'next' | 'prev' | null = null;
+  isAnimating = false;
 
   constructor(
     private leaguesService: FantasyLeaguesService,
@@ -27,9 +31,11 @@ export class MyLeagues {
   }
 
   async loadLeagues() {
+    this.loading = true;
     try {
       this.leagues = await this.leaguesService.getMyLeagues();
       this.currentLeague = this.leagues[this.currentIndex];
+      this.loading = false;
     } catch (err) {
       console.error("Error cargando ligas:", err);
     }
@@ -37,15 +43,23 @@ export class MyLeagues {
 
   nextLeague() {
     if (this.currentIndex < this.leagues.length - 1) {
-      this.currentIndex++;
-      this.animateChange();
+      this.animDirection = 'next';
+      this.playAnimation();
+      setTimeout(() => {
+        this.currentIndex++;
+        this.animateChange();
+      }, 200);
     }
   }
 
   prevLeague() {
     if (this.currentIndex > 0) {
-      this.currentIndex--;
-      this.animateChange();
+      this.animDirection = 'prev';
+      this.playAnimation();
+      setTimeout(() => {
+        this.currentIndex--;
+        this.animateChange();
+      }, 200);
     }
   }
 
@@ -61,4 +75,8 @@ export class MyLeagues {
     return this.currentLeague.teams.findIndex((t: any) => t.team_id === this.currentLeague.me.team_id) + 1;
   }
 
+  playAnimation() {
+    this.isAnimating = true;
+    setTimeout(() => this.isAnimating = false, 450);
+  }
 }

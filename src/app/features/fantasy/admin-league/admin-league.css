@@ -505,6 +505,85 @@ input:checked+.slider:before {
     transform: translateY(-2px);
 }
 
+.user-card.to-delete {
+    background: #ffdddd !important;
+    opacity: 0.6;
+}
+
+.user-card.to-inactivate {
+    background: #fff3cd !important;
+    opacity: 0.8;
+}
+
+.user-card.to-promote {
+    border: 2px solid gold !important;
+}
+
+.user-card.to-demote {
+    border: 2px solid #888 !important;
+}
+
+
+/* ===============================
+   MODAL CAMBIOS SIN GUARDAR
+================================ */
+
+.unsaved-modal {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #1A2540;
+    padding: 24px;
+    border-radius: 16px;
+
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.55),
+        0 0 14px rgba(255, 215, 110, 0.15);
+
+    animation: fadeInUp .28s ease;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    text-align: center;
+    margin-bottom: 12px;
+    color: #E9C46A;
+    text-shadow: 0 0 10px rgba(233, 196, 106, 0.3);
+}
+
+.modal-message {
+    text-align: center;
+    opacity: 0.85;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+/* Botón de salir igual con estilo rojo */
+.confirm-btn.danger {
+    background: linear-gradient(145deg, #d9534f, #c0392b);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(220, 80, 80, 0.4);
+}
+
+.confirm-btn.danger:hover {
+    background: linear-gradient(145deg, #e36c67, #cd4a3e);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(220, 80, 80, 0.55);
+}
+
+/* Botón cancelar acorde a tu estilo */
+.cancel-btn {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: .25s ease;
+}
+
+.cancel-btn:hover {
+    background: rgba(255, 255, 255, 0.18);
+    transform: translateY(-2px);
+}
+
+
 /* ====== RESPONSIVE MÓVIL ====== */
 
 @media (max-width: 600px) {

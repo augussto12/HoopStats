@@ -11,10 +11,22 @@
             <input type="text" [(ngModel)]="leagueName" name="leagueName" required placeholder="Ej: Los Pibes NBA">
         </div>
 
+        <!-- DESCRIPCIÓN -->
+        <div class="form-group">
+            <label>Descripción (opcional)</label>
+            <textarea [(ngModel)]="description" name="description" maxlength="200" rows="3"
+                placeholder="Describe tu liga (máx 200 caracteres)"></textarea>
+            <div class="char-counter" [class.warning]="description.length > 150">
+                {{ description.length }}/200
+            </div>
+
+        </div>
+
+
         <!-- MAX USERS -->
         <div class="form-group">
             <label>Cantidad máxima de usuarios (opcional)</label>
-            <input type="number" [(ngModel)]="maxUsers" name="maxUsers" min="2" max="50" placeholder="Ej: 10">
+            <input type="number" [(ngModel)]="maxTeams" name="maxTeams" min="2" max="50" placeholder="Ej: 10">
         </div>
 
         <!-- PRIVACIDAD -->

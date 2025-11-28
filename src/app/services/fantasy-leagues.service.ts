@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-import { AdminLeagueResponse, MyCreatedLeague, MyLeague } from '../models/interfaces';
+import { AdminLeagueResponse, League, MyCreatedLeague, MyLeague } from '../models/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class FantasyLeaguesService {
@@ -11,8 +11,8 @@ export class FantasyLeaguesService {
     //                     LIGAS
     // ──────────────────────────────────────────────
 
-    createLeague(name: string, privacy: 'public' | 'private', description?: string) {
-        return this.api.post('/fantasy-leagues', { name, privacy, description });
+    createLeague(name: string, privacy: 'public' | 'private', description: string | null, maxTeams: number | null) {
+        return this.api.post('/fantasy-leagues', { name, privacy, description, maxTeams });
     }
 
     getAdminStatus() {
@@ -31,9 +31,16 @@ export class FantasyLeaguesService {
         return this.api.get<MyCreatedLeague[]>('/fantasy-leagues/my-created-leagues');
     }
 
-    // ✔ CORREGIDO
     getMyInvites(): Promise<any[]> {
         return this.api.get('/fantasy-league-membership/my/invites');
+    }
+
+    getAllLeagues() {
+        return this.api.get<League[]>('/fantasy-leagues/all');
+    }
+
+    requestJoinLeague(leagueId: number) {
+        return this.api.post(`/fantasy-league-membership/leagues/${leagueId}/request-join`, {});
     }
 
     // ──────────────────────────────────────────────

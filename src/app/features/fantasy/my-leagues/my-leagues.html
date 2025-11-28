@@ -1,105 +1,74 @@
 <div class="league-dashboard" *ngIf="currentLeague">
 
-    <!-- HEADER -->
-    <div class="league-header animate">
+    <!-- HEADER LIGA -->
+    <div class="league-header">
         <h2 class="league-title">{{ currentLeague.league.name }}</h2>
+        <p class="subtitle">{{currentLeague.league.description}}</p>
 
         <div class="league-meta">
+
             <span class="privacy" [class.private]="currentLeague.league.privacy === 'private'">
                 {{ currentLeague.league.privacy === 'private' ? 'Privada 🔒' : 'Pública 🔓' }}
             </span>
 
-            <span class="teams-count">Equipos: {{ currentLeague.teams.length }}</span>
+            <span class="teams-count">
+                Equipos: {{ currentLeague.teams.length }} / {{currentLeague.league.max_teams}}
+            </span>
 
             <span class="created-at">
-                Creada: {{ currentLeague.league.created_at | date:'dd/MM/yyyy' }}
+                Creada: {{ currentLeague.league.created_at | date: 'dd/MM/yyyy' }}
             </span>
+
         </div>
     </div>
 
-    <!-- GRID PRINCIPAL -->
-    <div class="dashboard-grid">
+    <!-- TABLA RANKING -->
+    <div class="ranking-anim-wrapper" [class.anim-next]="animDirection === 'next'"
+        [class.anim-prev]="animDirection === 'prev'">
+        <div class="ranking-table-wrapper">
 
-        <!-- PANEL IZQUIERDO: MI EQUIPO -->
-        <div class="panel panel-me animate">
-            <h3>Mi Equipo</h3>
+            <table class="ranking-table">
 
-            <div class="me-name">{{ currentLeague.me.team_name }}</div>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Equipo</th>
+                        <th>Manager</th>
+                        <th>Puntos</th>
+                    </tr>
+                </thead>
 
-            <div class="me-stats">
-                <div>
-                    <label>Puntos</label>
-                    <strong>{{ currentLeague.me.points }}</strong>
-                </div>
+                <tbody>
+                    <tr *ngFor="let t of currentLeague.teams; index as i"
+                        [class.me]="t.team_id === currentLeague.me.team_id">
 
-                <div>
-                    <label>Posición</label>
-                    <strong>{{ myRank }}</strong>
-                </div>
+                        <td data-label="#">{{ i + 1 }}</td>
 
-                <div>
-                    <label>Admin</label>
-                    <strong>{{ currentLeague.me.is_admin ? 'Sí' : 'No' }}</strong>
-                </div>
-            </div>
+                        <td data-label="Equipo">{{ t.team_name }}</td>
+
+                        <td data-label="Owner">@{{ t.owner }}</td>
+
+                        <td data-label="Puntos">{{ t.points }}</td>
+
+                    </tr>
+                </tbody>
+
+            </table>
         </div>
-
-        <!-- PANEL CENTRAL: RANKING -->
-        <div class="panel panel-ranking animate">
-            <h3>Ranking</h3>
-
-            <div class="ranking-list">
-                <div class="rank-item" *ngFor="let team of currentLeague.teams; index as i"
-                    [class.me]="team.team_id === currentLeague.me.team_id">
-
-                    <span class="pos">{{ i + 1 }}</span>
-
-                    <div class="team-info">
-                        <span class="team-name">{{ team.team_name }}</span>
-                        <span class="owner">@{{ team.owner }}</span>
-                    </div>
-
-                    <span class="pts">{{ team.points }}</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- PANEL DERECHO: TRADES -->
-        <div class="panel panel-trades animate">
-            <h3>Movimientos recientes</h3>
-
-            <div *ngIf="currentLeague.recent_trades.length === 0" class="no-trades">
-                No hubo movimientos recientes.
-            </div>
-
-            <div class="trade-row" *ngFor="let tr of currentLeague.recent_trades">
-                <div class="trade-player">
-                    {{ tr.player_id }}
-                </div>
-
-                <div class="trade-info">
-                    <span class="team">{{ tr.team_name }}</span>
-                    <span class="owner">@{{ tr.owner }}</span>
-                </div>
-
-                <span class="trade-action" [class.add]="tr.action === 'in'" [class.remove]="tr.action === 'out'">
-                    {{ tr.action === 'in' ? '➕ Alta' : '➖ Baja' }}
-                </span>
-            </div>
-
-        </div>
-
     </div>
 
     <!-- PAGINADOR -->
     <div class="pagination-row" *ngIf="leagues.length > 1">
         <button (click)="prevLeague()" [disabled]="currentIndex === 0">◀</button>
+
         <span>{{ currentIndex + 1 }} / {{ leagues.length }}</span>
+
         <button (click)="nextLeague()" [disabled]="currentIndex === leagues.length - 1">▶</button>
     </div>
 
 </div>
 
-<div *ngIf="leagues.length === 0" class="empty-text">
-    No participas en ninguna liga.
+<!-- SI NO TIENE LIGAS -->
+<div *ngIf="leagues.length === 0 && !loading" class="empty-text">
+    No participás en ninguna liga.
 </div>

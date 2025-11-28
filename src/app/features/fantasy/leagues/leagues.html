@@ -1,0 +1,61 @@
+<div class="league-table-container">
+
+    <h2 class="title">Ligas disponibles</h2>
+
+    <div class="league-table-wrapper">
+
+        <table class="league-table">
+
+            <thead>
+                <tr>
+                    <th>Creador</th>
+                    <th>Nombre</th>
+                    <th>Usuarios</th>
+                    <th>Privacidad</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let l of leagues">
+
+                    <td data-label="Creador">{{ l.creator_username }}</td>
+
+                    <td data-label="Nombre">{{ l.name }}</td>
+
+                    <td data-label="Usuarios">
+                        <span class="users-badge" [class.green]="l.max_teams === null || l.current_users < l.max_teams"
+                            [class.red]="l.max_teams !== null && l.current_users >= l.max_teams">
+                            {{ l.current_users }} / {{ l.max_teams || '∞' }}
+                        </span>
+                    </td>
+
+                    <td data-label="Privacidad">
+                        <span class="badge" [class.public]="l.privacy === 'public'"
+                            [class.private]="l.privacy === 'private'">
+                            {{ l.privacy === 'public' ? 'Pública' : 'Privada' }}
+                        </span>
+                    </td>
+
+                    <td data-label="Acción" class="action-cell">
+
+                        <button *ngIf="l.privacy === 'public'" class="join-btn" [disabled]="loadingReq[l.id]"
+                            (click)="requestJoin(l.id)">
+                            Unirse
+                        </button>
+
+                        <button *ngIf="l.privacy === 'private'" class="request-btn" [disabled]="loadingReq[l.id]"
+                            (click)="requestJoin(l.id)">
+                            Solicitar acceso
+                        </button>
+
+                    </td>
+
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

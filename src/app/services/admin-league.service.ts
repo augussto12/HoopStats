@@ -26,12 +26,10 @@ export class AdminLeagueService {
         return this.api.post(`/fantasy-league-membership/invites/${inviteId}/reject`, {});
     }
 
-    /** 📌 Invitaciones que YO envié (admin) */
     getInvitesForMyLeagues(): Promise<any[]> {
         return this.api.get(`/fantasy-league-membership/my/league-invites`);
     }
 
-    /** 📌 Borra una invitación como notificación (solo del creador) */
     deleteInviteNotification(inviteId: number) {
         return this.api.delete(`/fantasy-league-membership/invites/${inviteId}/notification`);
     }

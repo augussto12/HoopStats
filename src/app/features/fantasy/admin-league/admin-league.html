@@ -2,19 +2,20 @@
 <div class="admin-container" *ngIf="!loading">
 
     <h2 class="title">Ligas</h2>
+
+    <!-- Cambiar liga -->
     <div class="view-toggle league-toggle" *ngIf="adminLeagues.length > 1">
         <button *ngFor="let lg of adminLeagues; index as i" class="league-btn gral-button"
-            [class.active]="selectedLeagueIndex === i" (click)="selectedLeagueIndex = i; onLeagueChange()">
+            [class.active]="selectedLeagueIndex === i" (click)="attemptLeagueChange(i)">
             {{ lg.league.name }}
         </button>
     </div>
-
 
     <p class="error" *ngIf="errorMsg">{{ errorMsg }}</p>
     <p class="success" *ngIf="successMsg">{{ successMsg }}</p>
 
     <!-- ============================
-          SECCIÓN: INFO DE LA LIGA
+          SECCIÓN INFO LIGA
     ============================= -->
     <div class="league-box">
         <div class="league-header">
@@ -26,7 +27,7 @@
             <label class="privacy-title">Privacidad:</label>
 
             <label class="switch">
-                <input type="checkbox" [(ngModel)]="isPrivate">
+                <input type="checkbox" [(ngModel)]="isPrivate" (change)="onFieldChanged()">
                 <span class="slider"></span>
             </label>
 
@@ -37,7 +38,7 @@
     </div>
 
     <!-- ============================
-            SECCIÓN: MIEMBROS
+            MIEMBROS
     ============================= -->
     <div class="members-section">
         <h3>Miembros ({{ members.length }})</h3>
@@ -47,22 +48,21 @@
         </div>
 
         <div class="user-grid">
+
             <div class="user-card" *ngFor="let u of members" [class.appearing]="u._new"
-                [class.admin]="u.role === 'admin'">
+                [class.admin]="u.role === 'admin'" [class.to-delete]="u._delete" [class.to-inactivate]="u._inactivate"
+                [class.to-promote]="u._promote" [class.to-demote]="u._demote">
 
                 <div class="user-info">
+                    <span class="user-name">{{ u.username }}</span>
 
-                    <!-- NOMBRE -->
-                    <span class="user-name">
-                        {{ u.username }}
-                    </span>
-
-                    <!-- BADGES DE ESTADO / ROL -->
+                    <!-- BADGES -->
                     <div class="user-badges">
+
                         <!-- Rol admin -->
                         <span class="admin-badge" *ngIf="u.role === 'admin'">ADMIN</span>
 
-                        <!-- Estados reales -->
+                        <!-- Estados -->
                         <span class="status-badge active" *ngIf="u.status === 'active'">
                             Activo
                         </span>
@@ -71,7 +71,6 @@
                             Inactivo
                         </span>
 
-                        <!-- Invitaciones -->
                         <span class="status-badge pending" *ngIf="u.status === 'pending'">
                             Pendiente
                         </span>
@@ -81,66 +80,73 @@
                         </span>
                     </div>
 
-
                     <span class="user-email">{{ u.email }}</span>
-
                 </div>
 
                 <!-- ACCIONES -->
                 <div class="user-actions">
 
-                    <!-- Admin -->
-                    <button class="promote-btn" *ngIf="u.role !== 'admin' && u.status === 'active'"
-                        (click)="makeAdmin(u)">
+                    <!-- PROMOVER ADMIN -->
+                    <button class="promote-btn" *ngIf="u.role !== 'admin' && u.status === 'active' && !u._delete"
+                        (click)="makeAdmin(u); markDirty()">
                         👑
                     </button>
 
-                    <button class="demote-btn" *ngIf="u.role === 'admin' && u.id !== league.created_by"
-                        (click)="removeAdmin(u)">
+                    <!-- QUITAR ADMIN -->
+                    <button class="demote-btn" *ngIf="u.role === 'admin' && u.id !== league.created_by && !u._delete"
+                        (click)="removeAdmin(u); markDirty()">
                         ▼
                     </button>
 
-                    <!-- Desactivar usuario -->
-                    <button class="inactivate-btn" *ngIf="u.role !== 'admin' && u.status === 'active'"
-                        (click)="openRemoveModal(u, 'inactivate')">
+                    <!-- INACTIVAR -->
+                    <button class="inactivate-btn" *ngIf="u.role !== 'admin' && u.status === 'active' && !u._delete"
+                        (click)="openRemoveModal(u, 'inactivate'); markDirty()">
                         🚫
                     </button>
 
-                    <!-- Eliminar definitivamente -->
-                    <button class="remove-btn" *ngIf="u.role !== 'admin'" (click)="openRemoveModal(u, 'delete')">
+                    <!-- ELIMINAR -->
+                    <button class="remove-btn" *ngIf="u.role !== 'admin' && !u._delete"
+                        (click)="openRemoveModal(u, 'delete'); markDirty()">
                         🗑
                     </button>
+
                 </div>
             </div>
+
         </div>
     </div>
 
     <!-- ============================
-          SECCIÓN: AGREGAR USUARIO
+          AGREGAR USUARIO
     ============================= -->
     <div class="invite-box">
         <h3>Invitar Usuarios</h3>
 
-        <select class="fancy-select" [(ngModel)]="selectedUser" (change)="addUser()">
+        <select class="fancy-select" [(ngModel)]="selectedUser" (change)="addUser(); markDirty()">
+
             <option [ngValue]="null">Seleccionar usuario</option>
+
             <option *ngFor="let u of allUsers" [ngValue]="u" [disabled]="isAlreadyMember(u)">
                 {{ u.username }}
             </option>
+
         </select>
     </div>
 
-    <!-- BOTÓN GUARDAR -->
+    <!-- GUARDAR -->
     <button class="save-btn" (click)="saveChanges()" [disabled]="saving">
+
         <ng-container *ngIf="saving; else normalBtn">
             {{ successMsg || 'Guardando...' }}
         </ng-container>
+
         <ng-template #normalBtn>
             Guardar cambios
         </ng-template>
+
     </button>
 
 </div>
-
 
 <!-- ============================
             MODAL ELIMINAR
@@ -167,4 +173,28 @@
             </button>
         </div>
     </div>
+</div>
+
+<!-- ============================
+     MODAL CAMBIOS SIN GUARDAR
+============================= -->
+<div class="modal-backdrop" *ngIf="showUnsavedModal">
+  <div class="modal-box unsaved-modal">
+
+      <h3 class="modal-title">Cambios sin guardar</h3>
+
+      <p class="modal-message">
+          Tenés cambios sin guardar.<br>
+          ¿Querés salir igual?
+      </p>
+
+      <div class="modal-buttons">
+          <button class="cancel-btn" (click)="cancelUnsavedExit()">Cancelar</button>
+
+          <button class="confirm-btn danger" (click)="confirmUnsavedExit()">
+              Salir igual
+          </button>
+      </div>
+
+  </div>
 </div>
