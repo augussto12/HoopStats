@@ -1,110 +1,239 @@
+/* ============================================================
+   TÍTULO
+============================================================ */
 h1 {
-    text-align: center;
-    color: #fff;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-}
-
-.filters {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 1rem 1.5rem;
-    background-color: #183661;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-    margin-bottom: 3rem;
-}
-
-
-.stats-loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 2rem auto;
-    padding: 1rem;
-    text-align: center;
-    color: #ffb347;
-    font-size: 1.2rem;
-    animation: fadeInStats .4s ease-out;
-}
-
-.spinner {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    border: 4px solid rgba(255, 179, 71, 0.3);
-    border-top-color: #ffb347;
-    animation: spinStats 0.8s linear infinite;
-    margin-bottom: 1rem;
-}
-
-.nothing {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1rem;
-  border-radius: 0.6rem;
-  margin-top: 1rem;
   text-align: center;
-  color: #cfd9e8;
+  color: #E9C46A;
+  margin-bottom: 2.2rem;
+  font-size: 2rem;
+  text-shadow: 0 0 10px rgba(233,196,106,.35);
 }
 
+/* ============================================================
+   CONTENEDOR DE FILTROS
+============================================================ */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 1.2rem 2rem;
+
+  background: #0F1A2F;
+  padding: 1.7rem;
+  border-radius: 14px;
+
+  border: 1px solid rgba(233,196,106,.25);
+  box-shadow:
+    0 6px 18px rgba(0,0,0,.45),
+    inset 0 0 12px rgba(233,196,106,.08);
+
+  margin-bottom: 3rem;
+}
+
+/* LABELS */
 .filters label {
-    font-weight: 600;
-    color: #ffb347;
-    font-size: 0.95rem;
-    display: block;
-    margin-bottom: 0.3rem;
+  font-weight: 600;
+  color: #E9C46A;
+  font-size: .95rem;
+  display: block;
+  margin-bottom: .35rem;
+  text-shadow: 0 0 6px rgba(233,196,106,.25);
 }
 
-.filters input[type='text'],
+/* ============================================================
+   INPUTS
+============================================================ */
+.filters input[type='text'] {
+  background: rgba(15,26,47,0.85);
+  color: #fff;
+
+  border: 1px solid rgba(233,196,106,.35);
+  border-radius: 10px;
+
+  padding: .55rem .9rem;
+  font-size: .95rem;
+  width: 240px;
+
+  transition: .25s ease;
+}
+
+.filters input[type='text']:hover {
+  background: rgba(233,196,106,.10);
+  border-color: rgba(233,196,106,.55);
+}
+
+.filters input[type='text']:focus {
+  outline: none;
+  background: rgba(233,196,106,.15);
+  border-color: #E9C46A;
+  box-shadow: 0 0 12px rgba(233,196,106,.35);
+}
+
+/* ============================================================
+   SELECT + FLECHA
+============================================================ */
+.select-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.select-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  transform: translateY(-50%);
+
+  background-image: url("data:image/svg+xml;utf8,<svg fill='%23E9C46A' height='32' width='32' xmlns='http://www.w3.org/2000/svg'><path d='M7 12l9 9 9-9z'/></svg>");
+  background-size: 20px 20px;
+  background-repeat: no-repeat;
+}
+
+
 .filters select {
-    background-color: #0e1e33;
-    color: #fff;
-    border: #2c4a7c;
-    border-radius: 8px;
-    padding: 0.5rem 0.8rem;
-    font-size: 0.95rem;
-    width: 220px;
+  background: rgba(15,26,47,0.85);
+  padding: .55rem 2.2rem .55rem .9rem;
+
+  color: #E9C46A;
+  font-weight: 600;
+
+  border: 1px solid rgba(233,196,106,.35);
+  border-radius: 10px;
+
+  font-size: .95rem;
+  cursor: pointer;
+  width: 240px;
+
+  appearance: none;
+  transition: .25s ease;
 }
 
-.filters select {
-    cursor: pointer;
+.filters select:hover {
+  background: rgba(233,196,106,.10);
+  border-color: rgba(233,196,106,.55);
 }
 
+.filters select:focus {
+  outline: none;
+  background: rgba(233,196,106,.15);
+  border-color: #E9C46A;
+  box-shadow: 0 0 12px rgba(233,196,106,.35);
+}
+
+.filters select option {
+  background: #0F1A2F !important;
+  color: #E9C46A !important;
+  padding: 10px;
+  font-weight: 600;
+}
+
+/* ============================================================
+   BOTÓN BUSCAR
+============================================================ */
 .filters button {
-    background-color: #ffb347;
-    color: #14273f;
-    border: none;
-    border-radius: 8px;
-    padding: 0.6rem 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
-    height: 2.4rem;
+  background: rgba(233,196,106,.20);
+  color: #E9C46A;
+
+  border: 1px solid rgba(233,196,106,.45);
+  border-radius: 10px;
+
+  padding: .6rem 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: .25s ease;
+  height: 2.6rem;
+  min-width: 130px;
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,.45),
+    inset 0 0 10px rgba(233,196,106,.08);
 }
 
 .filters button:hover {
-    background-color: #fccb7d;
+  background: rgba(233,196,106,.32);
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 20px rgba(0,0,0,.55),
+    0 0 10px rgba(233,196,106,.35);
 }
 
+.filters button:active {
+  transform: scale(.95);
+}
+
+/* ============================================================
+   NADA PARA MOSTRAR
+============================================================ */
+.nothing {
+  background: rgba(233,196,106,.08);
+  border: 1px solid rgba(233,196,106,.25);
+  padding: 1rem;
+  border-radius: 10px;
+  margin-top: 1rem;
+
+  text-align: center;
+  color: #d9e3ff;
+  font-size: 1rem;
+
+  box-shadow: inset 0 0 10px rgba(233,196,106,.08);
+}
+
+/* ============================================================
+   LOADING
+============================================================ */
+.stats-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin: 2rem auto;
+  padding: 1rem;
+  text-align: center;
+
+  color: #E9C46A;
+  font-size: 1.2rem;
+  animation: fadeInStats .4s ease-out;
+}
+
+.spinner {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 4px solid rgba(233,196,106,.35);
+  border-top-color: #E9C46A;
+  animation: spinStats .8s linear infinite;
+  margin-bottom: 1rem;
+}
+
+/* Animaciones */
+@keyframes spinStats {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeInStats {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
 @media (max-width: 768px) {
-    .filters {
-        flex-direction: column;
-        align-items: stretch;
-        text-align: center;
-    }
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
 
-    .filters label {
-        margin-bottom: 0.4rem;
-    }
-
-    .filters input,
-    .filters select,
-    .filters button {
-        width: 100%;
-    }
+  .filters input,
+  .filters select,
+  .filters button {
+    width: 100%;
+  }
 }

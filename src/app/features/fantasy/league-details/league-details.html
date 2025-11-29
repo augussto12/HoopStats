@@ -1,0 +1,32 @@
+<div class="league-header" *ngIf="!loading">
+
+    <h2 class="league-title">{{ league.name }}</h2>
+    <p class="subtitle">{{ league.description }}</p>
+
+    <div class="league-meta">
+        <span class="privacy" [class.private]="league.privacy === 'private'">{{ league.privacy === 'private' ? 'Privada 🔒' : 'Pública 🔓' }}</span>
+        <span class="teams-count">Equipos: {{ teams.length }} / {{ league.max_teams }}</span>
+        <span class="created-at">Creada: {{ league.created_at }}</span>
+    </div>
+
+    <table class="ranking-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Equipo</th>
+                <th>Manager</th>
+                <th>Puntos</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let t of teams; index as i">
+                <td>{{ i + 1 }}</td>
+                <td>{{ t.team_name }}</td>
+                <td>@{{ t.owner }}</td>
+                <td>{{ t.points }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

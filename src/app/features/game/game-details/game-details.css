@@ -1,5 +1,8 @@
+/* ============================================================
+   BASE GENERAL
+============================================================ */
 body {
-    background-color: #0b1622;
+    background-color: #0B1622;
     color: #fff;
     font-family: 'Poppins', sans-serif;
     margin: 0;
@@ -10,9 +13,13 @@ body {
     text-align: center;
     font-size: 2rem;
     margin-top: 2rem;
-    color: #fff;
+    color: #E9C46A;
+    text-shadow: 0 0 10px rgba(233, 196, 106, 0.35);
 }
 
+/* ============================================================
+   VIEW TOGGLE
+============================================================ */
 .view-toggle {
     display: flex;
     justify-content: center;
@@ -21,45 +28,63 @@ body {
 }
 
 .view-toggle button {
-    background-color: #1e2a3a;
-    color: #a5b0c0;
-    border: none;
+    background: rgba(15, 26, 47, 0.85);
+    color: #E9C46A;
+    border: 1px solid rgba(233, 196, 106, .35);
     padding: 0.6rem 1.2rem;
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     font-weight: 600;
-    transition: 0.3s ease;
+    transition: 0.25s ease;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, .45);
 }
 
 .view-toggle button:hover {
-    background-color: #2a3a50;
-    color: #fff;
+    background: rgba(233, 196, 106, 0.15);
+    transform: translateY(-2px);
 }
 
 .view-toggle button.active {
-    background-color: #00bcd4;
+    background: rgba(233, 196, 106, 0.28);
+    border-color: rgba(233, 196, 106, 0.55);
     color: #fff;
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, .45),
+        0 0 10px rgba(233, 196, 106, .35);
 }
 
+/* ============================================================
+   STATS CARD
+============================================================ */
 .stats-card {
-    background-color: #1e2a3a;
-    border-radius: 12px;
+    background: #0F1A2F;
+    border-radius: 14px;
     padding: 2rem;
     max-width: 1100px;
     margin: 2rem auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    border: 1px solid rgba(233, 196, 106, .25);
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, .55),
+        inset 0 0 12px rgba(233, 196, 106, .1);
+
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+/* ============================================================
+   TEAMS HEADER
+============================================================ */
 .teams-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     text-align: center;
+
     margin-bottom: 2rem;
     gap: 25rem;
+    /* respetamos tu lógica */
 }
 
 .team {
@@ -69,13 +94,37 @@ body {
     max-width: 150px;
 }
 
+.team h2 {
+    color: #E9C46A;
+    margin-bottom: .35rem;
+    font-size: 1.2rem;
+    text-shadow: 0 0 8px rgba(233, 196, 106, .35);
+}
+
 .team img {
     width: 100%;
     max-width: 100px;
     height: auto;
-    transition: all 0.3s ease;
+
+    background: rgba(255, 255, 255, 0.04);
+    padding: 10px;
+    border-radius: 12px;
+
+    border: 1px solid rgba(233, 196, 106, .25);
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, .45),
+        inset 0 0 10px rgba(233, 196, 106, .08);
+
+    transition: 0.25s ease;
 }
 
+.team img:hover {
+    transform: scale(1.06);
+}
+
+/* ============================================================
+   STATS BODY
+============================================================ */
 .stats-body {
     display: flex;
     flex-direction: column;
@@ -87,13 +136,25 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     text-align: center;
-    background-color: #2a3a50;
-    border-radius: 8px;
-    padding: 10px;
-    font-weight: 500;
+
+    background: rgba(233, 196, 106, 0.10);
+    border-radius: 10px;
+
+    padding: 12px;
+    font-weight: 600;
     color: #fff;
+
+    border: 1px solid rgba(233, 196, 106, .25);
+    transition: 0.25s ease;
 }
 
+.stat-row:hover {
+    background: rgba(233, 196, 106, 0.18);
+}
+
+/* ============================================================
+   PLAYER STATS LAYOUT
+============================================================ */
 .players-stats-layout {
     display: flex;
     justify-content: center;
@@ -105,19 +166,28 @@ body {
 
 .players-stats-layout>div {
     flex: 1;
-    background-color: #1e2a3a;
-    border-radius: 12px;
+    background: #0F1A2F;
+    border-radius: 14px;
     padding: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    border: 1px solid rgba(233, 196, 106, .25);
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, .55),
+        inset 0 0 12px rgba(233, 196, 106, .08);
 }
 
+/* team titles */
 .team-title {
     text-align: center;
-    color: #00bcd4;
+    color: #E9C46A;
     margin-bottom: 0.5rem;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
+    text-shadow: 0 0 10px rgba(233, 196, 106, .35);
 }
 
+/* ============================================================
+   PLAYER TABLE
+============================================================ */
 .player-table-wrapper {
     overflow-x: auto;
     max-width: 100%;
@@ -130,23 +200,87 @@ body {
     min-width: 600px;
 }
 
-.player-table th,
+.player-table th {
+    background: rgba(233, 196, 106, .15);
+    color: #E9C46A;
+    font-weight: 600;
+    padding: 10px;
+    border-bottom: 1px solid rgba(233, 196, 106, .25);
+}
+
 .player-table td {
     padding: 10px;
     text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     color: #fff;
-    word-wrap: break-word;
 }
 
-.player-table th {
-    color: #00bcd4;
-    font-weight: 600;
+.player-table tr:hover {
+    background: rgba(233, 196, 106, .10);
 }
 
+/* Fuerza que ambas tarjetas de jugadores tengan la misma altura en desktop */
+.players-stats-layout>div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Igualar alturas SOLO en pantallas grandes */
+@media (min-width: 900px) {
+    .players-stats-layout {
+        align-items: stretch;
+    }
+
+    .players-stats-layout>div {
+        height: 100%;
+    }
+}
+
+/* Alineación visual perfecta en header de cada tarjeta */
+.players-stats-layout>div>div:first-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* Evita que los logos muevan el contenido */
+.players-stats-layout .team-title {
+    min-height: 28px;
+}
+
+.players-stats-layout img {
+    margin-bottom: 0.5rem;
+}
+
+/* Normaliza la altura del header de cada card de equipo */
+.players-stats-layout>div>div:first-child {
+    min-height: 160px;
+    /* Ajustable */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* o center si preferís */
+    align-items: center;
+}
+
+/* Forzamos que el logo NO expanda el header más de lo necesario */
+.players-stats-layout img {
+    display: block;
+    margin-top: 0.5rem;
+}
+
+/* Ajuste opcional para evitar que los headers se descuadren por títulos largos */
+.team-title {
+    min-height: 30px;
+}
+
+
+/* ============================================================
+   RESPONSIVE (NO TOCADO)
+============================================================ */
 @media (max-width: 1200px) {
-
-
     .team {
         max-width: 120px;
     }
@@ -161,8 +295,6 @@ body {
 }
 
 @media (max-width: 850px) {
-
-
     .teams-header {
         gap: 15rem;
     }
@@ -206,7 +338,6 @@ body {
 }
 
 @media (max-width: 500px) {
-
     .teams-header {
         gap: 3rem;
     }

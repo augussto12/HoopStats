@@ -1,4 +1,6 @@
-/* CONTENEDOR GENERAL */
+/* ============================================================
+   CONTENEDOR GENERAL
+============================================================ */
 .predictions-wrapper {
     width: min(1200px, 94%);
     margin: 2.5rem auto;
@@ -7,8 +9,9 @@
     font-family: 'Poppins', sans-serif;
 }
 
-
-/* HEADER */
+/* ============================================================
+   HEADER
+============================================================ */
 .predictions-header {
     text-align: center;
     margin-bottom: 2rem;
@@ -18,7 +21,8 @@
     font-size: 2.2rem;
     margin-bottom: 0.4rem;
     font-weight: 700;
-    color: #fff;
+    color: #E9C46A;
+    text-shadow: 0 0 12px rgba(233, 196, 106, 0.4);
 }
 
 .subtitle {
@@ -26,7 +30,65 @@
     color: #c9d2ea;
 }
 
-/* STATUS BOXES */
+/* ============================================================
+   FILTROS
+============================================================ */
+.filters-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 1.8rem;
+    flex-wrap: wrap;
+    padding: 1rem 1.5rem;
+    background: #0F1A2F;
+    border-radius: 12px;
+    border: 1px solid rgba(233, 196, 106, .25);
+    box-shadow: 0 5px 16px rgba(0, 0, 0, .35), inset 0 0 12px rgba(233, 196, 106, .06);
+}
+
+.filter-item label {
+    font-size: 0.95rem;
+    opacity: 0.85;
+    margin-right: 10px;
+}
+
+.filter-item input {
+    background: rgba(15, 26, 47, .85);
+    border: 1px solid rgba(233, 196, 106, .35);
+    padding: 7px 12px;
+    border-radius: 8px;
+    color: #fff;
+    transition: .25s ease;
+}
+
+.filter-item input:hover,
+.filter-item input:focus {
+    background: rgba(233, 196, 106, .12);
+    border-color: rgba(233, 196, 106, .55);
+    outline: none;
+    box-shadow: 0 0 8px rgba(233, 196, 106, .25);
+}
+
+.btn-clear {
+    padding: 7px 14px;
+    background: rgba(255, 65, 65, .25);
+    color: #ff8484;
+    border: 1px solid rgba(255, 65, 65, .35);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.25s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .35);
+}
+
+.btn-clear:hover {
+    background: rgba(255, 65, 65, .35);
+    transform: translateY(-2px);
+}
+
+/* ============================================================
+   STATUS BOXES
+============================================================ */
 .status-box {
     margin: 2rem auto;
     padding: 1rem 1.4rem;
@@ -36,8 +98,9 @@
 }
 
 .empty-box {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, .05);
+    border: 1px solid rgba(255, 255, 255, .08);
+    color: #ecf0ff;
 }
 
 .error-box {
@@ -46,29 +109,43 @@
     color: #ff6b6b;
 }
 
-/* GRID DE TARJETAS */
+/* ============================================================
+   GRID DE TARJETAS
+============================================================ */
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 1.4rem;
 }
 
-/* TARJETA */
+/* ============================================================
+   TARJETA DE PREDICCIÓN
+============================================================ */
 .pred-card {
     background: #122341;
     padding: 1.4rem;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
-    transition: transform 0.18s ease, background 0.18s ease;
+    border: 1px solid rgba(233, 196, 106, .18);
+    box-shadow:
+        0 6px 14px rgba(0, 0, 0, 0.45),
+        inset 0 0 12px rgba(233, 196, 106, .06);
+    transition: all 0.25s ease;
+    opacity: 0;
+    animation: predFade 0.5s ease forwards;
 }
 
 .pred-card:hover {
-    transform: translateY(-4px);
-    background: #1a355e;
+    transform: translateY(-5px);
+    background: #1A335A;
+    border-color: rgba(233, 196, 106, .45);
+    box-shadow:
+        0 10px 22px rgba(0, 0, 0, 0.55),
+        0 0 12px rgba(233, 196, 106, .2);
 }
 
-/* HEADER TARJETA */
+/* ============================================================
+   HEADER DE LAS TARJETAS
+============================================================ */
 .card-header {
     display: flex;
     justify-content: center;
@@ -78,11 +155,16 @@
     text-align: center;
 }
 
-
 .card-header h2 {
     font-size: 1.15rem;
     font-weight: 600;
     color: #4da0ff;
+    transition: .25s ease;
+}
+
+.card-header h2:hover {
+    color: #70b9ff;
+    text-shadow: 0 0 6px rgba(100, 160, 255, 0.45);
 }
 
 .vs {
@@ -90,19 +172,31 @@
     font-size: 0.9rem;
 }
 
-/* LÍNEA DIVISORIA */
+/* ============================================================
+   LÍNEA DIVISORIA
+============================================================ */
 .divider {
     width: 100%;
     height: 1px;
     margin: 1rem 0;
-    background: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.22) 50%,
+            rgba(255, 255, 255, 0) 100%);
 }
 
-/* FILAS DE DATOS */
+/* ============================================================
+   FILAS DE DATOS
+============================================================ */
 .stat-row {
     display: flex;
     justify-content: space-between;
     margin: 0.6rem 0;
+    transition: .2s ease;
+}
+
+.stat-row:hover {
+    transform: translateX(3px);
 }
 
 .label {
@@ -110,14 +204,15 @@
     font-size: 0.9rem;
 }
 
-.fail {
-    color: #ff6b6b;
-}
-
-
 .value {
     font-weight: 600;
     font-size: 1rem;
+}
+
+/* Colores */
+.real-score {
+    color: #4da0ff;
+    text-shadow: 0 0 6px rgba(77, 160, 255, 0.25);
 }
 
 .pending {
@@ -126,38 +221,29 @@
 
 .success {
     color: #7CFF7C;
+    animation: pulse 1.6s infinite ease-in-out;
 }
 
-.real-score {
-    color: #4da0ff;
-    font-weight: 700;
+.fail {
+    color: #ff6b6b;
 }
 
-.pred-card {
-    background: #122341;
-    padding: 1.4rem;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
-    transition: transform 0.25s ease,
-        background 0.25s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
+/* Animación para aciertos */
+@keyframes pulse {
+    0% {
+        text-shadow: 0 0 4px rgba(70, 255, 70, .45);
+    }
+
+    50% {
+        text-shadow: 0 0 10px rgba(70, 255, 70, .75);
+    }
+
+    100% {
+        text-shadow: 0 0 4px rgba(70, 255, 70, .45);
+    }
 }
 
-.pred-card:hover {
-    transform: translateY(-6px);
-    background: #1c3d6d;
-    border-color: rgba(80, 150, 255, 0.4);
-    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.45),
-        0 0 12px rgba(90, 160, 255, 0.25);
-}
-
-.pred-card {
-    opacity: 0;
-    animation: predFade 0.5s ease forwards;
-}
-
+/* Fade-in cards */
 @keyframes predFade {
     from {
         opacity: 0;
@@ -170,124 +256,9 @@
     }
 }
 
-
-.card-header h2 {
-    font-size: 1.15rem;
-    font-weight: 600;
-    color: #4da0ff;
-    transition: color .25s, text-shadow .3s;
-}
-
-.card-header h2:hover {
-    color: #70b9ff;
-    text-shadow: 0 0 6px rgba(90, 160, 255, 0.45);
-}
-
-.divider {
-    height: 1px;
-    background: linear-gradient(to right,
-            rgba(255, 255, 255, 0) 0%,
-            rgba(255, 255, 255, 0.22) 50%,
-            rgba(255, 255, 255, 0) 100%);
-}
-
-.stat-row {
-    display: flex;
-    justify-content: space-between;
-    margin: 0.6rem 0;
-    transition: transform .2s ease;
-}
-
-.stat-row:hover {
-    transform: translateX(4px);
-}
-
-.label {
-    opacity: 0.75;
-    font-size: 0.9rem;
-    transition: opacity .2s;
-}
-
-.stat-row:hover .label {
-    opacity: 1;
-}
-
-.value {
-    font-weight: 600;
-    font-size: 1rem;
-    transition: color .25s ease, text-shadow .25s ease;
-}
-
-.real-score {
-    color: #4da0ff;
-    font-weight: 700;
-    text-shadow: 0 0 6px rgba(77, 160, 255, 0.25);
-}
-
-.success {
-    color: #7CFF7C;
-    animation: pulse 1.6s infinite ease-in-out;
-}
-
-@keyframes pulse {
-    0% {
-        text-shadow: 0 0 4px rgba(70, 255, 70, 0.45);
-    }
-
-    50% {
-        text-shadow: 0 0 10px rgba(70, 255, 70, 0.75);
-    }
-
-    100% {
-        text-shadow: 0 0 4px rgba(70, 255, 70, 0.45);
-    }
-}
-
-.stat-row:hover .value {
-    color: #ffffff;
-    text-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
-}
-
-
-/* FILTROS */
-.filters-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 18px;
-    margin-bottom: 1.8rem;
-    flex-wrap: wrap;
-}
-
-.filter-item label {
-    font-size: 0.95rem;
-    opacity: 0.8;
-    margin-right: 20px;
-}
-
-.filter-item input {
-    background: #1c2b45;
-    border: 1px solid #2a4f8e;
-    padding: 6px 10px;
-    border-radius: 8px;
-    color: #fff;
-}
-
-.btn-clear {
-    padding: 7px 14px;
-    background: #d15151;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.25s;
-}
-
-.btn-clear:hover {
-    background: #b74242;
-}
-
-/* PAGINADO */
+/* ============================================================
+   PAGINADO
+============================================================ */
 .pagination {
     margin-top: 2rem;
     display: flex;
@@ -297,33 +268,34 @@
 }
 
 .pagination button {
-    background: #2a4f8e;
-    color: #fff;
+    background: rgba(233, 196, 106, .22);
+    color: #E9C46A;
     padding: 6px 14px;
     border-radius: 8px;
-    border: none;
+    border: 1px solid rgba(233, 196, 106, .35);
     cursor: pointer;
     font-weight: 600;
-    transition: 0.25s;
+    transition: .25s ease;
 }
 
 .pagination button:hover:not(:disabled) {
-    background: #3a65b6;
+    background: rgba(233, 196, 106, .32);
+    transform: translateY(-2px);
 }
 
 .pagination button:disabled {
-    opacity: .4;
+    opacity: .35;
     cursor: not-allowed;
 }
 
 .page-info {
-    font-weight: 600;
     color: #ffd77a;
+    font-weight: 600;
 }
 
-/* RESPONSIVE */
-
-
+/* ============================================================
+   RESPONSIVE (RESPETADO)
+============================================================ */
 @media (max-width: 950px) {
     .card-header h2 {
         font-size: 1rem;
@@ -344,7 +316,7 @@
 
 @media (max-width: 600px) {
     .cards-grid {
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns: 1fr;
     }
 }
 
@@ -356,7 +328,6 @@
     .vs {
         font-size: 0.8rem;
     }
-
 }
 
 @media (max-width: 480px) {

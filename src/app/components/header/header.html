@@ -69,17 +69,17 @@
 
         <a routerLink="/teams" class="menu-item" (click)="menuOpen = false">
             <h4>Equipos</h4>
-            <p>Planteles y datos.</p>
+            <p>Planteles, récords y datos generales.</p>
         </a>
 
         <a routerLink="/players" class="menu-item" (click)="menuOpen = false">
             <h4>Jugadores</h4>
-            <p>Stats y perfiles.</p>
+            <p>Estadísticas, rendimiento y perfiles.</p>
         </a>
 
         <a routerLink="/games" class="menu-item" (click)="menuOpen = false">
             <h4>Partidos</h4>
-            <p>Resultados y detalles.</p>
+            <p>Resultados, próximos juegos y detalles.</p>
         </a>
 
         <a routerLink="/headtohead" class="menu-item" (click)="menuOpen = false">
@@ -104,7 +104,7 @@
             [routerLink]="auth.isLoggedIn() && auth.isEmailVerified() ? ['/predictions'] : null"
             (click)="menuOpen = false">
             <h4>Predicciones</h4>
-            <p>Acertá resultados.</p>
+            <p>Sumá puntos acertando resultados.</p>
 
             <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
             <div class="note" *ngIf="auth.isLoggedIn() && !auth.isEmailVerified()">Validá tu email</div>
@@ -116,7 +116,7 @@
             (click)="menuOpen = false">
 
             <h4>Favoritos</h4>
-            <p>Acceso rápido.</p>
+            <p>Acceso rápido a tus preferidos.</p>
 
             <div class="note" *ngIf="!auth.isLoggedIn()">Requiere login</div>
             <div class="note" *ngIf="auth.isLoggedIn() && !auth.isEmailVerified()">Validá tu email</div>

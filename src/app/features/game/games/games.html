@@ -48,16 +48,29 @@
                     </div>
 
                     <div class="score">
-                        <span *ngIf="g.visitors.pts !== null && g.home.pts !== null">
-                            {{ g.visitors.pts }} — {{ g.home.pts }}
-                        </span>
+                        <div class="score-main">
+                            <ng-container *ngIf="g.visitors.pts !== null && g.home.pts !== null; else scoreVs">
+                                {{ g.visitors.pts }} — {{ g.home.pts }}
+                            </ng-container>
 
-                        <span *ngIf="g.status==='LIVE' && g.clock">
-                            {{ g.period }}C - {{ g.clock }}
-                        </span>
+                            <ng-template #scoreVs>
+                                vs
+                            </ng-template>
+                        </div>
 
-                        <span *ngIf="g.visitors.pts === null || g.home.pts === null">vs</span>
+                        <div class="score-sub" *ngIf="g.status === 'LIVE' || g.status === 'Final'">
+                            <!-- EN VIVO -->
+                            <ng-container *ngIf="g.status === 'LIVE' && g.clock">
+                                {{ g.period }}C · {{ g.clock }}
+                            </ng-container>
+
+                            <!-- FINAL -->
+                            <ng-container *ngIf="g.status === 'Final'">
+                                FINAL
+                            </ng-container>
+                        </div>
                     </div>
+
 
                     <div class="team">
                         <img [src]="g.home.logo" [alt]="g.home.name" />
@@ -69,44 +82,61 @@
 
                 <div class="arena" *ngIf="g.arena">{{ g.arena }}</div>
 
-                <ng-container *ngIf="auth.isLoggedIn()">
-                    <div class="prediction-box" *ngIf="g.status === 'Programado'">
-
-                        <h4>Tu predicción</h4>
-
-                        <div class="prediction-inputs">
-                            <div class="team-pred">
-                                <label>{{ g.visitors.name }}</label>
-                                <input type="number" min="0" [(ngModel)]="g.predVisitors" placeholder="Pts" />
-                            </div>
-
-                            <div class="team-pred">
-                                <label>{{ g.home.name }}</label>
-                                <input type="number" min="0" [(ngModel)]="g.predHome" placeholder="Pts" />
-                            </div>
-                        </div>
-
-                        <button class="btn-predict" (click)="savePrediction(g)" [disabled]="g.loadingPrediction">
-
-                            <ng-container *ngIf="!g.loadingPrediction">
-                                Guardar predicción
-                            </ng-container>
-
-                            <ng-container *ngIf="g.loadingPrediction">
-                                <span class="spinner"></span> Guardando...
-                            </ng-container>
-
-                        </button>
-
-
-                        <p class="error-msg" *ngIf="g.predictionError">
-                            {{ g.predictionError }}
-                        </p>
-
-                        <p class="saved" *ngIf="g.savedPrediction">Predicción guardada</p>
-                    </div>
+                <ng-container *ngIf="auth.isLoggedIn() && g.status === 'Programado'">
+                    <button class="btn-predict-open" (click)="openPredictionModal(g); $event.stopPropagation()">
+                        {{ g.predVisitors != null && g.predHome != null ? 'Cambiar predicción' : 'Hacer predicción' }}
+                    </button>
                 </ng-container>
+                
             </div>
         </section>
     </main>
+</div>
+
+<!-- ======================= MODAL ======================= -->
+<div class="modal-backdrop" *ngIf="modalOpen" (click)="closeModal()"></div>
+
+<div class="modal-container" *ngIf="modalOpen">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+
+        <button class="modal-close" (click)="closeModal()">✕</button>
+
+        <h2 class="modal-title">Predicción del Partido</h2>
+
+        <div class="modal-teams">
+            <div class="m-team">
+                <img [src]="currentGame.visitors.logo">
+                <h3>{{ currentGame.visitors.name }}</h3>
+                <input type="number" min="0" [(ngModel)]="currentGame.predVisitors" placeholder="Pts">
+            </div>
+
+            <span class="vs">vs</span>
+
+            <div class="m-team">
+                <img [src]="currentGame.home.logo">
+                <h3>{{ currentGame.home.name }}</h3>
+                <input type="number" min="0" [(ngModel)]="currentGame.predHome" placeholder="Pts">
+            </div>
+        </div>
+
+        <button class="modal-save" (click)="savePrediction(currentGame)" [disabled]="currentGame.loadingPrediction">
+
+            <ng-container *ngIf="!currentGame.loadingPrediction">
+                Guardar predicción
+            </ng-container>
+
+            <ng-container *ngIf="currentGame.loadingPrediction">
+                <span class="spinner"></span> Guardando...
+            </ng-container>
+        </button>
+
+        <p class="error-msg" *ngIf="currentGame.predictionError">
+            {{ currentGame.predictionError }}
+        </p>
+
+        <p class="saved" *ngIf="currentGame.savedPrediction">
+            Predicción guardada
+        </p>
+
+    </div>
 </div>

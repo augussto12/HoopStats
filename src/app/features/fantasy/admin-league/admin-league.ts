@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, HostListener } from '@angular/core';
-import { User, MyCreatedLeague } from '../../../models/interfaces';
+import { User } from '../../../models/interfaces';
 import { UserService } from '../../../services/user.service';
 import { AdminLeagueService } from '../../../services/admin-league.service';
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import { FantasyLeaguesService } from '../../../services/fantasy-leagues.service
 import { WithLoader } from '../../../decorators/with-loader.decorator';
 import { Router, NavigationStart } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { AuthService } from '../../../services/auth.service';
 
 export type MemberUser = User & {
   role: 'admin' | 'member';
@@ -32,7 +33,7 @@ export type MemberUser = User & {
 })
 export class AdminLeagueComponent implements OnInit {
 
-  adminLeagues: MyCreatedLeague[] = [];
+  adminLeagues: any[] = [];
   selectedLeagueIndex = 0;
 
   league: any = null;
@@ -60,32 +61,31 @@ export class AdminLeagueComponent implements OnInit {
     private leagueService: FantasyLeaguesService,
     private userService: UserService,
     private router: Router,
+    private auth: AuthService,
     public injector: Injector
   ) {
     this.interceptNavigation();
   }
 
-  // ⚡ Interceptor global para todas las navegaciones (router, links, header, etc.)
+  // ==============================
+  // ⚡ Interceptor de navegación
+  // ==============================
   private interceptNavigation() {
     this.router.events
       .pipe(filter(e => e instanceof NavigationStart))
       .subscribe((event: NavigationStart) => {
 
-        // Dejar navegar si se permitió explícitamente
         if (this.skipUnsavedCheck) {
           this.skipUnsavedCheck = false;
           return;
         }
 
-        // Si no hay cambios → permitir
         if (!this.hasChanges) return;
 
-        // HAY cambios sin guardar: cancelamos navegación
         const targetUrl = event.url;
 
         this.router.navigateByUrl(this.router.url, { replaceUrl: true });
 
-        // Mostramos modal
         this.openUnsavedChangesModal(() => {
           this.hasChanges = false;
           this.skipUnsavedCheck = true;
@@ -95,7 +95,6 @@ export class AdminLeagueComponent implements OnInit {
       });
   }
 
-  // ⚡ Evitar cerrar pestaña si hay cambios
   @HostListener('window:beforeunload', ['$event'])
   warnBeforeUnload($event: any) {
     if (this.hasChanges) {
@@ -103,7 +102,6 @@ export class AdminLeagueComponent implements OnInit {
     }
   }
 
-  // ⚡ Botón atrás del navegador
   @HostListener('window:popstate', ['$event'])
   onBrowserBack(event: PopStateEvent) {
 
@@ -124,7 +122,6 @@ export class AdminLeagueComponent implements OnInit {
       history.back();
     });
 
-    // Evita salir sin confirmar
     history.pushState(null, '', current);
   }
 
@@ -132,16 +129,22 @@ export class AdminLeagueComponent implements OnInit {
     this.hasChanges = true;
   }
 
+  // ==============================
+  // ⚡ INIT
+  // ==============================
   async ngOnInit() {
     this.loading = true;
 
     try {
-      this.adminLeagues = await this.leagueService.getMyCreatedLeagues();
+      // 🔥 Ahora solo una función que ya trae todo
+      const leagues = await this.leagueService.getLeaguesWhereImAdmin();
 
-      if (this.adminLeagues.length === 0) {
-        this.errorMsg = "No creaste ninguna liga.";
+      if (leagues.length === 0) {
+        this.errorMsg = "No sos administrador de ninguna liga.";
         return;
       }
+
+      this.adminLeagues = leagues;
 
       this.loadLeagueFromMemory(0);
       this.allUsers = await this.userService.getAllUsers();
@@ -154,11 +157,15 @@ export class AdminLeagueComponent implements OnInit {
     this.loading = false;
   }
 
+  // ==============================
+  // ⚡ Cargar liga en memoria
+  // ==============================
   loadLeagueFromMemory(index: number) {
     const entry = this.adminLeagues[index];
 
     this.league = { ...entry.league };
-    this.members = entry.members.map(m => ({
+
+    this.members = entry.members.map((m: any) => ({
       id: m.id,
       username: m.username,
       email: m.email,
@@ -181,22 +188,45 @@ export class AdminLeagueComponent implements OnInit {
     }
   }
 
-  isAlreadyMember(u: User): boolean {
-    return this.members.some(m => m.id === u.id);
+  // ==============================
+  // ⚡ Ver si es creador
+  // ==============================
+  isCreator(): boolean {
+    const user = this.auth.getUser();
+    return user && this.league?.created_by === user.id;
   }
 
-  addUser() {
-    if (this.selectedUser && !this.isAlreadyMember(this.selectedUser)) {
-      this.members.push({
-        ...this.selectedUser,
-        role: 'member',
-        status: 'pending',
-        origin: 'invite',
-        _new: true
-      });
-      this.markDirty();
-    }
-    this.selectedUser = null;
+  // ==============================
+  // ⚡ ELIMINAR LIGA
+  // ==============================
+  // async deleteLeague() {
+  //   if (!confirm("¿Seguro que querés eliminar esta liga? Esta acción no se puede deshacer.")) return;
+
+  //   try {
+  //     await this.adminService.deleteLeague(this.league.id);
+
+  //     this.adminLeagues.splice(this.selectedLeagueIndex, 1);
+
+  //     if (this.adminLeagues.length === 0) {
+  //       this.errorMsg = "Ya no administrás ninguna liga.";
+  //       this.league = null;
+  //       return;
+  //     }
+
+  //     this.selectedLeagueIndex = 0;
+  //     this.loadLeagueFromMemory(0);
+
+  //   } catch (err) {
+  //     console.error(err);
+  //     this.errorMsg = "Error al eliminar la liga.";
+  //   }
+  // }
+
+  // ==============================
+  // ⚡ ACCIONES DE USUARIOS
+  // ==============================
+  isAlreadyMember(u: User): boolean {
+    return this.members.some(m => m.id === u.id);
   }
 
   openRemoveModal(u: MemberUser, mode: 'delete' | 'inactivate') {
@@ -207,9 +237,7 @@ export class AdminLeagueComponent implements OnInit {
   confirmRemove() {
     if (!this.modalUser) return;
 
-    if (this.removeMode === 'delete') {
-      this.modalUser._delete = true;
-    }
+    if (this.removeMode === 'delete') this.modalUser._delete = true;
     if (this.removeMode === 'inactivate') {
       this.modalUser._inactivate = true;
       this.modalUser.status = 'inactive';
@@ -228,7 +256,7 @@ export class AdminLeagueComponent implements OnInit {
 
   removeAdmin(u: MemberUser) {
     if (u.id === this.league.created_by) {
-      this.errorMsg = "No podés quitar el admin al creador de la liga.";
+      this.errorMsg = "No podés quitar el admin al creador.";
       return;
     }
 
@@ -240,13 +268,11 @@ export class AdminLeagueComponent implements OnInit {
 
   attemptLeagueChange(newIndex: number) {
     if (this.hasChanges) {
-
       this.openUnsavedChangesModal(() => {
         this.selectedLeagueIndex = newIndex;
         this.hasChanges = false;
         this.loadLeagueFromMemory(newIndex);
       });
-
       return;
     }
 
@@ -258,6 +284,9 @@ export class AdminLeagueComponent implements OnInit {
     this.markDirty();
   }
 
+  // ==============================
+  // ⚡ GUARDAR CAMBIOS
+  // ==============================
   async saveChanges() {
     this.saving = true;
     this.successMsg = '';
@@ -311,6 +340,46 @@ export class AdminLeagueComponent implements OnInit {
 
     this.saving = false;
   }
+
+  onRemoveClicked(u: MemberUser) {
+    // Si es nuevo, eliminar localmente sin modal
+    if (u._new) {
+      this.members = this.members.filter(m => m !== u);
+      this.selectedUser = null;
+      this.markDirty();
+      return;
+    }
+
+    // Si no es nuevo modal normal
+    this.openRemoveModal(u, 'delete');
+    this.markDirty();
+  }
+
+  trackById(index: number, item: any) {
+    return item.id;
+  }
+
+  onUserChanged(user: User | null) {
+    this.selectedUser = user;
+
+    if (user && !this.isAlreadyMember(user)) {
+      this.members.push({
+        ...user,
+        role: 'member',
+        status: 'pending',
+        origin: 'invite',
+        _new: true
+      });
+      this.markDirty();
+    }
+
+    // 🔥 RESET VISUAL DEL SELECT:
+    setTimeout(() => {
+      this.selectedUser = null;
+    }, 0);
+  }
+
+
 
   confirmUnsavedExit() {
     if (this.pendingAction) {

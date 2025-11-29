@@ -88,6 +88,7 @@ export class PlayersByTeam implements OnInit {
 
       this.games = mapped;
       this.applyFilter();
+      console.log("games",this.games);
       this.streak = this.getStreak(teamId);
     } catch (e) {
       console.error(e);

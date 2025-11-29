@@ -584,6 +584,83 @@ input:checked+.slider:before {
 }
 
 
+.user-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Botón base */
+.icon-btn {
+    background: transparent;
+    border: none;
+    padding: 6px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+    transition: .25s ease;
+}
+
+.icon-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    fill: currentColor;
+}
+
+/* ------- Colores ------- */
+.icon-btn.promote {
+    color: #E9C46A;
+}
+
+/* dorado */
+.icon-btn.demote {
+    color: #89A6FF;
+}
+
+/* azul suave */
+.icon-btn.inactivate {
+    color: #d1c181;
+}
+
+/* luna */
+.icon-btn.remove {
+    color: #ff6b6b;
+}
+
+/* rojo */
+
+.icon-btn:hover {
+    transform: scale(1.15);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Marcar acciones pendientes */
+.user-card.to-delete {
+    background: #ffdddd !important;
+    opacity: 0.65;
+}
+
+.user-card.to-inactivate {
+    background: #fff3cd !important;
+    opacity: 0.75;
+}
+
+.user-card.to-promote {
+    border: 2px solid gold !important;
+}
+
+.user-card.to-demote {
+    border: 2px solid #668 !important;
+}
+
+
 /* ====== RESPONSIVE MÓVIL ====== */
 
 @media (max-width: 600px) {

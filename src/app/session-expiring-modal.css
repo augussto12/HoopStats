@@ -1,0 +1,136 @@
+/* === OVERLAY (fondo oscuro difuminado) === */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(5, 10, 25, 0.75);
+    /* muy similar a tu paleta */
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+
+    animation: fadeIn .25s ease-out;
+}
+
+/* === MODAL PRINCIPAL === */
+.modal {
+    background: rgba(15, 26, 47, 0.95);
+    padding: 26px 32px;
+    border-radius: 14px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+
+    animation: popIn .35s ease-out;
+}
+
+/* === TITULO === */
+.modal h2 {
+    color: #ffd86b;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    text-shadow: 0 0 8px rgba(255, 210, 110, 0.35);
+    font-weight: 700;
+}
+
+/* === TEXTO === */
+.modal p {
+    color: #dcdcdc;
+    font-size: 1rem;
+    margin-bottom: 22px;
+    opacity: .9;
+}
+
+/* === BOTONES === */
+.modal button {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0 6px;
+
+    transition:
+        background .25s ease,
+        transform .2s ease,
+        box-shadow .25s ease,
+        border-color .25s ease;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+    font-size: .95rem;
+}
+
+/* --- BOTÓN EXTENDER (azul premium) --- */
+.modal button:first-child {
+    background: linear-gradient(135deg, #2a4f8e, #1c3259);
+    color: white;
+}
+
+.modal button:first-child:hover {
+    color: antiquewhite;
+    transform: translateY(-3px);
+    background: linear-gradient(135deg, #3766b6, #243f6e);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+/* --- BOTÓN SALIR (rojo suave) --- */
+.modal button.logout {
+    background: #974c4c;
+    color: #fff;
+}
+
+.modal button.logout:hover {
+    background: #b96060;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+/* === ANIMACIONES === */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.7) translateY(10px);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 480px) {
+    .modal {
+        padding: 22px 20px;
+    }
+
+    .modal h2 {
+        font-size: 1.25rem;
+    }
+
+    .modal button {
+        width: 100%;
+        margin: 6px 0;
+    }
+}

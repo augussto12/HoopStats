@@ -32,6 +32,8 @@ export class Games implements OnInit {
 
   public isReady = false;
 
+  modalOpen = false;
+  currentGame: any = null;
 
   private api = inject(NbaApiService);
   private predictionService = inject(PredictionService);
@@ -84,6 +86,16 @@ export class Games implements OnInit {
       }
     }
   }
+
+  openPredictionModal(g: any) {
+    this.currentGame = g;
+    this.modalOpen = true;
+  }
+
+  closeModal() {
+    this.modalOpen = false;
+  }
+
 
   refresh() {
     this.loadGames();

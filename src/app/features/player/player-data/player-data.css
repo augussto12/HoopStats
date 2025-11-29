@@ -1,176 +1,235 @@
+/* ============================================================
+   CONTENEDOR PRINCIPAL
+============================================================ */
 .player-container {
   display: flex;
   justify-content: center;
-  align-items: center;
   padding: 3rem 1rem;
   color: #fff;
   width: 100%;
+  background: #0B1622;
   box-sizing: border-box;
+  animation: fadeIn .4s ease;
 }
 
+/* ============================================================
+   TARJETA DEL JUGADOR
+============================================================ */
 .player-card {
-  background: #1e2a3a;
+  background: #0F1A2F;
   border-radius: 16px;
   padding: 2rem;
   width: 100%;
-  max-width: 800px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  max-width: 850px;
+
+  border: 1px solid rgba(233, 196, 106, 0.25);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.5),
+    inset 0 0 10px rgba(233, 196, 106, 0.08);
+
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  margin: 0 auto;
 }
 
+/* ============================================================
+   HEADER DEL JUGADOR
+============================================================ */
 .player-header {
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: .5rem;
 }
 
 .player-info h2 {
   margin: 0;
-  font-size: 1.6rem;
-  color: #ffb347;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #E9C46A;
+  text-shadow: 0 0 10px rgba(233, 196, 106, 0.45);
 }
 
 .player-meta {
-  margin-top: 0.3rem;
-  font-size: 0.95rem;
-  color: #ccc;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.player-data {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.7rem 1.2rem;
-  font-size: 0.95rem;
-}
-
-.actions {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: #AEBEDB;
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  gap: 1rem;
 }
 
-.loading,
-.error {
-  text-align: center;
-  margin-top: 2rem;
-  color: #aaa;
-}
-
-.player-stats {
-  margin-top: 2rem;
-  background: #273347;
-  padding: 1rem 1.5rem;
+/* ============================================================
+   DATOS BÁSICOS DEL JUGADOR
+============================================================ */
+.player-data {
+  background: rgba(255,255,255,0.03);
   border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  padding: 1rem 1.2rem;
+  border: 1px solid rgba(233,196,106,0.2);
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .8rem 1.4rem;
+
+  box-shadow: inset 0 0 10px rgba(233,196,106,0.05);
+  font-size: 1rem;
+}
+
+.player-data div strong {
+  color: #E9C46A;
+}
+
+/* ============================================================
+   SECCIÓN DE ESTADÍSTICAS
+============================================================ */
+.player-stats {
+  background: #13233F;
+  padding: 1.4rem 1.2rem;
+  border-radius: 12px;
+
+  border: 1px solid rgba(233,196,106,0.25);
+  box-shadow:
+    0 4px 14px rgba(0,0,0,.45),
+    inset 0 0 10px rgba(233,196,106,.08);
+
+  /* 👇 clave para que sólo la tabla scrollee en mobile */
+  overflow-x: auto;
 }
 
 .player-stats h3 {
   text-align: center;
   margin-bottom: 1rem;
-  color: #fff;
+  font-size: 1.4rem;
+  color: #E9C46A;
+  text-shadow: 0 0 10px rgba(233,196,106,0.45);
 }
 
+/* ============================================================
+   TABLA DE ESTADÍSTICAS
+============================================================ */
 .stats-table {
   width: 100%;
   border-collapse: collapse;
-  color: #ddd;
-  font-size: 0.9rem;
+  color: #dce5ff;
+  font-size: .92rem;
+
+  /* 👇 para que en pantallas chicas tenga ancho mínimo y genere scroll */
+  min-width: 720px;
+}
+
+.stats-table thead {
+  background: linear-gradient(180deg, #1a2b45 0%, #122033 100%);
 }
 
 .stats-table th {
-  background-color: #1b2535;
-  color: #fff;
+  padding: 0.65rem;
+  color: #E9C46A;
   font-weight: 600;
-  padding: 0.6rem;
-  text-align: center;
+  border-bottom: 1px solid rgba(233,196,106,0.2);
 }
 
 .stats-table td {
   text-align: center;
-  padding: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.55rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
 .stats-table tr:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background: rgba(233,196,106,0.06);
 }
 
+/* ============================================================
+   LINK A PARTIDO EN TABLA
+============================================================ */
 .link {
-  color: #ffb347;
+  color: #E9C46A;
+  font-weight: 600;
   cursor: pointer;
+  transition: .2s;
 }
 
 .link:hover {
   text-decoration: underline;
+  color: #FFDFA5;
 }
 
-@media (max-width: 1200px) {
-
-  .player-stats {
-    padding: 1rem;
-  }
+/* ============================================================
+   ERROR / LOADING
+============================================================ */
+.error {
+  text-align: center;
+  margin-top: 1rem;
+  background: rgba(255,80,80,0.2);
+  border: 1px solid #ff8080;
+  padding: 1rem;
+  border-radius: 10px;
+  color: #ffbcbc;
 }
 
-@media (max-width: 720px) {
-  .player-info h2 {
-    font-size: 1.4rem;
-  }
-
-  .player-meta {
-    font-size: 0.85rem;
-  }
-
-  .player-data {
-    gap: 0.5rem;
-  }
-
-  .stats-table {
-    font-size: 0.95rem;
-  }
-
-  .stats-table th,
-  .stats-table td {
-    padding: 0.4rem;
-  }
-
-  .stats-table {
-    overflow-x: auto;
-    display: block;
-  }
+.loading {
+  text-align: center;
+  margin-top: 2rem;
+  color: #E9C46A;
 }
 
-@media (max-width: 480px) {
-  .player-info h2 {
-    font-size: 1.2rem;
-  }
+/* ============================================================
+   ANIMACIONES
+============================================================ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-  .player-meta {
-    font-size: 0.8rem;
-  }
-
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 900px) {
   .player-card {
-    padding: 1rem;
-    max-width: 100%;
+    padding: 1.6rem 1.2rem;
+  }
+
+  .player-info h2 {
+    font-size: 1.7rem;
+  }
+
+  .player-meta {
+    font-size: 0.9rem;
+    flex-direction: column;
+    gap: .2rem;
   }
 
   .player-data {
     grid-template-columns: 1fr;
-    font-size: 0.85rem;
+    font-size: .92rem;
+  }
+
+  .player-stats {
+    padding: 1.1rem .8rem;
+  }
+
+  .stats-table {
+    font-size: .85rem;
+    min-width: 650px; /* un poco más chica en mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .player-card {
+    padding: 1.2rem 0.9rem;
+  }
+
+  .player-info h2 {
+    font-size: 1.45rem;
+  }
+
+  .player-data {
+    font-size: .86rem;
   }
 
   .stats-table th,
   .stats-table td {
-    font-size: 0.8rem;
-    padding: 0.3rem;
-  }
-
-  .stats-table {
-    font-size: 0.8rem;
+    font-size: .78rem;
+    padding: 0.35rem;
   }
 }

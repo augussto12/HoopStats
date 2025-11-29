@@ -281,3 +281,39 @@ export interface League {
     created_at: string;
 }
 
+export interface MyLeague {
+    league: {
+        id: number;
+        name: string;
+        description: string | null;
+        privacy: 'public' | 'private';
+        max_teams: number | null;
+        created_at: string;
+        status_code?: string; 
+        status_description?: string;  
+    };
+
+    me: {
+        team_id: number;
+        team_name: string;
+        is_admin: boolean;
+        points: string;  
+        status: string;   
+        status_desc: string; 
+        joined_at: string;
+    };
+
+    teams: {
+        team_id: number;
+        team_name: string;
+        user_id: number;
+        owner: string; 
+        points: string;
+        status: string;
+        status_desc: string;
+        is_admin: boolean;
+    }[];
+
+    recent_trades: any[]; 
+}
+

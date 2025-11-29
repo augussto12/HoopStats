@@ -40,3 +40,66 @@
     opacity: 0.9;
     margin: 0;
 }
+
+/* ============================================================
+   SELECT (MATCHING LOGIN STYLE)
+============================================================ */
+.input-group select {
+    width: 100%;
+    padding: 14px 12px;
+
+    background: rgba(15, 26, 47, 0.85);
+    border: 1px solid rgba(233, 196, 106, 0.35);
+    border-radius: 10px;
+
+    color: #fff;
+    font-size: 1rem;
+    backdrop-filter: blur(5px);
+
+    cursor: pointer;
+    transition: .25s ease;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    padding-right: 40px;
+
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%23E9C46A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 16px;
+    background-position: right 12px center;
+}
+
+.input-group select:hover {
+    background: rgba(233, 196, 106, 0.10);
+    border-color: rgba(233, 196, 106, 0.55);
+}
+
+.input-group select:focus {
+    border-color: #E9C46A;
+    background: rgba(233, 196, 106, .15);
+    box-shadow: 0 0 10px rgba(233, 196, 106, .4);
+    outline: none;
+}
+
+.input-group select option {
+    background: #0B1622 !important;
+    color: #fff;
+}
+
+.input-group select option[disabled] {
+    color: #7a8ca7;
+}
+
+/* Floating label compatible con select */
+.input-group select:focus+label,
+.input-group select:not([value=""])+label {
+    top: -10px;
+    left: 8px;
+    padding: 0 6px;
+    font-size: 0.75rem;
+    background: #0B1622;
+    color: #E9C46A;
+    border-radius: 4px;
+}

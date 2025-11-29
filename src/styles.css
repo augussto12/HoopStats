@@ -52,3 +52,29 @@ a {
 button {
   font-family: inherit;
 }
+
+/* ========================= */
+/*     GLOBAL TOAST STYLE    */
+/* ========================= */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 14px 18px;
+  background: rgba(233,196,106,0.18);
+  border: 1px solid rgba(233,196,106,0.45);
+  color: #E9C46A;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-15px);
+  transition: 0.35s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}

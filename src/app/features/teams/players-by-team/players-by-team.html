@@ -25,13 +25,14 @@
         </div>
     </div>
 
-    <div class="view-selector">
+    <div class="select-wrapper">
         <select class="inputSelect" [(ngModel)]="selectedView" (change)="onViewChange()">
             <option value="players">Plantilla actual</option>
             <option value="games">Partidos</option>
             <option value="stats">Estadísticas</option>
         </select>
     </div>
+
 
     <div class="data">
 
@@ -89,7 +90,7 @@
                     <span class="pill" [class.live]="g.status === 'LIVE'" [class.final]="g.status === 'Final'">
                         {{ g.status }}
                     </span>
-                    <span class="time">{{ g.date }} - {{ g.timeLocal }}</span>
+                    <span class="time">{{ g.dateReadable }} - {{ g.timeLocal }}</span>
                 </div>
 
                 <div class="teams">

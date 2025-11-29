@@ -17,11 +17,15 @@
             </thead>
 
             <tbody>
-                <tr *ngFor="let l of leagues">
+                <tr *ngFor="let l of leagues" (click)="openDetails(l.id)">
 
-                    <td data-label="Creador">{{ l.creator_username }}</td>
+                    <td data-label="Creador">
+                        {{ l.creator_username }}
+                    </td>
 
-                    <td data-label="Nombre">{{ l.name }}</td>
+                    <td data-label="Nombre">
+                        {{ l.name }}
+                    </td>
 
                     <td data-label="Usuarios">
                         <span class="users-badge" [class.green]="l.max_teams === null || l.current_users < l.max_teams"
@@ -37,15 +41,28 @@
                         </span>
                     </td>
 
-                    <td data-label="Acción" class="action-cell">
+                    <td data-label="Acción" class="action-cell" (click)="$event.stopPropagation()">
 
-                        <button *ngIf="l.privacy === 'public'" class="join-btn" [disabled]="loadingReq[l.id]"
-                            (click)="requestJoin(l.id)">
+                        <!-- ✔ Soy admin de la liga → Administrar -->
+                        <button *ngIf="isAdmin(l)" class="admin-btn" (click)="manageLeague(l.id)">
+                            Administrar
+                        </button>
+
+                        <!-- ✔ Soy miembro → Abandonar -->
+                        <button *ngIf="!isAdmin(l) && isMember(l)" class="leave-btn" [disabled]="loadingReq[l.id]"
+                            (click)="leaveLeague(l.id)">
+                            Abandonar
+                        </button>
+
+                        <!-- ✔ No soy miembro → Unirse (pública) -->
+                        <button *ngIf="!isMember(l) && l.privacy === 'public'" class="join-btn"
+                            [disabled]="loadingReq[l.id]" (click)="requestJoin(l.id)">
                             Unirse
                         </button>
 
-                        <button *ngIf="l.privacy === 'private'" class="request-btn" [disabled]="loadingReq[l.id]"
-                            (click)="requestJoin(l.id)">
+                        <!-- ✔ No soy miembro → Solicitar acceso (privada) -->
+                        <button *ngIf="!isMember(l) && l.privacy === 'private'" class="request-btn"
+                            [disabled]="loadingReq[l.id]" (click)="requestJoin(l.id)">
                             Solicitar acceso
                         </button>
 

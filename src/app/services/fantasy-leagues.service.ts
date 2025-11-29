@@ -31,6 +31,14 @@ export class FantasyLeaguesService {
         return this.api.get<MyCreatedLeague[]>('/fantasy-leagues/my-created-leagues');
     }
 
+    getLeaguesWhereImAdmin() {
+        return this.api.get<any[]>(`/fantasy-leagues/admin-leagues`);
+    }
+
+    getLeagueDetails(id: number) {
+        return this.api.get<any>(`/fantasy-leagues/league-details/${id}`);
+    }
+
     getMyInvites(): Promise<any[]> {
         return this.api.get('/fantasy-league-membership/my/invites');
     }
@@ -42,6 +50,15 @@ export class FantasyLeaguesService {
     requestJoinLeague(leagueId: number) {
         return this.api.post(`/fantasy-league-membership/leagues/${leagueId}/request-join`, {});
     }
+
+    isMemberOfLeague(leagueId: number) {
+        return this.api.get(`/fantasy-league-membership/is-member/${leagueId}`);
+    }
+
+    leaveLeague(leagueId: number) {
+        return this.api.post(`/fantasy-league-membership/leagues/${leagueId}/leave`, {});
+    }
+
 
     // ──────────────────────────────────────────────
     //                     EQUIPOS

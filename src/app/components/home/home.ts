@@ -55,6 +55,7 @@ export class Home implements OnInit {
   async loadNotifications() {
     try {
       this.notifications = await this.notificationService.getNotifications();
+      console.log(this.notifications);
       this.unreadCount = this.notifications.filter(n => !n.is_read).length;
     } catch (err) {
       console.error("Error loading notifications", err);

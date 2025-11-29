@@ -40,14 +40,22 @@ export class Header {
   ) { }
 
   async ngOnInit() {
-    if (this.auth.isLoggedIn()) {
-      await this.loadNotifications();
-    }
 
+    this.auth.loginStatus$.subscribe(async (logged) => {
+      if (logged) {
+        await this.loadNotifications();
+      } else {
+        this.notifications = [];
+        this.unreadCount = 0;
+      }
+    });
+
+    // Quita el scroll cuando el menú cierra
     this.router.events.subscribe(() => {
       document.body.classList.remove("no-scroll");
     });
   }
+
 
   async loadNotifications() {
     try {
@@ -72,10 +80,14 @@ export class Header {
 
     this.notificationsService
       .markAsRead(notificationId)
-      .then(() => this.loadNotifications())
+      .then(async () => {
+        await this.loadNotifications();
+        this.updateUnreadCount();
+      })
       .catch(err => console.error("Error al marcar como leído:", err))
       .finally(() => this.loadingRead[notificationId] = false);
   }
+
 
   deleteNotification(notificationId: number) {
     this.loadingDelete[notificationId] = true;
@@ -84,10 +96,12 @@ export class Header {
       .deleteNotification(notificationId)
       .then(() => {
         this.notifications = this.notifications.filter(n => n.id !== notificationId);
+        this.updateUnreadCount();
       })
       .catch(err => console.error("Error al borrar notificación:", err))
       .finally(() => this.loadingDelete[notificationId] = false);
   }
+
 
   acceptInvite(inviteId: number, notifId: number) {
     this.loadingAccept[notifId] = true;
@@ -96,10 +110,12 @@ export class Header {
       .then(() => this.notificationsService.deleteNotification(notifId))
       .then(() => {
         this.notifications = this.notifications.filter(n => n.id !== notifId);
+        this.updateUnreadCount();
       })
       .catch(err => console.error("Error al aceptar invitación:", err))
       .finally(() => this.loadingAccept[notifId] = false);
   }
+
 
   rejectInvite(inviteId: number, notifId: number) {
     this.loadingReject[notifId] = true;
@@ -108,10 +124,12 @@ export class Header {
       .then(() => this.notificationsService.deleteNotification(notifId))
       .then(() => {
         this.notifications = this.notifications.filter(n => n.id !== notifId);
+        this.updateUnreadCount();
       })
       .catch(err => console.error("Error al rechazar invitación:", err))
       .finally(() => this.loadingReject[notifId] = false);
   }
+
 
   approveRequest(requestId: number, notifId: number) {
     this.loadingAccept[notifId] = true;
@@ -120,10 +138,12 @@ export class Header {
       .then(() => this.notificationsService.deleteNotification(notifId))
       .then(() => {
         this.notifications = this.notifications.filter(n => n.id !== notifId);
+        this.updateUnreadCount();
       })
       .catch(err => console.error("Error al aprobar solicitud:", err))
       .finally(() => this.loadingAccept[notifId] = false);
   }
+
 
   rejectRequest(requestId: number, notifId: number) {
     this.loadingReject[notifId] = true;
@@ -132,10 +152,18 @@ export class Header {
       .then(() => this.notificationsService.deleteNotification(notifId))
       .then(() => {
         this.notifications = this.notifications.filter(n => n.id !== notifId);
+        this.updateUnreadCount();
       })
       .catch(err => console.error("Error al rechazar solicitud:", err))
       .finally(() => this.loadingReject[notifId] = false);
   }
+
+
+
+  private updateUnreadCount() {
+    this.unreadCount = this.notifications.filter(n => !n.is_read).length;
+  }
+
 
   // ============================================
   //               MENÚ / LOGOUT

@@ -70,6 +70,7 @@
 /* Hover pro */
 .league-table tbody tr {
     transition: .25s ease;
+    cursor: pointer;
 }
 
 .league-table tbody tr:hover {
@@ -199,6 +200,74 @@
 .league-table th,
 .league-table td {
     text-align: center;
+}
+
+/* ============================================= */
+/*   BOTONES NUEVOS (ADMINISTRAR / ABANDONAR)   */
+/* ============================================= */
+
+/* ---- ADMINISTRAR ---- */
+.league-table .admin-btn {
+    background: linear-gradient(135deg, #50c7b2, #2e8f7f);
+    color: #0b1f1a;
+    padding: 9px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(80, 199, 178, 0.45);
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.9rem;
+
+    transition:
+        background 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.league-table .admin-btn:hover {
+    background: linear-gradient(135deg, #6bdcc8, #3aa897);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+    border-color: rgba(80, 199, 178, 0.65);
+}
+
+.league-table .admin-btn:active {
+    transform: scale(0.96);
+}
+
+
+/* ---- ABANDONAR ---- */
+.league-table .leave-btn {
+    background: linear-gradient(135deg, #cc4646, #8e2d2d);
+    color: #fff;
+    padding: 9px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(204, 70, 70, 0.4);
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.9rem;
+
+    transition:
+        background 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.league-table .leave-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #e05c5c, #9b3333);
+    transform: translateY(-3px);
+    border-color: rgba(204, 70, 70, 0.65);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+.league-table .leave-btn:active:not(:disabled) {
+    transform: scale(0.96);
+}
+
+.league-table .leave-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
 }
 
 

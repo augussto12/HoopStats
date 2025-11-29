@@ -2,23 +2,35 @@
   <h1>Listado de jugadores</h1>
 
   <div class="filters">
-    <label>Apellido:</label>
-    <input type="text" [(ngModel)]="selectedLastName" placeholder="Ej: Doncic" />
 
-    <label>País:</label>
-    <select [(ngModel)]="selectedCountry" class="inputSelect">
-      <option [ngValue]="''">Todos los países</option>
-      <option *ngFor="let c of countries" [ngValue]="c.name">{{ c.name }}</option>
-    </select>
+    <div>
+      <label>Apellido:</label>
+      <input type="text" [(ngModel)]="selectedLastName" placeholder="Ej: Doncic" />
+    </div>
 
-    <label>Equipo:</label>
-    <select [(ngModel)]="selectedTeamId" class="inputSelect">
-      <option [ngValue]="null">Todos los equipos</option>
-      <option *ngFor="let t of nbaTeams" [ngValue]="t.id">{{ t.name }}</option>
-    </select>
+    <div>
+      <label>País:</label>
+      <div class="select-wrapper">
+        <select [(ngModel)]="selectedCountry">
+          <option [ngValue]="''">Todos los países</option>
+          <option *ngFor="let c of countries" [ngValue]="c.name">{{ c.name }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <label>Equipo:</label>
+      <div class="select-wrapper">
+        <select [(ngModel)]="selectedTeamId">
+          <option [ngValue]="null">Todos los equipos</option>
+          <option *ngFor="let t of nbaTeams" [ngValue]="t.id">{{ t.name }}</option>
+        </select>
+      </div>
+    </div>
 
     <button (click)="getPlayersFiltered()">Buscar</button>
   </div>
+
 
   <div class="stats-loading" *ngIf="loading">
     <div class="spinner"></div>

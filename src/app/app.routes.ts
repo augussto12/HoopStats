@@ -27,6 +27,7 @@ import { CreateLeagueComponent } from './features/fantasy/create-league/create-l
 import { AdminLeagueComponent } from './features/fantasy/admin-league/admin-league';
 import { MyLeagues } from './features/fantasy/my-leagues/my-leagues';
 import { Leagues } from './features/fantasy/leagues/leagues';
+import { LeagueDetails } from './features/fantasy/league-details/league-details';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -81,6 +82,11 @@ export const routes: Routes = [
     {
         path: 'my-leagues',
         component: MyLeagues,
+        canActivate: [AuthGuard, EmailVerifiedGuard]
+    },
+    {
+        path: 'league-details/:id',
+        component: LeagueDetails,
         canActivate: [AuthGuard, EmailVerifiedGuard]
     },
     {

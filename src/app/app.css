@@ -6,7 +6,7 @@
 
 .main-content {
   flex: 1;
-  max-width: 1200px;
+  max-width: 1700px;
   margin: 0 auto;
   width: 100%;
   padding: 1.8rem;
@@ -48,6 +48,30 @@
   font-size: 0.75rem;
   color: #9ca3c8;
 }
+
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 14px 18px;
+  background: rgba(233, 196, 106, 0.18);
+  border: 1px solid rgba(233, 196, 106, 0.45);
+  color: #E9C46A;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-15px);
+  transition: 0.35s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
