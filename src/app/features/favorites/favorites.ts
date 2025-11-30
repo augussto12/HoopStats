@@ -2,9 +2,7 @@ import { Component, OnInit, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FavoritesService } from '../../services/favorites-service';
 import { RouterLink } from '@angular/router';
-import { WithLoader } from '../../decorators/with-loader.decorator';
 
-@WithLoader()
 @Component({
   selector: 'app-favorites',
   standalone: true,
@@ -19,10 +17,7 @@ export class Favorites implements OnInit {
   public error: string | null = null;
   public isReady = false;
 
-  constructor(
-    private favoritesService: FavoritesService,
-    public injector: Injector
-  ) { }
+  constructor(private favoritesService: FavoritesService,) { }
 
   async ngOnInit() {
     try {

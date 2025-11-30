@@ -2,15 +2,23 @@
 
     <div *ngIf="team; else createTeam" class="fantasy-team">
 
+        <!-- MERCADO BLOQUEADO -->
         <div *ngIf="isLocked" class="lock-banner">
             Mercado bloqueado hasta:
             {{ lockEnd | date:'dd/MM HH:mm' }}
         </div>
 
-        <div *ngIf="!isLocked" class="lock-banner">
+        <!-- MERCADO ABIERTO CON CIERRE -->
+        <div *ngIf="!isLocked && lockStart" class="lock-banner">
             Mercado abierto — Cierra:
             {{ lockStart | date:'dd/MM HH:mm' }}
         </div>
+
+        <!-- MERCADO ABIERTO SIN LOCK (DÍA LIBRE) -->
+        <div *ngIf="!isLocked && !lockStart" class="lock-banner">
+            Mercado abierto — sin partidos hoy
+        </div>
+
 
         <!-- HEADER -->
         <div class="team-header">
@@ -172,11 +180,10 @@
                 </div>
 
                 <!-- PAGINACIÓN -->
-                <div class="pagination" *ngIf="totalPages > 1">
-                    <button (click)="prevPage()" [disabled]="currentPage === 1">◀</button>
-                    <span>{{ currentPage }} / {{ totalPages }}</span>
-                    <button (click)="nextPage()" [disabled]="currentPage === totalPages">▶</button>
-                </div>
+                <app-paginator *ngIf="totalPages > 1" [currentPage]="currentPage" [totalPages]="totalPages"
+                    (pageChange)="currentPage = $event">
+                </app-paginator>
+
 
             </div>
 
@@ -192,7 +199,7 @@
                         <p class="summary-label">Sale:</p>
                         <p *ngIf="removalCandidate; else noSale">{{ removalCandidate.full_name }}</p>
                         <ng-template #noSale>
-                            <p class="summary-empty">– ninguno –</p>
+                            <p class="summary-empty"></p>
                         </ng-template>
                     </div>
 
@@ -200,7 +207,7 @@
                         <p class="summary-label">Entra:</p>
                         <p *ngIf="additionCandidate; else noAdd">{{ additionCandidate.full_name }}</p>
                         <ng-template #noAdd>
-                            <p class="summary-empty">– ninguno –</p>
+                            <p class="summary-empty"></p>
                         </ng-template>
                     </div>
 
@@ -236,26 +243,71 @@
         <!--       HISTORIAL          -->
         <!-- ========================= -->
         <div *ngIf="viewMode === 'history'" class="history-box">
+
             <h3 class="history-title">Historial de movimientos</h3>
 
             <div *ngIf="groupedHistory.length === 0" class="empty-history">
-                Sin movimientos.
+                Sin movimientos todavía.
             </div>
 
-            <div *ngFor="let h of groupedHistory" class="history-item">
-                <div class="history-header">{{ h.timestamp | date:'short' }}</div>
-                <div class="history-body">
-                    <div class="history-col">
-                        <h4>Entraron</h4>
-                        <p *ngFor="let p of h.entran">{{ p }}</p>
+            <!-- WRAPPER DE GRID -->
+            <div class="history-grid">
+
+                <div *ngFor="let h of paginatedHistory" class="trade-card fancy-trade-card">
+
+                    <!-- Fecha -->
+                    <div class="trade-card-header">
+                        <div class="trade-date">
+                            ⏱ {{ h.timestamp | date:'dd/MM HH:mm' }}
+                        </div>
                     </div>
-                    <div class="history-col">
-                        <h4>Salieron</h4>
-                        <p *ngFor="let p of h.salen">{{ p }}</p>
+
+                    <!-- BODY -->
+                    <div class="trade-card-body">
+
+                        <!-- ENTRAN -->
+                        <div class="trade-section">
+                            <div class="trade-section-title add">
+                                <span class="arrow-up">▲</span> Entró
+                            </div>
+
+                            <div *ngIf="h.entran?.length === 0">
+                                <p class="trade-empty">—</p>
+                            </div>
+
+                            <div *ngFor="let p of h.entran" class="trade-pill add-pill">
+                                <span class="pill-icon">＋</span> {{ p }}
+                            </div>
+                        </div>
+
+                        <!-- SALEN -->
+                        <div class="trade-section">
+                            <div class="trade-section-title drop">
+                                <span class="arrow-down">▼</span> Salió
+                            </div>
+
+                            <div *ngIf="h.salen?.length === 0">
+                                <p class="trade-empty">—</p>
+                            </div>
+
+                            <div *ngFor="let p of h.salen" class="trade-pill drop-pill">
+                                <span class="pill-icon">−</span> {{ p }}
+                            </div>
+                        </div>
+
                     </div>
+
                 </div>
-            </div>
-        </div>
+                <!-- PAGINACIÓN -->
+                <app-paginator *ngIf="historyTotalPages > 1" [currentPage]="historyPage"
+                    [totalPages]="historyTotalPages" (pageChange)="historyPage = $event">
+                </app-paginator>
+
+
+            </div> <!-- /history-grid -->
+
+        </div> <!-- /history-box -->
+
 
     </div>
 

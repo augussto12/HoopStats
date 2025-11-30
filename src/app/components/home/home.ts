@@ -1,7 +1,6 @@
 import {
   Component,
-  OnInit,
-  ChangeDetectionStrategy
+  OnInit
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
@@ -23,7 +22,6 @@ import { NotificationService } from '../../services/notification.service';
   templateUrl: './home.html',
   styleUrls: ['./home.css', '../../features/game/games/games.css']
 })
-
 export class Home implements OnInit {
 
   liveGames: Game[] = [];
@@ -32,9 +30,6 @@ export class Home implements OnInit {
 
   notifications: NotificationItem[] = [];
   unreadCount = 0;
-
-  loadingLive = false;
-  loadingPlayers = false;
 
   errorLive: string | null = null;
   errorPlayers: string | null = null;
@@ -55,7 +50,6 @@ export class Home implements OnInit {
   async loadNotifications() {
     try {
       this.notifications = await this.notificationService.getNotifications();
-      console.log(this.notifications);
       this.unreadCount = this.notifications.filter(n => !n.is_read).length;
     } catch (err) {
       console.error("Error loading notifications", err);
@@ -79,25 +73,22 @@ export class Home implements OnInit {
   }
 
   async loadLiveGames() {
-    this.loadingLive = true;
-
     try {
       const live = await this.nbaService.getLiveGames();
       this.liveGames = live?.length ? live.map(mapGame) : [];
-      if (!this.liveGames.length) this.errorLive = 'No hay partidos en vivo actualmente.';
+
+      if (!this.liveGames.length) {
+        this.errorLive = 'No hay partidos en vivo actualmente.';
+      }
+
     } catch {
       this.errorLive = 'Error al cargar los partidos en vivo.';
-    } finally {
-      this.loadingLive = false;
     }
   }
 
   async loadBestPlayers() {
-    this.loadingPlayers = true;
-
     try {
       const data = await this.bestPlayersService.getLatest();
-
       this.bestPlayers = Array.isArray(data) ? data : [];
 
       if (!this.bestPlayers.length) {
@@ -106,9 +97,14 @@ export class Home implements OnInit {
 
     } catch {
       this.errorPlayers = 'Error al obtener los mejores jugadores.';
-    } finally {
-      this.loadingPlayers = false;
     }
+  }
+  onImageLoad(ev: Event) {
+    (ev.target as HTMLImageElement).classList.add('img-loaded');
+  }
+
+  onImageError(ev: Event) {
+    (ev.target as HTMLImageElement).src = 'assets/img/news-placeholder.jpg';
   }
 
 }

@@ -109,7 +109,11 @@ export const routes: Routes = [
         component: AdminLeagueComponent,
         canActivate: [AuthGuard, EmailVerifiedGuard]
     },
-
+    {
+        path: 'admin-league/:id',
+        component: AdminLeagueComponent,
+        canActivate: [AuthGuard, EmailVerifiedGuard]
+    },
 
     { path: '**', redirectTo: '' }
 ];

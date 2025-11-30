@@ -169,6 +169,32 @@ input:checked+.slider:before {
         0 0 10px rgba(255, 230, 150, 0.9);
 }
 
+
+.delete-league-box {
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 25px;
+}
+
+.delete-league-btn {
+    background: #c62828;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .25s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .3);
+}
+
+.delete-league-btn:hover {
+    background: #e53935;
+    transform: translateY(-2px);
+}
+
+
+
 .members-section {
     margin-top: 35px;
 }
@@ -431,6 +457,12 @@ input:checked+.slider:before {
 .confirm-btn {
     background: #E63946;
     color: #fff;
+
+}
+
+.confirm-btn:hover {
+    transition: .25s ease;
+    transform: translateY(-2px);
 }
 
 /* ========== STATUS BADGES ========== */
@@ -586,69 +618,93 @@ input:checked+.slider:before {
 
 .user-actions {
     display: flex;
+    gap: 8px;
     align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
 }
 
-/* Botón base */
 .icon-btn {
-    background: transparent;
-    border: none;
-    padding: 6px;
     width: 32px;
     height: 32px;
-    cursor: pointer;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.06);
     display: flex;
-    align-items: center;
     justify-content: center;
-
-    border-radius: 8px;
-    transition: .25s ease;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    transition: 0.15s;
 }
 
 .icon-btn svg {
-    width: 20px;
-    height: 20px;
-    stroke: currentColor;
-    fill: currentColor;
+    width: 18px;
+    height: 18px;
+    stroke: #fff;
+    fill: none;
 }
 
-/* ------- Colores ------- */
-.icon-btn.promote {
-    color: #E9C46A;
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
 }
 
-/* dorado */
-.icon-btn.demote {
-    color: #89A6FF;
-}
-
-/* azul suave */
-.icon-btn.inactivate {
-    color: #d1c181;
-}
-
-/* luna */
-.icon-btn.remove {
+.icon-btn.remove svg {
     color: #ff6b6b;
 }
 
-/* rojo */
+.icon-btn.activate:hover {
+    background: rgba(0, 180, 0, 0.25);
+}
 
-.icon-btn:hover {
-    transform: scale(1.15);
-    background: rgba(255, 255, 255, 0.08);
+.icon-btn.promote:hover {
+    background: rgba(0, 120, 255, 0.25);
+}
+
+.icon-btn.demote:hover {
+    background: rgba(255, 180, 0, 0.25);
+}
+
+.icon-btn.inactivate {
+    background: rgba(255, 80, 80, 0.15);
+    border: 1px solid rgba(255, 200, 80, 0.35);
+    color: #e0b6b6;
+
+    transition:
+        background 0.25s ease,
+        transform 0.2s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.icon-btn.inactivate svg {
+    stroke: #e08282;
+    width: 20px;
+    height: 20px;
+}
+
+.icon-btn.inactivate:hover {
+    background: rgba(255, 110, 110, 0.25);
+    border-color: rgba(255, 110, 110, 0.55);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 110, 110, 0.35);
+}
+
+.icon-btn.inactivate:active {
+    transform: scale(0.9);
+    box-shadow: none;
 }
 
 /* Marcar acciones pendientes */
 .user-card.to-delete {
-    background: #ffdddd !important;
+    background: #534c4d !important;
     opacity: 0.65;
 }
 
 .user-card.to-inactivate {
-    background: #fff3cd !important;
+    background: #4d4c58 !important;
+    opacity: 0.75;
+}
+
+.user-card.to-activate {
+    background: #4d4c58 !important;
     opacity: 0.75;
 }
 

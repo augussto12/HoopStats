@@ -62,6 +62,10 @@ export class AdminLeagueService {
         return this.api.patch(`/fantasy-leagues/${leagueId}/members/${userId}/inactivate`, {});
     }
 
+    setActive(leagueId: number, userId: number) {
+        return this.api.patch(`/fantasy-leagues/${leagueId}/members/${userId}/activate`, {});
+    }
+
     deleteMember(leagueId: number, userId: number) {
         return this.api.delete(`/fantasy-leagues/${leagueId}/members/${userId}`);
     }

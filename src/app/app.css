@@ -75,11 +75,43 @@
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
+
   .main-content {
     padding: 1.2rem;
   }
 
   .app-footer {
-    padding: 18px 20px;
+    padding: 14px 16px;
+    gap: 0.15rem;
+  }
+
+  .footer-copy {
+    font-size: 0.75rem;
+  }
+
+  .footer-slogan {
+    font-size: 0.7rem;
+  }
+
+  .footer-version {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-footer {
+    padding: 12px 14px;
+  }
+
+  .footer-copy {
+    font-size: 0.7rem;
+  }
+
+  .footer-slogan {
+    font-size: 0.65rem;
+  }
+
+  .footer-version {
+    font-size: 0.6rem;
   }
 }

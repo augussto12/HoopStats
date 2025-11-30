@@ -1,12 +1,10 @@
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { WithLoader } from '../../decorators/with-loader.decorator';
 
-@WithLoader()
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -34,12 +32,10 @@ export class Profile implements OnInit {
   public resendLoading = false;
   public passLoading = false;
 
-
   constructor(
     private auth: AuthService,
     private api: ApiService,
-    private router: Router,
-    public injector: Injector
+    private router: Router
   ) { }
 
   async ngOnInit() {
@@ -55,7 +51,6 @@ export class Profile implements OnInit {
     female: "Femenino",
     other: "Otro"
   };
-
 
   // ------------------------------------------------
   // EDITAR PERFIL
@@ -125,7 +120,6 @@ export class Profile implements OnInit {
     }
   }
 
-
   // ------------------------------------------------
   // ELIMINAR CUENTA
   // ------------------------------------------------
@@ -169,5 +163,4 @@ export class Profile implements OnInit {
       this.resendLoading = false;
     }
   }
-
 }

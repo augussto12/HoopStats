@@ -1,68 +1,157 @@
-/* =========================
+/* ============================================================
    CONTENEDOR GENERAL
-========================= */
-.league-dashboard {
-    max-width: 1100px;
+============================================================ */
+.my-leagues-container {
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 18px;
-    color: white;
-    animation: fadeIn .35s ease;
+    padding: 1.5rem;
+    animation: fadeIn 0.45s ease;
+    color: #dce5ff;
 }
 
-/* =========================
-   HEADER DE LIGA
-========================= */
-.league-header {
+/* ============================================================
+   HEADER
+============================================================ */
+.my-leagues-header {
+    border-bottom: 1px solid rgba(233, 196, 106, 0.25);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+
+    animation: fadeSlideDown 0.45s ease;
+}
+
+.my-leagues-header h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #E9C46A;
+    text-shadow: 0 0 10px rgba(233, 196, 106, 0.45);
+}
+
+.my-leagues-header .subtitle {
+    margin-top: .25rem;
+    color: #c9d4f0;
+}
+
+/* ============================================================
+   GRID DE LIGAS
+============================================================ */
+.league-list {
+    display: grid;
+    gap: 1.3rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    animation: fadeIn 0.4s ease;
+}
+
+/* ============================================================
+   CARD DE LIGA
+============================================================ */
+.league-card {
     background: #0F1A2F;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    padding: 18px;
     border-radius: 14px;
-    margin-bottom: 22px;
+    padding: 1.3rem;
+
+    border: 1px solid rgba(233, 196, 106, 0.25);
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.45),
+        inset 0 0 10px rgba(233, 196, 106, 0.08);
+
+    cursor: pointer;
+    transition: 0.25s ease;
+    position: relative;
+
+    opacity: 0;
+    animation: cardFade 0.6s ease forwards;
+}
+
+.league-card:hover {
+    background: rgba(233, 196, 106, 0.12);
+    transform: translateY(-4px);
 
     box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.45),
-        0 0 12px rgba(255, 218, 120, 0.08);
-
-    animation: subtlePop .35s ease;
+        0 6px 20px rgba(0, 0, 0, 0.55),
+        0 0 12px rgba(233, 196, 106, 0.25);
 }
 
-.league-title {
-    margin: 0;
-    font-size: 1.7rem;
-    color: #fff;
-    text-shadow: 0 0 10px rgba(255, 210, 110, 0.5);
-    text-align: center;
+/* ============================================================
+   NOMBRE + DESCRIPCIÓN
+============================================================ */
+.league-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0 0 .4rem;
+
+    color: #E9C46A;
+    text-shadow: 0 0 8px rgba(255, 255, 255, .15);
 }
 
+.league-desc {
+    margin: 0 0 1rem;
+    opacity: 0.85;
+    font-size: .92rem;
+    text-shadow: 0 0 6px rgba(180, 200, 255, .18);
+}
+
+/* ============================================================
+   METADATA
+============================================================ */
 .league-meta {
-    margin-top: 10px;
     display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-    font-size: 0.95rem;
+    flex-direction: column;
+    gap: .45rem;
+    font-size: .9rem;
 }
 
-
-.subtitle {
-    margin: 0;
-    font-size: 1rem;
-    color: #a1a3e7;
-    text-align: center;
+/* Etiquetas */
+.league-meta span {
+    color: #dce5ff;
 }
 
-/* =========================
-   MENSAJE SIN LIGAS
-========================= */
+/* Valores destacados */
+.league-meta strong {
+    color: #fff;
+    text-shadow: 0 0 6px rgba(255, 255, 255, .22);
+}
+
+/* ============================================================
+   PRIVACY BADGE
+============================================================ */
+.privacy {
+    width: fit-content;
+    padding: .35rem .75rem;
+    border-radius: 8px;
+
+    background: rgba(120, 200, 255, 0.18);
+    border: 1px solid rgba(120, 200, 255, 0.45);
+    color: #8bd0ff;
+
+    font-size: .82rem;
+    font-weight: 600;
+    text-shadow: 0 0 8px rgba(120, 200, 255, .3);
+}
+
+.privacy.private {
+    background: rgba(233, 196, 106, 0.20);
+    border: 1px solid rgba(233, 196, 106, 0.55);
+    color: #E9C46A;
+
+    text-shadow: 0 0 10px rgba(233, 196, 106, .4);
+}
+
+/* ============================================================
+   EMPTY STATE
+============================================================ */
 .empty-text {
     margin-top: 40px;
     text-align: center;
-    padding: 18px 24px;
+    padding: 1.2rem 1.5rem;
 
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(233, 196, 106, 0.35);
+    background: rgba(233, 196, 106, 0.1);
+    border: 1px solid rgba(233, 196, 106, 0.3);
 
-    border-radius: 14px;
-    max-width: 450px;
+    border-radius: 12px;
+    max-width: 420px;
     margin-left: auto;
     margin-right: auto;
 
@@ -70,197 +159,54 @@
     font-size: 1.1rem;
     font-weight: 600;
 
-    text-shadow: 0 0 8px rgba(233, 196, 106, 0.35);
-
     box-shadow:
-        0 6px 18px rgba(0, 0, 0, 0.4),
-        inset 0 0 12px rgba(233, 196, 106, 0.12);
+        0 5px 16px rgba(0, 0, 0, 0.45),
+        inset 0 0 14px rgba(233, 196, 106, .12);
 
-    animation: fadeIn .4s ease;
+    animation: fadeIn 0.4s ease;
 }
 
-
-/* PRIVACY BADGE */
-.privacy {
-    padding: 6px 12px;
-    border-radius: 8px;
-    background: rgba(120, 200, 255, 0.18);
-    color: #8bd0ff;
-    border: 1px solid rgba(120, 200, 255, 0.35);
-}
-
-.teams-count {
-    padding: 6px 12px;
-    border-radius: 8px;
-    background: rgba(120, 200, 255, 0.18);
-    color: #8bd0ff;
-    border: 1px solid rgba(120, 200, 255, 0.35);
-}
-
-.created-at {
-    padding: 6px 12px;
-    border-radius: 8px;
-    background: rgba(120, 200, 255, 0.18);
-    color: #8bd0ff;
-    border: 1px solid rgba(120, 200, 255, 0.35);
-}
-
-.privacy.private {
-    background: rgba(233, 196, 106, 0.18);
-    color: #E9C46A;
-    border: 1px solid rgba(233, 196, 106, 0.4);
-}
-
-/* =========================
-   TABLA FANTASY — PRO STYLE
-========================= */
-.ranking-table {
-    width: 100%;
-    border-collapse: collapse;
-    border: 1px solid rgba(233, 196, 106, 0.45);
-    border-radius: 14px;
-
-    overflow: hidden;
-
-    /* brillo leve dorado */
-    box-shadow:
-        0 0 12px rgba(233, 196, 106, 0.15),
-        inset 0 0 10px rgba(233, 196, 106, 0.08);
-
-    animation: subtlePop .35s ease;
-}
-
-/* HEADERS CON BRILLO */
-.ranking-table thead {
-    background: linear-gradient(90deg,
-            rgba(233, 196, 106, 0.28),
-            rgba(233, 196, 106, 0.10));
-    box-shadow: inset 0 -2px 8px rgba(233, 196, 106, 0.15);
-}
-
-.ranking-table th {
-    padding: 14px;
-    color: #E9C46A;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    font-size: 0.9rem;
-    border-bottom: 1px solid rgba(233, 196, 106, 0.25);
-}
-
-/* =========================
-   CELDAS / FILAS
-========================= */
-.ranking-table td {
-    padding: 14px;
-    text-align: center;
-    background: #0F1A2F;
-    font-size: 0.95rem;
-
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-/* Hover — brillo dorado suave */
-.ranking-table tbody tr {
-    transition: background .25s ease, transform .25s ease, box-shadow .25s ease;
-}
-
-.ranking-table tbody tr:hover {
-    background: rgba(233, 196, 106, 0.10);
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 4px 14px rgba(0, 0, 0, 0.4),
-        0 0 10px rgba(233, 196, 106, 0.25);
-}
-
-.ranking-table tr.me {
-    background: rgba(124, 227, 135, 0.20) !important;
-
-    box-shadow:
-        inset 0 0 12px rgba(124, 227, 135, 0.42),
-        0 0 8px rgba(124, 227, 135, 0.3);
-
-    font-weight: 700;
-    color: #E9C46A;
-}
-
-/* =========================
-   PAGINADOR
-========================= */
-.pagination-row {
-    margin-top: 20px;
+.meta-row {
     display: flex;
-    justify-content: center;
-    gap: 16px;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: .4rem .2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+
+    font-size: .88rem;
 }
 
-.pagination-row button {
-    background: rgba(20, 35, 60, 0.65);
-    padding: 10px 18px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: white;
+.meta-row:last-child {
+    border-bottom: none;
+}
+
+.meta-label {
+    color: #149b2b;
+    font-weight: 500;
+}
+
+.meta-value {
+    color: #7e690f;
     font-weight: 600;
-    cursor: pointer;
-    transition: 0.25s ease;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
 }
 
-.pagination-row button:hover:not(:disabled) {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.5);
+/* Posición con color dorado */
+.meta-value.position {
+    color: #E9C46A;
+    text-shadow: 0 0 6px rgba(233, 196, 106, .35);
 }
 
-.pagination-row button:disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
+/* Estado dinámico */
+.meta-value.status {
+    text-transform: capitalize;
+    color: #8bd0ff;
+    text-shadow: 0 0 6px rgba(120, 200, 255, .3);
 }
 
-.pagination-row span {
-    color: #ffd86b;
-    font-weight: 600;
-    font-size: 1rem;
-
-    text-shadow: 0 0 8px rgba(255, 210, 110, 0.45);
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-@media (max-width: 750px) {
-
-    .league-title {
-        font-size: 1.45rem;
-    }
-
-    .ranking-table th {
-        padding: 10px 4px;
-        font-size: 0.75rem;
-    }
-
-    .ranking-table td {
-        padding: 10px 4px;
-        font-size: 0.82rem;
-    }
-}
-
-@media (max-width: 480px) {
-
-    .league-title {
-        font-size: 1.25rem;
-        text-align: center;
-    }
-
-    .ranking-table th,
-    .ranking-table td {
-        padding: 7px 3px;
-        font-size: 0.7rem;
-    }
-}
-
-/* =========================
+/* ============================================================
    ANIMACIONES
-========================= */
+============================================================ */
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -273,107 +219,54 @@
     }
 }
 
-@keyframes subtlePop {
-    0% {
+@keyframes fadeSlideDown {
+    from {
         opacity: 0;
-        transform: scale(.96) translateY(8px);
+        transform: translateY(-8px);
     }
 
-    60% {
+    to {
         opacity: 1;
-        transform: scale(1.02);
-    }
-
-    100% {
-        transform: scale(1);
+        transform: translateY(0);
     }
 }
 
-/* =============== TRANSICIÓN ENTRE PÁGINAS =============== */
-
-.ranking-anim-wrapper {
-    position: relative;
-    overflow: hidden;
-}
-
-/* Animación cuando cambia la liga */
-.ranking-anim-wrapper.animating {
-    animation: slideOutIn .45s ease forwards;
-}
-
-@keyframes slideOutIn {
-
-    /* sale la tabla actual */
-    0% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-
-    40% {
+@keyframes cardFade {
+    from {
         opacity: 0;
-        transform: translateX(-40px);
+        transform: translateY(10px);
     }
 
-    /* empieza a entrar la siguiente */
-    60% {
-        opacity: 0;
-        transform: translateX(40px);
-    }
-
-    100% {
+    to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(0);
     }
 }
 
-.ranking-anim-wrapper.anim-next {
-    animation: slideLeft .45s ease;
-}
-
-.ranking-anim-wrapper.anim-prev {
-    animation: slideRight .45s ease;
-}
-
-@keyframes slideLeft {
-    0% {
-        opacity: 1;
-        transform: translateX(0);
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media (max-width: 600px) {
+    .my-leagues-header h1 {
+        font-size: 1.65rem;
     }
 
-    40% {
-        opacity: 0;
-        transform: translateX(-40px);
+    .league-card {
+        padding: 1rem;
     }
 
-    60% {
-        opacity: 0;
-        transform: translateX(40px);
+    .league-name {
+        font-size: 1.2rem;
     }
 
-    100% {
-        opacity: 1;
-        transform: translateX(0);
+    .league-meta {
+        font-size: .85rem;
     }
 }
 
-@keyframes slideRight {
-    0% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-
-    40% {
-        opacity: 0;
-        transform: translateX(40px);
-    }
-
-    60% {
-        opacity: 0;
-        transform: translateX(-40px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(0);
+@media (max-width: 380px) {
+    .league-card {
+        border-radius: 12px;
+        padding: .9rem;
     }
 }

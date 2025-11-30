@@ -43,24 +43,23 @@
 
                     <td data-label="Acción" class="action-cell" (click)="$event.stopPropagation()">
 
-                        <!-- ✔ Soy admin de la liga → Administrar -->
+                        <!-- ADMINISTRADOR -->
                         <button *ngIf="isAdmin(l)" class="admin-btn" (click)="manageLeague(l.id)">
                             Administrar
                         </button>
 
-                        <!-- ✔ Soy miembro → Abandonar -->
-                        <button *ngIf="!isAdmin(l) && isMember(l)" class="leave-btn" [disabled]="loadingReq[l.id]"
-                            (click)="leaveLeague(l.id)">
-                            Abandonar
+                        <!-- MIEMBRO (NO ADMIN) -->
+                        <button *ngIf="isMember(l) && !isAdmin(l)" class="leave-btn" (click)="leaveLeague(l.id)">
+                            Abandonar liga
                         </button>
 
-                        <!-- ✔ No soy miembro → Unirse (pública) -->
+                        <!-- NO soy miembro → pública -->
                         <button *ngIf="!isMember(l) && l.privacy === 'public'" class="join-btn"
                             [disabled]="loadingReq[l.id]" (click)="requestJoin(l.id)">
                             Unirse
                         </button>
 
-                        <!-- ✔ No soy miembro → Solicitar acceso (privada) -->
+                        <!-- NO soy miembro → privada -->
                         <button *ngIf="!isMember(l) && l.privacy === 'private'" class="request-btn"
                             [disabled]="loadingReq[l.id]" (click)="requestJoin(l.id)">
                             Solicitar acceso
@@ -75,4 +74,28 @@
 
     </div>
 
+</div>
+
+<!-- ============================
+            MODAL LEAVE LEAGUE
+============================= -->
+<div class="modal-backdrop" *ngIf="leaveModalLeagueId">
+    <div class="modal-box">
+
+        <h3 class="modal-title">Abandonar liga</h3>
+
+        <p class="modal-message">
+            ¿Seguro que querés abandonar esta liga?<br>
+            Ya no vas a aparecer en la tabla de posiciones ni podrás volver sin invitación si es privada.
+        </p>
+
+        <div class="modal-buttons">
+            <button class="cancel-btn" (click)="closeLeaveModal()">Cancelar</button>
+
+            <button class="confirm-btn danger" (click)="confirmLeaveLeague()">
+                Abandonar
+            </button>
+        </div>
+
+    </div>
 </div>

@@ -7,9 +7,7 @@ import { mapGame } from '../../../utils/mapGame';
 import { FavoritesService } from '../../../services/favorites-service';
 import { Team } from '../../../models/interfaces';
 import { AuthService } from '../../../services/auth.service';
-import { WithLoader } from '../../../decorators/with-loader.decorator';
 
-@WithLoader()
 @Component({
   selector: 'app-players-by-team',
   standalone: true,
@@ -38,7 +36,7 @@ export class PlayersByTeam implements OnInit {
   private favService = inject(FavoritesService);
   public auth = inject(AuthService);
 
-  constructor(public injector: Injector) { }
+  constructor() { }
 
   async ngOnInit() {
     this.teamId = Number(this.route.snapshot.paramMap.get('id'));
@@ -88,7 +86,6 @@ export class PlayersByTeam implements OnInit {
 
       this.games = mapped;
       this.applyFilter();
-      console.log("games",this.games);
       this.streak = this.getStreak(teamId);
     } catch (e) {
       console.error(e);

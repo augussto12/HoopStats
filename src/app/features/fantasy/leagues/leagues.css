@@ -271,6 +271,104 @@
 }
 
 
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 15, 30, 0.72);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    animation: fadeIn .25s ease;
+}
+
+.modal-box {
+    background: rgba(18, 28, 48, 0.95);
+    border-radius: 16px;
+    padding: 26px 24px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    color: #fff;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.55);
+
+    animation: popIn .3s ease;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.cancel-btn,
+.confirm-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: .25s ease;
+}
+
+.cancel-btn {
+    background: rgba(20, 35, 60, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+}
+
+.cancel-btn:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+}
+
+.confirm-btn.danger {
+    background: linear-gradient(135deg, #b84f4f, #7e2e2e);
+    color: white;
+}
+
+.confirm-btn.danger:hover {
+    background: linear-gradient(135deg, #d46a6a, #8a3535);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 60, 60, 0.35);
+}
+
+/* ANIMACIONES */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(.7) translateY(15px);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+
 /* =========================
    MOBILE → CARDS
 ========================= */

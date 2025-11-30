@@ -68,13 +68,8 @@
     </section>
 
     <!-- PAGINADO -->
-    <div class="pagination" *ngIf="totalPages > 1">
-        <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">◀</button>
+    <app-paginator *ngIf="totalPages > 1" [currentPage]="currentPage" [totalPages]="totalPages"
+        (pageChange)="currentPage = $event">
+    </app-paginator>
 
-        <span class="page-info">
-            Página {{ currentPage }} / {{ totalPages }}
-        </span>
-
-        <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages">▶</button>
-    </div>
 </div>

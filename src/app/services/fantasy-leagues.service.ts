@@ -15,6 +15,10 @@ export class FantasyLeaguesService {
         return this.api.post('/fantasy-leagues', { name, privacy, description, maxTeams });
     }
 
+    deleteLeague(leagueId: number) {
+        return this.api.delete(`/fantasy-leagues/${leagueId}`);
+    }
+
     getAdminStatus() {
         return this.api.get('/fantasy-leagues/my-admin-status');
     }
@@ -56,7 +60,7 @@ export class FantasyLeaguesService {
     }
 
     leaveLeague(leagueId: number) {
-        return this.api.post(`/fantasy-league-membership/leagues/${leagueId}/leave`, {});
+        return this.api.post(`/fantasy-leagues/leagues/${leagueId}/leave`, {});
     }
 
 
@@ -77,10 +81,10 @@ export class FantasyLeaguesService {
     }
 
     getLeagueTrades(leagueId: number) {
-        return this.api.get(`/fantasy-leagues/${leagueId}/trades`);
+        return this.api.get(`/fantasy-trades/${leagueId}/trades`);
     }
 
     getLeagueMarket(leagueId: number) {
-        return this.api.get(`/fantasy-leagues/${leagueId}/market`);
+        return this.api.get(`/fantasy-trades/${leagueId}/market`);
     }
 }

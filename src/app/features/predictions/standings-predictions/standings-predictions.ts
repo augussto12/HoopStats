@@ -1,9 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../services/api.service';
-import { WithLoader } from '../../../decorators/with-loader.decorator';
 
-@WithLoader()
 @Component({
   selector: 'app-standings-predictions',
   standalone: true,
@@ -17,10 +15,7 @@ export class StandingsPredictions implements OnInit {
   public error: string | null = null;
   public isReady = false;
 
-  constructor(
-    private api: ApiService,
-    public injector: Injector 
-  ) { }
+  constructor(private api: ApiService,) { }
 
   async ngOnInit() {
     await this.loadRanking();

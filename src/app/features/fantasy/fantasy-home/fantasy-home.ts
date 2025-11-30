@@ -3,9 +3,7 @@ import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FantasyLeaguesService } from '../../../services/fantasy-leagues.service';
-import { WithLoader } from '../../../decorators/with-loader.decorator';
 
-@WithLoader()
 @Component({
   selector: 'app-fantasy-home',
   standalone: true,
@@ -21,7 +19,6 @@ export class FantasyHome {
   constructor(
     private leaguesService: FantasyLeaguesService,
     private router: Router,
-    public injector: Injector
   ) { }
 
   async ngOnInit() {

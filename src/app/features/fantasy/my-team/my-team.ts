@@ -4,14 +4,13 @@ import { NbaApiService } from '../../../services/nba-api';
 import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { WithLoader } from '../../../decorators/with-loader.decorator';
 import { MarketLockService } from '../../../services/market-lock.service';
+import { Paginator } from '../../../components/paginator/paginator';
 
-@WithLoader()
 @Component({
   selector: 'app-my-team',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, Paginator],
   templateUrl: './my-team.html',
   styleUrls: ['./my-team.css'],
 })
@@ -55,7 +54,7 @@ export class MyTeam implements OnInit {
 
   // Paginado
   currentPage = 1;
-  pageSize = 12;
+  pageSize = 16;
 
   get paginatedPlayers() {
     const start = (this.currentPage - 1) * this.pageSize;
@@ -65,6 +64,9 @@ export class MyTeam implements OnInit {
   get totalPages() {
     return Math.ceil(this.filteredPlayers.length / this.pageSize);
   }
+
+  historyPage = 1;
+  historyPageSize = 5;
 
   // Loaders
   loadingTeam = true;
@@ -96,7 +98,6 @@ export class MyTeam implements OnInit {
   shakeTrade = false;
 
   constructor(
-    public injector: Injector,
     private fantasy: FantasyService,
     private api: ApiService,
     private nba: NbaApiService,
@@ -125,6 +126,7 @@ export class MyTeam implements OnInit {
       price: Math.round(Number(p.price)),
       total_pts: Number(p.total_pts)
     }));
+
 
     this.newName = this.team ? this.team.name : "";
     this.editingName = !this.team;
@@ -175,13 +177,37 @@ export class MyTeam implements OnInit {
   async loadMarketLock() {
     try {
       const res: any = await this.marketLock.getMarketLock();
-      this.isLocked = res.isLocked;
+
+      // Caso: no hay lock hoy
+      if (res.noGamesToday) {
+        this.isLocked = false;
+        this.lockMessage = "Hoy no hay partidos — Mercado abierto.";
+        return;
+      }
+
+      // Caso: hay lock válido
       this.lockStart = new Date(res.lockStart);
       this.lockEnd = new Date(res.lockEnd);
+
+      const now = new Date();
+      this.isLocked = now >= this.lockStart && now <= this.lockEnd;
+
+      if (this.isLocked) {
+        this.lockMessage = `Mercado bloqueado hasta las ${this.lockEnd.toLocaleString()}`;
+      } else {
+        this.lockMessage = `Mercado abierto — Cierra: ${this.lockStart.toLocaleString()}`;
+      }
+
     } catch (err) {
       console.error("Error cargando market lock", err);
+      this.isLocked = false;
+      this.lockStart = null;
+      this.lockEnd = null;
+      this.lockMessage = "";
     }
   }
+
+
 
   get necesitaIniciales(): boolean {
     return this.players.length < 5;
@@ -203,7 +229,7 @@ export class MyTeam implements OnInit {
 
     try {
       if (!this.team) {
-        
+
         await this.fantasy.createTeam(name);
         this.loadingCreate = false;
         await this.loadFantasyTeam();
@@ -399,6 +425,16 @@ export class MyTeam implements OnInit {
   nextPage() {
     if (this.currentPage < this.totalPages) this.currentPage++;
   }
+
+  get historyTotalPages() {
+    return Math.ceil(this.groupedHistory.length / this.historyPageSize);
+  }
+
+  get paginatedHistory() {
+    const start = (this.historyPage - 1) * this.historyPageSize;
+    return this.groupedHistory.slice(start, start + this.historyPageSize);
+  }
+
 
   get budgetPreview(): number | null {
     if (!this.team) return null;

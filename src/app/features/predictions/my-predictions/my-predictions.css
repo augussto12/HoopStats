@@ -2,8 +2,9 @@
    CONTENEDOR GENERAL
 ============================================================ */
 .predictions-wrapper {
-    width: min(1200px, 94%);
-    margin: 2.5rem auto;
+    width: min(1400px, 94%);
+    margin: 0.2rem auto;
+    margin-top: -2rem;
     padding: 1rem;
     color: #fff;
     font-family: 'Poppins', sans-serif;

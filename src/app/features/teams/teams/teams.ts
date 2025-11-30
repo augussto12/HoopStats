@@ -5,9 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { WithLoader } from '../../../decorators/with-loader.decorator';
 
-@WithLoader()
 @Component({
   selector: 'app-teams',
   standalone: true,
@@ -30,7 +28,7 @@ export class TeamsComponent implements OnInit {
   private favoritesService = inject(FavoritesService);
   public auth = inject(AuthService);
 
-  constructor(public injector: Injector) { }
+  constructor() { }
 
   async ngOnInit() {
     await this.getTeams();
@@ -47,7 +45,7 @@ export class TeamsComponent implements OnInit {
       this.teamsEast = nbaTeams.filter((t: any) => t.leagues.standard.conference === 'East');
       this.teamsWest = nbaTeams.filter((t: any) => t.leagues.standard.conference === 'West');
 
-      // 🟢 Solo pedir favoritos si está logueado
+      // Solo pedir favoritos si está logueado
       if (this.auth.isLoggedIn()) {
         try {
           const favorites = await this.favoritesService.getFavorites();

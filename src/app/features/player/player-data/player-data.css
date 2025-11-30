@@ -2,12 +2,12 @@
    CONTENEDOR PRINCIPAL
 ============================================================ */
 .player-container {
+  margin-top: -3rem;
   display: flex;
   justify-content: center;
   padding: 3rem 1rem;
   color: #fff;
   width: 100%;
-  background: #0B1622;
   box-sizing: border-box;
   animation: fadeIn .4s ease;
 }
@@ -20,7 +20,7 @@
   border-radius: 16px;
   padding: 2rem;
   width: 100%;
-  max-width: 850px;
+  max-width: 1200px;
 
   border: 1px solid rgba(233, 196, 106, 0.25);
   box-shadow:

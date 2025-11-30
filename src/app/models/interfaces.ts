@@ -220,8 +220,19 @@ export interface MyLeague {
     id: number;
     name: string;
     privacy: 'public' | 'private';
-    is_admin: boolean;
+    my_team: {
+        id: number;
+        name: string;
+        is_admin: boolean;
+        status: string;
+        status_desc: string;
+        joined_at: string;
+        points: number;
+        position: number;
+    };
 }
+
+
 
 
 export interface AdminLeagueResponse {
@@ -289,17 +300,17 @@ export interface MyLeague {
         privacy: 'public' | 'private';
         max_teams: number | null;
         created_at: string;
-        status_code?: string; 
-        status_description?: string;  
+        status_code?: string;
+        status_description?: string;
     };
 
     me: {
         team_id: number;
         team_name: string;
         is_admin: boolean;
-        points: string;  
-        status: string;   
-        status_desc: string; 
+        points: string;
+        status: string;
+        status_desc: string;
         joined_at: string;
     };
 
@@ -307,13 +318,54 @@ export interface MyLeague {
         team_id: number;
         team_name: string;
         user_id: number;
-        owner: string; 
+        owner: string;
         points: string;
         status: string;
         status_desc: string;
         is_admin: boolean;
     }[];
 
-    recent_trades: any[]; 
+    recent_trades: any[];
 }
 
+// Un trade agrupado por timestamp
+export interface LeagueTrade {
+    timestamp: string;
+    team_name: string;
+    user_name: string;
+    entran: string[] | null;
+    salen: string[] | null;
+}
+
+// Mercado de jugadores en la liga
+export interface LeagueMarketStat {
+    full_name: string;
+    total_adds: number;
+    total_drops: number;
+}
+
+// Equipo dentro de la liga
+export interface LeagueTeam {
+    team_id: number;
+    team_name: string;
+    owner: string;
+    points: number;
+    status: string;
+    status_desc: string;
+    is_admin: boolean;
+}
+
+// Info general de la liga
+export interface LeagueInfo {
+    id: number;
+    name: string;
+    description: string;
+    privacy: 'public' | 'private';
+    max_teams: number;
+    created_at: string;
+}
+
+export interface LeagueDetailsResponse {
+    league: LeagueInfo;
+    teams: LeagueTeam[];
+}

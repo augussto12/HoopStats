@@ -309,6 +309,45 @@
   flex-direction: column;
 }
 
+/* Imagen inicial invisible */
+.news-img {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+
+  /* SKELETON */
+  animation: pulse 1.5s ease infinite;
+}
+
+/* Cuando carga → fade-in */
+.news-img.img-loaded {
+  opacity: 1;
+  animation: none;
+  /* Quitar pulso skeleton */
+}
+
+/* Placeholder si falla */
+.news-img.error {
+  opacity: 1;
+  animation: none;
+}
+
+/* Skeleton pulsing */
+@keyframes pulse {
+  0% {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+
+  50% {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  100% {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
 /* ===========
    RESPONSIVE
 =========== */

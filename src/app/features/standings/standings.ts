@@ -1,9 +1,7 @@
 import { Component, Injector, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NbaApiService } from '../../services/nba-api';
-import { WithLoader } from '../../decorators/with-loader.decorator';
 
-@WithLoader()
 @Component({
   selector: 'app-standings',
   standalone: true,
@@ -19,7 +17,7 @@ export class Standings implements OnInit {
 
   private api = inject(NbaApiService);
 
-  constructor(public injector: Injector) { }
+  constructor() { }
 
   async ngOnInit() {
     try {

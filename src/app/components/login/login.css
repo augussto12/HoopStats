@@ -243,7 +243,6 @@
     border-radius: 14px;
     padding: 2rem;
     text-align: center;
-
     width: 280px;
 
     border: 1px solid rgba(233, 196, 106, .35);
@@ -252,7 +251,11 @@
         inset 0 0 12px rgba(233, 196, 106, .08);
 
     color: #fff;
+
+    position: relative;
+    z-index: 999999;
 }
+
 
 /* SPINNER */
 .spinner {

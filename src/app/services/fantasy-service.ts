@@ -60,7 +60,7 @@ export class FantasyService {
 
     //        HISTORIAL COMBINADO
     getGroupedTransactionsByTeam(teamId: number) {
-        return this.api.get<any[]>(`/fantasy/trades/history-by-team?teamId=${teamId}`);
+        return this.api.get<any[]>(`/fantasy-trades/team/${teamId}/trades`);
     }
 
     //        RANKING GLOBAL

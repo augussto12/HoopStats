@@ -2,7 +2,7 @@
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.55);
+  background: rgba(0, 0, 0, .55);
   animation: fadeIn .25s ease;
   z-index: 9000;
 }
@@ -20,9 +20,9 @@
   background: #101a33;
   padding: 18px 24px;
   border-radius: 14px;
-  box-shadow: 0 6px 22px rgba(0,0,0,.45);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, .45);
 
-  border: 1px solid rgba(255,255,255,.10);
+  border: 1px solid rgba(255, 255, 255, .10);
 
   text-align: center;
   animation: fadeInUp .3s ease;
@@ -45,7 +45,7 @@
   border-radius: 10px;
   background: #233a74;
   color: white;
-  border: 1px solid rgba(255,255,255,.15);
+  border: 1px solid rgba(255, 255, 255, .15);
   cursor: pointer;
   font-weight: 600;
   transition: .2s ease;
@@ -57,6 +57,71 @@
 
 /* Animación */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translate(-50%, -40%); }
-  to { opacity: 1; transform: translate(-50%, -50%); }
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* ================================
+   INFO BOX - ACTUALIZACIÓN 7 AM
+================================ */
+.fantasy-info-box {
+  margin: 14px auto 22px;
+  padding: 12px 18px;
+
+  max-width: 620px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(233, 196, 106, 0.35);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+
+  color: #f3d99b;
+  font-size: 0.95rem;
+  animation: fadeInfoBox .45s ease-out;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35),
+    inset 0 0 12px rgba(233, 196, 106, 0.08);
+}
+
+.info-icon {
+  font-size: 1.35rem;
+  text-shadow: 0 0 8px rgba(233, 196, 106, 0.55);
+}
+
+.info-text b {
+  color: #ffd06e;
+}
+
+/* Animación */
+@keyframes fadeInfoBox {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .fantasy-info-box {
+    font-size: 0.85rem;
+    padding: 10px 14px;
+  }
+
+  .info-icon {
+    font-size: 1.2rem;
+  }
 }

@@ -5,8 +5,7 @@ import { AdminLeagueService } from '../../../services/admin-league.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FantasyLeaguesService } from '../../../services/fantasy-leagues.service';
-import { WithLoader } from '../../../decorators/with-loader.decorator';
-import { Router, NavigationStart } from '@angular/router';
+import { Router, NavigationStart, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from '../../../services/auth.service';
 
@@ -21,9 +20,10 @@ export type MemberUser = User & {
   _inactivate?: boolean;
   _promote?: boolean;
   _demote?: boolean;
+  _activate?: boolean;
+  _cancelInvite?: boolean;
 };
 
-@WithLoader()
 @Component({
   selector: 'app-admin-league',
   standalone: true,
@@ -56,13 +56,17 @@ export class AdminLeagueComponent implements OnInit {
   showUnsavedModal = false;
   pendingAction: (() => void) | null = null;
 
+  showDeleteLeagueModal = false;
+  pendingDeleteLeague: (() => void) | null = null;
+
+
   constructor(
     private adminService: AdminLeagueService,
+    private route: ActivatedRoute,
     private leagueService: FantasyLeaguesService,
     private userService: UserService,
     private router: Router,
     private auth: AuthService,
-    public injector: Injector
   ) {
     this.interceptNavigation();
   }
@@ -136,17 +140,25 @@ export class AdminLeagueComponent implements OnInit {
     this.loading = true;
 
     try {
-      // 🔥 Ahora solo una función que ya trae todo
       const leagues = await this.leagueService.getLeaguesWhereImAdmin();
+      this.adminLeagues = leagues;
 
       if (leagues.length === 0) {
         this.errorMsg = "No sos administrador de ninguna liga.";
         return;
       }
 
-      this.adminLeagues = leagues;
+      // Leer ID si vino desde la ruta
+      const paramId = Number(this.route.snapshot.paramMap.get("id"));
 
-      this.loadLeagueFromMemory(0);
+      if (paramId) {
+        const index = this.adminLeagues.findIndex(l => l.league.id === paramId);
+        if (index !== -1) {
+          this.selectedLeagueIndex = index;
+        }
+      }
+
+      this.loadLeagueFromMemory(this.selectedLeagueIndex);
       this.allUsers = await this.userService.getAllUsers();
 
     } catch (e) {
@@ -157,8 +169,9 @@ export class AdminLeagueComponent implements OnInit {
     this.loading = false;
   }
 
+
   // ==============================
-  // ⚡ Cargar liga en memoria
+  //  Cargar liga en memoria
   // ==============================
   loadLeagueFromMemory(index: number) {
     const entry = this.adminLeagues[index];
@@ -189,7 +202,7 @@ export class AdminLeagueComponent implements OnInit {
   }
 
   // ==============================
-  // ⚡ Ver si es creador
+  //  Ver si es creador
   // ==============================
   isCreator(): boolean {
     const user = this.auth.getUser();
@@ -197,33 +210,55 @@ export class AdminLeagueComponent implements OnInit {
   }
 
   // ==============================
-  // ⚡ ELIMINAR LIGA
+  //  ELIMINAR LIGA
   // ==============================
-  // async deleteLeague() {
-  //   if (!confirm("¿Seguro que querés eliminar esta liga? Esta acción no se puede deshacer.")) return;
+  openDeleteLeagueModal() {
+    this.showDeleteLeagueModal = true;
+  }
 
-  //   try {
-  //     await this.adminService.deleteLeague(this.league.id);
+  async confirmDeleteLeague() {
+    this.showDeleteLeagueModal = false;
 
-  //     this.adminLeagues.splice(this.selectedLeagueIndex, 1);
+    try {
+      await this.leagueService.deleteLeague(this.league.id);
 
-  //     if (this.adminLeagues.length === 0) {
-  //       this.errorMsg = "Ya no administrás ninguna liga.";
-  //       this.league = null;
-  //       return;
-  //     }
+      this.adminLeagues.splice(this.selectedLeagueIndex, 1);
 
-  //     this.selectedLeagueIndex = 0;
-  //     this.loadLeagueFromMemory(0);
+      if (this.adminLeagues.length === 0) {
+        this.router.navigate(['/fantasy-home']);
+        return;
+      }
 
-  //   } catch (err) {
-  //     console.error(err);
-  //     this.errorMsg = "Error al eliminar la liga.";
-  //   }
-  // }
+      this.selectedLeagueIndex = 0;
+      this.loadLeagueFromMemory(0);
+
+    } catch (err) {
+      console.error(err);
+      this.errorMsg = "Error al eliminar la liga.";
+    }
+  }
+
+  cancelDeleteLeague() {
+    this.showDeleteLeagueModal = false;
+  }
+
+  cancelInvite(u: MemberUser) {
+    u._cancelInvite = true;
+
+    this.members = this.members.filter(m => m.id !== u.id);
+
+    this.markDirty();
+  }
+
+
+  activateUser(u: MemberUser) {
+    u.status = 'active';
+    u._activate = true;
+  }
+
 
   // ==============================
-  // ⚡ ACCIONES DE USUARIOS
+  //  ACCIONES DE USUARIOS
   // ==============================
   isAlreadyMember(u: User): boolean {
     return this.members.some(m => m.id === u.id);
@@ -233,6 +268,14 @@ export class AdminLeagueComponent implements OnInit {
     this.modalUser = u;
     this.removeMode = mode;
   }
+
+  activateMember(u: MemberUser) {
+    u.status = 'active';
+    u._inactivate = false;
+    u._activate = true;
+    this.markDirty();
+  }
+
 
   confirmRemove() {
     if (!this.modalUser) return;
@@ -285,7 +328,7 @@ export class AdminLeagueComponent implements OnInit {
   }
 
   // ==============================
-  // ⚡ GUARDAR CAMBIOS
+  //  GUARDAR CAMBIOS
   // ==============================
   async saveChanges() {
     this.saving = true;
@@ -330,6 +373,19 @@ export class AdminLeagueComponent implements OnInit {
         u._demote = false;
       }
 
+      const activated = this.members.filter(m => m._activate);
+      for (const u of activated) {
+        await this.adminService.setActive(this.league.id, u.id);
+        u._activate = false;
+      }
+
+      const cancelledInvites = this.members.filter(m => m._cancelInvite && m.invite_id);
+      for (const u of cancelledInvites) {
+        await this.adminService.cancelInvite(u.invite_id!);
+      }
+
+
+
       this.hasChanges = false;
       this.successMsg = "Cambios guardados ✔";
 
@@ -373,7 +429,7 @@ export class AdminLeagueComponent implements OnInit {
       this.markDirty();
     }
 
-    // 🔥 RESET VISUAL DEL SELECT:
+    //  RESET VISUAL DEL SELECT:
     setTimeout(() => {
       this.selectedUser = null;
     }, 0);

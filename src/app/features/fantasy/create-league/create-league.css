@@ -271,6 +271,57 @@ select:focus {
     animation: fadeIn .25s ease;
 }
 
+/* ================================
+   INFO BOX - LÍMITE DE 3 LIGAS
+================================ */
+.limit-info-box {
+    margin: -10px auto 22px;
+    padding: 11px 16px;
+
+    max-width: 520px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    background: rgba(233, 196, 106, 0.12);
+    border: 1px solid rgba(233, 196, 106, 0.35);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+
+    color: #c8c9e6;
+    font-size: 0.9rem;
+    line-height: 1.35;
+
+    animation: fadeInfoBox .45s ease-out;
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.35),
+        inset 0 0 10px rgba(233, 196, 106, 0.08);
+}
+
+.limit-icon {
+    font-size: 1.3rem;
+    margin-top: 1px;
+    text-shadow: 0 0 6px rgba(233, 196, 106, 0.55);
+}
+
+.limit-text b {
+    color: #ffd06e;
+}
+
+/* Animación */
+@keyframes fadeInfoBox {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 /* ============================
           ANIMACIÓN
 ============================ */
@@ -307,5 +358,14 @@ select:focus {
     .create-btn {
         padding: 12px;
         font-size: 0.9rem;
+    }
+
+    .limit-info-box {
+        font-size: 0.82rem;
+        padding: 10px 14px;
+    }
+
+    .limit-icon {
+        font-size: 1.1rem;
     }
 }

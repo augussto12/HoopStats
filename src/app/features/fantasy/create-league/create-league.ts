@@ -2,9 +2,7 @@ import { Component, Injector, OnInit } from "@angular/core";
 import { FantasyLeaguesService } from "../../../services/fantasy-leagues.service";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { WithLoader } from "../../../decorators/with-loader.decorator";
 
-@WithLoader()
 @Component({
   selector: "app-create-league",
   standalone: true,
@@ -24,7 +22,7 @@ export class CreateLeagueComponent implements OnInit {
   successMsg = "";
   errorMsg = "";
 
-  constructor(private leagueService: FantasyLeaguesService, public inject: Injector) { }
+  constructor(private leagueService: FantasyLeaguesService) { }
 
   ngOnInit() { }
 

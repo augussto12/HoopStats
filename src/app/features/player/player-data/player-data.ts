@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink, RouterModule } from '@angular/router';
 import { NbaApiService } from '../../../services/nba-api';
 import { Player, PlayerStats } from '../../../models/interfaces';
-import { WithLoader } from '../../../decorators/with-loader.decorator';
 
-@WithLoader()
 @Component({
   selector: 'app-player-data',
   standalone: true,
@@ -22,7 +20,7 @@ export class PlayerData implements OnInit {
   private route = inject(ActivatedRoute);
   private api = inject(NbaApiService);
 
-  constructor(public injector: Injector) { } 
+  constructor() { } 
 
   async ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));

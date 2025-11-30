@@ -38,6 +38,15 @@
     </div>
 
     <!-- ============================
+      ELIMINAR LIGA
+============================= -->
+    <div class="delete-league-box" *ngIf="isCreator()">
+        <button class="delete-league-btn" (click)="openDeleteLeagueModal()">
+            Eliminar Liga
+        </button>
+    </div>
+
+    <!-- ============================
             MIEMBROS
     ============================= -->
     <div class="members-section">
@@ -86,41 +95,69 @@
                 <!-- ACCIONES -->
                 <div class="user-actions">
 
+                    <!-- ========================= -->
+                    <!-- INVITACIONES PENDIENTES  -->
+                    <!-- ========================= -->
+                    <button class="icon-btn remove" *ngIf="u.origin === 'invite' && u.status === 'pending'"
+                        (click)="cancelInvite(u)">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </button>
+
+
+                    <!-- ========================= -->
+                    <!-- USUARIOS DE TEAM (RELES) -->
+                    <!-- ========================= -->
+
+                    <!-- INACTIVAR USUARIO -->
+                    <button class="icon-btn inactivate"
+                        *ngIf="u.origin === 'team' && u.status === 'active' && u.id !== league.created_by"
+                        (click)="openRemoveModal(u, 'inactivate'); markDirty()">
+
+                        <svg viewBox="0 0 24 24">
+                            <path d="M4 12h16" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+
+                    </button>
+
+
+                    <!-- ACTIVAR -->
+                    <button class="icon-btn activate" *ngIf="u.origin === 'team' && u.status === 'inactive'"
+                        (click)="activateUser(u); markDirty()">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M5 13l4 4L19 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+
                     <!-- PROMOVER ADMIN -->
-                    <button class="icon-btn promote" *ngIf="u.role !== 'admin' && u.status === 'active' && !u._delete"
+                    <button class="icon-btn promote"
+                        *ngIf="u.origin === 'team' && u.status === 'active' && u.role !== 'admin'"
                         (click)="makeAdmin(u); markDirty()">
                         <svg viewBox="0 0 24 24">
                             <path d="M3 7l4 2 5-6 5 6 4-2-2 12H5L3 7z" />
                         </svg>
                     </button>
 
-                    <!-- QUITAR ADMIN -->
+                    <!-- QUITAR ADMIN (excepto creador) -->
                     <button class="icon-btn demote"
-                        *ngIf="u.role === 'admin' && u.id !== league.created_by && !u._delete"
+                        *ngIf="u.origin === 'team' && u.status === 'active' && u.role === 'admin' && u.id !== league.created_by"
                         (click)="removeAdmin(u); markDirty()">
-                        <!-- Flecha abajo -->
                         <svg viewBox="0 0 24 24">
-                            <path d="M12 5v14m0 0l-6-6m6 6l6-6" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
+                            <path d="M12 5v14m0 0l-6-6m6 6l6-6" stroke-width="2" stroke-linecap="round" />
                         </svg>
                     </button>
 
-                    <!-- <button class="icon-btn inactivate"
-                        *ngIf="u.role !== 'admin' && u.status === 'active' && !u._delete"
-                        (click)="openRemoveModal(u,'inactivate'); markDirty()">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 0 0 12 17a7 7 0 0 0 9-4.21z" />
-                        </svg>
-                    </button> -->
-
-                    <!-- ELIMINAR -->
-                    <button class="icon-btn remove" *ngIf="u.role !== 'admin'" (click)="onRemoveClicked(u)">
+                    <!-- ELIMINAR USUARIO REAL -->
+                    <button class="icon-btn remove" *ngIf="u.origin === 'team' && u.id !== league.created_by"
+                        (click)="onRemoveClicked(u)">
                         <svg viewBox="0 0 24 24">
                             <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round" />
                         </svg>
                     </button>
 
                 </div>
+
 
             </div>
 
@@ -204,8 +241,26 @@
             <button class="cancel-btn" (click)="cancelUnsavedExit()">Cancelar</button>
 
             <button class="confirm-btn danger" (click)="confirmUnsavedExit()">
-                Salir igual
+                Salir sin guardar
             </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ======================================= -->
+<!-- MODAL ELIMINAR LIGA -->
+<!-- ======================================= -->
+<div class="modal-backdrop" *ngIf="showDeleteLeagueModal">
+    <div class="modal-box">
+
+        <h3>Eliminar liga</h3>
+        <p>¿Seguro que querés eliminar <strong>{{ league?.name }}</strong>?
+            Esta acción <b>no se puede deshacer</b> y se borrará toda la información relacionada.</p>
+
+        <div class="modal-buttons">
+            <button class="cancel-btn" (click)="cancelDeleteLeague()">Cancelar</button>
+            <button class="confirm-btn" (click)="confirmDeleteLeague()">Eliminar</button>
         </div>
 
     </div>

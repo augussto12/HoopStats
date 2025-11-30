@@ -1,15 +1,39 @@
-<div class="league-header" *ngIf="!loading">
+<div class="league-header" *ngIf="league; else loadingTpl">
 
+    <!-- HEADER -->
     <h2 class="league-title">{{ league.name }}</h2>
     <p class="subtitle">{{ league.description }}</p>
 
     <div class="league-meta">
-        <span class="privacy" [class.private]="league.privacy === 'private'">{{ league.privacy === 'private' ? 'Privada 🔒' : 'Pública 🔓' }}</span>
-        <span class="teams-count">Equipos: {{ teams.length }} / {{ league.max_teams }}</span>
-        <span class="created-at">Creada: {{ league.created_at }}</span>
+        <span class="privacy" [class.private]="league.privacy === 'private'">
+            {{ league.privacy === 'private' ? 'Privada 🔒' : 'Pública 🔓' }}
+        </span>
+
+        <span class="teams-count">
+            Equipos: {{ teams.length }} / {{ league.max_teams }}
+        </span>
+
+        <span class="created-at">
+            Creada: {{ league.created_at | date:'dd/MM/yyyy' }}
+        </span>
     </div>
 
-    <table class="ranking-table">
+    <!-- ===========================
+         TABS
+    ============================ -->
+    <div class="tabs">
+        <button class="tab" [class.active]="activeTab === 'ranking'" (click)="switchTab('ranking')">Ranking</button>
+
+        <button class="tab" [class.active]="activeTab === 'trades'" (click)="switchTab('trades')">Historial de
+            Trades</button>
+
+        <button class="tab" [class.active]="activeTab === 'market'" (click)="switchTab('market')">Estadísticas</button>
+    </div>
+
+    <!-- ===========================
+         TAB: RANKING
+    ============================ -->
+    <table class="ranking-table" *ngIf="activeTab === 'ranking'">
         <thead>
             <tr>
                 <th>#</th>
@@ -29,4 +53,88 @@
         </tbody>
     </table>
 
+    <!-- ===========================
+         TAB: TRADES
+    ============================ -->
+    <div *ngIf="activeTab === 'trades'" class="tab-content">
+
+        <div *ngIf="trades.length === 0" class="empty-msg">
+            No hay movimientos recientes.
+        </div>
+
+        <div class="history-grid" *ngIf="trades.length > 0">
+
+            <div class="fancy-trade-card" *ngFor="let tr of trades">
+
+                <div class="trade-card-header">
+                    <span class="trade-date">{{ tr.timestamp | date:'short' }}</span>
+                </div>
+
+                <div class="trade-team">
+                    <strong>{{ tr.team_name }}</strong>
+                    <div class="trade-user">@{{ tr.user_name }}</div>
+                </div>
+
+                <!-- Entran -->
+                <div *ngIf="tr.entran?.length">
+                    <div class="trade-section-title add">
+                        <span class="arrow-up">▲</span> Entran
+                    </div>
+
+                    <div *ngFor="let p of tr.entran" class="trade-pill add-pill">
+                        <span class="pill-icon">+</span> {{ p }}
+                    </div>
+                </div>
+
+                <!-- Salen -->
+                <div *ngIf="tr.salen?.length">
+                    <div class="trade-section-title drop">
+                        <span class="arrow-down">▼</span> Salen
+                    </div>
+
+                    <div *ngFor="let p of tr.salen" class="trade-pill drop-pill">
+                        <span class="pill-icon">−</span> {{ p }}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ===========================
+         TAB: MARKET
+    ============================ -->
+    <div *ngIf="activeTab === 'market'" class="tab-content">
+
+        <div *ngIf="marketStats.length === 0" class="empty-msg">
+            No hay estadísticas aún.
+        </div>
+
+        <table class="market-table" *ngIf="marketStats.length > 0">
+            <thead>
+                <tr>
+                    <th>Jugador</th>
+                    <th>Altas</th>
+                    <th>Bajas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let m of marketStats">
+                    <td>{{ m.full_name }}</td>
+                    <td>{{ m.total_adds }}</td>
+                    <td>{{ m.total_drops }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
+
+
+<ng-template #loadingTpl>
+    <div class="league-loading">
+    </div>
+</ng-template>

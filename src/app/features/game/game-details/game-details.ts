@@ -3,9 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NbaApiService } from '../../../services/nba-api';
 import { PlayerGroup } from '../../../models/interfaces';
-import { WithLoader } from '../../../decorators/with-loader.decorator';
 
-@WithLoader()
 @Component({
   selector: 'app-game-details',
   standalone: true,
@@ -23,7 +21,7 @@ export class GameDetails implements OnInit {
   private route = inject(ActivatedRoute);
   private api = inject(NbaApiService);
 
-  constructor(public injector: Injector) { } // Necesario para WithLoader
+  constructor() { } 
 
   public readonly statList = [
     { key: 'points', label: 'Puntos' },

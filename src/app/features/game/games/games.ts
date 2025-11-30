@@ -8,9 +8,7 @@ import { AuthService } from '../../../services/auth.service';
 import { PredictionService } from '../../../services/predictions-service';
 import { getGamesByDateMapped, filterByStatus } from '../../../utils/gameUtils';
 import { DbPrediction } from '../../../models/interfaces';
-import { WithLoader } from '../../../decorators/with-loader.decorator';
 
-@WithLoader()
 @Component({
   selector: 'app-Games',
   standalone: true,
@@ -39,7 +37,7 @@ export class Games implements OnInit {
   private predictionService = inject(PredictionService);
   public auth = inject(AuthService);
 
-  constructor(public injector: Injector) { }
+  constructor() { }
 
   async ngOnInit(): Promise<void> {
     await this.loadGames();
