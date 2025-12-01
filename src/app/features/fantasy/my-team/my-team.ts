@@ -91,8 +91,9 @@ export class MyTeam implements OnInit {
 
   lockMessage: string = "";
   nextUnlockTime: Date | null = null;
-  lockStart: Date | null = null;
-  lockEnd: Date | null = null;
+  lockStart: string | null = null;
+  lockEnd: string | null = null;
+
 
   viewMode: 'change' | 'history' = 'change';
   shakeTrade = false;
@@ -174,9 +175,18 @@ export class MyTeam implements OnInit {
     this.filteredPlayers = this.allPlayers;
   }
 
+  formatISO(iso: string | null) {
+    if (!iso) return "";
+    const date = iso.substring(0, 10);
+    const time = iso.substring(11, 16);
+    const [y, m, d] = date.split("-");
+    return `${d}/${m} ${time}`;
+  }
+
   async loadMarketLock() {
     try {
       const res: any = await this.marketLock.getMarketLock();
+      console.log("response", res);
 
       // Caso: no hay lock hoy
       if (res.noGamesToday) {
@@ -185,32 +195,12 @@ export class MyTeam implements OnInit {
         return;
       }
 
-      // Caso: hay lock válido
-      // Convertir a ARG
-      const startArg = new Date(
-        new Date(res.lockStart).toLocaleString("en-US", {
-          timeZone: "America/Argentina/Buenos_Aires"
-        })
-      );
+      // Los guardás tal cual vienen (STRING)
+      this.lockStart = res.lockStart; // string
+      this.lockEnd = res.lockEnd;     // string
 
-      const endArg = new Date(
-        new Date(res.lockEnd).toLocaleString("en-US", {
-          timeZone: "America/Argentina/Buenos_Aires"
-        })
-      );
-
-      this.lockStart = startArg;
-      this.lockEnd = endArg;
-
-
-      const now = new Date();
-      this.isLocked = now >= this.lockStart && now <= this.lockEnd;
-
-      if (this.isLocked) {
-        this.lockMessage = `Mercado bloqueado hasta las ${this.lockEnd.toLocaleString()}`;
-      } else {
-        this.lockMessage = `Mercado abierto — Cierra: ${this.lockStart.toLocaleString()}`;
-      }
+      // Mostrar directo, formateado
+      this.lockMessage = `Mercado abierto — Cierra: ${this.formatISO(this.lockStart)}`;
 
     } catch (err) {
       console.error("Error cargando market lock", err);
@@ -220,6 +210,8 @@ export class MyTeam implements OnInit {
       this.lockMessage = "";
     }
   }
+
+
 
 
 
