@@ -186,8 +186,22 @@ export class MyTeam implements OnInit {
       }
 
       // Caso: hay lock válido
-      this.lockStart = new Date(res.lockStart);
-      this.lockEnd = new Date(res.lockEnd);
+      // Convertir a ARG
+      const startArg = new Date(
+        new Date(res.lockStart).toLocaleString("en-US", {
+          timeZone: "America/Argentina/Buenos_Aires"
+        })
+      );
+
+      const endArg = new Date(
+        new Date(res.lockEnd).toLocaleString("en-US", {
+          timeZone: "America/Argentina/Buenos_Aires"
+        })
+      );
+
+      this.lockStart = startArg;
+      this.lockEnd = endArg;
+
 
       const now = new Date();
       this.isLocked = now >= this.lockStart && now <= this.lockEnd;
