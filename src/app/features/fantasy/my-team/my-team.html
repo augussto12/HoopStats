@@ -4,19 +4,12 @@
 
         <!-- MERCADO BLOQUEADO -->
         <div *ngIf="isLocked" class="lock-banner">
-            Mercado bloqueado hasta:
-            {{ lockEnd | date:'dd/MM HH:mm' }}
+            Mercado bloqueado — se abre mañana 7 am.
         </div>
 
-        <!-- MERCADO ABIERTO CON CIERRE -->
-        <div *ngIf="!isLocked && lockStart" class="lock-banner">
-            Mercado abierto — Cierra:
-            {{ lockStart | date:'dd/MM HH:mm' }}
-        </div>
-
-        <!-- MERCADO ABIERTO SIN LOCK (DÍA LIBRE) -->
-        <div *ngIf="!isLocked && !lockStart" class="lock-banner">
-            Mercado abierto — sin partidos hoy
+        <!-- MERCADO ABIERTO -->
+        <div *ngIf="!isLocked" class="lock-banner">
+            Mercado abierto — podés hacer cambios.
         </div>
 
 

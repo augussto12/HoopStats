@@ -89,10 +89,8 @@ export class MyTeam implements OnInit {
   renameMessage = "";
   tradeError = "";
 
-  lockMessage: string = "";
   nextUnlockTime: Date | null = null;
-  lockStart: string | null = null;
-  lockEnd: string | null = null;
+
 
 
   viewMode: 'change' | 'history' = 'change';
@@ -175,41 +173,26 @@ export class MyTeam implements OnInit {
     this.filteredPlayers = this.allPlayers;
   }
 
-  formatISO(iso: string | null) {
-    if (!iso) return "";
-    const date = iso.substring(0, 10);
-    const time = iso.substring(11, 16);
-    const [y, m, d] = date.split("-");
-    return `${d}/${m} ${time}`;
-  }
-
   async loadMarketLock() {
     try {
       const res: any = await this.marketLock.getMarketLock();
-      console.log("response", res);
+      console.log("market lock:", res);
 
-      // Caso: no hay lock hoy
-      if (res.noGamesToday) {
-        this.isLocked = false;
-        this.lockMessage = "Hoy no hay partidos — Mercado abierto.";
-        return;
+      this.isLocked = res.isLocked;   // ← LO IMPORTANTE
+
+      if (this.isLocked) {
+        this.lockReason = "El mercado está bloqueado actualmente.";
+      } else {
+        this.lockReason = "";
       }
-
-      // Los guardás tal cual vienen (STRING)
-      this.lockStart = res.lockStart; // string
-      this.lockEnd = res.lockEnd;     // string
-
-      // Mostrar directo, formateado
-      this.lockMessage = `Mercado abierto — Cierra: ${this.formatISO(this.lockStart)}`;
 
     } catch (err) {
       console.error("Error cargando market lock", err);
       this.isLocked = false;
-      this.lockStart = null;
-      this.lockEnd = null;
-      this.lockMessage = "";
+      this.lockReason = "";
     }
   }
+
 
 
 
