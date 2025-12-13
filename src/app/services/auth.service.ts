@@ -8,7 +8,6 @@ export class AuthService {
     private tokenKey = 'token';
     private userKey = 'user';
 
-    // ✅ Opción 2: por defecto más seguro
     private storage: Storage = sessionStorage;
 
     public tokenExpiring$ = new BehaviorSubject<boolean>(false);
@@ -22,7 +21,7 @@ export class AuthService {
     constructor(private api: ApiService, private router: Router) { }
 
     // ------------------------------------------------
-    // Storage helpers (compatibilidad + migración)
+    // Storage helpers
     // ------------------------------------------------
     private getAny(key: string): string | null {
         return sessionStorage.getItem(key) || localStorage.getItem(key);
@@ -37,19 +36,12 @@ export class AuthService {
         localStorage.removeItem(key);
     }
 
-    /**
-     * Si querés agregar checkbox "Recordarme":
-     * - remember = true -> usa localStorage (persistente)
-     * - remember = false -> usa sessionStorage (por defecto)
-     */
     setRememberMe(remember: boolean) {
         const nextStorage = remember ? localStorage : sessionStorage;
 
-        // migrar token/user si existían
         const token = this.getToken();
         const user = this.getAny(this.userKey);
 
-        // limpiar ambos antes de migrar para evitar duplicados
         this.removeEverywhere(this.tokenKey);
         this.removeEverywhere(this.userKey);
 
@@ -71,7 +63,6 @@ export class AuthService {
             const payload = token.split('.')[1];
             if (!payload) return null;
 
-            // base64url -> base64
             const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
             const json = atob(base64);
             return JSON.parse(json);
@@ -133,35 +124,44 @@ export class AuthService {
         return true;
     }
 
-
-    // PROFILE
+    // =============================
+    //            PROFILE
+    // =============================
     async getProfile() {
-        const profile = await this.api.get('/auth/me');
+        // ⬇️ ahora pega a /users/me (GET)
+        const profile = await this.api.get('/users/me');
         this.set(this.userKey, JSON.stringify(this.safeUser(profile)));
         return profile;
     }
 
     async updateProfile(data: any) {
-        const updated: any = await this.api.put('/auth/me', data);
+        // ⬇️ backend: PATCH /api/users/me
+        const updated: any = await this.api.patch('/users/me', data);
         this.set(this.userKey, JSON.stringify(this.safeUser(updated.user)));
         return updated;
     }
 
     async updatePassword(oldPassword: string, newPassword: string) {
-        return await this.api.patch('/users/update-password', { oldPassword, newPassword });
+        // ⬇️ backend: PATCH /api/users/password
+        return await this.api.patch('/users/password', { oldPassword, newPassword });
     }
 
     async deleteAccount() {
-        return await this.api.delete('/auth/me');
+        // ⬇️ backend: DELETE /api/users/me
+        return await this.api.delete('/users/me');
     }
 
+    // =============================
+    //            LOGIN
+    // =============================
     async login(identifier: string, password: string): Promise<boolean> {
         try {
             const res: any = await this.api.post('/auth/login', { identifier, password });
 
             this.set(this.tokenKey, res.token);
 
-            const profile: any = await this.api.get('/auth/me');
+            // ⬇️ ahora perfil desde /users/me
+            const profile: any = await this.api.get('/users/me');
             this.set(this.userKey, JSON.stringify(this.safeUser(profile)));
 
             this.loggedIn$.next(true);
@@ -183,14 +183,14 @@ export class AuthService {
             return;
         }
 
-        // si está vencido, limpiar
         if (!this.isLoggedIn()) {
             this.logout();
             return;
         }
 
         try {
-            const profile: any = await this.api.get('/auth/me');
+            // ⬇️ igual que arriba, /users/me
+            const profile: any = await this.api.get('/users/me');
             this.set(this.userKey, JSON.stringify(this.safeUser(profile)));
 
             this.loggedIn$.next(true);
@@ -244,5 +244,4 @@ export class AuthService {
         const { id, username, email, email_verified, fullname, gender } = u;
         return { id, username, email, email_verified, fullname, gender };
     }
-
 }
