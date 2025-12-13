@@ -5,9 +5,11 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-
     private tokenKey = 'token';
     private userKey = 'user';
+
+    // ✅ Opción 2: por defecto más seguro
+    private storage: Storage = sessionStorage;
 
     public tokenExpiring$ = new BehaviorSubject<boolean>(false);
     public countdown$ = new BehaviorSubject<number>(0);
@@ -19,8 +21,63 @@ export class AuthService {
 
     constructor(private api: ApiService, private router: Router) { }
 
+    // ------------------------------------------------
+    // Storage helpers (compatibilidad + migración)
+    // ------------------------------------------------
+    private getAny(key: string): string | null {
+        return sessionStorage.getItem(key) || localStorage.getItem(key);
+    }
+
+    private set(key: string, value: string) {
+        this.storage.setItem(key, value);
+    }
+
+    private removeEverywhere(key: string) {
+        sessionStorage.removeItem(key);
+        localStorage.removeItem(key);
+    }
+
+    /**
+     * Si querés agregar checkbox "Recordarme":
+     * - remember = true -> usa localStorage (persistente)
+     * - remember = false -> usa sessionStorage (por defecto)
+     */
+    setRememberMe(remember: boolean) {
+        const nextStorage = remember ? localStorage : sessionStorage;
+
+        // migrar token/user si existían
+        const token = this.getToken();
+        const user = this.getAny(this.userKey);
+
+        // limpiar ambos antes de migrar para evitar duplicados
+        this.removeEverywhere(this.tokenKey);
+        this.removeEverywhere(this.userKey);
+
+        this.storage = nextStorage;
+
+        if (token) this.set(this.tokenKey, token);
+        if (user) this.set(this.userKey, user);
+    }
+
     private hasToken(): boolean {
-        return !!localStorage.getItem(this.tokenKey);
+        return !!this.getToken();
+    }
+
+    // ------------------------------------------------
+    // JWT helpers
+    // ------------------------------------------------
+    private decodeJwtPayload(token: string): any | null {
+        try {
+            const payload = token.split('.')[1];
+            if (!payload) return null;
+
+            // base64url -> base64
+            const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+            const json = atob(base64);
+            return JSON.parse(json);
+        } catch {
+            return null;
+        }
     }
 
     // =============================
@@ -30,33 +87,28 @@ export class AuthService {
         const token = this.getToken();
         if (!token) return;
 
-        // Obtener exp
-        const payload: any = JSON.parse(atob(token.split('.')[1]));
+        const payload = this.decodeJwtPayload(token);
+        if (!payload?.exp) return;
+
         const expTs = payload.exp * 1000;
 
-        // Si ya hay un interval → reset
         if (this.countdownInterval) clearInterval(this.countdownInterval);
 
-        // Interval cada 1 segundo
         this.countdownInterval = setInterval(() => {
-
             const remainingMs = expTs - Date.now();
             const remainingSec = Math.floor(remainingMs / 1000);
 
             this.countdown$.next(remainingSec);
 
-            // Expirado
             if (remainingSec <= 0) {
                 clearInterval(this.countdownInterval);
                 this.logout();
                 return;
             }
 
-            // Mostrar modal si queda 1 minuto
             if (remainingSec <= 60) {
                 this.tokenExpiring$.next(true);
             }
-
         }, 1000);
     }
 
@@ -65,11 +117,11 @@ export class AuthService {
     // =============================
     async refreshSession() {
         const res: any = await this.api.post('/auth/refresh', {});
-        localStorage.setItem(this.tokenKey, res.token);
+        this.set(this.tokenKey, res.token);
 
+        this.loggedIn$.next(true);
         this.tokenExpiring$.next(false);
 
-        // Reiniciar countdown
         this.startTokenWatcher();
     }
 
@@ -77,27 +129,21 @@ export class AuthService {
     //          REGISTER
     // =============================
     async register(data: any) {
-        const res: any = await this.api.post('/auth/register', data);
-
-        localStorage.setItem(this.tokenKey, res.token);
-        localStorage.setItem(this.userKey, JSON.stringify(res.user));
-        this.loggedIn$.next(true);
-
-        this.startTokenWatcher();
-
-        return res;
+        await this.api.post('/auth/register', data);
+        return true;
     }
+
 
     // PROFILE
     async getProfile() {
         const profile = await this.api.get('/auth/me');
-        localStorage.setItem(this.userKey, JSON.stringify(profile));
+        this.set(this.userKey, JSON.stringify(this.safeUser(profile)));
         return profile;
     }
 
     async updateProfile(data: any) {
         const updated: any = await this.api.put('/auth/me', data);
-        localStorage.setItem(this.userKey, JSON.stringify(updated.user));
+        this.set(this.userKey, JSON.stringify(this.safeUser(updated.user)));
         return updated;
     }
 
@@ -113,24 +159,22 @@ export class AuthService {
         try {
             const res: any = await this.api.post('/auth/login', { identifier, password });
 
-            localStorage.setItem(this.tokenKey, res.token);
+            this.set(this.tokenKey, res.token);
 
             const profile: any = await this.api.get('/auth/me');
-            localStorage.setItem(this.userKey, JSON.stringify(profile));
+            this.set(this.userKey, JSON.stringify(this.safeUser(profile)));
 
             this.loggedIn$.next(true);
-
-            this.startTokenWatcher();   // ← activar countdown
+            this.startTokenWatcher();
 
             return true;
-
-        } catch (err) {
+        } catch {
             return false;
         }
     }
 
     // =============================
-    //          PROFILE
+    //          INIT SESSION
     // =============================
     async initSession() {
         const token = this.getToken();
@@ -139,14 +183,19 @@ export class AuthService {
             return;
         }
 
+        // si está vencido, limpiar
+        if (!this.isLoggedIn()) {
+            this.logout();
+            return;
+        }
+
         try {
             const profile: any = await this.api.get('/auth/me');
-            localStorage.setItem(this.userKey, JSON.stringify(profile));
+            this.set(this.userKey, JSON.stringify(this.safeUser(profile)));
 
             this.loggedIn$.next(true);
             this.startTokenWatcher();
-
-        } catch (err) {
+        } catch {
             this.logout();
         }
     }
@@ -155,36 +204,45 @@ export class AuthService {
     //          LOGOUT
     // =============================
     logout() {
-        localStorage.removeItem(this.tokenKey);
-        localStorage.removeItem(this.userKey);
+        this.removeEverywhere(this.tokenKey);
+        this.removeEverywhere(this.userKey);
 
         this.loggedIn$.next(false);
         this.tokenExpiring$.next(false);
         this.countdown$.next(0);
 
         if (this.countdownInterval) clearInterval(this.countdownInterval);
-
-        this.router.navigate(['/']).then(() => {
-            window.location.reload();
-        });
     }
 
     // Helpers
     getUser() {
-        const u = localStorage.getItem(this.userKey);
+        const u = this.getAny(this.userKey);
         return u ? JSON.parse(u) : null;
     }
 
     getToken() {
-        return localStorage.getItem(this.tokenKey);
+        return this.getAny(this.tokenKey);
     }
 
     isLoggedIn() {
-        return this.loggedIn$.value;
+        const token = this.getToken();
+        if (!token) return false;
+
+        const payload = this.decodeJwtPayload(token);
+        if (!payload?.exp) return false;
+
+        return payload.exp * 1000 > Date.now();
     }
 
     isEmailVerified(): boolean {
         const user = this.getUser();
         return !!user?.email_verified;
     }
+
+    private safeUser(u: any) {
+        if (!u) return null;
+        const { id, username, email, email_verified, fullname, gender } = u;
+        return { id, username, email, email_verified, fullname, gender };
+    }
+
 }

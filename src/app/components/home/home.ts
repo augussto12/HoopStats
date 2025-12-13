@@ -44,7 +44,7 @@ export class Home implements OnInit {
   ngOnInit() {
     this.loadLiveGames();
     this.loadBestPlayers();
-    this.loadNotifications();
+    if (this.auth.getToken()) this.loadNotifications();
   }
 
   async loadNotifications() {

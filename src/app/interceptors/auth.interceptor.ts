@@ -18,22 +18,26 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
             setHeaders: {
                 Authorization: req.headers.has('Authorization')
                     ? req.headers.get('Authorization')!
-                    : `Bearer ${token}`
-            }
+                    : `Bearer ${token}`,
+            },
         });
     }
 
     return next(authReq).pipe(
         catchError((error) => {
 
-            // SI EL TOKEN EXPIRÓ O ES INVÁLIDO
             if (error.status === 401) {
-
-                // Limpiar sesión
                 authService.logout();
-
-                // Redirigir a login
                 router.navigate(['/login']);
+            }
+
+            if (error.status === 403) {
+                router.navigate(['/profile'], {
+                    state: {
+                        msg: error?.error?.error
+                            || 'Debes verificar tu email para acceder a esta sección.'
+                    }
+                });
             }
 
             return throwError(() => error);

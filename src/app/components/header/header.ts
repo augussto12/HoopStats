@@ -181,5 +181,9 @@ export class Header {
 
   logout() {
     this.auth.logout();
+    this.menuOpen = false;
+    this.showPanel = false;
+    this.router.navigate(['/login']);
   }
+
 }

@@ -20,6 +20,12 @@
                     <div class="toggle-eye" [class.show]="showPassword" (click)="togglePassword()"></div>
                 </div>
 
+                <label class="remember">
+                    <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe" />
+                    Recordarme
+                </label>
+
+
                 <p class="caps-warning" *ngIf="capsOn">
                     Mayus activado
                 </p>

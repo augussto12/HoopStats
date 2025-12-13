@@ -176,9 +176,8 @@ export class MyTeam implements OnInit {
   async loadMarketLock() {
     try {
       const res: any = await this.marketLock.getMarketLock();
-      console.log("market lock:", res);
 
-      this.isLocked = res.isLocked;   // ← LO IMPORTANTE
+      this.isLocked = res.isLocked;  
 
       if (this.isLocked) {
         this.lockReason = "El mercado está bloqueado actualmente.";

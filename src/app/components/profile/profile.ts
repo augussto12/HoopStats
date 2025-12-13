@@ -131,8 +131,8 @@ export class Profile implements OnInit {
     try {
       await this.auth.deleteAccount();
 
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
+      this.auth.logout();
+
 
       this.showConfirm = false;
       this.router.navigate(['/']);

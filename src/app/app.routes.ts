@@ -28,6 +28,7 @@ import { AdminLeagueComponent } from './features/fantasy/admin-league/admin-leag
 import { MyLeagues } from './features/fantasy/my-leagues/my-leagues';
 import { Leagues } from './features/fantasy/leagues/leagues';
 import { LeagueDetails } from './features/fantasy/league-details/league-details';
+import { GuestGuard } from './guards/guest.guard';
 
 export const routes: Routes = [
     { path: '', component: Home },
@@ -39,9 +40,14 @@ export const routes: Routes = [
     { path: 'headtohead', component: HeadToHead },
     { path: 'players', component: Players },
     { path: 'standings', component: Standings },
-    { path: 'login', component: Login },
-    { path: 'register', component: Register },
-    { path: 'profile', component: Profile },
+    { path: 'login', component: Login, canActivate: [GuestGuard] },
+    { path: 'register', component: Register, canActivate: [GuestGuard] },
+    {
+        path: 'profile',
+        component: Profile,
+        canActivate: [AuthGuard]
+    },
+
 
     { path: 'forgot-password', component: ForgotPassword },
     { path: 'verify-email', component: VerifyEmail },

@@ -2,18 +2,17 @@
 import { writeFileSync } from 'fs';
 import * as dotenv from 'dotenv';
 
-// Cargar las env de Netlify
 dotenv.config();
+
+const apiUrl = process.env['API_URL'] || 'https://hoopstats-backend-production.up.railway.app/api';
 
 const envContent = `
 export const environment = {
   production: true,
-  apiUrl: '${process.env['API_URL']}',
+  apiUrl: '${apiUrl}',
   nbaApi: {
-    baseUrl: '${process.env['NBA_API_URL']}',
-    headers: {
-      'x-apisports-key': '${process.env['NBA_API_KEY']}'
-    }
+    baseUrl: '',
+    headers: {}
   }
 };
 `;

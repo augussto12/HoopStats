@@ -23,6 +23,7 @@ export class Login {
   public showPassword = false;
   public capsOn = false;
   public fading = false;
+  public rememberMe = false;
 
   constructor(private auth: AuthService, private router: Router) { }
 
@@ -34,6 +35,8 @@ export class Login {
     const identifier = this.identifier.trim().toLowerCase();
 
     try {
+
+      this.auth.setRememberMe(this.rememberMe);
       const logged = await this.auth.login(identifier, this.password);
 
       if (logged) {

@@ -1,32 +1,31 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { apiConfig } from '../api.config';
-import { environment } from '../../environments/environment';
 import { Team } from '../models/interfaces';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NbaApiService {
-  private apiUrl = apiConfig.nbaApi.baseUrl;
-  private headers = new HttpHeaders(environment.nbaApi.headers);
+
+  private apiUrl = `${apiConfig.apiUrl}/nba`;
 
   constructor(private http: HttpClient) { }
 
   // Equipos
   async getTeams() {
     const response = await firstValueFrom(
-      this.http.get<any>(`${this.apiUrl}/teams`,
-        { headers: this.headers })
+      this.http.get<any>(`${this.apiUrl}/teams`)
     );
     return response.response;
   }
 
   async getTeamById(teamId: number) {
     const response = await firstValueFrom(
-      this.http.get<any>(`${this.apiUrl}/teams?id=${teamId}`,
-        { headers: this.headers })
+      this.http.get<any>(`${this.apiUrl}/teams`, {
+        params: { id: teamId }
+      })
     );
     return response.response[0] as Team;
   }
@@ -35,107 +34,91 @@ export class NbaApiService {
   async getGamesByDate(dateISO: string) {
     const response = await firstValueFrom(
       this.http.get<any>(
-        `${this.apiUrl}/games?season=2025&date=${dateISO}`,
-        { headers: this.headers }
+        `${this.apiUrl}/games`,
+        { params: { season: 2025, date: dateISO } }
       )
     );
-    return response.response; // array
+    return response.response;
   }
 
   // Partidos por equipo
   async getGamesByTeam(teamId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
-        `${this.apiUrl}/games?season=2025&team=${teamId}`,
-        { headers: this.headers }
+        `${this.apiUrl}/games`,
+        { params: { season: 2025, team: teamId } }
       )
     );
-    return response.response; // array
+    return response.response;
   }
 
-  //Partidos en vivo
   async getLiveGames() {
     const response = await firstValueFrom(
-      this.http.get<any>(`${this.apiUrl}/games?live=all`, {
-        headers: this.headers
+      this.http.get<any>(`${this.apiUrl}/games`, {
+        params: { live: 'all' }
       })
     );
     return response.response;
   }
 
-  //Traer jugador
   async getPlayer(playerId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
-        `${this.apiUrl}/players?id=${playerId}`,
-        { headers: this.headers }
-      )
-    );
-    return response.response
-  }
-
-  // Jugadores por equipo
-  async getPlayersByTeam(teamId: number) {
-    const response = await firstValueFrom(
-      this.http.get<any>(
-        `${this.apiUrl}/players?team=${teamId}&season=2025`,
-        { headers: this.headers }
+        `${this.apiUrl}/players`,
+        { params: { id: playerId } }
       )
     );
     return response.response;
   }
 
-  //Traer jugadores por filtros
+  async getPlayersByTeam(teamId: number) {
+    const response = await firstValueFrom(
+      this.http.get<any>(
+        `${this.apiUrl}/players`,
+        { params: { team: teamId, season: 2025 } }
+      )
+    );
+    return response.response;
+  }
+
   async getPlayersFiltered(filters: {
     name?: string;
     teamId?: number;
     country?: string;
     search?: string;
   }) {
-    let url = `${this.apiUrl}/players`;
+    const params: any = {};
 
-    const params: string[] = [];
-
-    // Si hay equipo hay que mandar la temporada actual
     if (filters.teamId) {
-      params.push(`season=2025`);
-      params.push(`team=${filters.teamId}`);
+      params.season = 2025;
+      params.team = filters.teamId;
     }
-
-
-    if (filters.name) params.push(`name=${filters.name}`);
-    if (filters.country) params.push(`country=${filters.country}`);
-    if (filters.search) params.push(`search=${filters.search}`);
-
-    // Se arma la url
-    if (params.length > 0) {
-      url += `?${params.join('&')}`;
-    }
+    if (filters.name) params.name = filters.name;
+    if (filters.country) params.country = filters.country;
+    if (filters.search) params.search = filters.search;
 
     const response = await firstValueFrom(
-      this.http.get<any>(url, { headers: this.headers })
+      this.http.get<any>(`${this.apiUrl}/players`, { params })
     );
 
     return response.response;
   }
 
-  // Traer las estadisticas de un jugador
   async getPlayerStats(playerId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
-        `${this.apiUrl}/players/statistics?id=${playerId}&season=2025`,
-        { headers: this.headers }
+        `${this.apiUrl}/players/statistics`,
+        { params: { id: playerId, season: 2025 } }
       )
     );
     return response.response;
   }
 
-  // Traer los datos de un partido por su id
   async getGameStats(gameId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
-        `${this.apiUrl}/games/statistics?id=${gameId}`,
-        { headers: this.headers }
+        `${this.apiUrl}/games/statistics`,
+        { params: { id: gameId } }
       )
     );
     return response.response;
@@ -144,39 +127,38 @@ export class NbaApiService {
   async getGameData(gameId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
-        `${this.apiUrl}/games?id=${gameId}`,
-        { headers: this.headers }
+        `${this.apiUrl}/games`,
+        { params: { id: gameId } }
       )
     );
     return response.response;
   }
 
-  // Obtener las estadisticas de un jugador por partido
   async getPlayerStatsByGame(gameId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
-        `${this.apiUrl}/players/statistics?game=${gameId}`,
-        { headers: this.headers }
+        `${this.apiUrl}/players/statistics`,
+        { params: { game: gameId } }
       )
     );
     return response.response;
   }
 
-  // Trae los partidos entre dos equipos
   async getHeadToHead(firstTeam: number, secondTeam: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
-        `${this.apiUrl}/games?h2h=${firstTeam}-${secondTeam}`,
-        { headers: this.headers }
+        `${this.apiUrl}/games`,
+        { params: { h2h: `${firstTeam}-${secondTeam}` } }
       )
     );
     return response.response;
   }
+
   async getTeamStats(teamId: number) {
     const response = await firstValueFrom(
       this.http.get<any>(
-        `${this.apiUrl}/teams/statistics?id=${teamId}&season=2025&stage=2`,
-        { headers: this.headers }
+        `${this.apiUrl}/teams/statistics`,
+        { params: { id: teamId, season: 2025, stage: 2 } }
       )
     );
     return response;
@@ -185,12 +167,10 @@ export class NbaApiService {
   async getStandings() {
     const response = await firstValueFrom(
       this.http.get<any>(
-        `${this.apiUrl}/standings?league=standard&season=2025`,
-        { headers: this.headers }
+        `${this.apiUrl}/standings`,
+        { params: { league: 'standard', season: 2025 } }
       )
     );
     return response.response;
   }
-
 }
-
