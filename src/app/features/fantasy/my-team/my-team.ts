@@ -177,10 +177,12 @@ export class MyTeam implements OnInit {
     try {
       const res: any = await this.marketLock.getMarketLock();
 
-      this.isLocked = res.isLocked;  
+      this.isLocked = res.isLocked;
 
       if (this.isLocked) {
-        this.lockReason = "El mercado está bloqueado actualmente.";
+        this.lockReason = "El mercado está bloqueado porque ya comenzó la jornada.";
+      } else if (res.noGamesToday) {
+        this.lockReason = "Hoy no hay partidos, el mercado está abierto todo el día.";
       } else {
         this.lockReason = "";
       }
@@ -191,11 +193,6 @@ export class MyTeam implements OnInit {
       this.lockReason = "";
     }
   }
-
-
-
-
-
 
   get necesitaIniciales(): boolean {
     return this.players.length < 5;
