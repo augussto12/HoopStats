@@ -20,14 +20,14 @@
 
                 <tbody>
                     <tr *ngFor="let team of ranking; let i = index">
-                        <td>{{ i + 1 }}</td>
-                        <td>
-                            <div class="team-cell">
+                        <td data-label="#">{{ i + 1 }}</td>
+                        <td data-label="Usuario">
+                            <div>
                                 <span>{{ team.username }}</span>
                             </div>
                         </td>
-                        <td>{{ team.name }}</td>
-                        <td>{{ team.total_points }}</td>
+                        <td data-label="Nombre del equipo">{{ team.name }}</td>
+                        <td data-label="Puntos Totales">{{ team.total_points }}</td>
                     </tr>
                 </tbody>
             </table>

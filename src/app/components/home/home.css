@@ -1,3 +1,7 @@
+/* ============================
+   LAYOUT GENERAL DEL HOME
+============================ */
+
 .home-wrapper {
   display: flex;
   flex-direction: column;
@@ -7,19 +11,15 @@
 .top-section {
   display: grid;
   grid-template-columns: 1.6fr 1.1fr;
-  grid-auto-rows: auto;
   gap: 2rem;
-  align-items: stretch;
   margin-bottom: 2rem;
 }
-
 
 .left-column {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
-
 
 .panel {
   background: rgba(15, 23, 42, 0.9);
@@ -37,79 +37,117 @@
   font-size: 1.1rem;
 }
 
-.news-empty {
+/* ============================
+   PRÓXIMOS PARTIDOS (COMPACTO)
+============================ */
+
+.next-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  /* antes 220px */
+  gap: 12px;
+  /* más compacto */
+}
+
+.next-mini-card {
+  background: #0F1A2F;
+  border: 1px solid rgba(233, 196, 106, 0.25);
+  border-radius: 10px;
+  padding: 10px;
+  /* antes 12px */
+  cursor: pointer;
+  transition: 0.22s ease;
   text-align: center;
-  padding: 1rem;
-  color: #9ca3c8;
-  font-size: 0.9rem;
-  background: rgba(15, 23, 42, 0.6);
-  border-radius: 12px;
-}
 
-.news-card {
-  display: flex;
-  gap: 1.2rem;
-  background: rgba(12, 19, 40, 0.95);
-  border-radius: 14px;
-  padding: 1rem;
-  transition: 0.25s ease;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
-  will-change: transform;
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
-}
-
-.news-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.75);
-}
-
-.news-img {
-  flex-shrink: 0;
-  width: 180px;
-  height: 115px;
-  object-fit: cover;
-  border-radius: 12px;
-  max-width: 100%;
-}
-
-.news-info {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-height: 135px;
+  /* antes 160px */
 }
 
-.news-title {
-  margin: 0;
-  color: #4da0ff;
-  font-size: 1.02rem;
-  font-weight: 600;
+.next-mini-card:hover {
+  background: rgba(233, 196, 106, 0.08);
+  transform: translateY(-2px);
 }
 
-.news-desc {
-  color: #aab4de;
-  font-size: 0.9rem;
-  margin: .45rem 0 .8rem;
-  line-height: 1.45;
+/* FILA PRINCIPAL DE EQUIPOS */
+.teams-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 65px;
+  /* antes 80px */
 }
 
-.news-button {
-  padding: 0.55rem 1.1rem;
-  border-radius: 999px;
-  border: none;
-  background: #e9cd2e;
+/* COLUMNA EQUIPO */
+.team-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 65px;
+  /* antes 80px */
+}
+
+.team-logo {
+  width: 28px;
+  /* antes 32px */
+  height: 28px;
+  object-fit: contain;
+  margin-bottom: 3px;
+}
+
+.team-name {
+  width: 65px;
+  font-size: 0.70rem;
+  /* levemente más chico */
+  line-height: 1rem;
+  min-height: 2rem;
+  /* menor altura */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* CENTRO (VS + hora) */
+.center-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 50px;
+  /* antes 70px */
+}
+
+.vs {
+  font-size: 0.65rem;
+  /* antes 0.7 */
+  font-weight: 900;
+  color: #E9C46A;
+}
+
+.time {
+  font-size: 0.85rem;
+  /* antes 0.9 */
   font-weight: 700;
-  cursor: pointer;
+  color: #E9C46A;
 }
 
-/* =========
-   LIVE GAMES
-============ */
+/* ARENA */
+.arena-mini {
+  margin-top: 6px;
+  font-size: 0.65rem;
+  /* antes 0.72 */
+  min-height: .9rem;
+  color: #9ca3c8;
+}
+
+
+/* ============================
+   PARTIDOS EN VIVO
+============================ */
 
 .live-panel {
   grid-column: 1 / -1;
-  margin-top: 0.5rem;
 }
 
 .live-list {
@@ -123,23 +161,14 @@
   border-radius: 14px;
   padding: 1rem 1.1rem;
   border: 2px solid rgba(77, 160, 255, 0.25);
-  /* azul tenue */
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.55);
-
-  transition: transform .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
-
+  transition: .25s;
   cursor: pointer;
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
 }
 
 .live-card:hover {
   transform: translateY(-5px);
   border-color: #e9cd2e;
-  /* dorado */
   box-shadow: 0 10px 24px rgba(233, 205, 46, 0.28);
 }
 
@@ -147,8 +176,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: .5rem;
-  flex-wrap: wrap;
 }
 
 .team {
@@ -160,16 +187,12 @@
 .team img {
   width: 38px;
   height: 38px;
-  border-radius: 8px;
 }
 
 .team span {
   font-size: .85rem;
   color: #e5e7ff;
-  font-weight: 500;
 }
-
-/* === SCORE BOX MEJORADO === */
 
 .score-box {
   display: flex;
@@ -179,7 +202,6 @@
   margin: .4rem 0;
 }
 
-/* Línea principal del resultado */
 .score-line {
   display: flex;
   align-items: center;
@@ -190,80 +212,55 @@
   font-size: 1.55rem;
   font-weight: 800;
   color: #e9cd2e;
-  letter-spacing: 1px;
 }
 
-.score-num.winner {
+.winner {
   color: #7cff7c;
-  text-shadow: 0 0 8px rgba(60, 255, 60, 0.35);
 }
 
-.score-num.loser {
+.loser {
   color: #ff6b6b;
-  opacity: .85;
 }
 
-.score-num.draw {
+.draw {
   color: #ffe27a;
 }
 
 .dash {
-  color: #e5e7eb;
   font-size: 1.3rem;
+  color: #e5e7eb;
   opacity: .8;
 }
 
-/* Caja del período y reloj */
 .score-meta {
   display: flex;
   align-items: center;
   gap: .35rem;
-
+  font-size: .75rem;
   padding: .25rem .55rem;
   border-radius: 8px;
-  font-size: .75rem;
-
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.score-meta .period {
+.period {
   color: #4da0ff;
-  font-weight: 600;
 }
 
-.score-meta .dot {
-  color: #cdd6f4;
-  opacity: .7;
-  font-size: .75rem;
+.clock {
+  color: white;
 }
-
-.score-meta .clock {
-  color: #ffffff;
-  font-weight: 500;
-}
-
 
 .arena {
   text-align: center;
   font-size: .75rem;
-  color: #9ca3c8;
   margin-top: .4rem;
+  color: #9ca3c8;
 }
 
-.live-dot {
-  width: 10px;
-  height: 10px;
-  background: #ff5963;
-  border-radius: 50%;
-  margin-left: 5px;
-  box-shadow: 0 0 8px rgba(255, 89, 99, 0.7);
-}
-
-
-/* ==========
+/* ============================
    BEST PLAYERS
-======== */
+============================ */
 
 .players-grid {
   display: grid;
@@ -272,14 +269,13 @@
 }
 
 .player-card {
-  background: rgba(12, 19, 40, .96);
+  background: rgba(12, 19, 40, 0.96);
   border-radius: 12px;
   padding: .9rem;
   text-align: center;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
-  will-change: transform;
-  transition: .2s ease;
   border-left: 3px solid rgba(77, 160, 255, 0.22);
+  transition: .2s ease;
 }
 
 .player-card:hover {
@@ -290,10 +286,9 @@
 
 .player-card h3 {
   color: #4da0ff;
-  margin-bottom: 4px;
-  text-transform: uppercase;
   font-size: .9rem;
-  letter-spacing: .5px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
 }
 
 .player-card span {
@@ -301,56 +296,9 @@
   font-weight: bold;
 }
 
-
-.news-panel,
-.players-panel {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Imagen inicial invisible */
-.news-img {
-  opacity: 0;
-  transition: opacity 0.35s ease;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 10px;
-
-  /* SKELETON */
-  animation: pulse 1.5s ease infinite;
-}
-
-/* Cuando carga → fade-in */
-.news-img.img-loaded {
-  opacity: 1;
-  animation: none;
-  /* Quitar pulso skeleton */
-}
-
-/* Placeholder si falla */
-.news-img.error {
-  opacity: 1;
-  animation: none;
-}
-
-/* Skeleton pulsing */
-@keyframes pulse {
-  0% {
-    background-color: rgba(255, 255, 255, 0.08);
-  }
-
-  50% {
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-
-  100% {
-    background-color: rgba(255, 255, 255, 0.08);
-  }
-}
-
-/* ===========
+/* ============================
    RESPONSIVE
-=========== */
+============================ */
 
 @media (max-width: 1100px) {
   .top-section {
@@ -358,37 +306,8 @@
   }
 }
 
-@media (max-width: 780px) {
-  .news-card {
-    flex-direction: column;
-  }
-
-  .news-img {
-    width: 100%;
-    height: 200px;
-  }
-
-  .players-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (max-width: 720px) {
   .live-list {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .score-num {
-    font-size: 1.25rem;
-  }
-
-  .team span {
-    font-size: .75rem;
-  }
-
-  .news-title {
-    font-size: .95rem;
   }
 }

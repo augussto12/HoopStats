@@ -65,6 +65,17 @@ export class MyTeam implements OnInit {
     return Math.ceil(this.filteredPlayers.length / this.pageSize);
   }
 
+  private get myPlayerIds(): Set<number> {
+    return new Set(this.players.map(p => Number(p.player_id)));
+  }
+
+  private rebuildAvailablePlayers() {
+    // recalcula filteredPlayers con filtros actuales
+    this.filterPlayers();
+  }
+
+
+
   historyPage = 1;
   historyPageSize = 5;
 
@@ -80,6 +91,8 @@ export class MyTeam implements OnInit {
   nbaTeams: any[] = [];
   lockWindowMessage: string = "";
 
+  marketClosesAt: string = "";
+  marketOpensAt: string = "";
 
   // historial agrupado
   groupedHistory: any[] = [];
@@ -90,8 +103,6 @@ export class MyTeam implements OnInit {
   tradeError = "";
 
   nextUnlockTime: Date | null = null;
-
-
 
   viewMode: 'change' | 'history' = 'change';
   shakeTrade = false;
@@ -119,18 +130,44 @@ export class MyTeam implements OnInit {
 
     this.team = res.team;
 
-    // Convertir price a entero y total_pts a número
     this.players = res.players.map((p: any) => ({
       ...p,
       price: Math.round(Number(p.price)),
       total_pts: Number(p.total_pts)
     }));
 
-
     this.newName = this.team ? this.team.name : "";
     this.editingName = !this.team;
 
+    if (this.allPlayers.length > 0) {
+      this.rebuildAvailablePlayers();
+    }
+
     this.loadingTeam = false;
+  }
+
+
+
+  private formatTimeARG(iso: string | null): string {
+    if (!iso) return "";
+    return new Date(iso).toLocaleTimeString("es-AR", {
+      timeZone: "America/Argentina/Buenos_Aires",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  }
+
+  private formatDateTimeARG(iso: string | null): string {
+    if (!iso) return "";
+    return new Date(iso).toLocaleString("es-AR", {
+      timeZone: "America/Argentina/Buenos_Aires",
+      day: "2-digit",
+      month: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
   }
 
 
@@ -170,29 +207,46 @@ export class MyTeam implements OnInit {
 
   async loadAllPlayers() {
     this.allPlayers = await this.api.get('/players');
-    this.filteredPlayers = this.allPlayers;
+    this.rebuildAvailablePlayers();
   }
+
 
   async loadMarketLock() {
     try {
       const res: any = await this.marketLock.getMarketLock();
 
-      this.isLocked = res.isLocked;
+      this.isLocked = !!res.isLocked;
+
+      // Hora Argentina para mostrar
+      this.marketClosesAt = res.lockStart ? this.formatTimeARG(res.lockStart) : "";
+      this.marketOpensAt = res.lockEnd ? this.formatTimeARG(res.lockEnd) : "";
+
+      if (res.noGamesToday) {
+        this.lockReason = "Hoy no hay partidos: el mercado está abierto todo el día.";
+        return;
+      }
 
       if (this.isLocked) {
-        this.lockReason = "El mercado está bloqueado porque ya comenzó la jornada.";
-      } else if (res.noGamesToday) {
-        this.lockReason = "Hoy no hay partidos, el mercado está abierto todo el día.";
+        // está bloqueado ahora
+        this.lockReason = this.marketOpensAt
+          ? `Mercado cerrado. Vuelve a abrir a las ${this.marketOpensAt} hs.`
+          : "Mercado cerrado.";
       } else {
-        this.lockReason = "";
+        // está abierto ahora, pero va a cerrar cuando empiece el primer partido
+        this.lockReason = this.marketClosesAt
+          ? `Mercado abierto. Cierra a las ${this.marketClosesAt} hs.`
+          : "Mercado abierto.";
       }
 
     } catch (err) {
       console.error("Error cargando market lock", err);
       this.isLocked = false;
       this.lockReason = "";
+      this.marketClosesAt = "";
+      this.marketOpensAt = "";
     }
   }
+
 
   get necesitaIniciales(): boolean {
     return this.players.length < 5;
@@ -361,14 +415,18 @@ export class MyTeam implements OnInit {
   filterPlayers() {
     let list = [...this.allPlayers];
 
+    // ✅ sacar los que ya están en mi equipo
+    const owned = this.myPlayerIds;
+    list = list.filter(p => !owned.has(Number(p.id)));
+
     if (this.selectedTeam) {
       list = list.filter(p => p.team_id === Number(this.selectedTeam));
     }
 
     if (this.selectedRange) {
-      list = list.filter(
-        p => Number(p.price) >= this.selectedRange.min &&
-          Number(p.price) <= this.selectedRange.max
+      list = list.filter(p =>
+        Number(p.price) >= this.selectedRange.min &&
+        Number(p.price) <= this.selectedRange.max
       );
     }
 
@@ -383,25 +441,32 @@ export class MyTeam implements OnInit {
     this.currentPage = 1;
   }
 
+
   resetFilters() {
     this.selectedRange = null;
     this.selectedTeam = null;
     this.exactPrice = null;
-    this.filteredPlayers = this.allPlayers;
+
+    this.rebuildAvailablePlayers();
     this.currentPage = 1;
   }
 
+
   toggleAddForm() {
     this.showAddForm = !this.showAddForm;
-
     this.attemptedApply = false;
 
-    if (!this.showAddForm) {
-      this.resetFilters();
-      this.additionCandidate = null;
-      this.removalCandidate = null;
+    if (this.showAddForm) {
+      this.rebuildAvailablePlayers();
+      return;
     }
+
+    // al cerrar
+    this.resetFilters();
+    this.additionCandidate = null;
+    this.removalCandidate = null;
   }
+
 
   prevPage() {
     if (this.currentPage > 1) this.currentPage--;
@@ -456,9 +521,5 @@ export class MyTeam implements OnInit {
     this.error = "";
     this.success = "";
   }
-
-
-
-
 
 }

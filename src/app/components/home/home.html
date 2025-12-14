@@ -3,36 +3,58 @@
   <section class="top-section">
 
     <!-- ===========================
-          NOTICIAS
-    ============================ -->
+      PRÓXIMOS PARTIDOS
+============================ -->
     <div class="left-column">
+      <div class="panel next-panel">
+        <h2>📅 Próximos partidos de hoy</h2>
 
-      <div class="panel news-panel">
-        <h2>📰 Noticias destacadas</h2>
+        <div *ngIf="errorNext" class="empty">{{ errorNext }}</div>
 
-        <div *ngIf="!news.length" class="news-empty">
-          <p>No hay noticias cargadas aún.</p>
+        <div class="next-list-grid" *ngIf="nextGames.length">
+
+          <div class="next-mini-card" *ngFor="let g of nextGames" [routerLink]="['/game-details', g.id]">
+
+            <div class="teams-row">
+
+              <!-- Visitante -->
+              <div class="team-col">
+                <img [src]="g.visitors.logo" class="team-logo" (load)="onImageLoad($event)"
+                  (error)="onImageError($event)" />
+                <span class="team-name">{{ g.visitors.name }}</span>
+              </div>
+
+              <!-- VS + Hora -->
+              <div class="center-col">
+                <span class="vs">VS</span>
+                <span class="time">{{ g.timeLocal }}</span>
+              </div>
+
+              <!-- Local -->
+              <div class="team-col">
+                <img [src]="g.home.logo" class="team-logo" (load)="onImageLoad($event)"
+                  (error)="onImageError($event)" />
+                <span class="team-name">{{ g.home.name }}</span>
+              </div>
+
+            </div>
+
+            <div class="arena-mini">{{ g.arena }}</div>
+
+          </div>
+
         </div>
 
-        <div *ngIf="news.length">
-          <div class="news-card" *ngFor="let n of news; trackBy: trackNews">
+        <div *ngIf="!nextGames.length && !errorNext" class="empty">
+          No hay próximos partidos.
+        </div>
 
-            <!-- IMAGEN OPTIMIZADA -->
-            <img [src]="n.image" class="news-img" (load)="onImageLoad($event)" (error)="onImageError($event)"
-              loading="lazy" decoding="async" width="180" height="115" />
 
-            <div class="news-info">
-              <h3 class="news-title">{{ n.title }}</h3>
-              <p class="news-desc">{{ n.description }}</p>
-
-              <button class="news-button" *ngIf="n?.url" (click)="openNews(n.url)">
-                Leer noticia completa
-              </button>
-            </div>
-          </div>
+        <!-- Mensaje si no hay partidos -->
+        <div *ngIf="!nextGames.length && !errorNext" class="empty">
+          No hay próximos partidos.
         </div>
       </div>
-
     </div>
 
 

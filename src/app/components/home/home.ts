@@ -1,17 +1,12 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { NbaApiService } from '../../services/nba-api';
 import { BestPlayersService } from '../../services/best-players.service';
-
-import { NEWS } from '../../data/news';
 import { mapGame } from '../../utils/mapGame';
-import { Game, NotificationItem, TopStat } from '../../models/interfaces';
+import { getGamesByDateMapped } from '../../utils/gameUtils';
+import { Game, MappedGame, NotificationItem, TopStat } from '../../models/interfaces';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
 
@@ -26,7 +21,9 @@ export class Home implements OnInit {
 
   liveGames: Game[] = [];
   bestPlayers: TopStat[] = [];
-  news = NEWS;
+
+  nextGames: MappedGame[] = [];
+  errorNext: string | null = null;
 
   notifications: NotificationItem[] = [];
   unreadCount = 0;
@@ -34,16 +31,15 @@ export class Home implements OnInit {
   errorLive: string | null = null;
   errorPlayers: string | null = null;
 
-  constructor(
-    private nbaService: NbaApiService,
-    private bestPlayersService: BestPlayersService,
-    public auth: AuthService,
-    private notificationService: NotificationService
-  ) { }
+  private nbaService = inject(NbaApiService);
+  private bestPlayersService = inject(BestPlayersService);
+  public auth = inject(AuthService);
+  private notificationService = inject(NotificationService);
 
   ngOnInit() {
     this.loadLiveGames();
     this.loadBestPlayers();
+    this.loadNextGames(); // ✅
     if (this.auth.getToken()) this.loadNotifications();
   }
 
@@ -54,14 +50,6 @@ export class Home implements OnInit {
     } catch (err) {
       console.error("Error loading notifications", err);
     }
-  }
-
-  openNews(url: string) {
-    window.open(url, '_blank');
-  }
-
-  trackNews(index: number, item: any) {
-    return item.title;
   }
 
   trackGame(index: number, game: Game) {
@@ -79,8 +67,9 @@ export class Home implements OnInit {
 
       if (!this.liveGames.length) {
         this.errorLive = 'No hay partidos en vivo actualmente.';
+      } else {
+        this.errorLive = null;
       }
-
     } catch {
       this.errorLive = 'Error al cargar los partidos en vivo.';
     }
@@ -93,12 +82,91 @@ export class Home implements OnInit {
 
       if (!this.bestPlayers.length) {
         this.errorPlayers = 'No se pudieron cargar los jugadores destacados.';
+      } else {
+        this.errorPlayers = null;
       }
-
     } catch {
       this.errorPlayers = 'Error al obtener los mejores jugadores.';
     }
   }
+
+  getStartIso(g: Game): string {
+    return g?.date || '';
+  }
+
+  async loadNextGames() {
+    this.errorNext = null;
+
+    try {
+      const today = new Date();
+      const tomorrow = new Date();
+      tomorrow.setDate(today.getDate() + 1);
+
+      const todayStr = this.toYYYYMMDD(today);
+      const tomorrowStr = this.toYYYYMMDD(tomorrow);
+
+      const gamesToday = await getGamesByDateMapped(this.nbaService, todayStr);
+      const gamesTomorrow = await getGamesByDateMapped(this.nbaService, tomorrowStr);
+
+      const all = [...(gamesToday ?? []), ...(gamesTomorrow ?? [])];
+
+      // 🔥 evitar null en dateISO
+      const upcoming = all.filter(g =>
+        g.status === "Programado" &&
+        typeof g.dateISO === "string" &&
+        g.dateISO.length > 0
+      );
+
+      // 🔥 ordenar safe
+      upcoming.sort((a, b) => {
+        const da = a.dateISO ? new Date(a.dateISO).getTime() : Infinity;
+        const db = b.dateISO ? new Date(b.dateISO).getTime() : Infinity;
+        return da - db;
+      });
+
+      this.nextGames = upcoming.slice(0, 8);
+      console.log("Próximos partidos cargados:", this.nextGames);
+
+      this.errorNext =
+        this.nextGames.length ? null : 'No hay próximos partidos por mostrar.';
+
+    } catch (err) {
+      console.error(err);
+      this.errorNext = 'Error al cargar próximos partidos.';
+    }
+  }
+
+
+
+
+  private toYYYYMMDD(d: Date) {
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  }
+
+  formatGameTimeARG(game: any): string {
+    const iso = this.getStartIso(game);
+    if (!iso) return '';
+    return new Date(iso).toLocaleTimeString('es-AR', {
+      timeZone: 'America/Argentina/Buenos_Aires',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+  }
+
+  formatGameDateARG(game: any): string {
+    const iso = this.getStartIso(game);
+    if (!iso) return '';
+    return new Date(iso).toLocaleDateString('es-AR', {
+      timeZone: 'America/Argentina/Buenos_Aires',
+      weekday: 'short',
+      day: '2-digit',
+      month: '2-digit'
+    });
+  }
+
+
   onImageLoad(ev: Event) {
     (ev.target as HTMLImageElement).classList.add('img-loaded');
   }
@@ -106,5 +174,4 @@ export class Home implements OnInit {
   onImageError(ev: Event) {
     (ev.target as HTMLImageElement).src = 'assets/img/news-placeholder.jpg';
   }
-
 }

@@ -55,7 +55,7 @@ h2 {
     inset 0 0 14px rgba(233, 196, 106, 0.06);
 
   padding: 1.2rem;
-  min-width: 400px;
+  min-width: 0px;
 
   animation: fadeIn .4s ease;
 }
@@ -153,31 +153,148 @@ tbody tr:hover {
 }
 
 /* =========================
-   RESPONSIVE
+   RESPONSIVE (<= 1000px)
+   Ajuste intermedio para que las tablas se apilen
 ========================= */
-@media (max-width: 450px) {
+@media (max-width: 1000px) {
+  .tables-wrapper {
+    gap: 2rem;
+  }
+
+  .table-box {
+    flex: 1 1 100%;
+    /* Hace que cada tabla ocupe su propia línea */
+    max-width: 700px;
+    width: 95%;
+  }
+}
+
+/* =========================
+   RESPONSIVE (<= 600px)
+   Achicamiento PROGRESIVO de fuentes y padding
+========================= */
+@media (max-width: 600px) {
 
   .tables-wrapper {
     flex-direction: column;
     align-items: center;
+    gap: 1.2rem;
+    width: 100%;
+    margin: 1.5rem auto;
   }
 
   .table-box {
-    width: 90%;
-    min-width: 90%;
+    width: 95%;
+    padding: 0.7rem;
+    /* Reducción de padding en el contenedor */
+    min-width: unset;
+    /* CLAVE para que pueda achicarse */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
   }
 
-  th,
+  h2 {
+    font-size: clamp(1rem, 4vw, 1.2rem);
+    margin-bottom: 0.6rem;
+  }
+
+  /* ⬇️ Achicamiento Agresivo de Tabla (sin scroll) ⬇️ */
+
+  /* Headers */
+  th {
+    padding: 8px 4px;
+    /* Padding muy reducido */
+    font-size: 0.7rem;
+    /* Fuente pequeña */
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    /* Evita saltos de línea inesperados */
+  }
+
+  /* Celdas de Datos */
   td {
-    padding: 8px;
-    font-size: 0.8rem;
+    padding: 8px 4px;
+    /* Padding muy reducido */
+    font-size: 0.65rem;
+    /* Fuente pequeña */
+  }
+
+  /* Ajuste para los encabezados largos */
+  th:nth-child(3),
+  /* Nombre del equipo */
+  th:nth-child(4)
+
+  /* Puntos Totales */
+    {
+    /* Fuerza a que el texto pueda partirse si es necesario */
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.1;
+  }
+
+  /* Celda de Usuario/Equipo */
+  .team-cell {
+    gap: 4px;
+    /* Reducimos el gap */
   }
 
   .team-cell img {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .team-cell span {
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .error-box {
+    max-width: 90%;
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
   }
 }
+
+/* =========================
+   RESPONSIVE (<= 400px)
+   Ajuste final para móviles ultra pequeños
+========================= */
+@media (max-width: 400px) {
+
+  th {
+    padding: 6px 3px;
+    font-size: 0.55rem;
+  }
+
+  td {
+    padding: 6px 3px;
+    font-size: 0.6rem;
+  }
+
+  .team-cell img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .team-cell span {
+    font-size: 0.65rem;
+  }
+}
+
+/* =========================
+   ANIMACIÓN (Se mantuvo el original)
+========================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 /* =========================
    ANIMACIÓN

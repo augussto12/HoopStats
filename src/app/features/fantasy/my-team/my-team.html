@@ -3,15 +3,9 @@
     <div *ngIf="team; else createTeam" class="fantasy-team">
 
         <!-- MERCADO BLOQUEADO -->
-        <div *ngIf="isLocked" class="lock-banner">
-            Mercado bloqueado — se abre mañana 7 am.
+        <div *ngIf="lockReason" class="lock-banner">
+            {{ lockReason }}
         </div>
-
-        <!-- MERCADO ABIERTO -->
-        <div *ngIf="!isLocked" class="lock-banner">
-            Mercado abierto — podés hacer cambios.
-        </div>
-
 
         <!-- HEADER -->
         <div class="team-header">
@@ -32,8 +26,8 @@
                     </button>
 
                     <div class="header-chip-trades">
-                        Trades hoy:
-                        <span>{{ tradesHoy }}</span> / {{ limiteDiario }}
+                        Trades restantes:
+                        <span>{{ tradesRestantes }}</span>
                     </div>
                 </div>
             </div>

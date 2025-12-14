@@ -117,6 +117,31 @@ export interface Game {
     };
 }
 
+export interface MappedGame {
+  id: number;
+  arena: string;
+  dateReadable: string;
+  dateISO: string | null;
+  timeLocal: string;
+  status: string; 
+  period: number | null;
+  clock: string | null;
+  visitors: {
+    id: number;
+    name: string;
+    code: string;
+    logo: string;
+    pts: number | null;
+  };
+  home: {
+    id: number;
+    name: string;
+    code: string;
+    logo: string;
+    pts: number | null;
+  };
+}
+
 
 export interface PlayerGroup {
     team: Team;
