@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- THEME PRINCIPAL -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">#000000</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="android:navigationBarColor">#000000</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <item name="android:forceDarkAllowed">false</item>
+    </style>
+
+    <!-- SIN ACTION BAR -->
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:statusBarColor">#000000</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="android:navigationBarColor">#000000</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <item name="android:forceDarkAllowed">false</item>
+    </style>
+
+    <!-- SPLASH / LAUNCH -->
+    <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#000000</item>
+
+        <!-- Si querés el ícono en el splash (opcional) -->
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+
+        <!-- CLAVE: después del splash usa el theme real -->
+        <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
+
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+    </style>
+
+
+</resources>

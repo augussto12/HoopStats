@@ -2,9 +2,99 @@
   <app-header></app-header>
 
   <main class="main-content">
+
+    <!-- CAMPANA FLOTANTE -->
+    <button class="floating-bell" *ngIf="isLogged" (click)="togglePanel()" aria-label="Notificaciones">
+      🔔
+      <span class="badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+    </button>
+
+    <!-- BACKDROP (solo cuando está abierto) -->
+    <div class="invite-panel-backdrop" *ngIf="showPanel && isLogged" (click)="togglePanel()"></div>
+
+    <!-- PANEL (existe si está logueado, pero arranca fuera de pantalla) -->
+    <div class="invite-panel" *ngIf="isLogged" [class.open]="showPanel">
+      <div class="panel-header">
+        <h2>Notificaciones</h2>
+        <button class="close-btn" (click)="togglePanel()">✕</button>
+      </div>
+
+      <div class="empty-msg" *ngIf="notifications.length === 0">
+        No tenés notificaciones.
+      </div>
+
+      <div class="invite-item" *ngFor="let n of notifications; let i = index"
+        [ngStyle]="{ 'transition-delay': (i * 80) + 'ms' }" [class.slide-in]="showPanel">
+        <h3>{{ n.title }}</h3>
+        <p>{{ n.message }}</p>
+
+        <small class="date">{{ n.created_at | date:'short' }}</small>
+
+        <div class="status-pill" [class.unread]="!n.is_read" [class.read]="n.is_read">
+          {{ n.is_read ? "Leída" : "Nueva" }}
+        </div>
+
+        <div class="buttons">
+          <!-- INVITE -->
+          <ng-container *ngIf="n.type === 'invite_received'">
+            <button class="accept-btn" [disabled]="loadingAccept[n.id]" (click)="acceptInvite(n.data.inviteId, n.id)">
+              <ng-container *ngIf="!loadingAccept[n.id]">Aceptar</ng-container>
+              <ng-container *ngIf="loadingAccept[n.id]">
+                <span class="mini-spinner"></span> Procesando...
+              </ng-container>
+            </button>
+
+            <button class="reject-btn" [disabled]="loadingReject[n.id]" (click)="rejectInvite(n.data.inviteId, n.id)">
+              <ng-container *ngIf="!loadingReject[n.id]">Rechazar</ng-container>
+              <ng-container *ngIf="loadingReject[n.id]">
+                <span class="mini-spinner red"></span> Procesando...
+              </ng-container>
+            </button>
+          </ng-container>
+
+          <!-- JOIN REQUEST -->
+          <ng-container *ngIf="n.type === 'join_request'">
+            <button class="accept-btn" [disabled]="loadingAccept[n.id]"
+              (click)="approveRequest(n.data.requestId, n.id)">
+              <ng-container *ngIf="!loadingAccept[n.id]">Aceptar</ng-container>
+              <ng-container *ngIf="loadingAccept[n.id]">
+                <span class="mini-spinner"></span> Procesando...
+              </ng-container>
+            </button>
+
+            <button class="reject-btn" [disabled]="loadingReject[n.id]" (click)="rejectRequest(n.data.requestId, n.id)">
+              <ng-container *ngIf="!loadingReject[n.id]">Rechazar</ng-container>
+              <ng-container *ngIf="loadingReject[n.id]">
+                <span class="mini-spinner red"></span> Procesando...
+              </ng-container>
+            </button>
+          </ng-container>
+
+          <!-- NORMALES -->
+          <ng-container *ngIf="n.type !== 'join_request' && n.type !== 'invite_received'">
+            <button class="accept-btn" *ngIf="!n.is_read" [disabled]="loadingRead[n.id]" (click)="markAsRead(n.id)">
+              <ng-container *ngIf="!loadingRead[n.id]">Marcar como leída</ng-container>
+              <ng-container *ngIf="loadingRead[n.id]">
+                <span class="mini-spinner"></span> Procesando...
+              </ng-container>
+            </button>
+
+            <button class="reject-btn" [disabled]="loadingDelete[n.id]" (click)="deleteNotification(n.id)">
+              <ng-container *ngIf="!loadingDelete[n.id]">Borrar</ng-container>
+              <ng-container *ngIf="loadingDelete[n.id]">
+                <span class="mini-spinner red"></span> Borrando...
+              </ng-container>
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+
     <session-expiring-modal></session-expiring-modal>
     <div id="toast" class="toast"></div>
     <router-outlet></router-outlet>
+
   </main>
 
   <footer class="app-footer">
@@ -12,7 +102,6 @@
     <div class="footer-slogan">Analizá. Jugá. Mejorá.</div>
     <div class="footer-version">v1.0.4</div>
   </footer>
-
 </div>
 
 <app-global-loader></app-global-loader>

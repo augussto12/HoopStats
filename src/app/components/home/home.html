@@ -13,7 +13,7 @@
 
         <div class="next-list-grid" *ngIf="nextGames.length">
 
-          <div class="next-mini-card" *ngFor="let g of nextGames" [routerLink]="['/game-details', g.id]">
+          <div class="next-mini-card" *ngFor="let g of nextGames">
 
             <div class="teams-row">
 
@@ -21,7 +21,7 @@
               <div class="team-col">
                 <img [src]="g.visitors.logo" class="team-logo" (load)="onImageLoad($event)"
                   (error)="onImageError($event)" />
-                <span class="team-name">{{ g.visitors.name }}</span>
+                <span class="team-name" [routerLink]="['/teams', g.visitors.id]">{{ g.visitors.name }}</span>
               </div>
 
               <!-- VS + Hora -->
@@ -34,7 +34,7 @@
               <div class="team-col">
                 <img [src]="g.home.logo" class="team-logo" (load)="onImageLoad($event)"
                   (error)="onImageError($event)" />
-                <span class="team-name">{{ g.home.name }}</span>
+                <span class="team-name" [routerLink]="['/teams', g.home.id]">{{ g.home.name }}</span>
               </div>
 
             </div>

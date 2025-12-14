@@ -61,8 +61,8 @@ button {
   top: 20px;
   right: 20px;
   padding: 14px 18px;
-  background: rgba(233,196,106,0.18);
-  border: 1px solid rgba(233,196,106,0.45);
+  background: rgba(233, 196, 106, 0.18);
+  border: 1px solid rgba(233, 196, 106, 0.45);
   color: #E9C46A;
   border-radius: 10px;
   font-weight: 700;
@@ -77,4 +77,13 @@ button {
 .toast.show {
   opacity: 1;
   transform: translateY(0);
+}
+
+:root{
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+body {
+  padding-top: var(--safe-top);
 }

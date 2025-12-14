@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">HoopStats</string>
+    <string name="title_activity_main">HoopStats</string>
+    <string name="package_name">com.hoopstats.app</string>
+    <string name="custom_url_scheme">com.hoopstats.app</string>
+</resources>

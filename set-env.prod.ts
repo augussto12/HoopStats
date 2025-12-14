@@ -2,23 +2,22 @@
 import { writeFileSync } from 'fs';
 import * as dotenv from 'dotenv';
 
-dotenv.config();
+// Usa .env.production si existe, si no usa variables del sistema
+dotenv.config({ path: '.env.production' });
 
-const apiUrl = process.env['API_URL'] || 'https://hoopstats-backend-production.up.railway.app/api';
-
-const envContent = `
+const content = `
 export const environment = {
   production: true,
-  apiUrl: '${apiUrl}',
+  apiUrl: '${process.env['API_URL']}',
   nbaApi: {
-    baseUrl: '',
-    headers: {}
+    baseUrl: '${process.env['NBA_API_URL'] ?? ''}',
+    headers: {
+      'x-apisports-key': '${process.env['NBA_API_KEY'] ?? ''}'
+    }
   }
 };
 `;
 
-// Genera environment.prod.ts
-writeFileSync('./src/environments/environment.prod.ts', envContent);
+writeFileSync('./src/environments/environment.prod.ts', content);
 
-// GENERA TAMBIÉN environment.ts (Angular lo busca SIEMPRE)
-writeFileSync('./src/environments/environment.ts', envContent);
+console.log("✔ environment.prod.ts generado (PROD)");
