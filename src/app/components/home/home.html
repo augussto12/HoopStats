@@ -13,13 +13,14 @@
 
         <div class="next-list-grid" *ngIf="nextGames.length">
 
-          <div class="next-mini-card" *ngFor="let g of nextGames">
+          <div class="next-mini-card" *ngFor="let g of nextGames; trackBy: trackNextGame">
+
 
             <div class="teams-row">
 
               <!-- Visitante -->
               <div class="team-col">
-                <img [src]="g.visitors.logo" class="team-logo" (load)="onImageLoad($event)"
+                <img [src]="g.visitors.logo" class="team-logo" loading="lazy" decoding="async" width="28" height="28"
                   (error)="onImageError($event)" />
                 <span class="team-name" [routerLink]="['/teams', g.visitors.id]">{{ g.visitors.name }}</span>
               </div>
@@ -32,7 +33,7 @@
 
               <!-- Local -->
               <div class="team-col">
-                <img [src]="g.home.logo" class="team-logo" (load)="onImageLoad($event)"
+                <img [src]="g.home.logo" class="team-logo" loading="lazy" decoding="async" width="28" height="28"
                   (error)="onImageError($event)" />
                 <span class="team-name" [routerLink]="['/teams', g.home.id]">{{ g.home.name }}</span>
               </div>
@@ -49,11 +50,6 @@
           No hay próximos partidos.
         </div>
 
-
-        <!-- Mensaje si no hay partidos -->
-        <div *ngIf="!nextGames.length && !errorNext" class="empty">
-          No hay próximos partidos.
-        </div>
       </div>
     </div>
 
@@ -97,8 +93,8 @@
 
             <!-- VISITANTE -->
             <div class="team">
-              <img [src]="g.visitors?.logo" class="team-logo" (load)="onImageLoad($event)"
-                (error)="onImageError($event)" loading="lazy" width="38" height="38" />
+              <img [src]="g.visitors?.logo" class="team-logo" loading="lazy" decoding="async" width="38" height="38"
+                (error)="onImageError($event)" />
               <span>{{ g.visitors?.name }}</span>
             </div>
 
@@ -135,8 +131,7 @@
 
             <!-- LOCAL -->
             <div class="team">
-              <img [src]="g.home?.logo" class="team-logo" (load)="onImageLoad($event)" (error)="onImageError($event)"
-                loading="lazy" width="38" height="38" />
+              <img [src]="g.home?.logo" class="team-logo" (error)="onImageError($event)" loading="lazy" decoding="async" width="38" height="38" />
               <span>{{ g.home?.name }}</span>
             </div>
 

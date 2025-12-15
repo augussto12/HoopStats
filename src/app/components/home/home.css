@@ -27,7 +27,6 @@
   padding: 1.5rem 1.4rem;
   border: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(14px);
 }
 
 .panel h2 {
@@ -46,14 +45,53 @@
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 14px;
 
-  max-width: 900px;   /* controla cuántas columnas máximas entran */
-  margin: 0 auto;     /* centra cuando hay pocas */
+  max-width: 900px;
+  /* controla cuántas columnas máximas entran */
+  margin: 0 auto;
+  /* centra cuando hay pocas */
 }
 
-@media (max-width: 1400px){ .next-list-grid{ grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 1100px){ .next-list-grid{ grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 720px){  .next-list-grid{ grid-template-columns: 1fr; } }
+@media (max-width: 1400px) {
+  .next-list-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
+@media (max-width: 1100px) {
+  .next-list-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .next-list-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@supports (-moz-appearance: none) {
+  .next-list-grid {
+    /* en vez de auto-fit/minmax */
+    grid-template-columns: repeat(3, 1fr);
+    max-width: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  @supports (-moz-appearance: none) {
+    .next-list-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  @supports (-moz-appearance: none) {
+    .next-list-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
 
 
 
@@ -319,4 +357,62 @@
   .live-list {
     grid-template-columns: 1fr;
   }
+}
+
+/* ===============================
+   PERFORMANCE FIX – MOBILE
+================================ */
+
+@media (max-width: 900px) {
+
+  .panel,
+  .app-footer,
+  .invite-panel-backdrop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .panel,
+  .live-card,
+  .player-card,
+  .next-mini-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+  }
+
+  .live-card,
+  .player-card,
+  .next-mini-card,
+  .floating-bell {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ===============================
+   PERF: blur solo donde conviene
+================================ */
+
+/* Blur solo en pantallas grandes y navegadores que lo soportan bien */
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  @media (min-width: 901px) {
+    .panel {
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+  }
+}
+
+/* Firefox: desactivar blur siempre */
+@supports (-moz-appearance: none) {
+  .panel {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
+/* Reduce repaints en scroll (Firefox lo siente) */
+.next-mini-card,
+.live-card,
+.player-card {
+  contain: content;
 }

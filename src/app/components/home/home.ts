@@ -38,7 +38,7 @@ export class Home implements OnInit {
   ngOnInit() {
     this.loadLiveGames();
     this.loadBestPlayers();
-    this.loadNextGames(); 
+    this.loadNextGames();
     if (this.auth.getToken()) this.loadNotifications();
   }
 
@@ -89,10 +89,6 @@ export class Home implements OnInit {
     }
   }
 
-  getStartIso(g: Game): string {
-    return g?.date || '';
-  }
-
   async loadNextGames() {
     this.errorNext = null;
 
@@ -121,34 +117,13 @@ export class Home implements OnInit {
     return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
   }
 
-  formatGameTimeARG(game: any): string {
-    const iso = this.getStartIso(game);
-    if (!iso) return '';
-    return new Date(iso).toLocaleTimeString('es-AR', {
-      timeZone: 'America/Argentina/Buenos_Aires',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    });
-  }
-
-  formatGameDateARG(game: any): string {
-    const iso = this.getStartIso(game);
-    if (!iso) return '';
-    return new Date(iso).toLocaleDateString('es-AR', {
-      timeZone: 'America/Argentina/Buenos_Aires',
-      weekday: 'short',
-      day: '2-digit',
-      month: '2-digit'
-    });
-  }
-
-
-  onImageLoad(ev: Event) {
-    (ev.target as HTMLImageElement).classList.add('img-loaded');
-  }
 
   onImageError(ev: Event) {
     (ev.target as HTMLImageElement).src = 'assets/img/news-placeholder.jpg';
   }
+
+  trackNextGame(index: number, g: any) {
+    return g.id ?? g.game_id ?? index;
+  }
+
 }

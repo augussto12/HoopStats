@@ -179,33 +179,38 @@
 /* =========================================
     BACKDROP DEL PANEL
 ========================================= */
-.invite-panel-backdrop {
+.invite-panel-backdrop{
   position: fixed;
   inset: 0;
-  backdrop-filter: blur(3px);
-  background: rgba(0, 0, 0, 0.45);
+  background: rgba(0,0,0,.45);
   z-index: 9002;
-  /* ⬅ encima de la campana */
 }
 
 .invite-panel {
   position: fixed;
   top: 0;
-  right: -360px;
+  right: 0;
   width: 320px;
-  height: 100%;
+  height: 100vh;
 
   background: #0F1A2F;
   border-left: 1px solid rgba(255, 255, 255, 0.07);
-  padding: 18px;
-
-  z-index: 9003;
-  /* ⬅ el más alto */
-  transition: right .35s cubic-bezier(.25, .8, .25, 1);
   box-shadow: -6px 0 18px rgba(0, 0, 0, 0.45);
 
+  /* animación tipo side-menu */
+  transform: translateX(110%);
+  transition: transform .35s cubic-bezier(.25, .8, .25, 1);
+
   overflow-y: auto;
+  z-index: 9003;
+  padding: calc(18px + var(--safe-top)) 18px 18px;
 }
+
+.invite-panel.open {
+  transform: translateX(0);
+}
+
+
 
 .invite-panel.open {
   right: 0;
@@ -443,5 +448,68 @@
   .invite-panel {
     width: 320px;
     right: -320px;
+  }
+}
+
+/* ===============================
+   PERFORMANCE FIX – MOBILE
+================================ */
+
+@media (max-width: 900px) {
+
+  .panel,
+  .app-footer,
+  .invite-panel-backdrop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+}
+
+@media (max-width: 900px) {
+
+  .panel,
+  .live-card,
+  .player-card,
+  .next-mini-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+  }
+
+}
+
+@media (max-width: 900px) {
+
+  .live-card,
+  .player-card,
+  .next-mini-card,
+  .floating-bell {
+    transition: none !important;
+    transform: none !important;
+  }
+
+}
+
+
+/* Firefox: backdrop-filter suele ir peor. Desactivarlo ayuda mucho */
+@supports (-moz-appearance: none) {
+
+  .panel,
+  .app-footer,
+  .invite-panel-backdrop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+}
+
+@supports (-moz-appearance: none) {
+  .panel {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35) !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .invite-panel {
+    width: 240px;
+    padding: calc(14px + var(--safe-top)) 14px 14px;
   }
 }

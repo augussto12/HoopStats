@@ -5,13 +5,16 @@ import { LoadingService } from './services/loading.service';
 import { AuthService } from './services/auth.service';
 import { NotificationService } from './services/notification.service';
 import { AdminLeagueService } from './services/admin-league.service';
-import { DatePipe, CommonModule } from '@angular/common';
+import { DatePipe, CommonModule, Location } from '@angular/common';
 import { Header } from './components/header/header';
 import { GlobalLoaderComponent } from './components/global-loader/global-loader.component';
 import { SessionExpiringModal } from './modal-session-expiring.component';
 import { Capacitor } from '@capacitor/core';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { NotificationItem } from './models/interfaces';
+
+// ✅ Capacitor App (para backButton)
+import { App as CapApp } from '@capacitor/app';
 
 @Component({
   selector: 'app-root',
@@ -37,6 +40,7 @@ export class App {
   private notificationsService = inject(NotificationService);
   private adminLeague = inject(AdminLeagueService);
   private router = inject(Router);
+  private location = inject(Location);
 
   // ======================
   //   ESTADO NOTIFICACIONES
@@ -51,17 +55,66 @@ export class App {
   loadingRead: Record<number, boolean> = {};
   loadingDelete: Record<number, boolean> = {};
 
+  // para doble-tap para salir
+  private lastBackPress = 0;
+
   constructor() {
     this.auth.initSession();
 
     if (Capacitor.isNativePlatform()) {
       StatusBar.setOverlaysWebView({ overlay: false });
       StatusBar.setBackgroundColor({ color: '#000000' });
-
-      // Style.Dark = íconos claros (nombre confuso, pero es así)
       StatusBar.setStyle({ style: Style.Dark });
-    }
 
+      // BACK BUTTON ANDROID
+      CapApp.addListener('backButton', ({ canGoBack }) => {
+
+        // 1) Cerrar panel primero
+        if (this.showPanel) {
+          this.showPanel = false;
+          return;
+        }
+
+        const currentUrl = this.router.url;
+
+        // 2) LOGIN → nunca salir
+        if (currentUrl.startsWith('/login')) {
+          return;
+        }
+
+        // 3) HOME → doble tap para salir
+        if (currentUrl === '/home') {
+
+          const now = Date.now();
+
+          if (now - this.lastBackPress < 1500) {
+            CapApp.exitApp();
+            return;
+          }
+
+          this.lastBackPress = now;
+
+          // 👉 opcional: mostrar toast
+          const toast = document.getElementById('toast');
+          if (toast) {
+            toast.textContent = 'Presioná atrás otra vez para salir';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 1400);
+          }
+
+          return;
+        }
+
+
+        // 4) Si puede volver atrás → back normal
+        if (canGoBack) {
+          this.location.back();
+          return;
+        }
+
+      });
+
+    }
 
     // Loader global
     this.loading.loading$
@@ -84,7 +137,6 @@ export class App {
           this.showPanel = false;
         }
       });
-
   }
 
   // ======================
@@ -104,7 +156,6 @@ export class App {
     if (!this.isLogged) return;
     this.showPanel = !this.showPanel;
   }
-
 
   markAsRead(notificationId: number) {
     this.loadingRead[notificationId] = true;

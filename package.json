@@ -32,6 +32,7 @@
     "@angular/router": "^20.3.0",
     "@balldontlie/sdk": "^1.2.2",
     "@capacitor/android": "^8.0.0",
+    "@capacitor/app": "^8.0.0",
     "@capacitor/cli": "^8.0.0",
     "@capacitor/core": "^8.0.0",
     "@capacitor/status-bar": "^8.0.0",

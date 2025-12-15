@@ -79,11 +79,45 @@ button {
   transform: translateY(0);
 }
 
-:root{
+:root {
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 body {
   padding-top: var(--safe-top);
+}
+
+/* ===============================
+   PERFORMANCE FIX – FIREFOX
+================================ */
+@supports (-moz-appearance: none) {
+
+  .panel,
+  .app-footer,
+  .invite-panel-backdrop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .panel,
+  .live-card,
+  .player-card,
+  .next-mini-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+  }
+}
+
+@media (hover: none) {
+
+  .next-mini-card:hover,
+  .live-card:hover,
+  .player-card:hover {
+    transform: none;
+  }
+}
+
+body.sim-notch {
+  --safe-top: 32px;
+  --safe-right: 10px;
 }
