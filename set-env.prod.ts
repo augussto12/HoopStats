@@ -2,7 +2,6 @@
 import { writeFileSync } from 'fs';
 import * as dotenv from 'dotenv';
 
-// Usa .env.production si existe, si no usa variables del sistema
 dotenv.config({ path: '.env.production' });
 
 const content = `
@@ -18,6 +17,7 @@ export const environment = {
 };
 `;
 
-writeFileSync('./src/environments/environment.prod.ts', content);
+writeFileSync('./src/environments/environment.ts', content);       // ✅ clave
+writeFileSync('./src/environments/environment.prod.ts', content);  // ✅
 
-console.log("✔ environment.prod.ts generado (PROD)");
+console.log("✔ environment.ts + environment.prod.ts generados (PROD)");
