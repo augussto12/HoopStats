@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
 import { NbaApiService } from '../../services/nba-api';
 import { BestPlayersService } from '../../services/best-players.service';
 import { mapGame } from '../../utils/mapGame';
@@ -39,7 +38,7 @@ export class Home implements OnInit {
   ngOnInit() {
     this.loadLiveGames();
     this.loadBestPlayers();
-    this.loadNextGames(); // ✅
+    this.loadNextGames(); 
     if (this.auth.getToken()) this.loadNotifications();
   }
 
@@ -98,34 +97,15 @@ export class Home implements OnInit {
     this.errorNext = null;
 
     try {
-      const today = new Date();
-      const tomorrow = new Date();
-      tomorrow.setDate(today.getDate() + 1);
-
-      const todayStr = this.toYYYYMMDD(today);
-      const tomorrowStr = this.toYYYYMMDD(tomorrow);
+      const todayStr = this.toYYYYMMDD(new Date());
 
       const gamesToday = await getGamesByDateMapped(this.nbaService, todayStr);
-      const gamesTomorrow = await getGamesByDateMapped(this.nbaService, tomorrowStr);
 
-      const all = [...(gamesToday ?? []), ...(gamesTomorrow ?? [])];
-
-      // 🔥 evitar null en dateISO
-      const upcoming = all.filter(g =>
-        g.status === "Programado" &&
-        typeof g.dateISO === "string" &&
-        g.dateISO.length > 0
-      );
-
-      // 🔥 ordenar safe
-      upcoming.sort((a, b) => {
-        const da = a.dateISO ? new Date(a.dateISO).getTime() : Infinity;
-        const db = b.dateISO ? new Date(b.dateISO).getTime() : Infinity;
-        return da - db;
-      });
+      const upcoming = gamesToday
+        .filter(g => g.status === 'Programado')
+        .sort((a, b) => a.id - b.id);
 
       this.nextGames = upcoming.slice(0, 8);
-      console.log("Próximos partidos cargados:", this.nextGames);
 
       this.errorNext =
         this.nextGames.length ? null : 'No hay próximos partidos por mostrar.';
@@ -135,9 +115,6 @@ export class Home implements OnInit {
       this.errorNext = 'Error al cargar próximos partidos.';
     }
   }
-
-
-
 
   private toYYYYMMDD(d: Date) {
     const pad = (n: number) => String(n).padStart(2, '0');

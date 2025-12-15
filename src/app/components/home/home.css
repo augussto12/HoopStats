@@ -43,9 +43,18 @@
 
 .next-list-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 14px;
+
+  max-width: 900px;   /* controla cuántas columnas máximas entran */
+  margin: 0 auto;     /* centra cuando hay pocas */
 }
+
+@media (max-width: 1400px){ .next-list-grid{ grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 1100px){ .next-list-grid{ grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 720px){  .next-list-grid{ grid-template-columns: 1fr; } }
+
+
 
 
 .next-mini-card {
