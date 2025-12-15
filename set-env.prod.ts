@@ -17,7 +17,7 @@ export const environment = {
 };
 `;
 
-writeFileSync('./src/environments/environment.ts', content);       // ✅ clave
-writeFileSync('./src/environments/environment.prod.ts', content);  // ✅
+writeFileSync('./src/environments/environment.ts', content);  
+writeFileSync('./src/environments/environment.prod.ts', content); 
 
 console.log("✔ environment.ts + environment.prod.ts generados (PROD)");

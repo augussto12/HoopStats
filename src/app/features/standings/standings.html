@@ -21,7 +21,7 @@
           <td>{{ team.conference.rank }}</td>
           <td>
             <div class="team-cell">
-              <img [src]="team.team.logo" alt="{{ team.team.nickname }}" />
+              <img [src]="team.team.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : team.team.logo" alt="{{ team.team.nickname }}" />
               <span>{{ team.team.nickname }}</span>
             </div>
           </td>
@@ -50,7 +50,7 @@
           <td>{{ team.conference.rank }}</td>
           <td>
             <div class="team-cell">
-              <img [src]="team.team.logo" alt="{{ team.team.nickname }}" />
+              <img [src]="team.team.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : team.team.logo" alt="{{ team.team.nickname }}" />
               <span>{{ team.team.nickname }}</span>
             </div>
           </td>

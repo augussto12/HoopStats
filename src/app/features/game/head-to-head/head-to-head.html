@@ -48,7 +48,7 @@
 
                 <div class="teams">
                     <div class="team">
-                        <img [src]="g.visitors.logo" [alt]="g.visitors.name" />
+                        <img [src]="g.visitors?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.visitors?.logo" [alt]="g.visitors.name" />
                         <div class="team-name">{{ g.visitors.name }}</div>
                     </div>
 
@@ -63,7 +63,7 @@
                     </div>
 
                     <div class="team">
-                        <img [src]="g.home.logo" [alt]="g.home.name" />
+                        <img [src]="g.home?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.home?.logo" [alt]="g.home.name" />
                         <div class="team-name">{{ g.home.name }}</div>
                     </div>
                 </div>

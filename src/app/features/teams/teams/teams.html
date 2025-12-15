@@ -22,7 +22,7 @@
             <div class="list">
                 <div class="card" *ngFor="let team of filteredTeams(teamsEast)">
                     <div class="left">
-                        <img [src]="team.logo" />
+                        <img [src]="team.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : team.logo" />
                         <div>
                             <div class="name" [routerLink]="['/teams', team.id]">
                                 {{ team.fullName || team.name }}
@@ -50,7 +50,7 @@
             <div class="list">
                 <div class="card" *ngFor="let team of filteredTeams(teamsWest)">
                     <div class="left">
-                        <img [src]="team.logo" [alt]="team.fullName || team.name" />
+                        <img [src]="team.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : team.logo" [alt]="team.fullName || team.name" />
                         <div>
                             <div class="name" [routerLink]="['/teams', team.id]">
                                 {{ team.fullName || team.name }}
