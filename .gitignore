@@ -6,6 +6,9 @@
 /out-tsc
 /bazel-out
 
+#Android
+/android
+
 # Node
 /node_modules
 npm-debug.log
@@ -44,5 +47,6 @@ Thumbs.db
 
 #ENV
 .env.local
+.env.production
 src/environments/environment.ts
 src/environments/environment.prod.ts
