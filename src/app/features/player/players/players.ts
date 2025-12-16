@@ -45,9 +45,16 @@ export class Players implements OnInit {
 
     await this.getPlayersFiltered();
 
-    const favorites = await this.favService.getFavorites();
-    this.favoritesPlayersIds = favorites.players.map((p: any) => p.id);
+    if (this.auth.isLoggedIn()) {
+      try {
+        const favorites = await this.favService.getFavorites();
+        this.favoritesPlayersIds = favorites.players.map((p: any) => p.id);
+      } catch {
+        this.favoritesPlayersIds = [];
+      }
+    }
   }
+
 
   hasFilters(): boolean {
     return (

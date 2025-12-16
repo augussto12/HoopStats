@@ -48,12 +48,9 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
     },
 
-
     { path: 'forgot-password', component: ForgotPassword },
     { path: 'verify-email', component: VerifyEmail },
     { path: 'reset-password', component: ResetPassword },
-
-    // rutas protegidas
     // rutas protegidas
     {
         path: 'favorites',

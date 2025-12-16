@@ -6,10 +6,15 @@
   margin: 0 auto;
   padding: 2rem 1rem;
   color: #fff;
-  background-color: #0B1622;
+  background-color: #16243d;
   font-family: 'Poppins', sans-serif;
   min-height: 100vh;
   animation: fadeIn 0.4s ease;
+  border-radius: 14px;
+  border: 1px solid rgba(233, 196, 106, .25);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, .55),
+    inset 0 0 12px rgba(233, 196, 106, .1);
 }
 
 /* ============================================================
@@ -39,13 +44,13 @@
   height: 140px;
   object-fit: contain;
 
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 20px;
   padding: 14px;
 
   border: 1px solid rgba(233, 196, 106, 0.25);
   box-shadow:
-    0 6px 18px rgba(0,0,0,0.45),
+    0 6px 18px rgba(0, 0, 0, 0.45),
     inset 0 0 12px rgba(233, 196, 106, 0.15);
 }
 
@@ -108,65 +113,41 @@
   font-size: .85rem;
 
   color: #fff;
-  box-shadow: 0 0 10px rgba(0,0,0,0.35);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.35);
 }
 
 .win {
   background-color: #2ecc71;
-  box-shadow: 0 0 10px rgba(46,204,113,.45);
+  box-shadow: 0 0 10px rgba(46, 204, 113, .45);
 }
 
 .loss {
   background-color: #e74c3c;
-  box-shadow: 0 0 10px rgba(231,76,60,.45);
+  box-shadow: 0 0 10px rgba(231, 76, 60, .45);
 }
 
-/* ============================================================== 
-   SELECTOR DE VISTA
-============================================================== */
-.view-selector {
-  display: flex;
-  justify-content: center;
-  margin: 2rem 0;
+
+.toolbar {
+  margin-bottom: 1rem;
 }
 
-.inputSelect {
-  background: rgba(15, 26, 47, 0.8);
-  padding: 0.55rem 1rem;
-  color: #fff;
-
-  border: 1px solid rgba(233,196,106,.35);
-  border-radius: 10px;
-
-  font-size: .95rem;
-  cursor: pointer;
-  margin-bottom: 20px;
-
-  transition: .25s ease;
-}
-
-.inputSelect:hover {
-  background: rgba(233,196,106,.12);
-  border-color: rgba(233,196,106,.55);
-}
-
-/* ============================================================== 
+/* =========== 
    TITULOS
-============================================================== */
+============ */
 .data h2 {
   color: #E9C46A;
   text-align: center;
   margin-bottom: 1.4rem;
   font-size: 1.4rem;
-  text-shadow: 0 0 10px rgba(233,196,106,.3);
+  text-shadow: 0 0 10px rgba(233, 196, 106, .3);
 }
 
-/* ============================================================== 
+/* ================= 
    PLAYERS LIST
-============================================================== */
+================ */
 .players-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1rem;
 }
 
@@ -175,17 +156,17 @@
   border-radius: 12px;
   padding: 1rem;
 
-  border: 1px solid rgba(233,196,106,.25);
+  border: 1px solid rgba(233, 196, 106, .25);
   box-shadow:
-    0 5px 16px rgba(0,0,0,.35),
-    inset 0 0 10px rgba(233,196,106,.08);
+    0 5px 16px rgba(0, 0, 0, .35),
+    inset 0 0 10px rgba(233, 196, 106, .08);
 
   transition: .25s ease;
 }
 
 .player-card:hover {
   transform: translateY(-3px);
-  background: rgba(233,196,106,.12);
+  background: rgba(233, 196, 106, .12);
 }
 
 .player-info {
@@ -210,7 +191,7 @@
   background: rgba(15, 26, 47, 1);
   color: #E9C46A;
 
-  border: 1px solid rgba(233,196,106,.45);
+  border: 1px solid rgba(233, 196, 106, .45);
   padding: 6px 10px;
 
   border-radius: 8px;
@@ -220,12 +201,12 @@
 }
 
 .btnfav:hover {
-  background: rgba(233,196,106,.18);
+  background: rgba(233, 196, 106, .18);
 }
 
-/* ============================================================== 
-   GAMES (REUTILIZA ESTILO DE GAME CARD)
-============================================================== */
+/* ============ 
+   GAMES 
+========== */
 .game-card {
   background: #0F1A2F;
   border-radius: 12px;
@@ -236,16 +217,16 @@
   flex-direction: column;
   gap: .8rem;
 
-  border: 1px solid rgba(233,196,106,.25);
+  border: 1px solid rgba(233, 196, 106, .25);
   box-shadow:
-    0 4px 14px rgba(0,0,0,.45),
-    inset 0 0 10px rgba(233,196,106,.08);
+    0 4px 14px rgba(0, 0, 0, .45),
+    inset 0 0 10px rgba(233, 196, 106, .08);
 
   transition: .25s ease;
 }
 
 .game-card:hover {
-  background: rgba(233,196,106,.12);
+  background: rgba(233, 196, 106, .12);
   transform: translateY(-3px);
 }
 
@@ -260,18 +241,18 @@
   padding: .22rem .55rem;
   border-radius: 6px;
   font-size: .75rem;
-  border: 1px solid rgba(233,196,106,.3);
+  border: 1px solid rgba(233, 196, 106, .3);
   color: #E9C46A;
 }
 
 .pill.live {
-  background: rgba(255,80,80,.2);
+  background: rgba(255, 80, 80, .2);
   border-color: #ff8080;
   color: #ff9d9d;
 }
 
 .pill.final {
-  background: rgba(120,200,255,.15);
+  background: rgba(120, 200, 255, .15);
   border-color: #8bd0ff;
 }
 
@@ -285,10 +266,10 @@
   width: 45px;
   height: 45px;
 
-  background: rgba(15,26,47,.9);
+  background: rgba(15, 26, 47, .9);
   border-radius: 50%;
   padding: .3rem;
-  border: 1px solid rgba(233,196,106,.25);
+  border: 1px solid rgba(233, 196, 106, .25);
 
   transition: .25s ease;
 }
@@ -329,16 +310,16 @@
   padding: 1rem;
   display: grid;
 
-  border: 1px solid rgba(233,196,106,.25);
+  border: 1px solid rgba(233, 196, 106, .25);
   box-shadow:
-    0 4px 14px rgba(0,0,0,.45),
-    inset 0 0 10px rgba(233,196,106,.08);
+    0 4px 14px rgba(0, 0, 0, .45),
+    inset 0 0 10px rgba(233, 196, 106, .08);
 
   gap: .7rem;
 }
 
 .stat-item {
-  background: rgba(255,255,255,.04);
+  background: rgba(255, 255, 255, .04);
   padding: .6rem;
   border-radius: 8px;
   color: #E9C46A;
@@ -362,7 +343,7 @@
   width: 45px;
   height: 45px;
 
-  border: 4px solid rgba(233,196,106,.35);
+  border: 4px solid rgba(233, 196, 106, .35);
   border-top-color: #E9C46A;
 
   border-radius: 50%;
@@ -374,12 +355,21 @@
    ANIMACIONES
 ============================================================== */
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ============================================================== 

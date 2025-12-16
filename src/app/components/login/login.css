@@ -153,6 +153,102 @@
     opacity: 1;
 }
 
+
+/* ============================================================
+   REMEMBER ME (custom checkbox)
+============================================================ */
+.remember {
+    display: inline-flex;
+    align-items: center;
+    gap: .55rem;
+
+    margin-top: .35rem;
+    user-select: none;
+    cursor: pointer;
+
+    color: #c7d6f2;
+    font-size: .95rem;
+}
+
+/* escondemos el checkbox nativo pero lo dejamos accesible */
+.remember input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+}
+
+/* caja custom */
+.remember-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+
+    background: rgba(15, 26, 47, .85);
+    border: 1px solid rgba(233, 196, 106, .40);
+    box-shadow:
+        inset 0 0 10px rgba(233, 196, 106, .06),
+        0 6px 14px rgba(0, 0, 0, .35);
+
+    display: grid;
+    place-items: center;
+
+    transition: .2s ease;
+}
+
+/* tilde */
+.remember-box::after {
+    content: "";
+    width: 9px;
+    height: 5px;
+    border-left: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+    transform: rotate(-45deg) scale(0);
+    transition: .18s ease;
+}
+
+/* checked */
+.remember input:checked+.remember-box {
+    background: rgba(233, 196, 106, .16);
+    border-color: rgba(233, 196, 106, .85);
+    box-shadow:
+        0 0 10px rgba(233, 196, 106, .35),
+        inset 0 0 14px rgba(233, 196, 106, .12);
+}
+
+.remember input:checked+.remember-box::after {
+    border-left-color: #E9C46A;
+    border-bottom-color: #E9C46A;
+    transform: rotate(-45deg) scale(1);
+}
+
+/* hover (solo visual) */
+.remember:hover .remember-box {
+    background: rgba(233, 196, 106, .10);
+    border-color: rgba(233, 196, 106, .65);
+}
+
+/* focus accesible (cuando navegas con teclado) */
+.remember input:focus-visible+.remember-box {
+    outline: 2px solid rgba(233, 196, 106, .55);
+    outline-offset: 2px;
+}
+
+/* texto */
+.remember-text {
+    line-height: 1;
+}
+
+.remember{
+  padding: .4rem .55rem;
+  border-radius: 10px;
+  transition: .2s ease;
+}
+.remember:hover{
+  background: rgba(233, 196, 106, .06);
+}
+
 /* ============================================================
    CAPS WARNING
 ============================================================ */

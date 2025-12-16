@@ -25,13 +25,16 @@
         </div>
     </div>
 
-    <div class="select-wrapper">
-        <select class="inputSelect" [(ngModel)]="selectedView" (change)="onViewChange()">
-            <option value="players">Plantilla actual</option>
-            <option value="games">Partidos</option>
-            <option value="stats">Estadísticas</option>
-        </select>
+    <div class="toolbar">
+        <div class="select-wrapper">
+            <select [(ngModel)]="selectedView" (change)="onViewChange()" class="inputSelect">
+                <option value="players">Plantilla actual</option>
+                <option value="games">Partidos</option>
+                <option value="stats">Estadísticas</option>
+            </select>
+        </div>
     </div>
+
 
 
     <div class="data">
@@ -70,12 +73,14 @@
             <h2>Partidos</h2>
 
             <div class="toolbar">
-                <select [(ngModel)]="selectedStatus" (change)="applyFilter()" class="inputSelect">
-                    <option value="">Todos los partidos</option>
-                    <option value="Finished">Finalizados</option>
-                    <option value="Live">En vivo</option>
-                    <option value="Scheduled">Programados</option>
-                </select>
+                <div class="select-wrapper">
+                    <select [(ngModel)]="selectedStatus" (change)="applyFilter()" class="inputSelect">
+                        <option value="">Todos los partidos</option>
+                        <option value="Finished">Finalizados</option>
+                        <option value="Live">En vivo</option>
+                        <option value="Scheduled">Programados</option>
+                    </select>
+                </div>
             </div>
 
             <div class="error" *ngIf="error">{{ error }}</div>
@@ -84,7 +89,7 @@
                 No hay partidos disponibles.
             </div>
 
-            <div *ngFor="let g of gamesShown" class="game-card">
+            <div *ngFor="let g of gamesShown" class="game-card" [routerLink]="['/game-details', g.id]">
 
                 <div class="game-time">
                     <span class="pill" [class.live]="g.status === 'LIVE'" [class.final]="g.status === 'Final'">
@@ -95,7 +100,8 @@
 
                 <div class="teams">
                     <div class="team">
-                        <img [src]="g.visitors.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.visitors.logo" [alt]="g.visitors.name" />
+                        <img [src]="g.visitors.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.visitors.logo"
+                            [alt]="g.visitors.name" />
                         <div class="team-name">{{ g.visitors.name }}</div>
                     </div>
 
@@ -107,7 +113,8 @@
                     </div>
 
                     <div class="team">
-                        <img [src]="g.home.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.home.logo" [alt]="g.home.name" />
+                        <img [src]="g.home.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.home.logo"
+                            [alt]="g.home.name" />
                         <div class="team-name">{{ g.home.name }}</div>
                     </div>
                 </div>

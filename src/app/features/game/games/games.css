@@ -2,21 +2,18 @@
    HEADER PRINCIPAL
 ============================================================ */
 .content-header {
-  color: #fff;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
   gap: 1rem;
 
   border-bottom: 1px solid rgba(233, 196, 106, 0.25);
   padding-bottom: 1rem;
   margin-bottom: 1rem;
-
-  animation: fadeSlideDown 0.45s ease;
 }
 
 .content-header h1 {
-  text-align: center;
+  text-align: start;
   font-size: 1.85rem;
   font-weight: 700;
   margin: 0;
@@ -28,7 +25,7 @@
   margin-top: 0.25rem;
   color: #c9d4f0;
   font-size: 1rem;
-  text-align: center;
+  text-align: start;
 }
 
 /* ============================================================
@@ -37,11 +34,20 @@
 .toolbar {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  flex-wrap: wrap;
+  gap: 0.6rem;
+  flex-wrap: nowrap;
+  /* 👈 CLAVE */
 }
 
-.inputSelect,
+
+.toolbar .select-wrapper {
+  min-width: 180px;
+  max-width: 240px;
+  width: auto;
+}
+
+
+
 input[type='date'],
 .btn {
   background: rgba(15, 26, 47, 0.8);
@@ -58,14 +64,14 @@ input[type='date'],
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
 }
 
-.inputSelect:hover,
+
 input[type='date']:hover {
   background: rgba(233, 196, 106, 0.12);
   border-color: rgba(233, 196, 106, 0.55);
   transform: translateY(-2px);
 }
 
-.inputSelect:focus,
+
 input[type='date']:focus {
   outline: none;
   background: rgba(233, 196, 106, 0.12);
@@ -73,21 +79,6 @@ input[type='date']:focus {
   box-shadow: 0 0 10px rgba(233, 196, 106, 0.4);
 }
 
-.inputSelect {
-  color: #fff;
-  background: rgba(15, 26, 47, 0.8);
-  color-scheme: dark;
-}
-
-.inputSelect option {
-  background: #0F1A2F;
-  color: #fff;
-}
-
-.inputSelect optgroup {
-  background: #0F1A2F;
-  color: #E9C46A;
-}
 
 /* ============================================================
    BOTONES
@@ -566,18 +557,30 @@ input[type='date']:focus {
 
 @media (max-width: 768px) {
   .content-header {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    /* 1 columna: títulos arriba, toolbar abajo */
+    justify-items: center;
+    /* centra los hijos en horizontal */
     text-align: center;
+  }
+
+  .content-header h1,
+  .content-header .subtitle {
+    text-align: center;
+    /* centra ambos textos */
   }
 
   .toolbar {
     justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
   }
 
   .games-grid {
     grid-template-columns: 1fr;
   }
 }
+
 
 @media (max-width: 480px) {
   .team img {
@@ -596,5 +599,37 @@ input[type='date']:focus {
 
   .score-sub {
     font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .content-header {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .header-text {
+    text-align: center;
+  }
+
+  .toolbar {
+    margin-top: 0.8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .toolbar .select-wrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  input[type='date'] {
+    width: 100%;
+  }
+
+  .btn {
+    flex: 1;
   }
 }

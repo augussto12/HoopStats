@@ -121,3 +121,68 @@ body.sim-notch {
   --safe-top: 32px;
   --safe-right: 10px;
 }
+
+
+/* ==========================================================
+   SELECT GLOBAL ÚNICO (Firefox/Chrome/Safari) - liviano
+   PISA TODO
+========================================================== */
+:root body .select-wrapper {
+  position: relative !important;
+  display: inline-block !important;
+  width: 100% !important;
+}
+
+:root body .select-wrapper > select {
+  width: 100% !important;
+  height: 40px !important;       
+  padding: 0 38px 0 12px !important;
+  border-radius: 10px !important;
+
+  color: #e5e7eb !important;
+  background-color: rgba(15, 26, 47, 0.92) !important; 
+  border: 1px solid rgba(233, 196, 106, 0.35) !important;
+
+  font-size: 0.95rem !important;
+  line-height: 40px !important;
+
+  cursor: pointer !important;
+  outline: none !important;
+
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+
+  box-shadow: inset 0 0 8px rgba(233, 196, 106, 0.08) !important;
+}
+
+:root body .select-wrapper > select:hover {
+  border-color: rgba(233, 196, 106, 0.55) !important;
+  background-color: rgba(233, 196, 106, 0.10) !important;
+}
+
+:root body .select-wrapper > select:focus {
+  border-color: #E9C46A !important;
+  box-shadow: 0 0 10px rgba(233, 196, 106, 0.35) !important;
+  background-color: rgba(233, 196, 106, 0.12) !important;
+}
+
+/* Flecha custom (y la nativa apagada por appearance:none) */
+:root body .select-wrapper::after {
+  content: "" !important;
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  width: 8px !important;
+  height: 8px !important;
+  transform: translateY(-55%) rotate(45deg) !important;
+  border-right: 2px solid rgba(233, 196, 106, 0.9) !important;
+  border-bottom: 2px solid rgba(233, 196, 106, 0.9) !important;
+  pointer-events: none !important;
+}
+
+/* Opciones: lo más seguro (el menú abierto es nativo) */
+:root body select option {
+  background: #0F1A2F;
+  color: #e5e7eb;
+}

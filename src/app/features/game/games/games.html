@@ -1,23 +1,29 @@
 <div class="layout">
     <main class="content">
+
         <header class="content-header">
-            <div>
+            <div class="header-text">
                 <h1>Partidos</h1>
                 <p class="subtitle">Busque partidos por fecha o por estado</p>
             </div>
 
             <div class="toolbar">
-                <select [(ngModel)]="selectedStatus" (change)="applyFilter()" class="inputSelect">
-                    <option value="">Todos los partidos</option>
-                    <option value="Finished">Finalizados</option>
-                    <option value="Live">En vivo</option>
-                    <option value="Scheduled">Programado</option>
-                </select>
+
+                <div class="select-wrapper">
+                    <select [(ngModel)]="selectedStatus" (change)="applyFilter()">
+                        <option value="">Todos los partidos</option>
+                        <option value="Finished">Finalizados</option>
+                        <option value="Live">En vivo</option>
+                        <option value="Scheduled">Programado</option>
+                    </select>
+                </div>
 
                 <input type="date" [value]="selectedDate" (change)="onDateChange($event)" />
+
                 <button class="btn" (click)="goToday()">Hoy</button>
                 <button class="btn" (click)="loadGames()">Actualizar</button>
             </div>
+
         </header>
 
         <section class="status" *ngIf="error">
@@ -40,7 +46,8 @@
 
                 <div class="teams">
                     <div class="team">
-                        <img [src]="g.visitors?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.visitors?.logo" [alt]="g.visitors.name" />
+                        <img [src]="g.visitors?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.visitors?.logo"
+                            [alt]="g.visitors.name" />
                         <div class="team-name" [routerLink]="['/teams', g.visitors.id]"
                             (click)="$event.stopPropagation()">
                             {{ g.visitors.name }}
@@ -73,7 +80,8 @@
 
 
                     <div class="team">
-                        <img [src]="g.home?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.home?.logo" [alt]="g.home.name" />
+                        <img [src]="g.home?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.home?.logo"
+                            [alt]="g.home.name" />
                         <div class="team-name" [routerLink]="['/teams', g.home.id]" (click)="$event.stopPropagation()">
                             {{ g.home.name }}
                         </div>
@@ -87,7 +95,7 @@
                         {{ g.predVisitors != null && g.predHome != null ? 'Cambiar predicción' : 'Hacer predicción' }}
                     </button>
                 </ng-container>
-                
+
             </div>
         </section>
     </main>
