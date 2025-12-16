@@ -17,12 +17,15 @@
             <div class="teams-header">
                 <div class="team">
                     <h2>{{ gameDetails[0].team.name }}</h2>
-                    <img [src]="gameDetails[0].team.logo" width="100" />
+                    <img [src]="gameDetails[0].team.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : gameDetails[0].team.logo"
+                        width="100" />
                 </div>
 
                 <div class="team">
                     <h2>{{ gameDetails[1].team.name }}</h2>
-                    <img [src]="gameDetails[1].team.logo" width="100" />
+                    <img [src]="gameDetails[1].team.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : gameDetails[1].team.logo"
+                        width="100" />
+
                 </div>
             </div>
 
@@ -41,7 +44,8 @@
 
                 <div>
                     <h2 class="team-title">{{ team.team.name }}</h2>
-                    <img [src]="team.team.logo" width="80" />
+                    <img [src]="team.team.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : team.team.logo" width="80"/>
+
                 </div>
 
                 <div class="player-table-wrapper">
