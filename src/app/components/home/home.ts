@@ -94,20 +94,25 @@ export class Home implements OnInit {
 
     try {
       const todayStr = this.toYYYYMMDD(new Date());
-
       const gamesToday = await getGamesByDateMapped(this.nbaService, todayStr);
 
       const upcoming = gamesToday
         .filter(g => g.status === 'Programado')
-        .sort((a, b) => a.id - b.id);
+        .sort((a, b) => {
+          // Combinamos la fecha y la hora para crear objetos Date comparables
+          // Usamos una fecha base cualquiera si solo queremos comparar horas, 
+          // pero dateISO nos da la precisión por si hay partidos en días distintos.
+          const dateA = new Date(`${a.dateISO} ${a.timeLocal}`).getTime();
+          const dateB = new Date(`${b.dateISO} ${b.timeLocal}`).getTime();
 
-      this.nextGames = upcoming.slice(0, 8);
+          return dateA - dateB;
+        });
 
-      this.errorNext =
-        this.nextGames.length ? null : 'No hay próximos partidos por mostrar.';
+      this.nextGames = upcoming; // Máximo 5 próximos partidos
+      this.errorNext = this.nextGames.length ? null : 'No hay próximos partidos por mostrar.';
 
     } catch (err) {
-      console.error(err);
+      console.error("Error al ordenar:", err);
       this.errorNext = 'Error al cargar próximos partidos.';
     }
   }

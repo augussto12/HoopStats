@@ -22,7 +22,7 @@
               <div class="team-col">
                 <img [src]="g.visitors.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.visitors.logo" class="team-logo" loading="lazy" decoding="async" width="28" height="28"
                   (error)="onImageError($event)" />
-                <span class="team-name" [routerLink]="['/teams', g.visitors.id]">{{ g.visitors.name }}</span>
+                <span class="other-team-name" [routerLink]="['/teams', g.visitors.id]">{{ g.visitors.name }}</span>
               </div>
 
               <!-- VS + Hora -->
@@ -35,7 +35,7 @@
               <div class="team-col">
                 <img [src]="g.home.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.home.logo" class="team-logo" loading="lazy" decoding="async" width="28" height="28"
                   (error)="onImageError($event)" />
-                <span class="team-name" [routerLink]="['/teams', g.home.id]">{{ g.home.name }}</span>
+                <span class="other-team-name" [routerLink]="['/teams', g.home.id]">{{ g.home.name }}</span>
               </div>
 
             </div>

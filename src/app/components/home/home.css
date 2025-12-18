@@ -37,78 +37,71 @@
 }
 
 /* ============================
-   PRÓXIMOS PARTIDOS (COMPACTO)
+   PRÓXIMOS PARTIDOS (ADAPTABLE)
 ============================ */
 
 .next-list-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 14px;
-
-  max-width: 900px;
-  /* controla cuántas columnas máximas entran */
+  display: flex;
+  flex-wrap: wrap;       /* Permite que bajen a la siguiente fila */
+  gap: 12px;
+  justify-content: center; /* CENTRA los partidos si son pocos */
+  width: 100%;
   margin: 0 auto;
-  /* centra cuando hay pocas */
 }
-
-@media (max-width: 1400px) {
-  .next-list-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 1100px) {
-  .next-list-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 720px) {
-  .next-list-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@supports (-moz-appearance: none) {
-  .next-list-grid {
-    /* en vez de auto-fit/minmax */
-    grid-template-columns: repeat(3, 1fr);
-    max-width: none;
-  }
-}
-
-@media (max-width: 1100px) {
-  @supports (-moz-appearance: none) {
-    .next-list-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-}
-
-@media (max-width: 720px) {
-  @supports (-moz-appearance: none) {
-    .next-list-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-}
-
-
 
 .next-mini-card {
   background: #0F1A2F;
   border: 1px solid rgba(233, 196, 106, 0.25);
   border-radius: 10px;
-  padding: 10px;
-  /* antes 12px */
+  padding: 8px 6px;
   transition: 0.22s ease;
   text-align: center;
-
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 135px;
-  /* antes 160px */
+  
+  /* LÓGICA DE CRECIMIENTO */
+  flex: 1 1 200px;       /* Crece para ocupar el espacio, pero mínimo 200px */
+  max-width: 320px;      /* Evita que un solo partido se estire por toda la pantalla */
+  
+  contain: content;
+}
+
+/* En pantallas muy grandes, permitimos que entren 4 cómodamente */
+@media (min-width: 1400px) {
+  .next-mini-card {
+    flex: 1 1 calc(25% - 12px); /* Intenta que entren 4 por fila */
+  }
+}
+
+/* En pantallas medianas, 3 por fila */
+@media (max-width: 1100px) {
+  .next-mini-card {
+    flex: 1 1 calc(33.33% - 12px);
+  }
+}
+
+/* En móviles, 1 o 2 por fila */
+@media (max-width: 600px) {
+  .next-mini-card {
+    flex: 1 1 100%; /* Ocupa todo el ancho en móviles */
+    max-width: none;
+  }
+}
+
+/* --- Estilos de Tarjeta --- */
+
+.next-mini-card {
+  background: #0F1A2F;
+  border: 1px solid rgba(233, 196, 106, 0.25);
+  border-radius: 10px;
+  padding: 8px 6px; /* Un poco más de aire lateral */
+  transition: 0.22s ease;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  contain: content; /* Mejora rendimiento */
 }
 
 .next-mini-card:hover {
@@ -121,8 +114,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 65px;
-  /* antes 80px */
+  min-height: 40px;
 }
 
 /* COLUMNA EQUIPO */
@@ -143,14 +135,12 @@
   margin-bottom: 3px;
 }
 
-.team-name {
+.other-team-name {
   width: 70px;
-  font-size: 0.70rem;
+  font-size: 0.75rem;
   cursor: pointer;
-  /* levemente más chico */
   line-height: 1rem;
   min-height: 2rem;
-  /* menor altura */
   display: flex;
   justify-content: center;
   align-items: center;
