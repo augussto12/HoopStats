@@ -7,6 +7,7 @@ export class FantasyService {
     constructor(private api: ApiService) { }
 
     //        MI EQUIPO
+    // En FantasyService
     getMyTeam() {
         return this.api.get<{
             team: {
@@ -16,7 +17,14 @@ export class FantasyService {
                 budget: number;
                 trades_remaining: number;
             } | null;
-            players: any[];
+            players: {
+                player_id: number;
+                full_name: string;
+                price: number;
+                total_pts: number;
+                is_captain: boolean;
+                team_id: number;
+            }[];
         }>('/fantasy/my-team');
     }
 
@@ -66,5 +74,14 @@ export class FantasyService {
     //        RANKING GLOBAL
     getRanking() {
         return this.api.get('/fantasy/ranking');
+    }
+
+    getWeeklyDreamTeam() {
+        return this.api.get<any[]>('/best-players/dream-team');
+    }
+
+    // En FantasyService
+    setCaptain(teamId: number, playerId: number) {
+        return this.api.post(`/fantasy/set-captain`, { teamId, playerId });
     }
 }

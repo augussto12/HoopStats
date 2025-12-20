@@ -61,6 +61,7 @@
         <!-- VIEW SELECTOR -->
         <div class="view-toggle">
             <button [class.active]="viewMode === 'change'" (click)="switchToChange()">Mi alineación</button>
+            <button [class.active]="viewMode === 'scores'" (click)="switchToScores()">Puntuaciones</button>
             <button [class.active]="viewMode === 'history'" (click)="switchToHistory()">Historial</button>
         </div>
 
@@ -74,32 +75,35 @@
 
                 <div class="court-grid">
                     <div class="slot" *ngFor="let p of players">
+                        <div *ngIf="p.is_captain" class="captain-badge" title="Capitán: Puntos x2">
+                            <span>C</span>
+                        </div>
 
-                        <div class="player-data" [class.selected]="removalCandidate?.player_id === p.player_id">
+                        <div class="player-data" [class.selected]="removalCandidate?.player_id === p.player_id"
+                            [class.is-captain-card]="p.is_captain">
 
                             <strong class="player-name">{{ p.full_name }}</strong>
                             <p class="player-price">${{ p.price }}</p>
-                            <p class="player-pts">🏀 {{ p.total_pts }} pts</p>
 
-                            <!-- ELIMINAR SOLO SI AÚN NO COMPLETÓ LOS 5 -->
-                            <button *ngIf="necesitaIniciales" class="delete-btn" (click)="removePlayer(p.player_id)"
-                                [disabled]="loadingRemove === p.player_id">
+                            <p class="player-pts">
+                                🏀 {{ p.total_pts }} pts
+                                <span *ngIf="p.is_captain" class="multiplier-tag">x2</span>
+                            </p>
 
-                                <ng-container *ngIf="loadingRemove === p.player_id; else removeText">
-                                    Eliminando...
-                                </ng-container>
+                            <div class="player-actions">
+                                <button *ngIf="!p.is_captain && !necesitaIniciales" class="captain-btn"
+                                    (click)="setCaptain(p.player_id)" [disabled]="loadingCaptain || isLocked"> {{
+                                    loadingCaptain === p.player_id ? '...' : 'Hacer Capitán' }}
+                                </button>
 
-                                <ng-template #removeText>Eliminar</ng-template>
-                            </button>
+                                <button *ngIf="necesitaIniciales" class="delete-btn" (click)="removePlayer(p.player_id)"
+                                    [disabled]="isLocked"> Eliminar
+                                </button>
 
-                            <!-- CAMBIAR SOLO SI YA TIENE LOS 5 -->
-                            <div *ngIf="!necesitaIniciales">
-                                <button class="remove-btn" (click)="markForRemoval(p)"
-                                    [disabled]="loadingTrades || isLocked">
-                                    Cambiar
+                                <button *ngIf="!necesitaIniciales" class="remove-btn" (click)="markForRemoval(p)"
+                                    [disabled]="isLocked"> Cambiar
                                 </button>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -285,15 +289,47 @@
                     </div>
 
                 </div>
-                <!-- PAGINACIÓN -->
-                <app-paginator *ngIf="historyTotalPages > 1" [currentPage]="historyPage"
-                    [totalPages]="historyTotalPages" (pageChange)="historyPage = $event">
-                </app-paginator>
-
 
             </div> <!-- /history-grid -->
 
+            <app-paginator *ngIf="historyTotalPages > 1" [currentPage]="historyPage" [totalPages]="historyTotalPages"
+                (pageChange)="historyPage = $event">
+            </app-paginator>
         </div> <!-- /history-box -->
+
+        <div *ngIf="viewMode === 'scores'" class="history-box fadeIn">
+            <h3 class="history-title">Rendimiento por Jornada</h3>
+
+            <div class="score-filters" style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;">
+                <input type="date" [(ngModel)]="selectedScoreDate" class="select" style="width: auto;">
+                <button class="save-name-btn" (click)="loadScoresByDate()" style="margin:0; height: 40px;">Ver
+                    Fecha</button>
+            </div>
+
+            <div *ngIf="loadingScores" class="empty-history">Cargando puntuaciones...</div>
+
+            <div *ngIf="!loadingScores && dayPlayersScores.length > 0">
+                <div class="day-total-banner">
+                    Puntos obtenidos el {{ selectedScoreDate | date:'dd/MM/yyyy' }}:
+                    <strong>{{ dayTotalPoints }} pts</strong>
+                </div>
+
+                <div class="scores-grid">
+                    <div class="score-card" *ngFor="let p of dayPlayersScores">
+                        <div class="score-card-info">
+                            <span class="score-player-name">{{ p.full_name }}</span>
+                        </div>
+                        <div class="score-card-pts" [class.high]="p.pts >= 35">
+                            {{ p.pts }} <small>pts</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="!loadingScores && dayPlayersScores.length === 0" class="empty-history">
+                No hay registros de puntos para esta fecha seleccionada.
+            </div>
+        </div>
 
 
     </div>

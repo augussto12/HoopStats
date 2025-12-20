@@ -394,3 +394,12 @@ export interface LeagueDetailsResponse {
     league: LeagueInfo;
     teams: LeagueTeam[];
 }
+
+export interface DreamTeamPlayer {
+  id: number;
+  full_name: string;
+  team_logo: string;
+  fantasy_points: number;
+  position: string;
+  photo_url?: string;
+}

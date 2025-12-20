@@ -2,9 +2,6 @@
 
   <section class="top-section">
 
-    <!-- ===========================
-      PRÓXIMOS PARTIDOS
-============================ -->
     <div class="left-column">
       <div class="panel next-panel">
         <h2>📅 Próximos partidos de hoy</h2>
@@ -12,51 +9,36 @@
         <div *ngIf="errorNext" class="empty">{{ errorNext }}</div>
 
         <div class="next-list-grid" *ngIf="nextGames.length">
-
           <div class="next-mini-card" *ngFor="let g of nextGames; trackBy: trackNextGame">
-
-
             <div class="teams-row">
-
-              <!-- Visitante -->
               <div class="team-col">
-                <img [src]="g.visitors.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.visitors.logo" class="team-logo" loading="lazy" decoding="async" width="28" height="28"
+                <img [src]="g.visitors.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.visitors.logo"
+                  class="team-logo" loading="lazy" decoding="async" width="28" height="28"
                   (error)="onImageError($event)" />
                 <span class="other-team-name" [routerLink]="['/teams', g.visitors.id]">{{ g.visitors.name }}</span>
               </div>
 
-              <!-- VS + Hora -->
               <div class="center-col">
                 <span class="vs">VS</span>
                 <span class="time">{{ g.timeLocal }}</span>
               </div>
 
-              <!-- Local -->
               <div class="team-col">
-                <img [src]="g.home.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.home.logo" class="team-logo" loading="lazy" decoding="async" width="28" height="28"
-                  (error)="onImageError($event)" />
+                <img [src]="g.home.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.home.logo" class="team-logo"
+                  loading="lazy" decoding="async" width="28" height="28" (error)="onImageError($event)" />
                 <span class="other-team-name" [routerLink]="['/teams', g.home.id]">{{ g.home.name }}</span>
               </div>
-
             </div>
-
             <div class="arena-mini">{{ g.arena }}</div>
-
           </div>
-
         </div>
 
         <div *ngIf="!nextGames.length && !errorNext" class="empty">
           No hay próximos partidos.
         </div>
-
       </div>
     </div>
 
-
-    <!-- ===========================
-          MEJORES JUGADORES
-    ============================ -->
     <div class="panel players-panel">
       <h2>🏆 Mejores jugadores del día de ayer</h2>
 
@@ -74,10 +56,6 @@
       </div>
     </div>
 
-
-    <!-- ===========================
-          PARTIDOS EN VIVO
-    ============================ -->
     <div class="panel live-panel">
       <h2>
         Partidos en vivo <span class="live-dot"></span>
@@ -86,21 +64,16 @@
       <div *ngIf="errorLive" class="empty">{{ errorLive }}</div>
 
       <div *ngIf="liveGames.length" class="live-list">
-
         <div class="live-card" *ngFor="let g of liveGames; trackBy: trackGame" [routerLink]="['/game-details', g.id]">
-
           <div class="teams">
-
-            <!-- VISITANTE -->
             <div class="team">
-              <img [src]="g.visitors?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.visitors?.logo" class="team-logo" loading="lazy" decoding="async" width="38" height="38"
+              <img [src]="g.visitors?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.visitors?.logo"
+                class="team-logo" loading="lazy" decoding="async" width="38" height="38"
                 (error)="onImageError($event)" />
               <span>{{ g.visitors?.name }}</span>
             </div>
 
-            <!-- SCORE -->
             <div class="score-box">
-
               <div class="score-line">
                 <span class="score-num" [ngClass]="{
                   'winner': (g.visitors?.pts ?? 0) > (g.home?.pts ?? 0),
@@ -109,9 +82,7 @@
                 }">
                   {{ g.visitors?.pts ?? '-' }}
                 </span>
-
                 <span class="dash">–</span>
-
                 <span class="score-num" [ngClass]="{
                   'winner': (g.home?.pts ?? 0) > (g.visitors?.pts ?? 0),
                   'loser':  (g.home?.pts ?? 0) < (g.visitors?.pts ?? 0),
@@ -120,34 +91,55 @@
                   {{ g.home?.pts ?? '-' }}
                 </span>
               </div>
-
               <div class="score-meta">
                 <span class="period">{{ g.period }}C</span>
                 <span class="dot">•</span>
                 <span class="clock">{{ g.clock || 'En pausa' }}</span>
               </div>
-
             </div>
 
-            <!-- LOCAL -->
             <div class="team">
-              <img [src]="g.home?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.home?.logo" class="team-logo" (error)="onImageError($event)" loading="lazy" decoding="async" width="38" height="38" />
+              <img [src]="g.home?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.home?.logo" class="team-logo"
+                (error)="onImageError($event)" loading="lazy" decoding="async" width="38" height="38" />
               <span>{{ g.home?.name }}</span>
             </div>
-
           </div>
-
           <div class="arena">{{ g.arena }}</div>
         </div>
-
       </div>
 
-      <!-- EMPTY SI NO HAY PARTIDOS -->
       <div *ngIf="!liveGames.length && !errorLive" class="empty">
         No hay partidos en vivo actualmente.
       </div>
-
     </div>
-
   </section>
+
+  <section class="dream-team-section" *ngIf="dreamTeam.length">
+    <div class="panel court-panel">
+      <div class="dt-header">
+        <h2>🌟 Mejores Jugadores de la Semana Pasada</h2>
+        <p class="section-subtitle">Los rendimientos más altos del Fantasy</p>
+      </div>
+
+      <div class="basketball-court">
+        <div class="court-background">
+          <div class="court-lines">
+            <div class="three-point-line"></div>
+            <div class="paint-area"></div>
+          </div>
+        </div>
+
+        <div class="player-on-court" *ngFor="let p of dreamTeam.slice(0, 5); let i = index" [ngClass]="'pos-' + i">
+          <div class="player-marker">
+            <img [src]="p.team_logo" class="dt-team-logo" (error)="onImageError($event)">
+            <div class="player-stats-bubble">
+              <span class="p-name">{{ p.full_name }}</span>
+              <span class="p-pts">{{ p.fantasy_points_week }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 </div>

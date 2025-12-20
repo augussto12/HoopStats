@@ -1,11 +1,11 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FantasyService } from '../../../services/fantasy-service';
-import { NbaApiService } from '../../../services/nba-api';
 import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MarketLockService } from '../../../services/market-lock.service';
 import { Paginator } from '../../../components/paginator/paginator';
+import { BestPlayersService } from '../../../services/best-players.service';
 
 @Component({
   selector: 'app-my-team',
@@ -28,6 +28,8 @@ export class MyTeam implements OnInit {
   removalCandidate: any = null;
   additionCandidate: any = null;
 
+  loadingCaptain: number | null = null;
+
   tradesHoy = 0;
   tradesRestantes = 0;
   limiteDiario = 2;
@@ -39,6 +41,10 @@ export class MyTeam implements OnInit {
   isLocked: boolean = false;
   lockReason: string = "";
 
+  selectedScoreDate: string = new Date().toISOString().split('T')[0];
+  dayPlayersScores: any[] = [];
+  dayTotalPoints: number = 0;
+  loadingScores: boolean = false;
 
   // Filtros
   priceRanges = [
@@ -104,14 +110,14 @@ export class MyTeam implements OnInit {
 
   nextUnlockTime: Date | null = null;
 
-  viewMode: 'change' | 'history' = 'change';
+  viewMode: 'change' | 'history' | 'scores' = 'change';
   shakeTrade = false;
 
   constructor(
     private fantasy: FantasyService,
     private api: ApiService,
-    private nba: NbaApiService,
-    private marketLock: MarketLockService
+    private marketLock: MarketLockService,
+    private bestPlayersService: BestPlayersService,
   ) { }
 
   async ngOnInit() {
@@ -121,6 +127,7 @@ export class MyTeam implements OnInit {
     await this.loadAllPlayers();
     await this.loadMarketLock();
     await this.loadGroupedHistory();
+    await this.loadScoresByDate();
   }
 
   async loadFantasyTeam() {
@@ -157,19 +164,6 @@ export class MyTeam implements OnInit {
       hour12: false,
     });
   }
-
-  private formatDateTimeARG(iso: string | null): string {
-    if (!iso) return "";
-    return new Date(iso).toLocaleString("es-AR", {
-      timeZone: "America/Argentina/Buenos_Aires",
-      day: "2-digit",
-      month: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-  }
-
 
   async loadTradeLimits() {
     try {
@@ -244,6 +238,24 @@ export class MyTeam implements OnInit {
       this.lockReason = "";
       this.marketClosesAt = "";
       this.marketOpensAt = "";
+    }
+  }
+
+  async loadScoresByDate() {
+    if (!this.team || !this.selectedScoreDate) return;
+
+    this.loadingScores = true;
+    try {
+      // Usamos el nuevo método del service
+      const res = await this.bestPlayersService.getTeamScoresByDate(this.team.id, this.selectedScoreDate);
+      this.dayPlayersScores = res.players || [];
+      this.dayTotalPoints = res.total_day_points || 0;
+    } catch (err) {
+      console.error("Error cargando puntuaciones", err);
+      this.dayPlayersScores = [];
+      this.dayTotalPoints = 0;
+    } finally {
+      this.loadingScores = false;
     }
   }
 
@@ -522,4 +534,43 @@ export class MyTeam implements OnInit {
     this.success = "";
   }
 
+  switchToScores() {
+    this.viewMode = 'scores';
+    this.error = "";
+    this.success = "";
+    if (this.dayPlayersScores.length === 0) {
+      this.loadScoresByDate();
+    }
+  }
+
+  async setCaptain(playerId: number) {
+    if (this.isLocked || !this.team) return;
+
+    // Loader local para el botón (mantiene el spinner en el botón si tienes uno)
+    this.loadingCaptain = playerId;
+    this.error = "";
+    this.success = "";
+
+    try {
+      // La petición se dispara. El Interceptor mostrará el NBA ball loader.
+      await this.fantasy.setCaptain(this.team.id, playerId);
+
+      // ACTUALIZACIÓN MANUAL: Esto es lo que hace que funcione sin recargar la página
+      this.players = this.players.map(p => ({
+        ...p,
+        is_captain: p.player_id === playerId
+      }));
+
+      this.success = "Nuevo capitán asignado (suma x2)";
+
+    } catch (err: any) {
+      this.error = err.error?.error || "Error al asignar capitán";
+    } finally {
+      // Liberamos el loader del botón
+      this.loadingCaptain = null;
+
+      // OPCIONAL: Si ves que el NBA Ball se sigue quedando, fuerza un hide extra:
+      // this.loadingService.hide();
+    }
+  }
 }

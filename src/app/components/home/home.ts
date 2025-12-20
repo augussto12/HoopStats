@@ -8,6 +8,7 @@ import { getGamesByDateMapped } from '../../utils/gameUtils';
 import { Game, MappedGame, NotificationItem, TopStat } from '../../models/interfaces';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
+import { FantasyService } from '../../services/fantasy-service';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ export class Home implements OnInit {
 
   liveGames: Game[] = [];
   bestPlayers: TopStat[] = [];
+  dreamTeam: any[] = [];
 
   nextGames: MappedGame[] = [];
   errorNext: string | null = null;
@@ -34,11 +36,13 @@ export class Home implements OnInit {
   private bestPlayersService = inject(BestPlayersService);
   public auth = inject(AuthService);
   private notificationService = inject(NotificationService);
+  private fantasyService = inject(FantasyService);
 
   ngOnInit() {
     this.loadLiveGames();
     this.loadBestPlayers();
     this.loadNextGames();
+    this.loadDreamTeam();
     if (this.auth.getToken()) this.loadNotifications();
   }
 
@@ -114,6 +118,16 @@ export class Home implements OnInit {
     } catch (err) {
       console.error("Error al ordenar:", err);
       this.errorNext = 'Error al cargar próximos partidos.';
+    }
+  }
+
+  async loadDreamTeam() {
+    try {
+      const data = await this.fantasyService.getWeeklyDreamTeam();
+      this.dreamTeam = Array.isArray(data) ? data : [];
+    } catch (err) {
+      console.error("Error cargando Dream Team:", err);
+      this.dreamTeam = [];
     }
   }
 

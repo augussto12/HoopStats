@@ -16,8 +16,6 @@ export class BestPlayersService {
         }));
     }
 
-
-
     // Obtener mejores jugadores por fecha específica (YYYY-MM-DD)
     async getByDate(date: string) {
         return await this.api.get<{ date: string, players: any[] }>(`/best-players/${date}`);
@@ -26,5 +24,10 @@ export class BestPlayersService {
     // Obtener histórico completo de días cargados
     async getAllDays() {
         return await this.api.get<{ days: string[] }>(`/best-players/days`);
+    }
+
+    async getTeamScoresByDate(teamId: number, date: string) {
+        // Retorna la lista de jugadores del equipo con sus puntos en esa fecha
+        return await this.api.get<any>(`/best-players/team/${teamId}/${date}`);
     }
 }

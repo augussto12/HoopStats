@@ -213,23 +213,78 @@
     margin: 18px 0;
 }
 
-.court-title {
-    text-align: center;
-    color: #E9C46A;
-    font-size: 1.4rem;
-    margin-bottom: 12px;
-}
-
 /* GRID DE JUGADORES */
 .court-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 25px;
-    justify-content: center;
+    display: grid;
+    /* auto-fill permite que se ajusten solas, minmax da flexibilidad */
+    grid-template-columns: repeat(auto-fit, minmax(165px, 175px)); 
+    gap: 30px 15px;
+    justify-content: center; /* ESTO CENTRA EL GRID COMPLETO */
+    justify-items: center;    /* ESTO CENTRA LA CARD DENTRO DE SU CELDA */
+    padding: 20px 5px;
 }
 
 .slot {
-    width: 170px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    /* Ocupa el ancho de la celda del grid */
+    max-width: 175px;
+    /* Pero no más de esto */
+}
+
+.player-data {
+    background: rgba(14, 24, 45, 0.9);
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    transition: all .25s ease;
+
+    /* Flexbox interno para alinear botones */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* Importante para que todas midan igual */
+    min-height: 240px;
+    box-sizing: border-box;
+}
+
+.player-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: auto;
+    /* Empuja los botones al final */
+    padding-top: 10px;
+}
+
+/* Nombre: Aseguramos que no rompa la card */
+.player-name {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 5px;
+}
+
+.player-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    /* Espacio entre botones de acción */
+    margin-top: 10px;
+}
+
+.slot {
+    width: 175px;
+    position: relative;
+    /* Importante para el badge posicionado arriba */
+    margin-bottom: 10px;
 }
 
 /* CARD LINEUP */
@@ -271,12 +326,23 @@
 
 
 .player-name {
-    font-size: 1.1rem;
-    color: #ffd77a;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 5px;
 }
 
-.player-price,
 .player-pts {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    padding: 4px;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.player-price {
     margin: 4px 0;
     font-size: 0.95rem;
     opacity: 0.9;
@@ -1033,6 +1099,175 @@ strong.bad {
     animation: fadeIn .3s ease;
 }
 
+/* ======================================= */
+/* PUNTUACIONES (SCORE VIEW)        */
+/* ======================================= */
+
+.fadeIn {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Banner de total de puntos del día */
+.day-total-banner {
+    background: linear-gradient(135deg, #1c3766, #0f1a2f);
+    border: 1px solid rgba(233, 196, 106, 0.4);
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    color: #f5f5f5;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.day-total-banner strong {
+    color: #E9C46A;
+    font-size: 1.4rem;
+    margin-left: 8px;
+    text-shadow: 0 0 10px rgba(233, 196, 106, 0.3);
+}
+
+/* Grid de puntuaciones */
+.scores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+/* Card individual de jugador en puntuaciones */
+.score-card {
+    background: rgba(22, 34, 58, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.score-card:hover {
+    transform: scale(1.03);
+    border-color: rgba(124, 227, 135, 0.4);
+}
+
+.score-player-name {
+    font-weight: 600;
+    color: #fff;
+    font-size: 0.95rem;
+}
+
+.score-card-pts {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #7CE387;
+    /* Verde suave por defecto */
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+}
+
+.score-card-pts small {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+/* Resaltado para puntuaciones altas (ej: +35 pts) */
+.score-card-pts.high {
+    color: #ffd86b;
+    text-shadow: 0 0 8px rgba(255, 216, 107, 0.4);
+}
+
+/* Estilo para el input de fecha en filtros */
+.score-filters .select {
+    border: 1px solid #2a4f8e;
+    font-family: inherit;
+    color-scheme: dark;
+    /* Hace que el selector de fecha sea oscuro en navegadores modernos */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+/* Badge de Capitán (La "C" flotante) */
+.captain-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: linear-gradient(135deg, #FFD700, #B8860B);
+    color: #000;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 0.85rem;
+    border: 2px solid #16223A;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+    z-index: 10;
+}
+
+/* Estilo especial para la card del capitán */
+.is-captain-card {
+    border: 1px solid rgba(255, 215, 0, 0.5) !important;
+    background: linear-gradient(180deg, rgba(20, 35, 60, 0.9) 0%, rgba(35, 55, 90, 0.9) 100%) !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.15), 0 6px 20px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Tag x2 de puntos */
+.multiplier-tag {
+    background: rgba(255, 215, 0, 0.2);
+    color: #FFD700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    margin-left: 5px;
+    border: 0.5px solid rgba(255, 215, 0, 0.3);
+}
+
+.captain-btn {
+    background: transparent;
+    border: 1px solid #FFD700;
+    color: #FFD700;
+    padding: 6px 10px;
+    border-radius: 8px;
+    margin-top: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    width: 100%;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.captain-btn:hover:not(:disabled) {
+    background: #FFD700;
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+}
+
+.captain-btn:disabled {
+    opacity: 0.3;
+    filter: grayscale(1);
+    cursor: not-allowed;
+}
 
 /* === ANIMACIONES GENERALES === */
 @keyframes fadeIn {
@@ -1097,12 +1332,22 @@ strong.bad {
 @media (max-width: 650px) {
 
     .court-grid {
-        justify-content: center;
+        /* Bajamos el mínimo para que entren 2 por fila en pantallas chicas */
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 20px 10px;
     }
 
     .slot {
-        width: 45%;
-        max-width: 160px;
+        max-width: 100%; /* Deja que el grid mande */
+    }
+
+    .player-data {
+        min-height: 220px; /* Un poco más compactas en móvil */
+        padding: 8px;
+    }
+    
+    .player-name {
+        font-size: 0.95rem;
     }
 
     .team-title {
@@ -1115,12 +1360,7 @@ strong.bad {
         max-width: 200px;
     }
 
-    .slot {
-        width: 45%;
-    }
-
-    .player-card,
-    .player-data {
+    .player-card {
         padding: 10px;
     }
 }
@@ -1200,5 +1440,60 @@ strong.bad {
         content: "▶";
         font-size: 1.3rem;
         color: white;
+    }
+}
+
+@media (max-width: 450px) {
+
+    /* Las cards de puntos ocupan el 100% en celulares pequeños */
+    .scores-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .score-card {
+        padding: 12px;
+    }
+
+    /* El banner de puntos totales se ve mejor con texto más pequeño */
+    .day-total-banner {
+        font-size: 0.95rem;
+        padding: 12px;
+    }
+
+    .day-total-banner strong {
+        font-size: 1.2rem;
+        display: block;
+        /* El número abajo para que no se amontone */
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 550px) {
+    .view-toggle {
+        gap: 6px;
+    }
+
+    .view-toggle button {
+        padding: 8px 10px;
+        font-size: 0.75rem;
+        /* Letra un poco más chica */
+        flex: 1;
+        /* Todos miden lo mismo */
+        text-align: center;
+    }
+}
+
+@media (max-width: 500px) {
+    .score-filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .score-filters .select {
+        width: 100% !important;
+    }
+
+    .score-filters button {
+        width: 100%;
     }
 }

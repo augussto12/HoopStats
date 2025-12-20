@@ -42,9 +42,11 @@
 
 .next-list-grid {
   display: flex;
-  flex-wrap: wrap;       /* Permite que bajen a la siguiente fila */
+  flex-wrap: wrap;
+  /* Permite que bajen a la siguiente fila */
   gap: 12px;
-  justify-content: center; /* CENTRA los partidos si son pocos */
+  justify-content: center;
+  /* CENTRA los partidos si son pocos */
   width: 100%;
   margin: 0 auto;
 }
@@ -59,18 +61,21 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  
+
   /* LÓGICA DE CRECIMIENTO */
-  flex: 1 1 200px;       /* Crece para ocupar el espacio, pero mínimo 200px */
-  max-width: 320px;      /* Evita que un solo partido se estire por toda la pantalla */
-  
+  flex: 1 1 200px;
+  /* Crece para ocupar el espacio, pero mínimo 200px */
+  max-width: 320px;
+  /* Evita que un solo partido se estire por toda la pantalla */
+
   contain: content;
 }
 
 /* En pantallas muy grandes, permitimos que entren 4 cómodamente */
 @media (min-width: 1400px) {
   .next-mini-card {
-    flex: 1 1 calc(25% - 12px); /* Intenta que entren 4 por fila */
+    flex: 1 1 calc(25% - 12px);
+    /* Intenta que entren 4 por fila */
   }
 }
 
@@ -84,7 +89,8 @@
 /* En móviles, 1 o 2 por fila */
 @media (max-width: 600px) {
   .next-mini-card {
-    flex: 1 1 100%; /* Ocupa todo el ancho en móviles */
+    flex: 1 1 100%;
+    /* Ocupa todo el ancho en móviles */
     max-width: none;
   }
 }
@@ -95,13 +101,15 @@
   background: #0F1A2F;
   border: 1px solid rgba(233, 196, 106, 0.25);
   border-radius: 10px;
-  padding: 8px 6px; /* Un poco más de aire lateral */
+  padding: 8px 6px;
+  /* Un poco más de aire lateral */
   transition: 0.22s ease;
   text-align: center;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  contain: content; /* Mejora rendimiento */
+  contain: content;
+  /* Mejora rendimiento */
 }
 
 .next-mini-card:hover {
@@ -334,6 +342,144 @@
 }
 
 /* ============================
+   🌟 QUINTETO IDEAL (DREAM TEAM)
+============================ */
+
+.dream-team-section {
+  margin-top: 1rem;
+}
+
+.dt-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-subtitle {
+  color: #9ca3c8;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+/* Grilla adaptable */
+.dt-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  /* 5 columnas para los 5 jugadores */
+  gap: 1rem;
+}
+
+/* Tarjeta del jugador */
+.dt-card {
+  background: linear-gradient(145deg, rgba(45, 68, 110, 0.95), rgba(10, 15, 30, 0.95));
+  border: 1px solid rgba(233, 205, 46, 0.15);
+  border-radius: 14px;
+  padding: 1.2rem 0.8rem;
+  position: relative;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+}
+
+.dt-card:hover {
+  transform: translateY(-8px);
+  border-color: #e9cd2e;
+  box-shadow: 0 10px 25px rgba(233, 205, 46, 0.2);
+}
+
+/* Brillo decorativo de fondo */
+.dt-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(233, 205, 46, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Escudo del equipo */
+.dt-team-logo {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+  margin-bottom: 0.8rem;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.dt-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dt-name {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: block;
+  line-height: 1.2;
+}
+
+.dt-points {
+  color: #e9cd2e;
+  font-size: 1.2rem;
+  font-weight: 800;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dt-points small {
+  font-size: 0.65rem;
+  color: #9ca3c8;
+  letter-spacing: 1px;
+  margin-top: -2px;
+}
+
+/* Badge opcional por si usas posiciones luego */
+.dt-pos-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(77, 160, 255, 0.15);
+  color: #4da0ff;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 1px solid rgba(77, 160, 255, 0.3);
+}
+
+/* ============================
+   RESPONSIVE DREAM TEAM
+============================ */
+
+/* En tablets: 3 arriba, 2 abajo */
+@media (max-width: 1100px) {
+  .dt-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* En móviles: lista vertical o 2 columnas */
+@media (max-width: 650px) {
+  .dt-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .dt-card {
+    padding: 1rem 0.5rem;
+  }
+
+  .dt-name {
+    font-size: 0.85rem;
+  }
+}
+
+/* ============================
    RESPONSIVE
 ============================ */
 
@@ -405,4 +551,310 @@
 .live-card,
 .player-card {
   contain: content;
+}
+
+/* Sección Dream Team */
+.dream-team-section {
+  margin-top: 30px;
+}
+
+.dt-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.section-subtitle {
+  color: #a0aec0;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+/* Grid del Quinteto */
+.dt-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+/* Card Individual */
+.dt-card {
+  background: linear-gradient(135deg, rgba(28, 55, 102, 0.4), rgba(15, 26, 47, 0.6));
+  border: 1px solid rgba(233, 196, 106, 0.3);
+  /* Borde dorado tenue */
+  padding: 15px;
+  border-radius: 14px;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dt-card:hover {
+  transform: translateY(-5px);
+  border-color: #E9C46A;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(233, 196, 106, 0.1);
+}
+
+.dt-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.dt-team-logo {
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.5));
+}
+
+.dt-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.dt-name {
+  font-weight: 700;
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.dt-points {
+  color: #E9C46A;
+  /* Color Oro */
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-shadow: 0 0 10px rgba(233, 196, 106, 0.2);
+}
+
+.dt-points small {
+  font-size: 0.7rem;
+  color: #a0aec0;
+  margin-left: 2px;
+}
+
+/* Badge de "TOP" para el primero */
+.dt-grid .dt-card:first-child {
+  border-color: #E9C46A;
+  background: linear-gradient(135deg, rgba(40, 60, 100, 0.6), rgba(20, 30, 50, 0.8));
+}
+
+/* Contenedor de la Cancha */
+.basketball-court {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  height: 400px;
+  margin: 40px auto 0;
+  background: linear-gradient(180deg, #1a2a44 0%, #0f172a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px; /* Redondeamos todas las esquinas para que no se corte */
+  overflow: visible; /* <--- CAMBIA ESTO para que el logo no se corte */
+  border-bottom: 1px solid #E9C46A;
+  margin-top: 20px; /* Espacio para que el logo de arriba no choque con el título */
+}
+
+.court-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #1a2a44 0%, #0f172a 100%);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 4px solid #E9C46A;
+  border-radius: 15px;
+  overflow: hidden; /* Aquí sí recortamos las líneas */
+  z-index: 1;
+}
+
+/* Dibujo de las líneas */
+.court-lines {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Ajustamos la línea de triples para que nazca más abajo y no se escape tanto */
+.three-point-line {
+  position: absolute;
+  top: -10%; /* Ajustado */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110%;
+  height: 110%;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+/* Subimos el z-index de los jugadores para que pisen la línea */
+.player-on-court {
+  position: absolute;
+  z-index: 10; 
+  transition: all 0.3s ease;
+}
+
+.paint-area {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 35%;
+  height: 40%;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(233, 196, 106, 0.03);
+}
+
+
+.player-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.player-marker img {
+  width: 50px;
+  height: 50px;
+  background: #6c6d45;
+  padding: 5px;
+  border-radius: 50%;
+  border: 2px solid #E9C46A;
+  box-shadow: 0 0 15px rgba(233, 196, 106, 0.4);
+}
+
+.player-stats-bubble {
+  margin-top: 5px;
+  background: rgba(0, 0, 0, 0.85); /* Un poco más oscuro */
+  padding: 4px 12px;
+  border-radius: 8px; /* Menos redondeado queda más "fichaje" */
+  text-align: center;
+  border: 1px solid rgba(233, 196, 106, 0.3); /* Borde dorado sutil */
+  min-width: 80px;
+  backdrop-filter: blur(4px); /* Efecto cristal para el fondo */
+}
+
+.p-name {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: white;
+  display: block;
+}
+
+.p-pts {
+  font-size: 0.85rem;
+  color: #E9C46A;
+  font-weight: 800;
+}
+
+.pos-0 {
+  bottom: 60%; /* Bajamos de 70% a 60% para que no se salga */
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.pos-0 .player-marker img {
+  width: 60px; /* Un poco más grande por ser el mejor */
+  height: 60px;
+  border-width: 3px;
+  box-shadow: 0 0 20px rgba(233, 196, 106, 0.6);
+}
+
+.pos-1 {
+  bottom: 40%; /* Un poco más abajo */
+  left: 10%;
+}
+
+.pos-2 {
+  bottom: 40%; /* Un poco más abajo */
+  right: 10%;
+}
+
+.pos-3 {
+  bottom: 10%; /* Cerca de la línea de fondo */
+  left: 25%;
+}
+
+.pos-4 {
+  bottom: 10%; /* Cerca de la línea de fondo */
+  right: 25%;
+}
+
+/* Pivot */
+
+/* Responsive optimizado para celulares */
+@media (max-width: 500px) {
+  .basketball-court {
+    height: 350px; /* Un poco más de aire vertical */
+    max-width: 95%; /* Que no toque los bordes de la pantalla */
+  }
+
+  /* Achicamos los marcadores de los jugadores */
+  .player-marker img {
+    width: 38px !important;
+    height: 38px !important;
+    padding: 3px;
+  }
+
+  /* El Capitán (pos-0) también se achica un poco en móvil */
+  .pos-0 .player-marker img {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  /* Ajustamos las burbujas de texto */
+  .player-stats-bubble {
+    min-width: 70px;
+    padding: 2px 6px;
+    margin-top: 3px;
+  }
+
+  .p-name {
+    font-size: 0.6rem;
+    max-width: 80px; /* Evita que nombres largos rompan todo */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .p-pts {
+    font-size: 0.7rem;
+  }
+
+  /* RE-POSICIONAMIENTO para evitar colisiones laterales */
+  .pos-1 {
+    left: 5%; /* Más pegado al borde para ganar espacio central */
+  }
+  .pos-2 {
+    right: 5%;
+  }
+
+  .pos-3 {
+    left: 15%; /* Los de abajo más al centro para que no se peguen al borde curvo */
+    bottom: 8%;
+  }
+  .pos-4 {
+    right: 15%;
+    bottom: 8%;
+  }
+  
+  .pos-0 {
+    bottom: 55% !important; /* Subimos un pelín al capitán */
+  }
+}
+
+/* Para celulares muy pequeños (iPhone SE, etc) */
+@media (max-width: 380px) {
+  .basketball-court {
+    height: 300px;
+  }
+  
+  .player-stats-bubble {
+    min-width: 60px;
+  }
+  
+  .player-marker img {
+    width: 32px !important;
+    height: 32px !important;
+  }
 }
