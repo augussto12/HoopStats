@@ -1,4 +1,7 @@
 <div class="layout">
+  <div class="pull-to-refresh-indicator" [class.visible]="isPulling">
+    <div class="refresh-spinner"></div>
+  </div>
   <app-header></app-header>
 
   <main class="main-content">

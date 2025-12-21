@@ -1,7 +1,6 @@
 /* ============================
-   GLOBAL RESET + FUENTE
+    GLOBAL RESET + FUENTE
 ============================ */
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 *,
@@ -12,36 +11,42 @@
   padding: 0;
 }
 
-html,
-body {
+html {
+  /* Permite el gesto de refresco nativo del navegador */
+  overscroll-behavior-y: contain;
   height: 100%;
 }
 
-/* ============================
-   BLOQUEO DE SCROLL PARA MENÚ
-============================ */
-body.no-scroll {
-  overflow: hidden !important;
-  height: 100vh;
-}
-
-
-/* ============================
-   FONDO GLOBAL
-============================ */
-
 body {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* Scroll suave tipo App en iOS */
+  -webkit-overflow-scrolling: touch;
+
   background: #0b1223;
   color: #e5e7eb;
   font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
 
-  /* Fondo con patrón */
+  /* Fondo optimizado */
   background-image: url("/assets/bg-basket-pattern.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+
+  /* Touch fixes */
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  padding-top: var(--safe-top);
+}
+
+/* BLOQUEO DE SCROLL (Para cuando el Loader o Panel están activos) */
+body.no-scroll {
+  overflow: hidden !important;
+  /* Evita que el pull-to-refresh se dispare accidentalmente */
+  overscroll-behavior-y: none;
 }
 
 a {
@@ -86,6 +91,13 @@ button {
 
 body {
   padding-top: var(--safe-top);
+}
+
+.layout {
+  min-height: 100vh;
+  /* Importante para que el pull-to-refresh detecte el tope del documento */
+  display: flex;
+  flex-direction: column;
 }
 
 /* ===============================
@@ -133,14 +145,14 @@ body.sim-notch {
   width: 100% !important;
 }
 
-:root body .select-wrapper > select {
+:root body .select-wrapper>select {
   width: 100% !important;
-  height: 40px !important;       
+  height: 40px !important;
   padding: 0 38px 0 12px !important;
   border-radius: 10px !important;
 
   color: #e5e7eb !important;
-  background-color: rgba(15, 26, 47, 0.92) !important; 
+  background-color: rgba(15, 26, 47, 0.92) !important;
   border: 1px solid rgba(233, 196, 106, 0.35) !important;
 
   font-size: 0.95rem !important;
@@ -156,12 +168,12 @@ body.sim-notch {
   box-shadow: inset 0 0 8px rgba(233, 196, 106, 0.08) !important;
 }
 
-:root body .select-wrapper > select:hover {
+:root body .select-wrapper>select:hover {
   border-color: rgba(233, 196, 106, 0.55) !important;
   background-color: rgba(233, 196, 106, 0.10) !important;
 }
 
-:root body .select-wrapper > select:focus {
+:root body .select-wrapper>select:focus {
   border-color: #E9C46A !important;
   box-shadow: 0 0 10px rgba(233, 196, 106, 0.35) !important;
   background-color: rgba(233, 196, 106, 0.12) !important;

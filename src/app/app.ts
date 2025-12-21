@@ -58,77 +58,82 @@ export class App {
   // para doble-tap para salir
   private lastBackPress = 0;
 
+  // para pull-to-refresh
+  private touchStart = 0;
+  isPulling = false;
+
   constructor() {
     this.auth.initSession();
 
+    // 1. CONFIGURACIÓN CAPACITOR (NATIVO)
     if (Capacitor.isNativePlatform()) {
       StatusBar.setOverlaysWebView({ overlay: false });
       StatusBar.setBackgroundColor({ color: '#000000' });
       StatusBar.setStyle({ style: Style.Dark });
 
-      // BACK BUTTON ANDROID
       CapApp.addListener('backButton', ({ canGoBack }) => {
-
-        // 1) Cerrar panel primero
         if (this.showPanel) {
           this.showPanel = false;
           return;
         }
 
         const currentUrl = this.router.url;
+        if (currentUrl.startsWith('/login')) return;
 
-        // 2) LOGIN → nunca salir
-        if (currentUrl.startsWith('/login')) {
-          return;
-        }
-
-        // 3) HOME → doble tap para salir
         if (currentUrl === '/home') {
-
           const now = Date.now();
-
           if (now - this.lastBackPress < 1500) {
             CapApp.exitApp();
             return;
           }
-
           this.lastBackPress = now;
 
-          // 👉 opcional: mostrar toast
           const toast = document.getElementById('toast');
           if (toast) {
             toast.textContent = 'Presioná atrás otra vez para salir';
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 1400);
           }
-
           return;
         }
 
-
-        // 4) Si puede volver atrás → back normal
         if (canGoBack) {
           this.location.back();
           return;
         }
-
       });
-
     }
 
-    // Loader global
+    // 2. GESTO PULL-TO-REFRESH GLOBAL
+    window.addEventListener('touchstart', (e) => {
+      this.touchStart = e.touches[0].pageY;
+    }, { passive: true });
+
+    window.addEventListener('touchend', (e) => {
+      const touchEnd = e.changedTouches[0].pageY;
+      const distance = touchEnd - this.touchStart;
+
+      if (window.scrollY === 0 && !this.showPanel && distance > 180) {
+        this.isPulling = true; // Mostramos el circulito
+
+        setTimeout(() => {
+          this.refreshGlobal();
+        }, 800);
+      }
+    }, { passive: true });
+
+    // 3. LOADER GLOBAL (Bloqueo de scroll)
     this.loading.loading$
       .pipe(takeUntilDestroyed())
       .subscribe(isLoading => {
         document.body.classList.toggle('no-scroll', isLoading);
       });
 
-    // Login / logout
+    // 4. LOGIN / LOGOUT STATUS
     this.auth.loginStatus$
       .pipe(takeUntilDestroyed())
       .subscribe(async logged => {
         this.isLogged = logged;
-
         if (logged) {
           await this.loadNotifications();
         } else {
@@ -137,6 +142,19 @@ export class App {
           this.showPanel = false;
         }
       });
+  }
+
+  // ======================
+  //   LÓGICA GLOBAL
+  // ======================
+
+  private refreshGlobal() {
+    // Feedback háptico opcional para dispositivos nativos
+    if ('vibrate' in navigator) {
+      navigator.vibrate(15);
+    }
+    // Recarga la aplicación completa (ideal para PWA/Capacitor)
+    window.location.reload();
   }
 
   // ======================
@@ -159,7 +177,6 @@ export class App {
 
   markAsRead(notificationId: number) {
     this.loadingRead[notificationId] = true;
-
     this.notificationsService.markAsRead(notificationId)
       .then(() => this.loadNotifications())
       .finally(() => this.loadingRead[notificationId] = false);
@@ -167,7 +184,6 @@ export class App {
 
   deleteNotification(notificationId: number) {
     this.loadingDelete[notificationId] = true;
-
     this.notificationsService.deleteNotification(notificationId)
       .then(() => {
         this.notifications = this.notifications.filter(n => n.id !== notificationId);
@@ -178,7 +194,6 @@ export class App {
 
   acceptInvite(inviteId: number, notifId: number) {
     this.loadingAccept[notifId] = true;
-
     this.adminLeague.acceptInvite(inviteId)
       .then(() => this.notificationsService.deleteNotification(notifId))
       .then(() => {
@@ -190,7 +205,6 @@ export class App {
 
   rejectInvite(inviteId: number, notifId: number) {
     this.loadingReject[notifId] = true;
-
     this.adminLeague.rejectInvite(inviteId)
       .then(() => this.notificationsService.deleteNotification(notifId))
       .then(() => {
@@ -202,7 +216,6 @@ export class App {
 
   approveRequest(requestId: number, notifId: number) {
     this.loadingAccept[notifId] = true;
-
     this.adminLeague.approveJoinRequest(requestId)
       .then(() => this.notificationsService.deleteNotification(notifId))
       .then(() => {
@@ -214,7 +227,6 @@ export class App {
 
   rejectRequest(requestId: number, notifId: number) {
     this.loadingReject[notifId] = true;
-
     this.adminLeague.rejectJoinRequest(requestId)
       .then(() => this.notificationsService.deleteNotification(notifId))
       .then(() => {
