@@ -75,34 +75,34 @@
 
                     <ng-container *ngSwitchCase="'points'">
                         <div class="leader-player left">
-                            <span class="l-val">{{gameLeaders[0].points.points}}</span>
-                            <span class="l-name">{{gameLeaders[0].points.player.lastname}}</span>
-                        </div>
-                        <div class="leader-player right">
                             <span class="l-val">{{gameLeaders[1].points.points}}</span>
                             <span class="l-name">{{gameLeaders[1].points.player.lastname}}</span>
+                        </div>
+                        <div class="leader-player right">
+                            <span class="l-val">{{gameLeaders[0].points.points}}</span>
+                            <span class="l-name">{{gameLeaders[0].points.player.lastname}}</span>
                         </div>
                     </ng-container>
 
                     <ng-container *ngSwitchCase="'assists'">
                         <div class="leader-player left">
-                            <span class="l-val">{{gameLeaders[0].assists.assists}}</span>
-                            <span class="l-name">{{gameLeaders[0].assists.player.lastname}}</span>
-                        </div>
-                        <div class="leader-player right">
                             <span class="l-val">{{gameLeaders[1].assists.assists}}</span>
                             <span class="l-name">{{gameLeaders[1].assists.player.lastname}}</span>
+                        </div>
+                        <div class="leader-player right">
+                            <span class="l-val">{{gameLeaders[0].assists.assists}}</span>
+                            <span class="l-name">{{gameLeaders[0].assists.player.lastname}}</span>
                         </div>
                     </ng-container>
 
                     <ng-container *ngSwitchCase="'rebounds'">
                         <div class="leader-player left">
-                            <span class="l-val">{{gameLeaders[0].rebounds.totReb}}</span>
-                            <span class="l-name">{{gameLeaders[0].rebounds.player.lastname}}</span>
-                        </div>
-                        <div class="leader-player right">
                             <span class="l-val">{{gameLeaders[1].rebounds.totReb}}</span>
                             <span class="l-name">{{gameLeaders[1].rebounds.player.lastname}}</span>
+                        </div>
+                        <div class="leader-player right">
+                            <span class="l-val">{{gameLeaders[0].rebounds.totReb}}</span>
+                            <span class="l-name">{{gameLeaders[0].rebounds.player.lastname}}</span>
                         </div>
                     </ng-container>
 
