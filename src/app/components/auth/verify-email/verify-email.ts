@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../services/api.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-verify-email',
@@ -11,7 +12,6 @@ import { ApiService } from '../../../services/api.service';
   styleUrls: ['../../login/login.css']
 })
 export class VerifyEmail implements OnInit {
-
   loading = true;
   success = '';
   error = '';
@@ -19,7 +19,8 @@ export class VerifyEmail implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private api: ApiService,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) { }
 
   async ngOnInit() {
@@ -33,17 +34,26 @@ export class VerifyEmail implements OnInit {
     }
 
     try {
-      this.api.get(`/auth/verify-email`, { token, email })
+      const res: any = await this.api.get('/auth/verify-email', { token, email });
+
+      // Si backend devuelve token nuevo, setear sesión primero
+      if (res?.token) {
+        this.auth.setSession(res.token);
+
+        // y después intentar traer profile
+        try {
+          const profile = await this.api.get('/users/me');
+          this.auth.setSession(res.token, profile);
+        } catch {
+          // no pasa nada, queda con token
+        }
+      }
 
       this.success = '¡Email verificado correctamente!';
       this.loading = false;
 
-      setTimeout(() => {
-        this.router.navigate(['/login']);
-      }, 2000);
-
+      setTimeout(() => this.router.navigate(['/profile']), 800);
     } catch (err: any) {
-      console.error(err);
       this.loading = false;
       this.error = err?.error?.error || 'El enlace es inválido o expiró.';
     }
@@ -65,8 +75,7 @@ export class VerifyEmail implements OnInit {
       await this.api.post('/auth/resend-verification', { email });
       this.loading = false;
       this.success = 'Te enviamos un nuevo email de verificación.';
-    } catch (err) {
-      console.error(err);
+    } catch {
       this.loading = false;
       this.error = 'No se pudo reenviar el email.';
     }

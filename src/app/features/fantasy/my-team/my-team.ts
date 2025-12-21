@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FantasyService } from '../../../services/fantasy-service';
+import { FantasyService } from '../../../services/fantasy-service'; // si tu path real es fantasy.service, cambialo
 import { ApiService } from '../../../services/api.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -76,11 +76,8 @@ export class MyTeam implements OnInit {
   }
 
   private rebuildAvailablePlayers() {
-    // recalcula filteredPlayers con filtros actuales
     this.filterPlayers();
   }
-
-
 
   historyPage = 1;
   historyPageSize = 5;
@@ -95,7 +92,6 @@ export class MyTeam implements OnInit {
 
   attemptedApply = false;
   nbaTeams: any[] = [];
-  lockWindowMessage: string = "";
 
   marketClosesAt: string = "";
   marketOpensAt: string = "";
@@ -108,8 +104,6 @@ export class MyTeam implements OnInit {
   renameMessage = "";
   tradeError = "";
 
-  nextUnlockTime: Date | null = null;
-
   viewMode: 'change' | 'history' | 'scores' = 'change';
   shakeTrade = false;
 
@@ -121,39 +115,43 @@ export class MyTeam implements OnInit {
   ) { }
 
   async ngOnInit() {
+    // 1) Team primero (lo necesitan history y scores)
     await this.loadFantasyTeam();
-    await this.loadNbaTeams();
-    await this.loadTradeLimits();
-    await this.loadAllPlayers();
-    await this.loadMarketLock();
-    await this.loadGroupedHistory();
-    await this.loadScoresByDate();
+
+    // 2) Lo demás en paralelo
+    await Promise.allSettled([
+      this.loadNbaTeams(),
+      this.loadTradeLimits(),
+      this.loadAllPlayers(),
+      this.loadMarketLock(),
+      this.loadGroupedHistory(),
+      this.loadScoresByDate(),
+    ]);
   }
 
   async loadFantasyTeam() {
     this.loadingTeam = true;
 
-    const res = await this.fantasy.getMyTeam();
+    try {
+      const res = await this.fantasy.getMyTeam();
+      this.team = res.team;
 
-    this.team = res.team;
+      this.players = (res.players ?? []).map((p: any) => ({
+        ...p,
+        price: Math.round(Number(p.price)),
+        total_pts: Number(p.total_pts)
+      }));
 
-    this.players = res.players.map((p: any) => ({
-      ...p,
-      price: Math.round(Number(p.price)),
-      total_pts: Number(p.total_pts)
-    }));
+      this.newName = this.team ? this.team.name : "";
+      this.editingName = !this.team;
 
-    this.newName = this.team ? this.team.name : "";
-    this.editingName = !this.team;
-
-    if (this.allPlayers.length > 0) {
-      this.rebuildAvailablePlayers();
+      if (this.allPlayers.length > 0) {
+        this.rebuildAvailablePlayers();
+      }
+    } finally {
+      this.loadingTeam = false;
     }
-
-    this.loadingTeam = false;
   }
-
-
 
   private formatTimeARG(iso: string | null): string {
     if (!iso) return "";
@@ -176,7 +174,6 @@ export class MyTeam implements OnInit {
 
       this.tradesHoy = res.tradesHoy ?? 0;
       this.tradesRestantes = res.tradesRestantes ?? this.limiteDiario;
-
     } catch {
       this.tradesHoy = 0;
       this.tradesRestantes = this.limiteDiario;
@@ -194,7 +191,6 @@ export class MyTeam implements OnInit {
     }
   }
 
-
   async loadNbaTeams() {
     this.nbaTeams = await this.api.get('/teams');
   }
@@ -204,14 +200,12 @@ export class MyTeam implements OnInit {
     this.rebuildAvailablePlayers();
   }
 
-
   async loadMarketLock() {
     try {
       const res: any = await this.marketLock.getMarketLock();
 
       this.isLocked = !!res.isLocked;
 
-      // Hora Argentina para mostrar
       this.marketClosesAt = res.lockStart ? this.formatTimeARG(res.lockStart) : "";
       this.marketOpensAt = res.lockEnd ? this.formatTimeARG(res.lockEnd) : "";
 
@@ -221,19 +215,15 @@ export class MyTeam implements OnInit {
       }
 
       if (this.isLocked) {
-        // está bloqueado ahora
         this.lockReason = this.marketOpensAt
           ? `Mercado cerrado. Vuelve a abrir a las ${this.marketOpensAt} hs.`
           : "Mercado cerrado.";
       } else {
-        // está abierto ahora, pero va a cerrar cuando empiece el primer partido
         this.lockReason = this.marketClosesAt
           ? `Mercado abierto. Cierra a las ${this.marketClosesAt} hs.`
           : "Mercado abierto.";
       }
-
-    } catch (err) {
-      console.error("Error cargando market lock", err);
+    } catch {
       this.isLocked = false;
       this.lockReason = "";
       this.marketClosesAt = "";
@@ -246,12 +236,10 @@ export class MyTeam implements OnInit {
 
     this.loadingScores = true;
     try {
-      // Usamos el nuevo método del service
       const res = await this.bestPlayersService.getTeamScoresByDate(this.team.id, this.selectedScoreDate);
       this.dayPlayersScores = res.players || [];
       this.dayTotalPoints = res.total_day_points || 0;
-    } catch (err) {
-      console.error("Error cargando puntuaciones", err);
+    } catch {
       this.dayPlayersScores = [];
       this.dayTotalPoints = 0;
     } finally {
@@ -259,11 +247,9 @@ export class MyTeam implements OnInit {
     }
   }
 
-
   get necesitaIniciales(): boolean {
     return this.players.length < 5;
   }
-
 
   async saveName() {
     const name = this.newName.trim();
@@ -280,11 +266,8 @@ export class MyTeam implements OnInit {
 
     try {
       if (!this.team) {
-
         await this.fantasy.createTeam(name);
-        this.loadingCreate = false;
         await this.loadFantasyTeam();
-
       } else {
         this.loadingRename = true;
         const res: any = await this.fantasy.updateName(name);
@@ -293,7 +276,6 @@ export class MyTeam implements OnInit {
       }
 
       this.editingName = false;
-
     } catch (err: any) {
       this.error = err.error?.error || "Error inesperado";
     } finally {
@@ -301,8 +283,6 @@ export class MyTeam implements OnInit {
       this.loadingRename = false;
     }
   }
-
-
 
   markForRemoval(player: any) {
     this.removalCandidate = player;
@@ -318,9 +298,8 @@ export class MyTeam implements OnInit {
     this.error = "";
     this.success = "";
 
-    // CASO A: NECESITA COMPLETAR LOS 5
+    // CASO A: completar iniciales (solo add)
     if (this.necesitaIniciales) {
-
       if (!this.additionCandidate) {
         this.shakeTrade = true;
         setTimeout(() => this.shakeTrade = false, 600);
@@ -328,18 +307,16 @@ export class MyTeam implements OnInit {
       }
 
       this.loadingTrades = true;
-
       try {
         await this.fantasy.addPlayer(this.additionCandidate.id);
 
         this.success = "Jugador agregado correctamente";
-
         await this.loadFantasyTeam();
         await this.loadGroupedHistory();
+        await this.loadTradeLimits();
 
         this.additionCandidate = null;
         this.showAddForm = false;
-
       } catch (err: any) {
         this.error = err.error?.error || "Error al agregar jugador";
       } finally {
@@ -349,14 +326,14 @@ export class MyTeam implements OnInit {
       return;
     }
 
-    // CASO 2: TRADE INCOMPLETO
+    // CASO 2: trade incompleto
     if (!this.removalCandidate || !this.additionCandidate) {
       this.shakeTrade = true;
       setTimeout(() => (this.shakeTrade = false), 600);
       return;
     }
 
-    // CASO 3: SIN PRESUPUESTO
+    // CASO 3: sin presupuesto
     if (this.isBudgetInvalid) {
       this.shakeTrade = true;
       this.tradeError = "No tenés presupuesto suficiente.";
@@ -364,7 +341,7 @@ export class MyTeam implements OnInit {
       return;
     }
 
-    // CASO 4: TRADE COMPLETO
+    // CASO 4: trade completo
     this.loadingTrades = true;
 
     try {
@@ -375,9 +352,14 @@ export class MyTeam implements OnInit {
 
       this.success = "Cambio aplicado correctamente";
 
-      await this.loadFantasyTeam();
-      await this.loadTradeLimits();
-      await this.loadGroupedHistory();
+      // ✅ respuesta instantánea UI
+      this.applyTradeLocally(this.additionCandidate, this.removalCandidate);
+
+      // ✅ refrescos livianos para consistencia
+      await Promise.allSettled([
+        this.loadGroupedHistory(),
+        this.loadTradeLimits(),
+      ]);
 
       this.removalCandidate = null;
       this.additionCandidate = null;
@@ -386,6 +368,44 @@ export class MyTeam implements OnInit {
       this.error = err.error?.error || "Error al aplicar cambio";
     } finally {
       this.loadingTrades = false;
+    }
+  }
+
+  private applyTradeLocally(addPlayer: any, dropPlayer: any) {
+    if (!this.team || !addPlayer || !dropPlayer) return;
+
+    const dropId = Number(dropPlayer.player_id);
+    const addId = Number(addPlayer.id);
+
+    const budgetNow = Number(this.team.budget);
+    const dropPrice = Number(dropPlayer.price ?? 0);
+    const addPrice = Number(addPlayer.price ?? 0);
+
+    this.team = {
+      ...this.team,
+      budget: budgetNow + dropPrice - addPrice,
+      trades_remaining: Math.max(0, Number(this.team.trades_remaining ?? 0) - 1),
+    };
+
+    const withoutDropped = this.players.filter(p => Number(p.player_id) !== dropId);
+
+    const newRow = {
+      player_id: addId,
+      full_name: addPlayer.full_name ?? addPlayer.name ?? "Nuevo jugador",
+      price: Math.round(addPrice),
+      total_pts: 0,
+      is_captain: false,
+      team_id: addPlayer.team_id ?? null,
+    };
+
+    this.players = [...withoutDropped, newRow];
+
+    this.removalCandidate = null;
+    this.additionCandidate = null;
+    this.showAddForm = false;
+
+    if (this.allPlayers.length > 0) {
+      this.rebuildAvailablePlayers();
     }
   }
 
@@ -399,7 +419,6 @@ export class MyTeam implements OnInit {
       this.success = "Jugador agregado";
       await this.loadFantasyTeam();
       this.showAddForm = false;
-
     } catch (err: any) {
       this.error = err.error?.error || "Error inesperado";
     } finally {
@@ -416,7 +435,6 @@ export class MyTeam implements OnInit {
       await this.fantasy.removePlayer(playerId);
       this.success = "Jugador eliminado";
       await this.loadFantasyTeam();
-
     } catch (err: any) {
       this.error = err.error?.error || "No se pudo eliminar";
     } finally {
@@ -427,7 +445,6 @@ export class MyTeam implements OnInit {
   filterPlayers() {
     let list = [...this.allPlayers];
 
-    // ✅ sacar los que ya están en mi equipo
     const owned = this.myPlayerIds;
     list = list.filter(p => !owned.has(Number(p.id)));
 
@@ -453,7 +470,6 @@ export class MyTeam implements OnInit {
     this.currentPage = 1;
   }
 
-
   resetFilters() {
     this.selectedRange = null;
     this.selectedTeam = null;
@@ -462,7 +478,6 @@ export class MyTeam implements OnInit {
     this.rebuildAvailablePlayers();
     this.currentPage = 1;
   }
-
 
   toggleAddForm() {
     this.showAddForm = !this.showAddForm;
@@ -473,12 +488,10 @@ export class MyTeam implements OnInit {
       return;
     }
 
-    // al cerrar
     this.resetFilters();
     this.additionCandidate = null;
     this.removalCandidate = null;
   }
-
 
   prevPage() {
     if (this.currentPage > 1) this.currentPage--;
@@ -497,18 +510,15 @@ export class MyTeam implements OnInit {
     return this.groupedHistory.slice(start, start + this.historyPageSize);
   }
 
-
   get budgetPreview(): number | null {
     if (!this.team) return null;
 
     const current = Number(this.team.budget);
 
-    // Si agrega solo (no hay jugador que sale)
     if (this.additionCandidate && !this.removalCandidate) {
       return current - Number(this.additionCandidate.price);
     }
 
-    // Si es un trade (sale + entra)
     if (this.additionCandidate && this.removalCandidate) {
       return current
         + Number(this.removalCandidate.price)
@@ -546,31 +556,23 @@ export class MyTeam implements OnInit {
   async setCaptain(playerId: number) {
     if (this.isLocked || !this.team) return;
 
-    // Loader local para el botón (mantiene el spinner en el botón si tienes uno)
     this.loadingCaptain = playerId;
     this.error = "";
     this.success = "";
 
     try {
-      // La petición se dispara. El Interceptor mostrará el NBA ball loader.
       await this.fantasy.setCaptain(this.team.id, playerId);
 
-      // ACTUALIZACIÓN MANUAL: Esto es lo que hace que funcione sin recargar la página
       this.players = this.players.map(p => ({
         ...p,
         is_captain: p.player_id === playerId
       }));
 
       this.success = "Nuevo capitán asignado (suma x2)";
-
     } catch (err: any) {
       this.error = err.error?.error || "Error al asignar capitán";
     } finally {
-      // Liberamos el loader del botón
       this.loadingCaptain = null;
-
-      // OPCIONAL: Si ves que el NBA Ball se sigue quedando, fuerza un hide extra:
-      // this.loadingService.hide();
     }
   }
 }

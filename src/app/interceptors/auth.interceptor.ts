@@ -11,31 +11,35 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
 
     const token = authService.getToken();
 
+    // Endpoints públicos donde NO queremos meter lógica de 403 redirect
+    const isPublic =
+        req.url.includes('/auth/login') ||
+        req.url.includes('/auth/register') ||
+        req.url.includes('/auth/verify-email') ||
+        req.url.includes('/auth/resend-verification') ||
+        req.url.includes('/auth/forgot-password') ||
+        req.url.includes('/auth/reset-password');
+
     let authReq = req;
 
-    if (token) {
+    if (token && !req.headers.has('Authorization')) {
         authReq = req.clone({
-            setHeaders: {
-                Authorization: req.headers.has('Authorization')
-                    ? req.headers.get('Authorization')!
-                    : `Bearer ${token}`,
-            },
+            setHeaders: { Authorization: `Bearer ${token}` },
         });
     }
 
     return next(authReq).pipe(
         catchError((error) => {
-
-            if (error.status === 401) {
+            if (error?.status === 401) {
                 authService.logout();
                 router.navigate(['/login']);
             }
 
-            if (error.status === 403) {
+            // 👇 Solo redirigir por 403 si NO es público
+            if (error?.status === 403 && !isPublic) {
                 router.navigate(['/profile'], {
                     state: {
-                        msg: error?.error?.error
-                            || 'Debes verificar tu email para acceder a esta sección.'
+                        msg: error?.error?.error || 'Debes verificar tu email para acceder a esta sección.'
                     }
                 });
             }

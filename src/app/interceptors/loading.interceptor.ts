@@ -7,18 +7,16 @@ export const LoadingInterceptor: HttpInterceptorFn = (req, next) => {
     const loading = inject(LoadingService);
 
     const skip =
-        req.url.includes('/auth/login') ||    
-        req.url.includes('/games?live=all') ||  
+        req.url.includes('/auth/login') ||
+        req.url.includes('/auth/verify-email') ||
+        req.url.includes('/auth/resend-verification') ||
+        req.url.includes('/games?live=all') ||
         req.url.includes('/best-players/latest') ||
-        req.url.includes('/notifications'); 
+        req.url.includes('/notifications');
 
-    if (skip) {
-        return next(req);
-    }
+    if (skip) return next(req);
 
     loading.show();
 
-    return next(req).pipe(
-        finalize(() => loading.hide())
-    );
+    return next(req).pipe(finalize(() => loading.hide()));
 };

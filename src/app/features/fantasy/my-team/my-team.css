@@ -217,10 +217,12 @@
 .court-grid {
     display: grid;
     /* auto-fill permite que se ajusten solas, minmax da flexibilidad */
-    grid-template-columns: repeat(auto-fit, minmax(165px, 175px)); 
+    grid-template-columns: repeat(auto-fit, minmax(165px, 175px));
     gap: 30px 15px;
-    justify-content: center; /* ESTO CENTRA EL GRID COMPLETO */
-    justify-items: center;    /* ESTO CENTRA LA CARD DENTRO DE SU CELDA */
+    justify-content: center;
+    /* ESTO CENTRA EL GRID COMPLETO */
+    justify-items: center;
+    /* ESTO CENTRA LA CARD DENTRO DE SU CELDA */
     padding: 20px 5px;
 }
 
@@ -1338,14 +1340,16 @@ strong.bad {
     }
 
     .slot {
-        max-width: 100%; /* Deja que el grid mande */
+        max-width: 100%;
+        /* Deja que el grid mande */
     }
 
     .player-data {
-        min-height: 220px; /* Un poco más compactas en móvil */
+        min-height: 220px;
+        /* Un poco más compactas en móvil */
         padding: 8px;
     }
-    
+
     .player-name {
         font-size: 0.95rem;
     }
@@ -1440,6 +1444,11 @@ strong.bad {
         content: "▶";
         font-size: 1.3rem;
         color: white;
+    }
+
+    .captain-btn {
+        padding: 5px 9px;
+        font-size: 0.7rem;
     }
 }
 

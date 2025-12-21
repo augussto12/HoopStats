@@ -1,58 +1,136 @@
-<div>
+<div class="stats-container">
     <h1 class="title-stats">Estadísticas</h1>
 
-    <div *ngIf="error" class="error-box">
-        {{ error }}
-    </div>
+    <div *ngIf="error" class="error-box">{{ error }}</div>
 
     <ng-container *ngIf="!error">
-
         <div class="view-toggle">
             <button [class.active]="view === 'game'" (click)="view = 'game'">Partido</button>
             <button [class.active]="view === 'players'" (click)="view = 'players'">Jugadores</button>
         </div>
 
-        <div *ngIf="view === 'game' && gameDetails.length === 2" class="stats-card">
+        <div *ngIf="view === 'game' && gameDetails.length === 2" class="stats-card fade-in">
 
-            <div class="teams-header">
-                <div class="team">
+            <div class="main-match-header">
+                <div class="team-info">
+                    <img [src]="gameDetails[0].team.logo" class="team-logo-main" />
                     <h2>{{ gameDetails[0].team.name }}</h2>
-                    <img [src]="gameDetails[0].team.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : gameDetails[0].team.logo"
-                        width="100" />
                 </div>
 
-                <div class="team">
-                    <h2>{{ gameDetails[1].team.name }}</h2>
-                    <img [src]="gameDetails[1].team.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : gameDetails[1].team.logo"
-                        width="100" />
+                <div class="score-center-v2">
+                    <div class="live-indicator" *ngIf="scoreBoard?.status.short !== 3">
+                        <span class="dot"></span> LIVE
+                    </div>
+                    <div class="score-main">
+                        <span>{{scoreBoard?.scores.home.points || 0}}</span>
+                        <span class="score-sep">-</span>
+                        <span>{{scoreBoard?.scores.visitors.points || 0}}</span>
+                    </div>
+                    <div class="game-time-v2">
+                        {{ scoreBoard?.status.short === 2 ? scoreBoard?.status.clock : scoreBoard?.status.long }}
+                        <span *ngIf="scoreBoard?.status.short === 2">({{scoreBoard.periods.current}}Q)</span>
+                    </div>
+                </div>
 
+                <div class="team-info">
+                    <img [src]="gameDetails[1].team.logo" class="team-logo-main" />
+                    <h2>{{ gameDetails[1].team.name }}</h2>
                 </div>
             </div>
 
+            <div class="periods-summary" *ngIf="scoreBoard">
+                <div class="period-row">
+                    <span class="p-team">{{scoreBoard.teams.home.code}}</span>
+                    <span class="p-score" *ngFor="let s of scoreBoard.scores.home.linescore">{{s}}</span>
+                </div>
+                <div class="period-row">
+                    <span class="p-team">{{scoreBoard.teams.visitors.code}}</span>
+                    <span class="p-score" *ngFor="let s of scoreBoard.scores.visitors.linescore">{{s}}</span>
+                </div>
+            </div>
+
+            <hr class="divider">
+
             <div class="stats-body">
                 <div class="stat-row" *ngFor="let stat of statList">
-                    <div>{{ gameDetails[0].statistics[0][stat.key] || '-' }}</div>
-                    <div>{{ stat.label }}</div>
-                    <div>{{ gameDetails[1].statistics[0][stat.key] || '-' }}</div>
+                    <span class="stat-value">{{ gameDetails[0].statistics[0][stat.key] || '-' }}</span>
+                    <span class="stat-label">{{ stat.label }}</span>
+                    <span class="stat-value">{{ gameDetails[1].statistics[0][stat.key] || '-' }}</span>
+                </div>
+            </div>
+
+            <div class="leaders-section" *ngIf="gameLeaders.length === 2">
+                <h3 class="section-subtitle">Líderes del Partido</h3>
+
+                <div class="leader-tabs">
+                    <button [class.active]="activeLeaderTab === 'points'"
+                        (click)="activeLeaderTab = 'points'">PUNTOS</button>
+                    <button [class.active]="activeLeaderTab === 'assists'"
+                        (click)="activeLeaderTab = 'assists'">ASISTENCIAS</button>
+                    <button [class.active]="activeLeaderTab === 'rebounds'"
+                        (click)="activeLeaderTab = 'rebounds'">REBOTES</button>
+                </div>
+
+                <div class="leader-stat-card fade-in" [ngSwitch]="activeLeaderTab">
+
+                    <ng-container *ngSwitchCase="'points'">
+                        <div class="leader-player left">
+                            <span class="l-val">{{gameLeaders[0].points.points}}</span>
+                            <span class="l-name">{{gameLeaders[0].points.player.lastname}}</span>
+                        </div>
+                        <div class="leader-player right">
+                            <span class="l-val">{{gameLeaders[1].points.points}}</span>
+                            <span class="l-name">{{gameLeaders[1].points.player.lastname}}</span>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="'assists'">
+                        <div class="leader-player left">
+                            <span class="l-val">{{gameLeaders[0].assists.assists}}</span>
+                            <span class="l-name">{{gameLeaders[0].assists.player.lastname}}</span>
+                        </div>
+                        <div class="leader-player right">
+                            <span class="l-val">{{gameLeaders[1].assists.assists}}</span>
+                            <span class="l-name">{{gameLeaders[1].assists.player.lastname}}</span>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngSwitchCase="'rebounds'">
+                        <div class="leader-player left">
+                            <span class="l-val">{{gameLeaders[0].rebounds.totReb}}</span>
+                            <span class="l-name">{{gameLeaders[0].rebounds.player.lastname}}</span>
+                        </div>
+                        <div class="leader-player right">
+                            <span class="l-val">{{gameLeaders[1].rebounds.totReb}}</span>
+                            <span class="l-name">{{gameLeaders[1].rebounds.player.lastname}}</span>
+                        </div>
+                    </ng-container>
+
                 </div>
             </div>
         </div>
 
-        <div *ngIf="view === 'players'" class="players-stats-layout">
+        <div *ngIf="view === 'players'" class="players-stats-layout fade-in">
+            <div class="tabs team-selector">
+                <button *ngFor="let team of groupedPlayers; let i = index" class="tab"
+                    [class.active]="activeTeamIndex === i" (click)="activeTeamIndex = i">
+                    {{ team.team.name }}
+                </button>
+            </div>
 
-            <div *ngFor="let team of groupedPlayers">
+            <div *ngFor="let team of groupedPlayers; let i = index" class="team-stats-container"
+                [class.hidden]="activeTeamIndex !== i">
 
-                <div>
+                <div class="team-header-stats">
+                    <img [src]="team.team.logo" width="80" />
                     <h2 class="team-title">{{ team.team.name }}</h2>
-                    <img [src]="team.team.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : team.team.logo" width="80"/>
-
                 </div>
 
                 <div class="player-table-wrapper">
                     <table class="player-table">
                         <thead>
                             <tr>
-                                <th>Jugador</th>
+                                <th class="sticky-col">Jugador</th>
                                 <th>PTS</th>
                                 <th>AST</th>
                                 <th>REB</th>
@@ -65,7 +143,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let p of team.players">
-                                <td>{{ p.player.firstname }} {{ p.player.lastname }}</td>
+                                <td class="sticky-col">{{ p.player.firstname[0] }}. {{ p.player.lastname }}</td>
                                 <td>{{ p.points }}</td>
                                 <td>{{ p.assists }}</td>
                                 <td>{{ p.totReb }}</td>
@@ -78,9 +156,7 @@
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
-
     </ng-container>
 </div>

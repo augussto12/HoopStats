@@ -9,6 +9,7 @@ import {
   LeagueInfo,
   LeagueDetailsResponse
 } from "../../../models/interfaces";
+import { AuthService } from "../../../services/auth.service";
 
 @Component({
   selector: 'app-league-details',
@@ -26,12 +27,17 @@ export class LeagueDetails implements OnInit {
 
   activeTab: 'ranking' | 'trades' | 'market' = 'ranking';
 
+  currentUsername: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
-    private leagueService: FantasyLeaguesService
+    private leagueService: FantasyLeaguesService,
+    private auth: AuthService
   ) { }
 
   async ngOnInit() {
+
+    this.currentUsername = this.auth.getUser()?.username;
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
     const data = await this.leagueService.getLeagueDetails(id) as LeagueDetailsResponse;

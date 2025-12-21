@@ -1,6 +1,7 @@
-import { Component, Injector } from '@angular/core';
+import { Component, OnInit } from '@angular/core'; // Agregamos OnInit
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../services/api.service';
+import { AuthService } from '../../../services/auth.service'; // <--- Importar
 
 @Component({
   selector: 'app-standings-fantasy',
@@ -9,14 +10,24 @@ import { ApiService } from '../../../services/api.service';
   templateUrl: './standings-fantasy.html',
   styleUrls: ['./standings-fantasy.css', '../../standings/standings.css'],
 })
-export class StandingsFantasy {
+export class StandingsFantasy implements OnInit {
 
   public ranking: any[] = [];
   public error = '';
+  public currentUsername: string | null = null;
 
-  constructor(private api: ApiService) { }
+  constructor(
+    private api: ApiService,
+    private auth: AuthService 
+  ) { }
 
   async ngOnInit() {
+    // Obtenemos el usuario del servicio
+    const user = this.auth.getUser();
+    if (user) {
+      this.currentUsername = user.username;
+    }
+
     await this.loadRanking();
   }
 

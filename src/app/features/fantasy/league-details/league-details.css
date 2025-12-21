@@ -801,3 +801,34 @@
         transform: translateX(0);
     }
 }
+
+/* --- RANKING DORADO SUTIL --- */
+.my-team-row {
+    background-color: rgba(255, 215, 0, 0.03) !important;
+}
+
+.my-team-row td {
+    color: #ffd700 !important; /* Texto dorado */
+    font-weight: 600;
+}
+
+/* Badge minimalista */
+.me-badge {
+    font-size: 0.65rem;
+    color: #ffd700;
+    border: 1px solid rgba(255, 215, 0, 0.4);
+    padding: 1px 4px;
+    border-radius: 3px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/* --- TRADES DORADOS SUTIL --- */
+.my-trade-card {
+    border: 1px solid rgba(255, 215, 0, 0.3) !important; /* Borde dorado suave */
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.05);
+}
+
+.my-trade-card .trade-team strong {
+    color: #ffd700; /* Nombre de tu equipo en dorado */
+}

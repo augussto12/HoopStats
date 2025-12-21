@@ -44,10 +44,12 @@
         </thead>
 
         <tbody>
-            <tr *ngFor="let t of teams; index as i">
+            <tr *ngFor="let t of teams; index as i" [class.my-team-row]="t.owner === currentUsername">
                 <td>{{ i + 1 }}</td>
                 <td>{{ t.team_name }}</td>
-                <td>@{{ t.owner }}</td>
+                <td>
+                    @{{ t.owner }}
+                </td>
                 <td>{{ t.points }}</td>
             </tr>
         </tbody>
@@ -64,7 +66,8 @@
 
         <div class="history-grid" *ngIf="trades.length > 0">
 
-            <div class="fancy-trade-card" *ngFor="let tr of trades">
+            <div class="fancy-trade-card" *ngFor="let tr of trades"
+                [class.my-trade-card]="tr.user_name === currentUsername">
 
                 <div class="trade-card-header">
                     <span class="trade-date">{{ tr.timestamp | date:'short' }}</span>

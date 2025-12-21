@@ -9,38 +9,23 @@ export class ApiService {
 
     constructor(private http: HttpClient) { }
 
-    // GET
     get<T>(url: string, params?: any): Promise<T> {
-        return firstValueFrom(
-            this.http.get<T>(`${this.baseUrl}${url}`, { params })
-        );
+        return firstValueFrom(this.http.get<T>(`${this.baseUrl}${url}`, { params }));
     }
 
-    // POST
     post<T>(url: string, body: any): Promise<T> {
-        return firstValueFrom(
-            this.http.post<T>(`${this.baseUrl}${url}`, body)
-        );
+        return firstValueFrom(this.http.post<T>(`${this.baseUrl}${url}`, body));
     }
 
-    // PUT
     put<T>(url: string, body: any): Promise<T> {
-        return firstValueFrom(
-            this.http.put<T>(`${this.baseUrl}${url}`, body)
-        );
+        return firstValueFrom(this.http.put<T>(`${this.baseUrl}${url}`, body));
     }
 
-    // PATCH
     patch<T>(url: string, body: any): Promise<T> {
-        return firstValueFrom(
-            this.http.patch<T>(`${this.baseUrl}${url}`, body)
-        );
+        return firstValueFrom(this.http.patch<T>(`${this.baseUrl}${url}`, body));
     }
 
-    // DELETE con params opcionales
     delete<T>(url: string, params?: any): Promise<T> {
-        return firstValueFrom(
-            this.http.delete<T>(`${this.baseUrl}${url}`, { params })
-        );
+        return firstValueFrom(this.http.delete<T>(`${this.baseUrl}${url}`, { params }));
     }
 }

@@ -19,10 +19,12 @@
                 </thead>
 
                 <tbody>
-                    <tr *ngFor="let team of ranking; let i = index">
+                    <tr *ngFor="let team of ranking; let i = index"
+                        [class.my-team-row]="team.username === currentUsername">
+
                         <td data-label="#">{{ i + 1 }}</td>
                         <td data-label="Usuario">
-                            <div>
+                            <div class="user-cell">
                                 <span>{{ team.username }}</span>
                             </div>
                         </td>

@@ -13,15 +13,23 @@ import { PlayerGroup } from '../../../models/interfaces';
 })
 export class GameDetails implements OnInit {
 
+
+  public activeTeamIndex: number = 0;
   public gameDetails: any[] = [];
   public groupedPlayers: PlayerGroup[] = [];
   public error: string | null = null;
   public view: 'game' | 'players' = 'game';
 
+  // NUEVAS PROPIEDADES PARA EL MARCADOR Y LÍDERES
+  public scoreBoard: any = null;
+  public gameLeaders: any[] = [];
+  public activeLeaderTab: 'points' | 'assists' | 'rebounds' = 'points';
+
   private route = inject(ActivatedRoute);
   private api = inject(NbaApiService);
 
-  constructor() { } 
+
+  constructor() { }
 
   public readonly statList = [
     { key: 'points', label: 'Puntos' },
@@ -43,22 +51,24 @@ export class GameDetails implements OnInit {
 
   async ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-
     if (!id) {
       this.error = 'Partido no encontrado.';
       return;
     }
 
     try {
-      const data = await this.api.getGameStats(id);
+      // 1. Cargamos estadísticas generales del equipo
+      this.gameDetails = await this.api.getGameStats(id);
 
-      if (!data || data.length === 0) {
-        this.error = 'No se encontró información del partido.';
-        return;
+      // 2. Cargamos el Marcador (Linescore) usando tu método getGameData
+      const gameInfo = await this.api.getGameData(id);
+      if (gameInfo && gameInfo.length > 0) {
+        this.scoreBoard = gameInfo[0];
       }
 
-      this.gameDetails = data;
+      // 3. Cargamos jugadores y calculamos líderes
       await this.loadPlayerStats(id);
+      this.calculateLeaders();
 
     } catch (err) {
       console.error(err);
@@ -68,18 +78,28 @@ export class GameDetails implements OnInit {
 
   private async loadPlayerStats(gameId: number) {
     const stats = await this.api.getPlayerStatsByGame(gameId);
-
     const grouped = stats.reduce((acc: Record<number, PlayerGroup>, s: any) => {
       const teamId = s.team.id;
-
       if (!acc[teamId]) {
         acc[teamId] = { team: s.team, players: [] };
       }
-
       acc[teamId].players.push(s);
       return acc;
     }, {});
-
     this.groupedPlayers = Object.values(grouped);
+  }
+
+  // Lógica para encontrar al mejor de cada equipo según el Tab seleccionado
+  private calculateLeaders() {
+    if (this.groupedPlayers.length < 2) return;
+
+    this.gameLeaders = this.groupedPlayers.map(teamGroup => {
+      return {
+        team: teamGroup.team,
+        points: [...teamGroup.players].sort((a, b) => b.points - a.points)[0],
+        rebounds: [...teamGroup.players].sort((a, b) => b.totReb - a.totReb)[0],
+        assists: [...teamGroup.players].sort((a, b) => b.assists - a.assists)[0]
+      };
+    });
   }
 }
