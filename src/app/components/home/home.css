@@ -10,7 +10,7 @@
 
 .top-section {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
 }
 
@@ -192,7 +192,170 @@
 ============================ */
 
 .live-panel {
-  grid-column: 1 / -1;
+  grid-column: span 1;
+}
+
+.injuries-panel {
+  min-height: 400px;
+  display: flex !important;
+  flex-direction: column;
+}
+
+.injuries-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(233, 196, 106, 0.2);
+}
+
+.ctrl-btn {
+  background: none;
+  border: none;
+  color: #e9cd2e;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 4px;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ctrl-btn:hover {
+  transform: scale(1.2);
+  color: #fff;
+}
+
+.page-indicator {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-weight: 700;
+  min-width: 45px;
+  text-align: center;
+}
+
+.injuries-carousel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.injury-group.active {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.group-header {
+  color: #e9cd2e;
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(233, 196, 106, 0.2);
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.injury-item-structured {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.injury-item-structured:last-child {
+  border-bottom: none;
+}
+
+.player-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.p-name {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #f3f4f6;
+}
+
+.p-pos {
+  color: #9ca3af;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.p-meta {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 2px 0 4px;
+  font-style: italic;
+}
+
+.p-status {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.p-status.out,
+.p-status.fuera {
+  background: #d13535;
+  color: white;
+}
+
+.p-status.questionable,
+.p-status.cuestionable {
+  background: #ffcc00;
+  color: #333;
+}
+
+.p-status.probable {
+  background: #4caf50;
+  color: white;
+}
+
+.p-status.doubtful,
+.p-status.dudoso {
+  background: #ff9800;
+  color: white;
+}
+
+.p-reason {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  line-height: 1.2;
+}
+
+.no-submitted {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-style: italic;
+  padding: 4px 0;
 }
 
 .live-list {
@@ -647,10 +810,13 @@
   margin: 40px auto 0;
   background: linear-gradient(180deg, #1a2a44 0%, #0f172a 100%);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 15px; /* Redondeamos todas las esquinas para que no se corte */
-  overflow: visible; /* <--- CAMBIA ESTO para que el logo no se corte */
+  border-radius: 15px;
+  /* Redondeamos todas las esquinas para que no se corte */
+  overflow: visible;
+  /* <--- CAMBIA ESTO para que el logo no se corte */
   border-bottom: 1px solid #E9C46A;
-  margin-top: 20px; /* Espacio para que el logo de arriba no choque con el título */
+  margin-top: 20px;
+  /* Espacio para que el logo de arriba no choque con el título */
 }
 
 .court-background {
@@ -663,7 +829,8 @@
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-bottom: 4px solid #E9C46A;
   border-radius: 15px;
-  overflow: hidden; /* Aquí sí recortamos las líneas */
+  overflow: hidden;
+  /* Aquí sí recortamos las líneas */
   z-index: 1;
 }
 
@@ -678,7 +845,8 @@
 /* Ajustamos la línea de triples para que nazca más abajo y no se escape tanto */
 .three-point-line {
   position: absolute;
-  top: -10%; /* Ajustado */
+  top: -10%;
+  /* Ajustado */
   left: 50%;
   transform: translateX(-50%);
   width: 110%;
@@ -690,7 +858,7 @@
 /* Subimos el z-index de los jugadores para que pisen la línea */
 .player-on-court {
   position: absolute;
-  z-index: 10; 
+  z-index: 10;
   transition: all 0.3s ease;
 }
 
@@ -725,13 +893,17 @@
 
 .player-stats-bubble {
   margin-top: 5px;
-  background: rgba(0, 0, 0, 0.85); /* Un poco más oscuro */
+  background: rgba(0, 0, 0, 0.85);
+  /* Un poco más oscuro */
   padding: 4px 12px;
-  border-radius: 8px; /* Menos redondeado queda más "fichaje" */
+  border-radius: 8px;
+  /* Menos redondeado queda más "fichaje" */
   text-align: center;
-  border: 1px solid rgba(233, 196, 106, 0.3); /* Borde dorado sutil */
+  border: 1px solid rgba(233, 196, 106, 0.3);
+  /* Borde dorado sutil */
   min-width: 80px;
-  backdrop-filter: blur(4px); /* Efecto cristal para el fondo */
+  backdrop-filter: blur(4px);
+  /* Efecto cristal para el fondo */
 }
 
 .p-name {
@@ -748,35 +920,41 @@
 }
 
 .pos-0 {
-  bottom: 60%; /* Bajamos de 70% a 60% para que no se salga */
+  bottom: 60%;
+  /* Bajamos de 70% a 60% para que no se salga */
   left: 50%;
   transform: translateX(-50%);
 }
 
 .pos-0 .player-marker img {
-  width: 60px; /* Un poco más grande por ser el mejor */
+  width: 60px;
+  /* Un poco más grande por ser el mejor */
   height: 60px;
   border-width: 3px;
   box-shadow: 0 0 20px rgba(233, 196, 106, 0.6);
 }
 
 .pos-1 {
-  bottom: 40%; /* Un poco más abajo */
+  bottom: 40%;
+  /* Un poco más abajo */
   left: 10%;
 }
 
 .pos-2 {
-  bottom: 40%; /* Un poco más abajo */
+  bottom: 40%;
+  /* Un poco más abajo */
   right: 10%;
 }
 
 .pos-3 {
-  bottom: 10%; /* Cerca de la línea de fondo */
+  bottom: 10%;
+  /* Cerca de la línea de fondo */
   left: 25%;
 }
 
 .pos-4 {
-  bottom: 10%; /* Cerca de la línea de fondo */
+  bottom: 10%;
+  /* Cerca de la línea de fondo */
   right: 25%;
 }
 
@@ -785,8 +963,10 @@
 /* Responsive optimizado para celulares */
 @media (max-width: 500px) {
   .basketball-court {
-    height: 350px; /* Un poco más de aire vertical */
-    max-width: 95%; /* Que no toque los bordes de la pantalla */
+    height: 350px;
+    /* Un poco más de aire vertical */
+    max-width: 95%;
+    /* Que no toque los bordes de la pantalla */
   }
 
   /* Achicamos los marcadores de los jugadores */
@@ -811,7 +991,8 @@
 
   .p-name {
     font-size: 0.6rem;
-    max-width: 80px; /* Evita que nombres largos rompan todo */
+    max-width: 80px;
+    /* Evita que nombres largos rompan todo */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -823,23 +1004,28 @@
 
   /* RE-POSICIONAMIENTO para evitar colisiones laterales */
   .pos-1 {
-    left: 5%; /* Más pegado al borde para ganar espacio central */
+    left: 5%;
+    /* Más pegado al borde para ganar espacio central */
   }
+
   .pos-2 {
     right: 5%;
   }
 
   .pos-3 {
-    left: 15%; /* Los de abajo más al centro para que no se peguen al borde curvo */
+    left: 15%;
+    /* Los de abajo más al centro para que no se peguen al borde curvo */
     bottom: 8%;
   }
+
   .pos-4 {
     right: 15%;
     bottom: 8%;
   }
-  
+
   .pos-0 {
-    bottom: 55% !important; /* Subimos un pelín al capitán */
+    bottom: 55% !important;
+    /* Subimos un pelín al capitán */
   }
 }
 
@@ -848,11 +1034,11 @@
   .basketball-court {
     height: 300px;
   }
-  
+
   .player-stats-bubble {
     min-width: 60px;
   }
-  
+
   .player-marker img {
     width: 32px !important;
     height: 32px !important;

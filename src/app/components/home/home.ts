@@ -9,6 +9,23 @@ import { Game, MappedGame, NotificationItem, TopStat } from '../../models/interf
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
 import { FantasyService } from '../../services/fantasy-service';
+import { NbaInjuriesService } from '../../services/nba-injuries.service';
+
+export interface InjuryPlayer {
+  name: string;
+  position?: string;
+  status: string;
+  statusType?: string;
+  updated?: string;
+  reason: string;
+}
+
+export interface InjuryGroup {
+  team: string;
+  players: InjuryPlayer[];
+}
+
+
 
 @Component({
   selector: 'app-home',
@@ -31,18 +48,24 @@ export class Home implements OnInit {
 
   errorLive: string | null = null;
   errorPlayers: string | null = null;
+  injuryGroups: InjuryGroup[] = [];
+  currentInjuryIndex = 0;
+  errorInjuries: string | null = null;
+  loadingInjuries = false;
 
   private nbaService = inject(NbaApiService);
   private bestPlayersService = inject(BestPlayersService);
   public auth = inject(AuthService);
   private notificationService = inject(NotificationService);
   private fantasyService = inject(FantasyService);
+  private injuriesService = inject(NbaInjuriesService);
 
   ngOnInit() {
     this.loadLiveGames();
     this.loadBestPlayers();
     this.loadNextGames();
     this.loadDreamTeam();
+    this.loadInjuryReport();
     if (this.auth.getToken()) this.loadNotifications();
   }
 
@@ -130,6 +153,40 @@ export class Home implements OnInit {
       this.dreamTeam = [];
     }
   }
+
+  async loadInjuryReport() {
+    this.loadingInjuries = true;
+    this.errorInjuries = null;
+    try {
+      const resp = await this.injuriesService.getInjuryReport();
+      if (resp.success) {
+        this.injuryGroups = resp.data;
+      } else {
+        this.errorInjuries = 'No se pudo cargar el reporte de lesiones.';
+      }
+    } catch (err) {
+      console.error("Error al cargar reporte de lesiones:", err);
+      this.errorInjuries = 'Error al conectar con el servidor.';
+    } finally {
+      this.loadingInjuries = false;
+    }
+  }
+
+  get currentInjuryGroup(): InjuryGroup | null {
+    return this.injuryGroups.length > 0 ? this.injuryGroups[this.currentInjuryIndex] : null;
+  }
+
+  nextInjuryTeam() {
+    if (this.injuryGroups.length === 0) return;
+    this.currentInjuryIndex = (this.currentInjuryIndex + 1) % this.injuryGroups.length;
+  }
+
+  prevInjuryTeam() {
+    if (this.injuryGroups.length === 0) return;
+    this.currentInjuryIndex = (this.currentInjuryIndex - 1 + this.injuryGroups.length) % this.injuryGroups.length;
+  }
+
+
 
   private toYYYYMMDD(d: Date) {
     const pad = (n: number) => String(n).padStart(2, '0');

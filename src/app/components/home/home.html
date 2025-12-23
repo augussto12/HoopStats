@@ -112,6 +112,44 @@
         No hay partidos en vivo actualmente.
       </div>
     </div>
+
+    <div class="panel injuries-panel">
+      <div class="injuries-header">
+        <h2>🚑 Reporte de Lesiones</h2>
+        <div class="carousel-controls" *ngIf="injuryGroups.length > 1">
+          <button (click)="prevInjuryTeam()" class="ctrl-btn" aria-label="Anterior">❮</button>
+          <span class="page-indicator">{{ currentInjuryIndex + 1 }} / {{ injuryGroups.length }}</span>
+          <button (click)="nextInjuryTeam()" class="ctrl-btn" aria-label="Siguiente">❯</button>
+        </div>
+      </div>
+
+      <div *ngIf="loadingInjuries" class="loading-spinner">Cargando reporte...</div>
+      <div *ngIf="errorInjuries" class="empty">{{ errorInjuries }}</div>
+
+      <div class="injuries-carousel" *ngIf="currentInjuryGroup">
+        <div class="injury-group active">
+          <div class="group-header">{{ currentInjuryGroup.team }}</div>
+
+          <div class="injury-item-structured" *ngFor="let p of currentInjuryGroup.players">
+            <div class="player-info">
+              <span class="p-name">{{ p.name }} <small class="p-pos" *ngIf="p.position">({{ p.position
+                  }})</small></span>
+              <span class="p-status" [ngClass]="p.statusType">{{ p.status }}</span>
+            </div>
+            <div class="p-meta" *ngIf="p.updated">Actualizado: {{ p.updated }}</div>
+            <div class="p-reason">{{ p.reason }}</div>
+          </div>
+
+          <div *ngIf="currentInjuryGroup.players.length === 0" class="no-submitted">
+            No hay datos enviados aún
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!loadingInjuries && !injuryGroups.length && !errorInjuries" class="empty">
+        No hay lesiones reportadas.
+      </div>
+    </div>
   </section>
 
   <section class="dream-team-section" *ngIf="dreamTeam.length">

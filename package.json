@@ -37,8 +37,11 @@
     "@capacitor/core": "^8.0.0",
     "@capacitor/preferences": "^8.0.0",
     "@capacitor/status-bar": "^8.0.0",
+    "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
+    "cheerio": "^1.1.2",
     "dotenv": "^17.2.3",
+    "pdf-parse": "^2.4.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
