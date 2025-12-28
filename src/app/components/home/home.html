@@ -196,7 +196,7 @@
         <div class="injury-group active">
           <div class="group-header">{{ currentInjuryGroup.team }}</div>
 
-          <div class="injury-item-structured" *ngFor="let p of currentInjuryGroup.players">
+          <div class="injury-item-structured" *ngFor="let p of currentInjuryGroup.players; trackBy: trackInjuryPlayer">
             <div class="player-info">
               <span class="p-name">{{ p.name }} <small class="p-pos" *ngIf="p.position">({{ p.position
                   }})</small></span>

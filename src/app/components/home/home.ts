@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NbaApiService } from '../../services/nba-api';
@@ -32,7 +32,8 @@ export interface InjuryGroup {
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './home.html',
-  styleUrls: ['./home.css', '../../features/game/games/games.css']
+  styleUrls: ['./home.css', '../../features/game/games/games.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Home implements OnInit {
 
@@ -60,6 +61,7 @@ export class Home implements OnInit {
   private notificationService = inject(NotificationService);
   private fantasyService = inject(FantasyService);
   private injuriesService = inject(NbaInjuriesService);
+  private cdr = inject(ChangeDetectorRef);
 
   ngOnInit() {
     this.loadLiveGames();
@@ -74,6 +76,7 @@ export class Home implements OnInit {
     try {
       this.notifications = await this.notificationService.getNotifications();
       this.unreadCount = this.notifications.filter(n => !n.is_read).length;
+      this.cdr.markForCheck();
     } catch (err) {
       console.error("Error loading notifications", err);
     }
@@ -85,6 +88,14 @@ export class Home implements OnInit {
 
   trackPlayers(index: number, item: TopStat) {
     return item.category;
+  }
+
+  trackInjuryGroup(index: number, group: InjuryGroup) {
+    return group.team;
+  }
+
+  trackInjuryPlayer(index: number, player: InjuryPlayer) {
+    return player.name;
   }
 
   async loadLiveGames() {
@@ -99,6 +110,8 @@ export class Home implements OnInit {
       }
     } catch {
       this.errorLive = 'Error al cargar los partidos en vivo.';
+    } finally {
+      this.cdr.markForCheck();
     }
   }
 
@@ -114,6 +127,8 @@ export class Home implements OnInit {
       }
     } catch {
       this.errorPlayers = 'Error al obtener los mejores jugadores.';
+    } finally {
+      this.cdr.markForCheck();
     }
   }
 
@@ -127,9 +142,6 @@ export class Home implements OnInit {
       const upcoming = gamesToday
         .filter(g => g.status === 'Programado')
         .sort((a, b) => {
-          // Combinamos la fecha y la hora para crear objetos Date comparables
-          // Usamos una fecha base cualquiera si solo queremos comparar horas, 
-          // pero dateISO nos da la precisión por si hay partidos en días distintos.
           const dateA = new Date(`${a.dateISO} ${a.timeLocal}`).getTime();
           const dateB = new Date(`${b.dateISO} ${b.timeLocal}`).getTime();
 
@@ -142,6 +154,8 @@ export class Home implements OnInit {
     } catch (err) {
       console.error("Error al ordenar:", err);
       this.errorNext = 'Error al cargar próximos partidos.';
+    } finally {
+      this.cdr.markForCheck();
     }
   }
 
@@ -152,12 +166,15 @@ export class Home implements OnInit {
     } catch (err) {
       console.error("Error cargando Dream Team:", err);
       this.dreamTeam = [];
+    } finally {
+      this.cdr.markForCheck();
     }
   }
 
   async loadInjuryReport() {
     this.loadingInjuries = true;
     this.errorInjuries = null;
+    this.cdr.markForCheck();
     try {
       const resp = await this.injuriesService.getInjuryReport();
       if (resp.success) {
@@ -170,6 +187,7 @@ export class Home implements OnInit {
       this.errorInjuries = 'Error al conectar con el servidor.';
     } finally {
       this.loadingInjuries = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -180,21 +198,25 @@ export class Home implements OnInit {
   nextInjuryTeam() {
     if (this.injuryGroups.length === 0) return;
     this.currentInjuryIndex = (this.currentInjuryIndex + 1) % this.injuryGroups.length;
+    this.cdr.detectChanges();
   }
 
   prevInjuryTeam() {
     if (this.injuryGroups.length === 0) return;
     this.currentInjuryIndex = (this.currentInjuryIndex - 1 + this.injuryGroups.length) % this.injuryGroups.length;
+    this.cdr.detectChanges();
   }
 
   openInjuryModal() {
     this.showInjuryModal = true;
     document.body.style.overflow = 'hidden'; // Prevent scrolling background
+    this.cdr.detectChanges();
   }
 
   closeInjuryModal() {
     this.showInjuryModal = false;
     document.body.style.overflow = '';
+    this.cdr.detectChanges();
   }
 
 
