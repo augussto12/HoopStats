@@ -52,6 +52,7 @@ export class Home implements OnInit {
   currentInjuryIndex = 0;
   errorInjuries: string | null = null;
   loadingInjuries = false;
+  showInjuryModal = false;
 
   private nbaService = inject(NbaApiService);
   private bestPlayersService = inject(BestPlayersService);
@@ -184,6 +185,16 @@ export class Home implements OnInit {
   prevInjuryTeam() {
     if (this.injuryGroups.length === 0) return;
     this.currentInjuryIndex = (this.currentInjuryIndex - 1 + this.injuryGroups.length) % this.injuryGroups.length;
+  }
+
+  openInjuryModal() {
+    this.showInjuryModal = true;
+    document.body.style.overflow = 'hidden'; // Prevent scrolling background
+  }
+
+  closeInjuryModal() {
+    this.showInjuryModal = false;
+    document.body.style.overflow = '';
   }
 
 

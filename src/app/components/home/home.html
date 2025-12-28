@@ -1,15 +1,35 @@
 <div class="home-wrapper">
 
-  <section class="top-section">
+  <!-- HERO / WELCOME SECTION -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Bienvenido a <span class="highlight">HoopStats</span></h1>
+      <p>Tu centro de estadísticas y análisis de la NBA en tiempo real.</p>
+    </div>
 
-    <div class="left-column">
+    <div class="quick-actions">
+      <button class="action-btn injury-btn" (click)="openInjuryModal()">
+        <span class="label">Reporte de Lesiones</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- MAIN DASHBOARD GRID -->
+  <div class="dashboard-grid">
+
+    <!-- LEFT COL: NEXT GAMES -->
+    <div class="grid-col main-col">
       <div class="panel next-panel">
-        <h2>📅 Próximos partidos de hoy</h2>
+        <div class="panel-header">
+          <h2>📅 Próximos partidos de hoy</h2>
+        </div>
 
         <div *ngIf="errorNext" class="empty">{{ errorNext }}</div>
 
         <div class="next-list-grid" *ngIf="nextGames.length">
           <div class="next-mini-card" *ngFor="let g of nextGames; trackBy: trackNextGame">
+            <div class="game-time-badge">{{ g.timeLocal }}</div>
+
             <div class="teams-row">
               <div class="team-col">
                 <img [src]="g.visitors.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.visitors.logo"
@@ -20,7 +40,6 @@
 
               <div class="center-col">
                 <span class="vs">VS</span>
-                <span class="time">{{ g.timeLocal }}</span>
               </div>
 
               <div class="team-col">
@@ -37,121 +56,93 @@
           No hay próximos partidos.
         </div>
       </div>
-    </div>
 
-    <div class="panel players-panel">
-      <h2>🏆 Mejores jugadores del día de ayer</h2>
-
-      <div *ngIf="errorPlayers" class="empty">{{ errorPlayers }}</div>
-
-      <div *ngIf="bestPlayers.length" class="players-grid">
-        <div class="player-card" *ngFor="let p of bestPlayers; trackBy: trackPlayers">
-          <h3>{{ p.category }}</h3>
-          <p><span>{{ p.player }}</span> | <strong>{{ p.value }}</strong></p>
+      <div class="panel live-panel">
+        <div class="panel-header">
+          <h2>Partidos en vivo <span class="live-dot"></span></h2>
         </div>
-      </div>
 
-      <div *ngIf="!bestPlayers.length && !errorPlayers" class="empty">
-        No hay datos disponibles.
-      </div>
-    </div>
+        <div *ngIf="errorLive" class="empty">{{ errorLive }}</div>
 
-    <div class="panel live-panel">
-      <h2>
-        Partidos en vivo <span class="live-dot"></span>
-      </h2>
-
-      <div *ngIf="errorLive" class="empty">{{ errorLive }}</div>
-
-      <div *ngIf="liveGames.length" class="live-list">
-        <div class="live-card" *ngFor="let g of liveGames; trackBy: trackGame" [routerLink]="['/game-details', g.id]">
-          <div class="teams">
-            <div class="team">
-              <img [src]="g.visitors?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.visitors?.logo"
-                class="team-logo" loading="lazy" decoding="async" width="38" height="38"
-                (error)="onImageError($event)" />
-              <span>{{ g.visitors?.name }}</span>
-            </div>
-
-            <div class="score-box">
-              <div class="score-line">
-                <span class="score-num" [ngClass]="{
-                  'winner': (g.visitors?.pts ?? 0) > (g.home?.pts ?? 0),
-                  'loser':  (g.visitors?.pts ?? 0) < (g.home?.pts ?? 0),
-                  'draw':   (g.visitors?.pts ?? 0) === (g.home?.pts ?? 0)
-                }">
-                  {{ g.visitors?.pts ?? '-' }}
-                </span>
-                <span class="dash">–</span>
-                <span class="score-num" [ngClass]="{
-                  'winner': (g.home?.pts ?? 0) > (g.visitors?.pts ?? 0),
-                  'loser':  (g.home?.pts ?? 0) < (g.visitors?.pts ?? 0),
-                  'draw':   (g.home?.pts ?? 0) === (g.visitors?.pts ?? 0)
-                }">
-                  {{ g.home?.pts ?? '-' }}
-                </span>
+        <div *ngIf="liveGames.length" class="live-list">
+          <div class="live-card" *ngFor="let g of liveGames; trackBy: trackGame" [routerLink]="['/game-details', g.id]">
+            <div class="teams">
+              <div class="team">
+                <img [src]="g.visitors?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.visitors?.logo"
+                  class="team-logo" loading="lazy" decoding="async" width="38" height="38"
+                  (error)="onImageError($event)" />
+                <span>{{ g.visitors?.name }}</span>
               </div>
-              <div class="score-meta">
-                <span class="period">{{ g.period }}C</span>
-                <span class="dot">•</span>
-                <span class="clock">{{ g.clock || 'En pausa' }}</span>
+
+              <div class="score-box">
+                <div class="score-line">
+                  <span class="score-num" [ngClass]="{
+                    'winner': (g.visitors?.pts ?? 0) > (g.home?.pts ?? 0),
+                    'loser':  (g.visitors?.pts ?? 0) < (g.home?.pts ?? 0),
+                    'draw':   (g.visitors?.pts ?? 0) === (g.home?.pts ?? 0)
+                  }">
+                    {{ g.visitors?.pts ?? '-' }}
+                  </span>
+                  <span class="dash">–</span>
+                  <span class="score-num" [ngClass]="{
+                    'winner': (g.home?.pts ?? 0) > (g.visitors?.pts ?? 0),
+                    'loser':  (g.home?.pts ?? 0) < (g.visitors?.pts ?? 0),
+                    'draw':   (g.home?.pts ?? 0) === (g.visitors?.pts ?? 0)
+                  }">
+                    {{ g.home?.pts ?? '-' }}
+                  </span>
+                </div>
+                <div class="score-meta">
+                  <span class="period">{{ g.period }}C</span>
+                  <span class="dot">•</span>
+                  <span class="clock">{{ g.clock || 'En pausa' }}</span>
+                </div>
+              </div>
+
+              <div class="team">
+                <img [src]="g.home?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.home?.logo"
+                  class="team-logo" (error)="onImageError($event)" loading="lazy" decoding="async" width="38"
+                  height="38" />
+                <span>{{ g.home?.name }}</span>
               </div>
             </div>
-
-            <div class="team">
-              <img [src]="g.home?.id === 20 ? '/assets/teams/nba-miami-heat-logo.png' : g.home?.logo" class="team-logo"
-                (error)="onImageError($event)" loading="lazy" decoding="async" width="38" height="38" />
-              <span>{{ g.home?.name }}</span>
-            </div>
+            <div class="arena">{{ g.arena }}</div>
           </div>
-          <div class="arena">{{ g.arena }}</div>
         </div>
-      </div>
 
-      <div *ngIf="!liveGames.length && !errorLive" class="empty">
-        No hay partidos en vivo actualmente.
+        <div *ngIf="!liveGames.length && !errorLive" class="empty">
+          No hay partidos en vivo actualmente.
+        </div>
       </div>
     </div>
 
-    <div class="panel injuries-panel">
-      <div class="injuries-header">
-        <h2>🚑 Reporte de Lesiones</h2>
-        <div class="carousel-controls" *ngIf="injuryGroups.length > 1">
-          <button (click)="prevInjuryTeam()" class="ctrl-btn" aria-label="Anterior">❮</button>
-          <span class="page-indicator">{{ currentInjuryIndex + 1 }} / {{ injuryGroups.length }}</span>
-          <button (click)="nextInjuryTeam()" class="ctrl-btn" aria-label="Siguiente">❯</button>
+    <!-- RIGHT COL: STATS & PLAYERS -->
+    <div class="grid-col side-col">
+      <div class="panel players-panel">
+        <div class="panel-header">
+          <h2>🏆 Mejores del día anterior</h2>
         </div>
-      </div>
 
-      <div *ngIf="loadingInjuries" class="loading-spinner">Cargando reporte...</div>
-      <div *ngIf="errorInjuries" class="empty">{{ errorInjuries }}</div>
+        <div *ngIf="errorPlayers" class="empty">{{ errorPlayers }}</div>
 
-      <div class="injuries-carousel" *ngIf="currentInjuryGroup">
-        <div class="injury-group active">
-          <div class="group-header">{{ currentInjuryGroup.team }}</div>
-
-          <div class="injury-item-structured" *ngFor="let p of currentInjuryGroup.players">
-            <div class="player-info">
-              <span class="p-name">{{ p.name }} <small class="p-pos" *ngIf="p.position">({{ p.position
-                  }})</small></span>
-              <span class="p-status" [ngClass]="p.statusType">{{ p.status }}</span>
+        <div *ngIf="bestPlayers.length" class="players-grid">
+          <div class="player-card" *ngFor="let p of bestPlayers; trackBy: trackPlayers">
+            <h3>{{ p.category }}</h3>
+            <div class="p-card-content">
+              <span class="p-name">{{ p.player }}</span>
+              <span class="p-val">{{ p.value }}</span>
             </div>
-            <div class="p-meta" *ngIf="p.updated">Actualizado: {{ p.updated }}</div>
-            <div class="p-reason">{{ p.reason }}</div>
-          </div>
-
-          <div *ngIf="currentInjuryGroup.players.length === 0" class="no-submitted">
-            No hay datos enviados aún
           </div>
         </div>
-      </div>
 
-      <div *ngIf="!loadingInjuries && !injuryGroups.length && !errorInjuries" class="empty">
-        No hay lesiones reportadas.
+        <div *ngIf="!bestPlayers.length && !errorPlayers" class="empty">
+          No hay datos disponibles.
+        </div>
       </div>
     </div>
-  </section>
+  </div>
 
+  <!-- DREAM TEAM SECTION (Full Width) -->
   <section class="dream-team-section" *ngIf="dreamTeam.length">
     <div class="panel court-panel">
       <div class="dt-header">
@@ -177,7 +168,49 @@
           </div>
         </div>
       </div>
+
     </div>
   </section>
 
+</div>
+
+<!-- INJURY REPORT MODAL -->
+<div class="modal-backdrop" *ngIf="showInjuryModal" (click)="closeInjuryModal()">
+  <div class="modal-content injury-modal" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="closeInjuryModal()">×</button>
+
+    <div class="modal-header">
+      <h2>Reporte de Lesiones</h2>
+      <div class="carousel-controls" *ngIf="injuryGroups.length > 1">
+        <button (click)="prevInjuryTeam()" class="ctrl-btn" aria-label="Anterior">❮</button>
+        <span class="page-indicator">{{ currentInjuryIndex + 1 }} / {{ injuryGroups.length }}</span>
+        <button (click)="nextInjuryTeam()" class="ctrl-btn" aria-label="Siguiente">❯</button>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div *ngIf="loadingInjuries" class="loading-spinner">Cargando reporte...</div>
+      <div *ngIf="errorInjuries" class="empty">{{ errorInjuries }}</div>
+
+      <div class="injuries-carousel" *ngIf="currentInjuryGroup && !loadingInjuries">
+        <div class="injury-group active">
+          <div class="group-header">{{ currentInjuryGroup.team }}</div>
+
+          <div class="injury-item-structured" *ngFor="let p of currentInjuryGroup.players">
+            <div class="player-info">
+              <span class="p-name">{{ p.name }} <small class="p-pos" *ngIf="p.position">({{ p.position
+                  }})</small></span>
+              <span class="p-status" [ngClass]="p.statusType">{{ p.status }}</span>
+            </div>
+            <div class="p-meta" *ngIf="p.updated">Actualizado: {{ p.updated }}</div>
+            <div class="p-reason">{{ p.reason }}</div>
+          </div>
+
+          <div *ngIf="currentInjuryGroup.players.length === 0" class="no-submitted">
+            No hay datos enviados aún
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
