@@ -1,6 +1,5 @@
-/// <reference types="node" />
-import { writeFileSync } from 'fs';
-import * as dotenv from 'dotenv';
+const { writeFileSync } = require('fs');
+const dotenv = require('dotenv');
 
 dotenv.config({ path: '.env.local' });
 

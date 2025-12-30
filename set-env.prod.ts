@@ -1,13 +1,12 @@
-/// <reference types="node" />
-import { writeFileSync } from 'fs';
-import * as dotenv from 'dotenv';
+const { writeFileSync } = require('fs');
+const dotenv = require('dotenv');
 
 dotenv.config({ path: '.env.production' });
 
 const content = `
 export const environment = {
   production: true,
-  apiUrl: '${process.env['API_URL']}',
+  apiUrl: '${process.env['API_URL'] || '/api'}',
   nbaApi: {
     baseUrl: '${process.env['NBA_API_URL'] ?? ''}',
     headers: {
@@ -17,7 +16,7 @@ export const environment = {
 };
 `;
 
-writeFileSync('./src/environments/environment.ts', content);  
-writeFileSync('./src/environments/environment.prod.ts', content); 
+writeFileSync('./src/environments/environment.ts', content);
+writeFileSync('./src/environments/environment.prod.ts', content);
 
 console.log("✔ environment.ts + environment.prod.ts generados (PROD)");
